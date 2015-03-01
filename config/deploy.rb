@@ -4,6 +4,8 @@ lock '3.3.5'
 set :application, 'aleftng'
 set :repo_url, 'git@github.com:PewePro/alef-tng.git'
 
+set :rvm_ruby_version, '2.2.0@aleftng'
+set :rvm_type, :user
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
