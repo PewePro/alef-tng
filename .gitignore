@@ -12,6 +12,3 @@ log/*.log
 tmp
 shared/**/*
 .idea
-
-config/configuration.yml
-config/database.yml
