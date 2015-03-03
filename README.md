@@ -27,8 +27,9 @@ vim config/database.yml
 Create the database.
 
 ```
-RAILS_ENV=development rake db:create
+RAILS_ENV=development rake db:create && rake db:migrate
 ```
+!TODO! Seed database
 
 ## Testing
 
