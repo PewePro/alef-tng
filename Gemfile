@@ -34,6 +34,8 @@ gem 'airbrake'
 gem 'execjs'
 gem 'therubyracer'
 
+gem 'passenger'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -46,7 +48,7 @@ group :development, :test do
 
   # Use Capistrano for deployment
   gem 'capistrano'
-  gem 'capistrano-rvm'
+  gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
 end
