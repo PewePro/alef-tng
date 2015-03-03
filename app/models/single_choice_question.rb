@@ -1,0 +1,3 @@
+class SingleChoiceQuestion < LearningObject
+
+end

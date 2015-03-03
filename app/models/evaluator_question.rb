@@ -1,0 +1,3 @@
+class EvaluatorQuestion < LearningObject
+
+end

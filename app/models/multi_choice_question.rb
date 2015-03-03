@@ -1,0 +1,3 @@
+class MultiChoiceQuestion < LearningObject
+
+end

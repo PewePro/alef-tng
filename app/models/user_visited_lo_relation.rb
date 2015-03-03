@@ -1,0 +1,3 @@
+class UserVisitedLoRelation < UserToLoRelation
+
+end
