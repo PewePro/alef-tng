@@ -51,5 +51,9 @@ group :development, :test do
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
+
+  # Use Devise - a flexible authentication solution (login, registration, ...)
+  gem 'devise'
+
 end
 
