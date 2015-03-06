@@ -8,17 +8,16 @@
 # role :web, %w{deploy@example.com}
 # role :db,  %w{deploy@example.com}
 
-set :deploy_to, "/home/alef/deploy/#{fetch(:application)}/"
+
 set :rails_env, "production"
 set :branch, "master"
+
 
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and isa
 # used to set extended properties on the server.
-
-server 'alef.fiit.stuba.sk', user: 'alef', roles: %w{web app db}
 
 
 # Custom SSH Options

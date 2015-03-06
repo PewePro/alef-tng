@@ -21,6 +21,7 @@ bundle install
 Edit configuration file(s).
 
 ```
+cp config/database.yml.example config/database.yml
 vim config/database.yml
 ```
 
