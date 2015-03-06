@@ -8,6 +8,7 @@
 # role :web, %w{deploy@example.com}
 # role :db,  %w{deploy@example.com}
 
+set :deploy_to, '/home/aleftng/deploy/aleftng/'
 
 set :rails_env, 'production'
 set :branch, 'master'

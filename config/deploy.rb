@@ -7,7 +7,6 @@ set :repo_url, 'git@github.com:PewePro/alef-tng.git'
 set :rbenv_type, :user
 set :rbenv_ruby, '2.2.0'
 
-set :deploy_to, "/home/aleftng/deploy/#{fetch(:application)}/"
 
 server 'yatta.fiit.stuba.sk', user: 'aleftng', roles: %w{web app db}
 
