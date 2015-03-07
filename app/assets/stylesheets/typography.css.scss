@@ -2,11 +2,10 @@
 /* Setup */
 html {
   /* Change default typefaces here */
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-family: $font-family;
+  font-size: $font-size;
   -webkit-font-smoothing: antialiased;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: $font-weight;
 }
 /* Copy & Lists */
 p {

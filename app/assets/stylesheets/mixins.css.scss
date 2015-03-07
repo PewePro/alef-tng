@@ -1,2 +1,7 @@
+@mixin color-transition {
+  transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
+  -webkit-transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
+}
+
 // add shadow
 // add radius

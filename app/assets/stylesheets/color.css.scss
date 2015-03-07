@@ -11,17 +11,6 @@ $white: #FFFFFF;
   color: $white;
 }
 
-
-// toto cez parametre mixinov vytvorit
-@mixin red-white-transition {
-  transition: background-color 200ms ease;
-  -webkit-transition: background-color 200ms ease;
-
-  &:hover {
-    background-color: $red-light;
-  }
-}
-
 @mixin dark-white {
   background-color: $dark;
   color: $white;
