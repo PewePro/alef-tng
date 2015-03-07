@@ -54,6 +54,7 @@ group :development, :test do
 
   # Use Devise - a flexible authentication solution (login, registration, ...)
   gem 'devise'
+  gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 
 end
 
