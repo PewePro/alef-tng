@@ -3,5 +3,19 @@
   -webkit-transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
 }
 
+
+@mixin bold {
+  font-weight: $bold-weight;
+  letter-spacing: $bold-spacing;
+}
+
+@mixin big-top-margin {
+  margin-top: 2em;
+}
+
+@mixin center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
 // add shadow
 // add radius

@@ -1,13 +1,22 @@
-  <h1><img src="<%= image_path("logo.svg") %>" onerror="this.src='<%= image_path("logo.png") %>'" alt="Alef" /></h1>
+<div id="login">
+  <h1 id="login-h1">
+    <img id="logo" src="<%= image_path("logo.svg") %>" onerror="this.src='<%= image_path("logo.png") %>'" alt="Alef" />
+  </h1>
 
-  <form>
-    <legend>Použite prihlasovacie údaje z AIS</legend>
-    <label for="username">Prihlasovacie meno</label>
-    <input type="text" name="username" />
-    <label for="username">Heslo</label>
-    <input type="password" name="password" />
-    <input type="submit" value="Prihlásiť" />
+  <form id="login-form">
+    <fieldset id="login-fieldset">
+        <label for="login">Použite prihlasovacie údaje z AIS</label>
+
+        <label for="username">Prihlasovacie meno</label>
+        <input class="login-text" type="text" name="username" />
+
+        <label for="username">Heslo</label>
+        <input class="login-text" type="password" name="password" />
+
+        <input id="login-submit" type="submit" name="login" value="Prihlásiť" />
+    </fieldset>
   </form>
+</div>
 <script>
 var Login = {
     positionLogo : function() {

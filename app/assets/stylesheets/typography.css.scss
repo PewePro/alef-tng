@@ -6,6 +6,7 @@ html {
   font-size: $font-size;
   -webkit-font-smoothing: antialiased;
   font-weight: $font-weight;
+  color: $dark;
 }
 /* Copy & Lists */
 p {
@@ -43,16 +44,14 @@ h4,
 h5,
 h6 {
   /* Change heading typefaces here */
-  font-family: sans-serif;
   margin-top: 1.5rem;
   margin-bottom: 0;
   line-height: 1.5rem;
-  font-weight: 700;
+  @include bold;
 }
 h1 {
   font-size: 4.242rem;
-  line-height: 4.5rem;
-  margin-top: 3rem;
+  line-height: 4.5rem
 }
 h2 {
   font-size: 2.828rem;

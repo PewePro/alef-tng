@@ -16,6 +16,16 @@ $white: #FFFFFF;
   color: $white;
 }
 
+@mixin white-dark {
+  background-color: $white;
+  color: $dark;
+}
+
+@mixin red-dark {
+  background-color: $red;
+  color: $dark;
+}
+
 @mixin gray-white {
   background-color: $gray;
   color: $white;

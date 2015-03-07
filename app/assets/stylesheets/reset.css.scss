@@ -123,7 +123,7 @@ abbr[title] {
 
 b,
 strong {
-  font-weight: bold;
+ @include bold;
 }
 
 /**
@@ -132,16 +132,6 @@ strong {
 
 dfn {
   font-style: italic;
-}
-
-/**
- * Address variable `h1` font-size and margin within `section` and `article`
- * contexts in Firefox 4+, Safari, and Chrome.
- */
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
 }
 
 /**
@@ -256,6 +246,10 @@ samp {
  * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
  */
 
+form {
+  width: 100%;
+}
+
 button,
 input,
 optgroup,
@@ -265,7 +259,6 @@ textarea {
   font: inherit; /* 2 */
   margin: 0; /* 3 */
   background: inherit;
-  border: 1px solid;
 }
 
 /**
@@ -386,9 +379,9 @@ input[type="search"]::-webkit-search-decoration {
  */
 
 fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 /**

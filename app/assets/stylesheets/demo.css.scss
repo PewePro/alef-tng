@@ -1,17 +1,55 @@
+#login {
+  @include dark-white;
+  @include bold;
 
-h1 {color: $red; margin: 0; position: relative;}
+  min-height: 100%;
+  text-align: center;
+}
 
+#login-h1 {
+  color: $red;
+  position: relative;
+}
 
+#logo {
+  margin: auto;
+}
 
+#login-form {
+  position: absolute;
+  bottom: 2rem;
+}
 
+@mixin login-input {
+  @include center-block;
+  height: 2rem;
+  border: 3px solid $white;
+  border-radius: 19px;
+  padding: 0 1em;
+}
 
+.login-text {
+  @include login-input;
+  width: 70%;
+  max-width: 300px;
+}
 
-form {position: absolute; bottom: 2rem; width: 100%; font-weight: 700; letter-spacing: 1px;}
-body {background: $dark; color: $white; text-align: center;}
-input {width: 70%; max-width: 300px; height: 2rem; border: 3px solid $white; border-radius: 19px; padding: 0 1em;}
-label,input,img { margin: 0 auto;}
-input[type="submit"] {
+#login-fieldset > label {
+  @include big-top-margin;
+  @include center-block;
+}
+
+#login-submit {
   @include color-transition;
-  color: $dark; background-color: $white; margin-top: 2em; box-sizing: content-box; width: 125px;}
-input[type="submit"]:hover {color: $dark; background-color: $red; border-color: $red;}
-label, legend {margin-top: 2rem;}
+  @include white-dark;
+  @include big-top-margin;
+  @include login-input;
+
+  box-sizing: content-box;
+  width: 125px;
+
+  &:hover {
+    @include red-dark;
+    border-color: $red;
+  }
+}

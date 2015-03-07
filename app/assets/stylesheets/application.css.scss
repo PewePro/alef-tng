@@ -14,10 +14,12 @@
  * require_self
  */
 
-@import "reset";
-@import "variables";
 
-@import "typography";
-@import "color";
 @import "mixins";
+@import "variables";
+@import "color";
+
+@import "reset";
+@import "typography";
+
 @import "demo";
