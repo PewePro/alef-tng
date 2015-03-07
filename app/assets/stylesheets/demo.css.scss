@@ -1,17 +1,17 @@
 
-h1 {color: $red;}
-html, body {
-  height: 100%;
-}
-#container { /* this is the div you want to fill the window */
-  min-height: 100%;
-}
+h1 {color: $red; margin: 0; position: relative;}
 
-form {position: absolute; bottom: 2em; width: 100%;}
+
+
+
+
+
+form {position: absolute; bottom: 2rem; width: 100%; font-weight: 700; letter-spacing: 1px;}
 body {background: $dark; color: $white; text-align: center;}
-input {width: 220px; height: 2rem; border: 3px solid $white; border-radius: 19px; padding: 0 1em;}
-label,input,img {display: block; margin: 0 auto;}
-img {margin: 10% auto;}
-input[type="submit"] {color: $dark; background-color: $white; margin-top: 2em; box-sizing: content-box; width: 125px;}
+input {width: 70%; max-width: 300px; height: 2rem; border: 3px solid $white; border-radius: 19px; padding: 0 1em;}
+label,input,img { margin: 0 auto;}
+input[type="submit"] {
+  @include color-transition;
+  color: $dark; background-color: $white; margin-top: 2em; box-sizing: content-box; width: 125px;}
 input[type="submit"]:hover {color: $dark; background-color: $red; border-color: $red;}
 label, legend {margin-top: 2rem;}
