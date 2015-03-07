@@ -4,8 +4,14 @@ lock '3.3.5'
 set :application, 'aleftng'
 set :repo_url, 'git@github.com:PewePro/alef-tng.git'
 
-set :rvm_ruby_version, '2.2.0@aleftng'
-set :rvm_type, :user
+set :rbenv_type, :user
+set :rbenv_ruby, '2.2.0'
+
+
+server 'yatta.fiit.stuba.sk', user: 'aleftng', roles: %w{web app db}
+
+set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call

@@ -5,7 +5,7 @@ ALEF: TNG is a learning system.
 ## Requirements
 
 * Ruby 2.2
-* Rails 4.2
+* Bundler
 * PostgreSQL 9.3
 
 ## Installation
@@ -21,6 +21,7 @@ bundle install
 Edit configuration file(s).
 
 ```
+cp config/database.yml.example config/database.yml
 vim config/database.yml
 ```
 

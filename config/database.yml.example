@@ -55,5 +55,11 @@ test:
 production:
   <<: *default
   database: aleftng_production
-  username: alef
+  username: aleftng
+  password: <%= ENV['ALEFTNG_DATABASE_PASSWORD'] %>
+
+staging:
+  <<: *default
+  database: aleftng_staging
+  username: aleftng
   password: <%= ENV['ALEFTNG_DATABASE_PASSWORD'] %>
