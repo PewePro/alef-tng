@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'weeks/:number' => 'weeks#show'
+
   devise_for :user
 
   root :to =>'home#index'
