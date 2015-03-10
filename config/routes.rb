@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'weeks/:number' => 'weeks#show'
+  get 'week/:number' => 'weeks#show'
 
   devise_for :user
 
