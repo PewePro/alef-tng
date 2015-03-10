@@ -20,9 +20,9 @@ weeks[2].concepts << [concepts[3],concepts[1],concepts[0]]
 weeks[3].concepts << [concepts[3]]
 
 users = User.create!([
-  {login: 'peter', aisid: 1000, role: 2, first_name: 'Peter', last_name: 'Rohac', password: '123456', salt: 'solnicka', authorization: 'solidna'},
-  {login: 'roman', aisid: 2000, role: 2, first_name: 'Roman', last_name: 'Mak', password: '123456', salt: 'solnicka', authorization: 'solidna'},
-  {login: 'lubos', aisid: 3000, role: 2, first_name: 'Lubos', last_name: 'Tatarka', password: '123456', salt: 'solnicka', authorization: 'solidna'}
+  {login: 'peter', aisid: 1000, role: 2, first_name: 'Peter', last_name: 'Rohac', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'rohac@gmail.com'},
+  {login: 'roman', aisid: 2000, role: 2, first_name: 'Roman', last_name: 'Mak', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'mak@gmail.com'},
+  {login: 'lubos', aisid: 3000, role: 2, first_name: 'Lubos', last_name: 'Tatarka', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'tatarka@gmail.com'}
 ])
 
 SetupsUser.create!([
