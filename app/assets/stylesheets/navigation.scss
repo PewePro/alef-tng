@@ -1,0 +1,27 @@
+nav {
+  @include red-white;
+  position: fixed;
+  width: 100%;
+  padding: 0.5rem 0;
+
+}
+
+nav i {
+  font-size: 1.2rem;
+  display: inline-block;
+  line-height: 3rem;
+  margin: 0;
+  padding: 0 10px;
+}
+
+nav h2 {
+  font-size: 24px;
+  display: inline-block;
+  line-height: 3rem;
+  margin: 0;
+}
+
+.nav-offset {
+  margin: 0;
+  height: 4rem;
+}

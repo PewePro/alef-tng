@@ -1,0 +1,13 @@
+body {
+  background-color: $dark;
+}
+
+.mobile-content {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 720px;
+}
+
+.main {
+ @include white-dark;
+}

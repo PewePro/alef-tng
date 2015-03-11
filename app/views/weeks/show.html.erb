@@ -1,14 +1,24 @@
 <nav>
-  <i class="icon-left-open"></i>
-  <h2>Tyzden 5</h2>
-  <i class="icon-calendar-empty"></i>
-  <i class="icon-right-open"></i>
+  <div class="mobile-content">
+    <i class="icon-left-open"></i>
+    <h2><%= @week.number %>. týždeň</h2>
+    <i style="float: right; " class="icon-right-open"></i>
+    <i style="float: right; " class="icon-calendar-empty"></i>
+  </div>
 </nav>
-<info></info>
-cyklus {
-    <div class="card question">
-      <h3>Nadpis</h3>
-      <p>Text</p>
-      <spodok>obkecy</spodok>
-    </div>
-}
+<hr class="nav-offset">
+<div class="mobile-content main">
+  <% @learning_objects.each do |lo| %>
+      <div class="question-card">
+        <div class="question-card-content">
+            <h3><%= lo.lo_id %></h3>
+            <p>
+                <%= lo.question_text %>
+            </p>
+        </div>
+        <div class="question-card-info">
+          <i class="icon-eye"></i> Videné (3x) <i class="icon-ok"></i> Vyriešené
+        </div>
+      </div>
+  <% end %>
+</div>

@@ -1,6 +1,6 @@
 class WeeksController < ApplicationController
   def show
     @week = Week.find_by_number(params[:number])
-    @learning_objects = @week.learning_objects
+    @learning_objects = @week.learning_objects.distinct
   end
 end
