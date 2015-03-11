@@ -80,7 +80,7 @@ answers = Answer.create!([
 
 single_choice_questions[0].concepts << [concepts[1],concepts[2]]
 single_choice_questions[1].concepts << [concepts[3],concepts[1]]
-single_choice_questions[2].concepts << [concepts[0],concepts[1],concepts[1]]
+single_choice_questions[2].concepts << [concepts[0],concepts[1],concepts[3]]
 single_choice_questions[3].concepts << [concepts[2]]
 multi_choice_questions[0].concepts << [concepts[3],concepts[1]]
 multi_choice_questions[1].concepts << [concepts[3],concepts[1]]
