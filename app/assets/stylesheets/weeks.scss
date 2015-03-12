@@ -1,7 +1,36 @@
+.week-progressbar {
+  height: 1.5rem;
+  background-color: $red;
+  @include border-radius(0.75rem);
+  border: 1px solid $gray;
+  margin: 0.5rem 1rem;
+}
+
+.week-progressbar > .ui-progressbar-value {
+  background-image: none;
+  background-color: $red-light;
+}
+
+.nav-info {
+  @include bold;
+  @include white-dark;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.caption {
+  position: relative;
+  bottom: 1.75rem;
+  height: 0;
+  font-weight: 400;
+  font-size: 0.75rem;
+  z-index: 20;
+}
+
 .question-card {
   font-size: 0.75rem;
   padding: 1rem 1.5rem;
-  border-bottom: 1px $gray solid;
+  border-top: 1px $gray solid;
 
   &:hover {
     background-color: $porcelain;
@@ -16,7 +45,7 @@
 
   h3 {
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.5em;
     text-transform: lowercase;
     font-variant: small-caps;
     margin: 0;

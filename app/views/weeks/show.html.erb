@@ -7,6 +7,12 @@
   </div>
 </nav>
 <hr class="nav-offset">
+<div class="nav-info mobile-content">
+    12.3. - 19.3.2015
+    <div class="week-progressbar"></div>
+    <div class="caption">Dokončené 3/10 (30%)</div>
+</div>
+
 <div class="mobile-content main">
   <% @learning_objects.each do |lo| %>
       <div class="question-card">
@@ -22,3 +28,10 @@
       </div>
   <% end %>
 </div>
+<script>
+    $(function() {
+        $( ".week-progressbar" ).progressbar({
+            value: 60
+        });
+    });
+</script>
