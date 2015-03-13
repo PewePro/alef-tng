@@ -22,7 +22,19 @@ nav h2 {
   margin: 0;
 }
 
+.nav-right-icons {
+  float: right;
+}
+
 .nav-offset {
   margin: 0;
   height: 4rem;
+}
+
+// Dodatocny blok az navigacnym panelom, ktory obsahuje informacie o danej stranke
+.nav-info {
+  @include bold;
+  @include red-light-white;
+  padding: 1rem 0;
+  text-align: center;
 }

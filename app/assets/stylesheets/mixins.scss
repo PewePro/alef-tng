@@ -24,5 +24,8 @@
   -ms-border-radius: $radius;
   border-radius: $radius;
 }
-// add shadow
-// add radius
+
+@mixin small-font {
+  font-size: 0.75rem;
+  font-weight: $font-weight;
+}

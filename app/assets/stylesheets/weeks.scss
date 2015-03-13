@@ -1,36 +1,31 @@
 .week-progressbar {
+  @include border-radius(0.75rem);
   height: 1.5rem;
   background-color: $red;
-  @include border-radius(0.75rem);
-  border: 1px solid $gray;
+  border: 1px solid $white;
   margin: 0.5rem 1rem;
 }
 
 .week-progressbar > .ui-progressbar-value {
   background-image: none;
-  background-color: $red-light;
+  background-color: $red-lighter;
+  border-color: $red-lighter;
 }
 
-.nav-info {
-  @include bold;
-  @include white-dark;
-  padding: 1rem 0;
-  text-align: center;
-}
-
-.caption {
+.progressbar-caption {
   position: relative;
   bottom: 1.75rem;
   height: 0;
-  font-weight: 400;
-  font-size: 0.75rem;
+  color: $dark;
+  @include small-font;
   z-index: 20;
 }
 
 .question-card {
-  font-size: 0.75rem;
+  @include small-font;
   padding: 1rem 1.5rem;
   border-top: 1px $gray solid;
+  display: block;
 
   &:hover {
     background-color: $porcelain;
@@ -58,4 +53,8 @@
 
 .question-card-info {
   line-height: 1.5rem;
+
+  i {
+    font-size: 1.2em;
+  }
 }

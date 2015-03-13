@@ -1,21 +1,21 @@
 <nav>
   <div class="mobile-content">
-    <i class="icon-left-open"></i>
+    <i class="icon-left"></i>
     <h2><%= @week.number %>. týždeň</h2>
-    <i style="float: right; " class="icon-right-open"></i>
-    <i style="float: right; " class="icon-calendar-empty"></i>
+    <i class="nav-right-icons icon-right"></i>
+    <%# <i class="nav-right-icons icon-calendar"></i> %>
   </div>
 </nav>
 <hr class="nav-offset">
 <div class="nav-info mobile-content">
     12.3. - 19.3.2015
     <div class="week-progressbar"></div>
-    <div class="caption">Dokončené 3/10 (30%)</div>
+    <div class="progressbar-caption">Dokončené 6/10 (60%)</div>
 </div>
 
 <div class="mobile-content main">
   <% @learning_objects.each do |lo| %>
-      <div class="question-card">
+      <a href="/lo/<%= lo.id %>" class="question-card">
         <div class="question-card-content">
             <h3><%= lo.lo_id %></h3>
             <p>
@@ -23,9 +23,11 @@
             </p>
         </div>
         <div class="question-card-info">
-          <i class="icon-eye"></i> Videné (3x) <i class="icon-ok"></i> Vyriešené
+          <i class="icon-seen"></i> Videné (3x)
+          <i class="icon-done"></i> Vyriešené
+          <i class="icon-new"></i> Nové
         </div>
-      </div>
+      </a>
   <% end %>
 </div>
 <script>
