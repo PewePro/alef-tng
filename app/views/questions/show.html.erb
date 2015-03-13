@@ -1,0 +1,16 @@
+<nav>
+  <div class="mobile-content">
+    <i class="icon-left"></i>
+    <i class="nav-right-icons icon-right"></i>
+    <%# <i class="nav-right-icons icon-calendar"></i> %>
+  </div>
+</nav>
+<hr class="nav-offset">
+<div class="nav-info mobile-content">
+  <h2><%= @question.lo_id %></h2>
+</div>
+<% @answers.each do |a| %>
+    <br><%= a.answer_text %>
+<% end %>
+
+

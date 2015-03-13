@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  get 'question/:id' => 'questions#show'
   get 'week/:number' => 'weeks#show'
 
   devise_for :user

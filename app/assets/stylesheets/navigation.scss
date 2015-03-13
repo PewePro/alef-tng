@@ -15,7 +15,7 @@ nav i {
   padding: 0 10px;
 }
 
-nav h2 {
+nav h2, .nav-info h2 {
   font-size: 24px;
   display: inline-block;
   line-height: 3rem;
@@ -29,6 +29,7 @@ nav h2 {
 .nav-offset {
   margin: 0;
   height: 4rem;
+  border: 0;
 }
 
 // Dodatocny blok az navigacnym panelom, ktory obsahuje informacie o danej stranke

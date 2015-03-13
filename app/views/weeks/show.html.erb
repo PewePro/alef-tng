@@ -1,9 +1,9 @@
 <nav>
   <div class="mobile-content">
     <i class="icon-left"></i>
-    <h2><%= @week.number %>. týždeň</h2>
     <i class="nav-right-icons icon-right"></i>
     <%# <i class="nav-right-icons icon-calendar"></i> %>
+    <h2><%= @week.number %>. týždeň</h2>
   </div>
 </nav>
 <hr class="nav-offset">
@@ -15,7 +15,7 @@
 
 <div class="mobile-content main">
   <% @learning_objects.each do |lo| %>
-      <a href="/lo/<%= lo.id %>" class="question-card">
+      <a href="/question/<%= lo.id %>" class="question-card">
         <div class="question-card-content">
             <h3><%= lo.lo_id %></h3>
             <p>
