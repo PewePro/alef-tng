@@ -10,7 +10,6 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require jquery-ui/button
  *= require jquery-ui/progressbar
  *= require jquery-ui/slider
  * require_tree .
@@ -18,14 +17,14 @@
  */
 
 
-@import "mixins";
-@import "variables";
-@import "color";
+@import "setup/mixins";
+@import "setup/variables";
+@import "setup/color";
 
-@import "reset";
-@import "typography";
-@import "alef-iconset";
-@import "alef-iconset-codes";
+@import "setup/reset";
+@import "setup/typography";
+@import "setup/alef-iconset";
+@import "setup/alef-iconset-codes";
 
 @import "layout";
 @import "navigation";

@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require jquery-ui/button
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
 //= require_tree .

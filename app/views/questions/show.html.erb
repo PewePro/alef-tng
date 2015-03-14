@@ -9,14 +9,21 @@
 </nav>
 <hr class="nav-offset">
 <div class="mobile-content main">
+  <div class="question-info">
+    <i class="icon-seen"></i> Videné (3x)
+    <i class="icon-done"></i> Vyriešené
+    <i class="icon-new"></i> Nové
+  </div>
 <div class="question-text">
     <%= @question.question_text %>
 </div>
-  <div class="question-options">
-<% @answers.each do |a| %>
-    <div><%= a.answer_text %></div>
-<% end %>
-  </div>
+  <form>
+      <div class="question-options">
+    <% @answers.each do |a| %>
+        <label><input type="radio" name="answer" value="<%= a.id %>"><i class="icon-radio"></i><div class="answer-text"><%= a.answer_text %></div></label>
+    <% end %>
+      </div>
+  </form>
 </div>
 
 
