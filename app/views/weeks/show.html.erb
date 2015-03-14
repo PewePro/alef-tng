@@ -17,7 +17,7 @@
 <div class="mobile-content main">
   <% @learning_objects.each do |lo| %>
       <a href="<%=
-          url_for :controller => 'questions', :action => 'show', :id => lo.id, :dummy => lo.lo_id.parameterize
+          url_for :controller => 'questions', :action => 'show', :id => lo.url_name
       %>" class="question-card">
         <div class="question-card-content">
             <h3><%= lo.lo_id %></h3>

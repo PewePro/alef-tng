@@ -1,5 +1,16 @@
 .question-text {
-  padding: 1rem;
+  padding: 1rem 1rem 0.5rem;
   @include bold;
   line-height: 1.5rem;
+}
+
+.question-options {
+  div {
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    @include medium-font;
+    &:hover {
+      background-color: $porcelain;
+      cursor: pointer;
+    }
+  }
 }

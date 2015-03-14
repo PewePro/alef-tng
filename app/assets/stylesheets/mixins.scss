@@ -29,3 +29,8 @@
   font-size: 0.75rem;
   font-weight: $font-weight;
 }
+
+@mixin medium-font {
+  font-size: 0.825rem;
+  line-height: 1.5rem;
+}

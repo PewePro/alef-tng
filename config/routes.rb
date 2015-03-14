@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'w/:number' => 'weeks#show'
   # Vypis otazok z daneho tyzdna, napr. /s/PSI/3
 
-  get 'w/:number/:id-:dummy' => 'questions#show'
+  get 'w/:number/:id' => 'questions#show'
   # Vypis otazky, napr. /s/PSI/3/16-validacia-a-verifikacia
 
 

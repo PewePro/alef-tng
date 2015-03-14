@@ -1,4 +1,12 @@
 var Login = {
+    
+    initLogin : function() {
+        Login.positionLogo();
+        $(window).resize(function() {
+            Login.positionLogo();
+        });
+    },
+
     positionLogo : function() {
         var height = $(window).height();
         var logo = $('h1');
@@ -14,11 +22,4 @@ var Login = {
             form.css('position','absolute');
         }
     }
-}
-
-$(function(){
-    Login.positionLogo();
-});
-$(window).resize(function() {
-    Login.positionLogo();
-});
+};

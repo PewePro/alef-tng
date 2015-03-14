@@ -12,38 +12,11 @@
 <div class="question-text">
     <%= @question.question_text %>
 </div>
-  <ul>
+  <div class="question-options">
 <% @answers.each do |a| %>
-    <li><%= a.answer_text %></li>
+    <div><%= a.answer_text %></div>
 <% end %>
-  </ul>
+  </div>
 </div>
-<script>
-    var Week = {
-        handleNav : function() {
-            var scroll = $(document).scrollTop();
-            var size = $('nav h2').height();
-            if(scroll > size) {
-                $('nav').css('position','fixed');
-                $('nav h2').hide();
-                $('.nav-offset').show();
-            } else {
-                $('nav').css('position','static');
-                $('.nav-offset').hide();
-                $('nav h2').show();
-            }
 
-            //zisti offset
-            //uprav odrazku
-            //uprav navigaciu
-        }
-    };
-
-    $(function(){
-        Week.handleNav();
-    });
-    $(window).scroll(function() {
-        Week.handleNav();
-    });
-</script>
 
