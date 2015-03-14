@@ -19,6 +19,10 @@ class WeeksController < ApplicationController
 
   end
 
+  def list
+
+  end
+
   private
   ## Strong Parameters
   def user_to_lo_relation_params
