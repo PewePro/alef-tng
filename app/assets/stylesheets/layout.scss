@@ -11,3 +11,13 @@ body {
 .main {
  @include white-dark;
 }
+
+#faux-background {
+  position: absolute;
+  min-height: 100%;
+  height: 100%;
+  background-color: $white;
+  z-index: -1;
+  left:0;
+  right:0;
+}

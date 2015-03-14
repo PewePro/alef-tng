@@ -24,7 +24,7 @@
 .question-card {
   @include small-font;
   padding: 1rem 1.5rem;
-  border-top: 1px $gray solid;
+  border-bottom: 1px $gray solid;
   display: block;
 
   &:hover {

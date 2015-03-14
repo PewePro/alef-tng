@@ -1,16 +1,49 @@
+<div id="faux-background" class="mobile-content"></div>
 <nav>
   <div class="mobile-content">
+    <h2 style="padding: 0 1rem; display: block;"><%= @question.lo_id %></h2>
     <i class="icon-left"></i>
     <i class="nav-right-icons icon-right"></i>
-    <%# <i class="nav-right-icons icon-calendar"></i> %>
+    <i class="nav-right-icons icon-list"></i>
   </div>
 </nav>
 <hr class="nav-offset">
-<div class="nav-info mobile-content">
-  <h2><%= @question.lo_id %></h2>
+<div class="mobile-content main">
+<div class="question-text">
+    <%= @question.question_text %>
 </div>
+  <ul>
 <% @answers.each do |a| %>
-    <br><%= a.answer_text %>
+    <li><%= a.answer_text %></li>
 <% end %>
+  </ul>
+</div>
+<script>
+    var Week = {
+        handleNav : function() {
+            var scroll = $(document).scrollTop();
+            var size = $('nav h2').height();
+            if(scroll > size) {
+                $('nav').css('position','fixed');
+                $('nav h2').hide();
+                $('.nav-offset').show();
+            } else {
+                $('nav').css('position','static');
+                $('.nav-offset').hide();
+                $('nav h2').show();
+            }
 
+            //zisti offset
+            //uprav odrazku
+            //uprav navigaciu
+        }
+    };
+
+    $(function(){
+        Week.handleNav();
+    });
+    $(window).scroll(function() {
+        Week.handleNav();
+    });
+</script>
 

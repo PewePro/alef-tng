@@ -11,7 +11,7 @@ html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
-  height: 100%; /* 3 */
+  min-height: 100%; /* 3 */
 }
 
 /**
@@ -21,7 +21,7 @@ html {
 
 body {
   margin: 0;
-  height: 100%;
+  min-height: 100%;
 }
 
 /* HTML5 display definitions
