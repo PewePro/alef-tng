@@ -20,8 +20,8 @@
           url_for :controller => 'questions', :action => 'show', :id => lo.url_name
       %>" class="question-card">
         <div class="question-card-content">
-            <h3><%= lo.lo_id %></h3>
-            <p>
+            <h3 class="question-card-header"><%= lo.lo_id %></h3>
+            <p class="question-card-text">
                 <%= lo.question_text %>
             </p>
         </div>

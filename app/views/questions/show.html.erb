@@ -20,7 +20,9 @@
   <form>
       <div class="question-options">
     <% @answers.each do |a| %>
-        <label><input type="radio" name="answer" value="<%= a.id %>"><i class="icon-radio"></i><div class="answer-text"><%= a.answer_text %></div></label>
+        <label><input type="radio" name="answer" value="<%= a.id %>" class="answer-input">
+        <i class="icon-radio answer-icon"></i>
+          <div class="answer-text"><%= a.answer_text %></div></label>
     <% end %>
       </div>
   </form>

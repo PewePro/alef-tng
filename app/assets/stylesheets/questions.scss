@@ -1,20 +1,3 @@
-.question-text {
-  padding: 0.5rem 1rem 0.5rem;
-  @include bold;
-  line-height: 1.5rem;
-}
-
-.question-options {
-  div {
-    padding: 0.75rem 1rem 0.75rem 3rem;
-    @include medium-font;
-    &:hover {
-      background-color: $porcelain;
-      cursor: pointer;
-    }
-  }
-}
-
 .question-info {
   @include small-font;
   padding: 1rem 1rem 0.5rem;
@@ -24,34 +7,44 @@
   }
 }
 
-label i {
+.question-text {
+  padding: 0.5rem 1rem 0.5rem;
+  @include bold;
+  line-height: 1.5rem;
+}
+
+.answer-text {
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  @include medium-font;
+  &:hover {
+    background-color: $porcelain;
+    cursor: pointer;
+  }
+}
+
+
+
+.answer-icon {
   position: absolute;
   padding: 0.8rem 0.7rem; // toto su precizne vyratane bulharske konstanty
   font-size: 1.25em;
 }
 
-input[type="checkbox"] {
+.answer-input {
   display: none;
-}
 
-input[type="checkbox"]:checked ~ * {
-  color: $red;
-}
+  &:checked ~ .answer-text,
+  &:checked + .answer-icon {
+    color: $red;
+  }
 
-input[type="checkbox"]:checked + i:before {
-  content: '\e809';
-}
+  &[type="checkbox"]:checked + .answer-icon::before {
+    content: '\e809';
+  }
 
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"]:checked ~ * {
-  color: $red;
-}
-
-input[type="radio"]:checked + i:before {
-  content: '\e806';
+  &[type="radio"]:checked + .answer-icon::before {
+    content: '\e806';
+  }
 }
 
 

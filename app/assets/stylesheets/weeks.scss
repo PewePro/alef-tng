@@ -37,18 +37,18 @@
 .question-card-content {
   height: 4.5rem;
   overflow: hidden;
+}
 
-  h3 {
-    font-size: 1rem;
-    line-height: 1.5em;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    margin: 0;
-  }
+.question-card-header {
+  font-size: 1rem;
+  line-height: 1.5em;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  margin: 0;
+}
 
-  p {
-    margin: 0;
-  }
+.question-card-text {
+  margin: 0;
 }
 
 .question-card-info {
