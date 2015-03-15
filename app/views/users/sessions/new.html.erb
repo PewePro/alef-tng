@@ -1,15 +1,9 @@
 <h2>Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-
- <div class="field">
-   <%= f.label :login %><br />
-   <%= f.text_field :login, autofocus: true %>
- </div>
-
- <div class="field">
-    <%#= f.label :email %><br />
-    <%#= f.email_field :email, autofocus: true %>
+  <div class="field">
+    <%= f.label :login %><br />
+    <%= f.text_field :login, autofocus: true %>
   </div>
 
   <div class="field">
@@ -29,4 +23,4 @@
   </div>
 <% end %>
 
-<%= render "user/shared/links" %>
+<%= render "users/shared/links" %>
