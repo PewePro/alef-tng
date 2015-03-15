@@ -57,5 +57,9 @@ group :development, :test do
   gem 'devise'
   gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
 
+  gem 'factory_girl_rails'
+
+  gem 'nokogiri'
+
 end
 
