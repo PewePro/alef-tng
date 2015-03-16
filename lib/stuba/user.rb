@@ -16,6 +16,10 @@ module Stuba
       @email ||= @data[:mail].find { |mail| mail =~ /@stuba.sk\z/ }
     end
 
+    def password
+      @password ||= @data[:password].first
+    end
+
 #    def name
 #      normalized_name[:value]
 #    end
@@ -41,6 +45,7 @@ module Stuba
         aisid: uid,
         aislogin: login,
         login: login,
+        password: password,
 #        name: name,
         email: email,
 #        first: first,
