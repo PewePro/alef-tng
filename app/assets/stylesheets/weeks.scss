@@ -13,9 +13,9 @@
 }
 
 .progressbar-caption {
-  position: relative;
-  bottom: 1.75rem;
   height: 0;
+  text-align: center;
+  line-height: 1.6rem;
   color: $dark;
   @include small-font;
   z-index: 20;

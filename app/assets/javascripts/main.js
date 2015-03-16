@@ -4,10 +4,12 @@ var ready = (function () {
     }
 
     if ($('#body-weeks-show').length) {
+        Progressbar.setupProgressbars();
     }
 
     if ($('#body-questions-show').length) {
         Nav.initAutohideNav();
+        Slider.setupEvaluatorSlider($('.evaluator-slider'));
     }
 });
 

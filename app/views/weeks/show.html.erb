@@ -10,8 +10,10 @@
 <hr class="nav-offset">
 <div class="nav-info mobile-content">
     12.3. - 19.3.2015
-    <div class="week-progressbar"></div>
-    <div class="progressbar-caption">Dokončené 6/10 (60%)</div>
+    <div class="week-progressbar" data-number-all="10" data-number-done="6">
+      <div class="progressbar-caption">Dokončené 6/10 (60%)</div>
+    </div>
+
 </div>
 
 <div class="mobile-content main">
@@ -33,10 +35,3 @@
       </a>
   <% end %>
 </div>
-<script>
-    $(function() {
-        $( ".week-progressbar" ).progressbar({
-            value: 60
-        });
-    });
-</script>

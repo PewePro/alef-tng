@@ -19,11 +19,14 @@
 </div>
   <form>
       <div class="question-options">
-    <% @answers.each do |a| %>
-        <label><input type="radio" name="answer" value="<%= a.id %>" class="answer-input">
-        <i class="icon-radio answer-icon"></i>
-          <div class="answer-text"><%= a.answer_text %></div></label>
-    <% end %>
+        <% case @question.type
+           when 'SingleChoiceQuestion' %>
+            <%= render 'single_choice_options' %>
+        <% when 'MultiChoiceQuestion' %>
+            <%= render 'multi_choice_options' %>
+        <% when 'EvaluatorQuestion' %>
+            <%= render 'evaluator_slider' %>
+        <% end %>
       </div>
   </form>
 </div>

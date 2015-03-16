@@ -48,3 +48,21 @@
 }
 
 
+.evaluator-slider.ui-slider {
+  @include border-radius(0.5rem);
+  height: 1rem;
+  border: 1px solid $gray;
+  margin: 2rem 1rem 1rem;
+}
+
+.evaluator-slider .ui-slider-range {
+  background: $red-lighter;
+  @include border-radius(0.5rem);
+}
+
+.evaluator-slider .ui-slider-handle {
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  border-color: $gray !important;
+  @include border-radius(0.75rem);
+}
