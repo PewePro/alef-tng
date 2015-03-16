@@ -19,7 +19,7 @@ task :convert_ALEF_questions => :environment do
 
       if question['type'] == "single-choice"  || question['type'] == "multi-choice"
         description = @doc.at('//alef:description') #question_text
-        lo = LearningObject.create!( question_type: question['type'].to_s, question_text: description.content )
+        #lo = LearningObject.create!( question_type: question['type'].to_s, question_text: description.content )
 
         @doc.xpath('*//alef:choice').each do |node|
           if node['correct'] == "true"
@@ -27,24 +27,24 @@ task :convert_ALEF_questions => :environment do
           else
             correct_answer = false
           end
-          Answer.create!( learning_object_id: lo.id, answer_text: node.content, is_correct: correct_answer )
-          #puts node.content
+          #Answer.create!( learning_object_id: lo.id, answer_text: node.content, is_correct: correct_answer )
+          puts node.content
         end
 
-        #puts description.content + ' ; ' + question['type']
+        puts description.content + ' ; ' + question['type']
 
       elsif question['type'] == "answer-validator"
 
         description = @doc.at('//alef:description') #question_text
 
         @doc.xpath('*//alef:answer').each do |node|
-          lo = LearningObject.create!( question_type: question['type'].to_s, question_text: description.content )
+          #lo = LearningObject.create!( question_type: question['type'].to_s, question_text: description.content )
 
-          Answer.create!( learning_object_id: lo.id, answer_text: node.content )
-          #puts node.content
+          #Answer.create!( learning_object_id: lo.id, answer_text: node.content )
+          puts node.content
         end
 
-        #puts description.content + ' ; ' + question['type']
+        puts description.content + ' ; ' + question['type']
 
       end
     end

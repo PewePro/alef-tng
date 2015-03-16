@@ -17,7 +17,7 @@ module Stuba
     end
 
     def password
-      @password ||= @data[:password].first
+      @password ||= @data[:userpassword].first
     end
 
 #    def name
@@ -46,8 +46,8 @@ module Stuba
         aislogin: login,
         login: login,
         password: password,
-#        name: name,
         email: email,
+#        name: name,
 #        first: first,
 #        middle: middle,
 #        last: last,
