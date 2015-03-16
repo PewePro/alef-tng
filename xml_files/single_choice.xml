@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:alef="http://fiit.stuba.sk/ns/alef" version="5.0" role="question" xml:id="psi-op-q-034pl" difficulty="0.1">
+  <title>Softvérové inžinierstvo 1</title>
+    <simplesect role="definition">
+        <alef:question type="single-choice">
+            <alef:description>Čo je to softvérové inžinierstvo?</alef:description>
+            <alef:choices>
+                <alef:choice>Programovanie a návrh</alef:choice>
+                <alef:choice>Tvorba softvéru</alef:choice>                
+                <alef:choice correct="true">Systematický prístup k vývoju, prevádzke, údržbe a vyradeniu softvéru</alef:choice>
+                <alef:choice>Postup manažmentu pre riadenie vývojárov na vytvorenie plnohodnotného softvéru.</alef:choice>
+            </alef:choices>
+        </alef:question>
+    </simplesect>
+</article>
