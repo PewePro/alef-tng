@@ -83,3 +83,32 @@
 #evaluator-do-agree {
   float: right;
 }
+
+.question-button-container {
+  text-align: center;
+}
+
+.question-button-wrapper {
+  display: inline-block;
+}
+
+.question-button {
+  @include gray-white;
+  @include border-radius(0.5rem);
+  @include bold;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  width: 100%;
+  margin: 1rem auto 0;
+  padding: 0.5rem 2rem;
+  text-align: center;
+  font-variant: small-caps;
+}
+
+.question-button-proceed {
+  @include red-white;
+}
+
+.question-button:hover {
+  color: $dark;
+}
