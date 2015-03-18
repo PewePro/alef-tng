@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
 
   get 'w' => 'weeks#list'
-  # Vypis tyzdnov z daneho setupu, napr. /s/PSI
+  # Vypis tyzdnov z daneho setupu, napr. /PSI
 
   get 'w/:number' => 'weeks#show'
-  # Vypis otazok z daneho tyzdna, napr. /s/PSI/3
+  # Vypis otazok z daneho tyzdna, napr. /PSI/3
 
   get 'w/:number/:id' => 'questions#show'
-  # Vypis otazky, napr. /s/PSI/3/16-validacia-a-verifikacia
+  # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
 
 
   devise_for :user

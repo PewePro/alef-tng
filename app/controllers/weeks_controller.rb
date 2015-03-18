@@ -7,17 +7,13 @@ class WeeksController < ApplicationController
 
     @learning_objects = @week.learning_objects.distinct
 
-    @relations = UserToLoRelation.
-            where('learning_object_id IN (?)', @learning_objects.map(&:id)).
-            where('user_id = ?', 1).
-            group(:learning_object_id, :type).count
+    @relations = UserToLoRelation.get_basic_relations(@learning_objects, 1)
 
     @lo_number_all = @learning_objects.count
-    @lo_number_done = @relations.select {|k,v| k[1] == "UserCompletedLoRelation"}.size
+    @lo_number_done = @relations.select {|k,_| k[1] == "UserCompletedLoRelation"}.size
   end
 
   def list
     # zoznam tyzdnov
   end
-
 end
