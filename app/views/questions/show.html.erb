@@ -1,19 +1,8 @@
 <div id="faux-background" class="mobile-content"></div>
-<nav>
-  <div class="mobile-content">
-    <h2 style="padding: 0 1rem; display: block;"><%= @question.lo_id %></h2>
-    <i class="icon-left"></i>
-    <i class="nav-right-icons icon-right"></i>
-    <i class="nav-right-icons icon-list"></i>
-  </div>
-</nav>
+  <%= render 'nav' %>
 <hr class="nav-offset">
 <div class="mobile-content main">
-  <div class="question-info">
-    <i class="icon-seen"></i> Videné (3x)
-    <i class="icon-done"></i> Vyriešené
-    <i class="icon-new"></i> Nové
-  </div>
+  <%= render 'question_info' %>
 <div class="question-text">
     <%= @question.question_text %>
 </div>

@@ -3,6 +3,18 @@ class LearningObject < ActiveRecord::Base
   has_many :user_to_lo_relations
   has_and_belongs_to_many :concepts
 
+  def next(week_number)
+    Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
+  end
+
+  def previous(week_number)
+    Week.find_by_number(week_number).learning_objects.where('learning_objects.id < ?', self.id).order(id: :desc).first
+  end
+
+  def seen_by_user(user_id)
+    UserVisitedLoRelation.create(user_id: user_id, learning_object_id: self.id, setup_id: 1, interaction: '??')
+  end
+
   def url_name
     "#{id}-#{lo_id.parameterize}"
   end
