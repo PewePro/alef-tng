@@ -1,20 +1,9 @@
 <div id="faux-background" class="mobile-content"></div>
-<nav>
-  <div class="mobile-content">
-    <i class="icon-left"></i>
-    <i class="nav-right-icons icon-right"></i>
-    <%# <i class="nav-right-icons icon-calendar"></i> %>
-    <h2><%= @week.number %>. týždeň</h2>
-  </div>
-</nav>
+<%= render 'nav' %>
 <hr class="nav-offset">
-<div class="nav-info mobile-content">
-    12.3. - 19.3.2015
-    <div class="week-progressbar" data-number-all="10" data-number-done="6">
-      <div class="progressbar-caption">Dokončené 6/10 (60%)</div>
-    </div>
 
-</div>
+
+<%= render 'week_info'%>
 
 <div class="mobile-content main">
   <% @learning_objects.each do |lo| %>
@@ -27,11 +16,7 @@
                 <%= lo.question_text %>
             </p>
         </div>
-        <div class="question-card-info">
-          <i class="icon-seen"></i> Videné (3x)
-          <i class="icon-done"></i> Vyriešené
-          <i class="icon-new"></i> Nové
-        </div>
+        <%= render :partial => 'question_icons', :locals => { lo: lo } %>
       </a>
   <% end %>
 </div>
