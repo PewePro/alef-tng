@@ -4,14 +4,14 @@
         <i class="icon-left disabled"></i>
     <% else %>
         <a href="<%=
-            url_for :controller => 'weeks', :action => 'show', :number => @previous_week.number
+            url_for :controller => 'weeks', :action => 'show', :week_number => @previous_week.number
         %>"><i class="icon-left"></i></a>
     <% end %>
     <% if @next_week == nil %>
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=
-            url_for :controller => 'weeks', :action => 'show', :number => @next_week.number
+            url_for :controller => 'weeks', :action => 'show', :week_number => @next_week.number
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <%# <i class="nav-right-icons icon-calendar"></i> %>

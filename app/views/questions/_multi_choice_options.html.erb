@@ -1,5 +1,5 @@
 <% @answers.each do |a| %>
-    <label><input type="checkbox" name="answer" value="<%= a.id %>" class="answer-input">
+    <label><input type="checkbox" name="answer[<%= a.id %>]" value="1" class="answer-input">
       <i class="icon-checkbox answer-icon"></i>
       <div class="answer-text"><%= a.answer_text %></div></label>
 <% end %>

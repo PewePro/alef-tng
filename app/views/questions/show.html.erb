@@ -6,7 +6,8 @@
 <div class="question-text">
     <%= @question.question_text %>
 </div>
-  <form>
+  <form method="post" action="<%= request.original_url %>/evaluate_answers" data-remote>
+      <input type="hidden" name="type" value="<%= @question.type %>">
       <div class="question-options">
         <% case @question.type
            when 'SingleChoiceQuestion' %>
@@ -19,9 +20,9 @@
       </div>
     <div class="question-button-container">
     <div class="question-button-wrapper">
-        <button class="question-button question-button-proceed">odpovedaj</button>
-        <button class="question-button">neviem</button>
-        <button class="question-button">zobraziť odpoveď</button>
+        <button name="commit" value="send_answer" class="question-button question-button-proceed">odpovedaj</button>
+        <button name="commit" value="dont_know" class="question-button">neviem</button>
+        <button name="commit" value="show_solution" class="question-button">zobraziť odpoveď</button>
     </div>
     </div>
   </form>

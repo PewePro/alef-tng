@@ -2,11 +2,17 @@ var Slider = {
     setupEvaluatorSlider : function(slider) {
             $(slider).slider({
                 animate: 'fast',
-                max: 27,
-                min: 1,
+                max: 100,
+                min: 0,
                 orientation: 'horizontal',
                 range: "min",
-                value: 14
+                value: 50,
+
+                change: function(event, ui) {
+                    var value = ui.value;
+                    var answerInput = $('input[name=answer]');
+                    answerInput.val(value);
+                }
             });
     }
 };

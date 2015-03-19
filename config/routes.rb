@@ -3,11 +3,14 @@ Rails.application.routes.draw do
   get 'w' => 'weeks#list'
   # Vypis tyzdnov z daneho setupu, napr. /PSI
 
-  get 'w/:number' => 'weeks#show'
+  get 'w/:week_number' => 'weeks#show'
   # Vypis otazok z daneho tyzdna, napr. /PSI/3
 
-  get 'w/:number/:id' => 'questions#show'
+  get 'w/:week_number/:id' => 'questions#show'
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
+
+  post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
+  # Opravi otazku a vrati spravnu odpoved
 
 
   devise_for :user

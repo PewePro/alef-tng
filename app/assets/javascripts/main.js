@@ -1,4 +1,9 @@
 var ready = (function () {
+
+    // reset eventov na window elemente
+    $(window).off('resize');
+    $(window).off('scroll');
+
     if ($('#body-sessions-new').length) {
         Login.initLogin();
     }

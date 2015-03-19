@@ -1,8 +1,6 @@
 <div class="question-info">
   <i class="icon-seen"></i> Videné <%= @relations["UserVisitedLoRelation"] %>. raz
-  <%
-     if @relations["UserCompletedLoRelation"] != nil
-  %>
+  <% if @relations["UserCompletedLoRelation"] != nil %>
       <i class="icon-done"></i> Vyriešené
   <% end %>
 </div>

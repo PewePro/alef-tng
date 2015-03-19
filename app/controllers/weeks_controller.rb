@@ -1,7 +1,7 @@
 class WeeksController < ApplicationController
   def show
     @setup = Setup.take
-    @week = @setup.weeks.find_by_number(params[:number])
+    @week = @setup.weeks.find_by_number(params[:week_number])
     @next_week = @week.next
     @previous_week = @week.previous
 
