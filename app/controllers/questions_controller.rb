@@ -18,8 +18,9 @@ class QuestionsController < ApplicationController
     end
 
     lo_class = Object.const_get params[:type]
-    @answer = lo_class.find(params[:id]).get_answers
+    @solution = lo_class.find(params[:id]).get_solution
 
     # ak je send answer tak skontroluj params[:answer]
+    # inak zaloguj relations
   end
 end

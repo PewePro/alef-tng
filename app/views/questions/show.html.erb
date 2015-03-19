@@ -6,9 +6,9 @@
 <div class="question-text">
     <%= @question.question_text %>
 </div>
-  <form method="post" action="<%= request.original_url %>/evaluate_answers" data-remote>
+  <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" data-remote>
       <input type="hidden" name="type" value="<%= @question.type %>">
-      <div class="question-options">
+      <div id="question-options">
         <% case @question.type
            when 'SingleChoiceQuestion' %>
             <%= render 'single_choice_options' %>
@@ -18,6 +18,9 @@
             <%= render 'evaluator_slider' %>
         <% end %>
       </div>
+      <div class="question-evaluations" id="question-evaluation-right">správna odpoveď</div>
+      <div class="question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
+      <div class="question-evaluations" id="question-evaluation-show">ďalšia otázka</div>
     <div class="question-button-container">
     <div class="question-button-wrapper">
         <button name="commit" value="send_answer" class="question-button question-button-proceed">odpovedaj</button>
