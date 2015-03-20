@@ -1,0 +1,3 @@
+class UserDidntKnowLoRelation < UserToLoRelation
+
+end

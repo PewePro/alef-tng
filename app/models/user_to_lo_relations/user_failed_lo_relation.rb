@@ -1,0 +1,3 @@
+class UserFailedLoRelation < UserCompletedLoRelation
+
+end
