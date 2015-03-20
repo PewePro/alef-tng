@@ -86,6 +86,8 @@ var Question = {
 
             });
 
+            $('#question-evaluation-show').show();
+
         }
 
         $('#question-evaluation-next').show();
