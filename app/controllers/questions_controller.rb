@@ -18,11 +18,25 @@ class QuestionsController < ApplicationController
     end
 
     lo_class = Object.const_get params[:type]
-    @solution = lo_class.find(params[:id]).get_solution
+    lo = lo_class.find(params[:id])
+    @solution = lo.get_solution
     @eval = (params[:commit] == 'send_answer') # true ak vyhodnocujeme odpovede
-    puts @eval;
 
-    # ak je send answer tak skontroluj params[:answer]
-    # inak zaloguj relations
+    user_id = 1
+    setup_id = 1
+
+    if params[:commit] == 'send_answer'
+      result = lo.right_answer? params[:answer], @solution
+    end
+
+    rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id)
+
+    rel.type = 'UserViewedSolutionLoRelation' if params[:commit] == 'show_solution'
+    rel.type = 'UserDidntKnowLoRelation' if params[:commit] == 'dont_know'
+    rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
+    rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result
+
+    lo.user_to_lo_relations << rel
+
   end
 end

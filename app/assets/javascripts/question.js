@@ -5,7 +5,6 @@ var Question = {
     isSingleChoice : function() { return this.type == "singlechoicequestion"; },
     isMultiChoice : function() { return this.type == "multichoicequestion"; },
     isEvaluator : function() { return this.type == "evaluatorquestion"; },
-
     setupForm : function() {
 
         // nastavi typ otazky
@@ -14,9 +13,6 @@ var Question = {
 
         // nastavi formular
         $('.question-evaluations').hide();
-        $(".question-form").submit(function() {
-            Question.disableForm();
-        });
         $('.answer-input').prop('disabled',false);
     },
 
@@ -36,11 +32,10 @@ var Question = {
 
         if (this.isEvaluator()) {
             this.evaluateEvaluatorQuestion(solution);
-        }
+        };
         if (this.isSingleChoice() || this.isMultiChoice()) {
             this.evaluateChoiceQuestion(solution);
         }
-
         $('#question-evaluation-next').show();
     },
 
