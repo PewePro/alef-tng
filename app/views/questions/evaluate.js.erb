@@ -1,4 +1,5 @@
 <% if @eval %>
-    Question.eval = true;
+    Question.evaluateAnswers(<%= @solution %>);
+<% else %>
+    Question.showSolution(<%= @solution %>);
 <% end %>
-Question.evaluateAnswers(<%= @solution %>);

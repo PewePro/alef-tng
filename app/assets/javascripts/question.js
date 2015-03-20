@@ -1,7 +1,6 @@
 var Question = {
 
     type : null,
-    eval : false, // TRUE ak opravujeme otazky, FALSE ak len zobrazujeme spravne riesenie
 
     isSingleChoice : function() { return this.type == "singlechoicequestion"; },
     isMultiChoice : function() { return this.type == "multichoicequestion"; },
@@ -41,6 +40,8 @@ var Question = {
         if (this.isSingleChoice() || this.isMultiChoice()) {
             this.evaluateChoiceQuestion(solution);
         }
+
+        $('#question-evaluation-next').show();
     },
 
     evaluateEvaluatorQuestion : function(solution) {
@@ -48,48 +49,58 @@ var Question = {
     },
 
     evaluateChoiceQuestion : function(solution) {
-        // Hodnotenie spravnosti odpovede (Moznost Odpovedaj)
-        if(this.eval) {
 
-            var isSolutionCorrect = true;
-            $('.answer-input').each(function() {
-                var isChecked = $(this).is(':checked');
-                var inputValue = parseInt($(this).val());
-                var isRight = $.inArray(inputValue, solution) != -1;
+        var isSolutionCorrect = true;
 
-                if(isChecked == isRight) {
-                    $(this).addClass('answer-is-correct');
-                } else {
-                    $(this).addClass('answer-is-incorrect');
-                    isSolutionCorrect = false;
-                }
-            });
+        $('.answer-input').each(function() {
+            var isChecked = $(this).is(':checked');
+            var inputValue = parseInt($(this).val());
+            var isRight = $.inArray(inputValue, solution) != -1;
 
-            if(isSolutionCorrect) {
-                $('#question-evaluation-right').show();
+            if(isChecked == isRight) {
+                $(this).addClass('answer-is-correct');
             } else {
-                $('#question-evaluation-wrong').show();
+                $(this).addClass('answer-is-incorrect');
+                isSolutionCorrect = false;
             }
+        });
 
-        // Len vykreslenie spravnej odpovede (Moznosti Neviem, Zobraz odpoved)
+        if(isSolutionCorrect) {
+            $('#question-evaluation-right').show();
         } else {
+            $('#question-evaluation-wrong').show();
+        }
+    },
 
-            $('.answer-input').each(function() {
-                var inputValue = parseInt($(this).val());
-                var isRight = $.inArray(inputValue, solution) != -1;
+    showSolution : function(solution) {
 
-                if(isRight) {
-                    $(this).prop( "checked", true );
-                } else {
-                    $(this).prop( "checked", false );
-                }
-
-            });
-
-            $('#question-evaluation-show').show();
-
+        if (this.isEvaluator()) {
+            this.showEvaluatorSolution(solution);
+        }
+        if (this.isSingleChoice() || this.isMultiChoice()) {
+            this.showChoiceSolution(solution);
         }
 
         $('#question-evaluation-next').show();
+    },
+
+    showEvaluatorSolution : function(solution) {
+
+    },
+
+    showChoiceSolution : function(solution) {
+        $('.answer-input').each(function() {
+            var inputValue = parseInt($(this).val());
+            var isRight = $.inArray(inputValue, solution) != -1;
+
+            if(isRight) {
+                $(this).prop( "checked", true );
+            } else {
+                $(this).prop( "checked", false );
+            }
+
+        });
+
+        $('#question-evaluation-show').show();
     }
 };

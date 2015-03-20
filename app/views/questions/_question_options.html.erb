@@ -8,9 +8,14 @@
   správna odpoveď</div>
     <div class="question-evaluations" id="question-evaluation-right">správna odpoveď</div>
     <div class="question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
+
+  <% if @next_question == nil %>
+      <div class="question-evaluations" id="question-evaluation-next">toto bola<br>posledná otázka!</div>
+  <% else %>
     <a href="<%=
         url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
     %>" class="question-evaluations question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
+  <% end %>
 
 </div>
 </div>

@@ -1,6 +1,7 @@
 .answer-text {
   padding: 0.75rem 1rem 0.75rem 3rem;
   @include medium-font;
+  @include color-transition;
   &:hover {
     background-color: $porcelain;
     cursor: pointer;
@@ -8,6 +9,7 @@
 }
 
 .answer-icon {
+  @include color-transition;
   position: absolute;
   padding: 0.8rem 0.7rem; // od oka odladene odsadenie ikoniek
   font-size: 1.25em;
