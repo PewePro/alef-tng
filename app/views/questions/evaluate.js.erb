@@ -1,1 +1,4 @@
+<% if @eval %>
+    Question.eval = true;
+<% end %>
 Question.evaluateAnswers(<%= @solution %>);

@@ -19,6 +19,8 @@ class QuestionsController < ApplicationController
 
     lo_class = Object.const_get params[:type]
     @solution = lo_class.find(params[:id]).get_solution
+    @eval = (params[:commit] == 'send_answer') # true ak vyhodnocujeme odpovede
+    puts @eval;
 
     # ak je send answer tak skontroluj params[:answer]
     # inak zaloguj relations
