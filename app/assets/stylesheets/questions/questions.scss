@@ -22,9 +22,10 @@
   height: 12rem;
 }
 
-.question-options {
+@mixin question-options {
   @include bold;
   box-sizing: border-box;
+  display: block;
   font-size: 1.2rem;
   letter-spacing: 2px;
   width: 100%;
@@ -35,11 +36,13 @@
 }
 
 .question-button {
+  @include question-options;
   @include gray-white;
   @include border-radius(0.5rem);
 }
 
 .question-evaluations {
+  @include question-options;
   color: $red;
 }
 

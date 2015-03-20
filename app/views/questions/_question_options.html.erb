@@ -1,12 +1,14 @@
 <div class="question-options-container">
 <div class="question-options-wrapper">
 
-    <button class="question-options question-button question-button-red" name="commit" value="send_answer" >odpovedaj</button>
-    <button class="question-options question-button" name="commit" value="dont_know">neviem</button>
-    <button class="question-options question-button" name="commit" value="show_solution">zobraziť odpoveď</button>
-    <div class="question-options question-evaluations" id="question-evaluation-right">správna odpoveď</div>
-    <div class="question-options question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
-    <div class="question-options question-evaluations question-button question-button-red" id="question-evaluation-next">ďalšia otázka</div>
+    <button class="question-button question-button-red" name="commit" value="send_answer" >odpovedaj</button>
+    <button class="question-button" name="commit" value="dont_know">neviem</button>
+    <button class="question-button" name="commit" value="show_solution">zobraziť odpoveď</button>
+    <div class="question-evaluations" id="question-evaluation-right">správna odpoveď</div>
+    <div class="question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
+    <a href="<%=
+        url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
+    %>" class="question-evaluations question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
 
 </div>
 </div>
