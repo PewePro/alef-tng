@@ -1,6 +1,6 @@
-<nav>
+<nav class="question-nav">
   <div class="mobile-content">
-    <h2 style="padding: 0 1rem; display: block;"><%= @question.lo_id %></h2>
+    <h2><%= @question.lo_id %></h2>
     <% if @previous_question == nil %>
         <i class="icon-left disabled"></i>
     <% else %>
