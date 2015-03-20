@@ -1,4 +1,4 @@
-.question-info {
+#question-info {
   @include small-font;
   padding: 1rem 1rem 0.5rem;
 
@@ -7,25 +7,24 @@
   }
 }
 
-.question-text {
+#question-text {
   padding: 0.5rem 1rem 0.5rem;
   @include bold;
   line-height: 1.5rem;
 }
 
-.question-button-container {
+.question-options-container {
   text-align: center;
   padding-bottom: 1rem;
 }
 
-.question-button-wrapper {
+.question-options-wrapper {
   display: inline-block;
 }
 
-.question-button {
-  @include gray-white;
-  @include border-radius(0.5rem);
+.question-options {
   @include bold;
+  box-sizing: border-box;
   font-size: 1.2rem;
   letter-spacing: 2px;
   width: 100%;
@@ -35,7 +34,16 @@
   font-variant: small-caps;
 }
 
-.question-button-proceed {
+.question-button {
+  @include gray-white;
+  @include border-radius(0.5rem);
+}
+
+.question-evaluations {
+  color: $red;
+}
+
+.question-button-red {
   @include red-white;
 }
 

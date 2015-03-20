@@ -3,10 +3,10 @@
 <hr class="nav-offset">
 <div class="mobile-content main">
   <%= render 'question_info' %>
-<div class="question-text">
+<div id="question-text">
     <%= @question.question_text %>
 </div>
-  <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" data-remote>
+  <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
       <input type="hidden" name="type" value="<%= @question.type %>">
       <div id="question-options">
         <% case @question.type
@@ -18,16 +18,7 @@
             <%= render 'evaluator_slider' %>
         <% end %>
       </div>
-      <div class="question-evaluations" id="question-evaluation-right">správna odpoveď</div>
-      <div class="question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
-      <div class="question-evaluations" id="question-evaluation-show">ďalšia otázka</div>
-    <div class="question-button-container">
-    <div class="question-button-wrapper">
-        <button name="commit" value="send_answer" class="question-button question-button-proceed">odpovedaj</button>
-        <button name="commit" value="dont_know" class="question-button">neviem</button>
-        <button name="commit" value="show_solution" class="question-button">zobraziť odpoveď</button>
-    </div>
-    </div>
+    <%= render 'question_options' %>
   </form>
 </div>
 

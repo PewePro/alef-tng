@@ -14,7 +14,8 @@ var ready = (function () {
 
     if ($('#body-questions-show').length) {
         Nav.initAutohideNav();
-        Slider.setupEvaluatorSlider($('#evaluator-slider'));
+        Slider.setupEvaluatorSlider();
+        Question.setupSubmit();
     }
 });
 
