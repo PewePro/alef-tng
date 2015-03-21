@@ -1,13 +1,10 @@
 <div class="question-options-container">
+<div class="question-evaluations" id="question-evaluation-message"></div>
 <div class="question-options-wrapper">
 
     <button class="question-button question-button-red" name="commit" value="send_answer" >odpovedaj</button>
     <button class="question-button" name="commit" value="dont_know">neviem</button>
     <button class="question-button" name="commit" value="show_solution">zobraziť odpoveď</button>
-  <div class="question-evaluations" id="question-evaluation-show">bola zobrazená<br>
-  správna odpoveď</div>
-    <div class="question-evaluations" id="question-evaluation-right">správna odpoveď</div>
-    <div class="question-evaluations" id="question-evaluation-wrong">nesprávna odpoveď</div>
 
   <% if @next_question == nil %>
       <div class="question-evaluations" id="question-evaluation-next">toto bola<br>posledná otázka!</div>

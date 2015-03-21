@@ -20,7 +20,8 @@ var Question = {
         // Upravi moznosti pod otazkou a vypne formulare
 
         if (this.isEvaluator()) {
-            $('#evaluator-slider').slider("disable")
+            $('#evaluator-slider').slider("disable");
+            $('#evaluator-slider').css('opacity',1);
         }
         if (this.isSingleChoice() || this.isMultiChoice()) {
             $('.answer-input').prop('disabled',true);
@@ -32,7 +33,7 @@ var Question = {
 
         if (this.isEvaluator()) {
             this.evaluateEvaluatorQuestion(solution);
-        };
+        }
         if (this.isSingleChoice() || this.isMultiChoice()) {
             this.evaluateChoiceQuestion(solution);
         }
@@ -41,6 +42,17 @@ var Question = {
 
     evaluateEvaluatorQuestion : function(solution) {
 
+        if(solution == undefined) {
+            this.setMessage("gratulujeme, ako prvý ste odpovedali na túto otázku")
+            return;
+        }
+
+        // Hod hlasku ze bol zobrazeny priemer
+        // Vytvor druhu gulicku
+        // Hod nad nu informacie (pocet hlasov, hodnota)
+        // Hod nad prvu informacie ("tvoj hlas")
+
+        $('#question-evaluation-next').show();
     },
 
     evaluateChoiceQuestion : function(solution) {
@@ -61,10 +73,11 @@ var Question = {
         });
 
         if(isSolutionCorrect) {
-            $('#question-evaluation-right').show();
+            this.setMessage("správna odpoveď");
         } else {
-            $('#question-evaluation-wrong').show();
+            this.setMessage("nesprávna odpoveď");
         }
+
     },
 
     showSolution : function(solution) {
@@ -81,6 +94,17 @@ var Question = {
 
     showEvaluatorSolution : function(solution) {
 
+
+        if(solution == undefined) {
+            this.setMessage("bohužiaľ, k tejto otázke zatiaľ nemáme odpovede")
+            return;
+        }
+
+        // Hod hlasku ze bol zobrazeny priemer
+        // Posun gulicku
+        // Hod nad nu informacie (pocet hlasov, hodnota)
+
+        $('#question-evaluation-next').show();
     },
 
     showChoiceSolution : function(solution) {
@@ -96,6 +120,12 @@ var Question = {
 
         });
 
-        $('#question-evaluation-show').show();
+        this.setMessage("bola zobrazená správna odpoveď");
+    },
+
+    setMessage : function(message) {
+
+        $('#question-evaluation-message').html(message).show();
+
     }
 };

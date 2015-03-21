@@ -1,7 +1,7 @@
 <div class="question-card-info">
   <%
      views = @relations[[lo.id, "UserVisitedLoRelation"]]
-     done = @relations[[lo.id, "UserCompletedLoRelation"]]
+     done = @relations[[lo.id, "UserSolvedLoRelation"]]
      if views != nil
   %>
       <i class="icon-seen"></i> Videné (<%= views %>x)

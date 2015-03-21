@@ -7,7 +7,7 @@ class UserToLoRelation < ActiveRecord::Base
     self.
         where("learning_object_id IN (?)", los.map(&:id)).
         where("user_id = ?", user_id).
-        where("type = 'UserVisitedLoRelation' OR type = 'UserCompletedLoRelation'").
+        where("type = 'UserVisitedLoRelation' OR type = 'UserSolvedLoRelation'").
         group(:learning_object_id, :type).count
   end
 end
