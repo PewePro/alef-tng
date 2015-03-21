@@ -47,6 +47,8 @@ var Question = {
             return;
         }
 
+        Slider.evaluateAnswer(solution);
+
         // Hod hlasku ze bol zobrazeny priemer
         // Vytvor druhu gulicku
         // Hod nad nu informacie (pocet hlasov, hodnota)
@@ -99,6 +101,8 @@ var Question = {
             this.setMessage("bohužiaľ, k tejto otázke zatiaľ nemáme odpovede")
             return;
         }
+
+        Slider.showSolution(solution);
 
         // Hod hlasku ze bol zobrazeny priemer
         // Posun gulicku
