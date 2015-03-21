@@ -61,5 +61,7 @@ group :development, :test do
 
   gem 'nokogiri'
 
+  gem 'pandoc-ruby', '~> 1.0.0'
+
 end
 
