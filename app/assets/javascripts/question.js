@@ -43,16 +43,12 @@ var Question = {
     evaluateEvaluatorQuestion : function(solution) {
 
         if(solution == undefined) {
-            this.setMessage("gratulujeme, ako prvý ste odpovedali na túto otázku")
+            this.setMessage("gratulujeme, ako prvý ste odpovedali na túto otázku");
             return;
         }
 
         Slider.evaluateAnswer(solution);
-
-        // Hod hlasku ze bol zobrazeny priemer
-        // Vytvor druhu gulicku
-        // Hod nad nu informacie (pocet hlasov, hodnota)
-        // Hod nad prvu informacie ("tvoj hlas")
+        this.setMessage("bol zobrazený priemer odpovedí");
 
         $('#question-evaluation-next').show();
     },
@@ -98,15 +94,12 @@ var Question = {
 
 
         if(solution == undefined) {
-            this.setMessage("bohužiaľ, k tejto otázke zatiaľ nemáme odpovede")
+            this.setMessage("bohužiaľ, k tejto otázke zatiaľ nemáme odpovede");
             return;
         }
 
         Slider.showSolution(solution);
-
-        // Hod hlasku ze bol zobrazeny priemer
-        // Posun gulicku
-        // Hod nad nu informacie (pocet hlasov, hodnota)
+        this.setMessage("bol zobrazený priemer odpovedí");
 
         $('#question-evaluation-next').show();
     },
