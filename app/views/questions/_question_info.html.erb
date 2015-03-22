@@ -1,0 +1,6 @@
+<div id="question-info">
+  <i class="icon-seen"></i> Videné <%= @relations["UserVisitedLoRelation"] %>. raz
+  <% if @relations["UserSolvedLoRelation"] != nil %>
+      <i class="icon-done"></i> Vyriešené
+  <% end %>
+</div>

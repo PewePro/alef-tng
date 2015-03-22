@@ -10,16 +10,27 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require jquery-ui/progressbar
+ *= require jquery-ui/slider
  * require_tree .
  * require_self
  */
 
 
-@import "mixins";
-@import "variables";
-@import "color";
+@import "setup/mixins";
+@import "setup/variables";
+@import "setup/color";
 
-@import "reset";
-@import "typography";
+@import "setup/reset";
+@import "setup/typography";
+@import "setup/alef-iconset";
+@import "setup/alef-iconset-codes";
 
-@import "demo";
+@import "layout";
+@import "navigation";
+
+@import "login";
+@import "weeks";
+@import "questions/questions";
+@import "questions/questions_answers";
+@import "questions/evaluator";

@@ -1,0 +1,20 @@
+<div id="login">
+  <h1 id="login-h1">
+    <img id="logo" src="<%= image_path("logo.svg") %>" onerror="this.src='<%= image_path("logo.png") %>'" alt="Alef" />
+  </h1>
+
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "login-form" }) do |f| %>
+    <fieldset id="login-fieldset">
+      <label>Použite prihlasovacie údaje z AIS</label>
+
+      <%= f.label :login, "Prihlasovacie meno" %>
+      <%= f.text_field :login, autofocus: true, class: "login-text" %>
+
+
+      <%= f.label :password, "Heslo" %>
+      <%= f.password_field :password, autocomplete: "off", class: "login-text" %>
+
+      <%= f.submit "Prihlásiť", id: "login-submit" %>
+    </fieldset>
+  <% end %>
+</div>

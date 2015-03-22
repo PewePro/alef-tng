@@ -1,5 +1,4 @@
 #login {
-  @include dark-white;
   @include bold;
 
   min-height: 100%;
@@ -17,7 +16,7 @@
   margin: auto;
 }
 
-#login-form {
+.login-form {
   position: absolute;
   bottom: 2rem;
 }
@@ -26,7 +25,7 @@
   @include center-block;
   height: 2rem;
   border: 3px solid $white;
-  border-radius: 19px;
+  @include border-radius(19px);
   padding: 0 1em;
 }
 

@@ -1,0 +1,5 @@
+<% @answers.each do |a| %>
+    <label><input type="radio" name="answer" value="<%= a.id %>" class="answer-input">
+      <i class="icon-radio answer-icon"></i>
+      <div class="answer-text"><%= a.answer_text %></div></label>
+<% end %>
