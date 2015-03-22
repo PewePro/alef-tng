@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20150316204619) do
 
   create_table "learning_objects", force: :cascade do |t|
     t.string   "lo_id"
-    t.string   "question_type"
+    t.string   "type"
     t.text     "question_text"
     t.datetime "created_at"
     t.datetime "updated_at"

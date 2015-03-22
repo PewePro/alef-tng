@@ -8,4 +8,10 @@ class AddConfirmedAtToUsers < ActiveRecord::Migration
       t.string   :unconfirmed_email # Only if using reconfirmable
     end
   end
+  def self.down
+    remove_column :users, :confirmation_token, :string
+    remove_column :users, :confirmed_at, :datetime
+    remove_column :users, :confirmation_sent_at, :datetime
+    remove_column :users, :unconfirmed_email, :string
+  end
 end

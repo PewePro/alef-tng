@@ -7,5 +7,10 @@ class AddLockedAtToUser < ActiveRecord::Migration
       t.datetime :locked_at
     end
   end
+  def self.down
+    remove_column :users, :failed_attempts, :integer
+    remove_column :users, :unlock_token, :string
+    remove_column :users, :locked_at, :datetime
+  end
 end
 
