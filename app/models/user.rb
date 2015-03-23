@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
 
   #validates :login, format: { with: /\A[A-Za-z0-9_]+\z/ }, presence: true, uniqueness: { case_sensitive: false }
-  validates :password, presence: false
+  #validates :password, presence: false
 
   has_many :setups_users
   has_many :user_to_lo_relations
@@ -27,5 +27,4 @@ class User < ActiveRecord::Base
     user.save!
     user
   end
-
 end

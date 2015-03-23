@@ -22,7 +22,7 @@ module Stuba
 
       begin
         Timeout.timeout(options[:timeout] || 3) do
-          # TODO (smolnar) resolve exception
+          # TODO resolve exception
           begin
             entries = request.search base: treebase, filter: filter, return_result: true rescue nil
 
