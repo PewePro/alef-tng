@@ -1,0 +1,64 @@
+.question-nav h2 {
+  padding: 0 1rem;
+  display: block;
+}
+
+#question-info {
+  @include small-font;
+  padding: 1rem 1rem 0.5rem;
+
+  i {
+    font-size: 1.2em;
+  }
+}
+
+#question-text {
+  padding: 0.5rem 1rem 0.5rem;
+  @include bold;
+  line-height: 1.5rem;
+}
+
+#question-evaluation-message {
+  display: none;
+}
+
+.question-options-container {
+  text-align: center;
+}
+
+.question-options-wrapper {
+  display: inline-block;
+  height: 12rem;
+}
+
+@mixin question-options {
+  @include bold;
+  box-sizing: border-box;
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  width: 100%;
+  margin: 1rem auto 0;
+  padding: 0.5rem 2rem;
+  text-align: center;
+  font-variant: small-caps;
+}
+
+.question-button {
+  @include question-options;
+  @include gray-white;
+  @include border-radius(0.5rem);
+}
+
+.question-evaluations {
+  @include question-options;
+  color: $red;
+}
+
+.question-button-red {
+  @include red-white;
+}
+
+.question-button:hover {
+  color: $dark;
+}

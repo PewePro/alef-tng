@@ -3,9 +3,19 @@ Rails.application.routes.draw do
   #devise_for :users
   devise_for :users, controllers: { sessions: :sessions, registrations: :registrations }, path: '', path_names: { sign_up: :join, sign_in: :login, sign_out: :logout }
 
-  root :to =>'home#index'
+  get 'w' => 'weeks#list'
+  # Vypis tyzdnov z daneho setupu, napr. /PSI
 
-  get 'login_demo/show'
+  get 'w/:week_number' => 'weeks#show'
+  # Vypis otazok z daneho tyzdna, napr. /PSI/3
+
+  get 'w/:week_number/:id' => 'questions#show'
+  # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
+
+  post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
+  # Opravi otazku a vrati spravnu odpoved
+
+  root :to =>'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

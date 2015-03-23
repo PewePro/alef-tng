@@ -1,0 +1,18 @@
+<div class="question-options-container">
+<div class="question-evaluations" id="question-evaluation-message"></div>
+<div class="question-options-wrapper">
+
+    <button class="question-button question-button-red" name="commit" value="send_answer" >odpovedaj</button>
+    <button class="question-button" name="commit" value="dont_know">neviem</button>
+    <button class="question-button" name="commit" value="show_solution">zobraziť odpoveď</button>
+
+  <% if @next_question == nil %>
+      <div class="question-evaluations" id="question-evaluation-next">toto bola<br>posledná otázka!</div>
+  <% else %>
+    <a href="<%=
+        url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
+    %>" class="question-evaluations question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
+  <% end %>
+
+</div>
+</div>

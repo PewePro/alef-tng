@@ -1,0 +1,3 @@
+class UserViewedSolutionLoRelation < UserToLoRelation
+
+end

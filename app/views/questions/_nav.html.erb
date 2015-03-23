@@ -1,0 +1,22 @@
+<nav class="question-nav">
+  <div class="mobile-content">
+    <h2><%= @question.lo_id %></h2>
+    <% if @previous_question == nil %>
+        <i class="icon-left disabled"></i>
+    <% else %>
+        <a href="<%=
+            url_for :controller => 'questions', :action => 'show', :id => @previous_question.url_name
+        %>"><i class="icon-left"></i></a>
+    <% end %>
+    <% if @next_question == nil %>
+        <i class="nav-right-icons icon-right disabled"></i>
+    <% else %>
+        <a href="<%=
+            url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
+        %>"><i class="nav-right-icons icon-right"></i></a>
+    <% end %>
+    <a href="<%= url_for controller: 'weeks', action: 'show' %>">
+      <i class="nav-right-icons icon-list"></i>
+    </a>
+  </div>
+</nav>

@@ -1,26 +1,19 @@
-<h2>Log in</h2>
+<div id="login">
+  <h1 id="login-h1">
+    <img id="logo" src="<%= image_path("logo.svg") %>" onerror="this.src='<%= image_path("logo.png") %>'" alt="Alef" />
+  </h1>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :login %><br />
-    <%= f.text_field :login, autofocus: true %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "login-form" }) do |f| %>
+    <fieldset id="login-fieldset">
+      <label>Použite prihlasovacie údaje z AIS</label>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+      <%= f.label :login, "Prihlasovacie meno" %>
+      <%= f.text_field :login, autofocus: true, class: "login-text" %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end -%>
+      <%= f.label :password, "Heslo" %>
+      <%= f.password_field :password, autocomplete: "off", class: "login-text" %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+      <%= f.submit "Prihlásiť", id: "login-submit" %>
+    </fieldset>
+  <% end %>
+</div>

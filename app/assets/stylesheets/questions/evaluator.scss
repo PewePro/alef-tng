@@ -1,0 +1,58 @@
+#evaluator-slider-container {
+  padding: 5rem 0;
+}
+
+#evaluator-slider.ui-slider {
+  @include border-radius(0.5rem);
+  height: 1rem;
+  border: 1px solid $gray;
+  margin: 0rem 1rem 0.5rem;
+}
+
+#evaluator-slider .ui-slider-range {
+  background: $red-lighter;
+  @include border-radius(0.5rem);
+}
+
+#evaluator-slider .ui-slider-handle {
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  border-color: $gray !important;
+  @include border-radius(0.75rem);
+  outline: none;
+}
+
+#evaluator-dont-agree, #evaluator-do-agree {
+  @include small-font;
+  margin: 0 1rem;
+}
+
+#evaluator-dont-agree {
+  float: left;
+}
+
+#evaluator-do-agree {
+  float: right;
+}
+
+@mixin solution-info {
+  @include small-font;
+  @include border-radius(4px);
+  position: relative;
+  text-align: center;
+  padding: 0.25rem 0;
+  right: 3rem;
+  width: 7rem;
+}
+
+#handle-solution-info {
+  @include red-white;
+  @include solution-info;
+  top: 1.9rem;
+}
+
+#handle-answer-info {
+  @include dark-white;
+  @include solution-info;
+  bottom: 1.7rem;
+}

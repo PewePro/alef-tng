@@ -1,0 +1,3 @@
+class UserSolvedLoRelation < UserCompletedLoRelation
+
+end

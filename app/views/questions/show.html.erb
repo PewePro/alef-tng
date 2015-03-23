@@ -1,0 +1,25 @@
+<div id="faux-background" class="mobile-content"></div>
+  <%= render 'nav' %>
+<hr class="nav-offset">
+<div class="mobile-content main">
+  <%= render 'question_info' %>
+<div id="question-text">
+    <%= @question.question_text %>
+</div>
+  <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
+      <input type="hidden" name="type" value="<%= @question.type %>">
+      <div id="question-options">
+        <% case @question.type
+           when 'SingleChoiceQuestion' %>
+            <%= render 'single_choice_options' %>
+        <% when 'MultiChoiceQuestion' %>
+            <%= render 'multi_choice_options' %>
+        <% when 'EvaluatorQuestion' %>
+            <%= render 'evaluator_slider' %>
+        <% end %>
+      </div>
+    <%= render 'question_options' %>
+  </form>
+</div>
+
+

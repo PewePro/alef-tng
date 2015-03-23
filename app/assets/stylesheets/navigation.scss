@@ -1,0 +1,45 @@
+nav {
+  @include red-white;
+  position: fixed;
+  width: 100%;
+  padding: 0.5rem 0;
+  z-index: 100;
+
+}
+
+nav i {
+  font-size: 1.2rem;
+  display: inline-block;
+  line-height: 3rem;
+  margin: 0;
+  padding: 0 10px;
+}
+
+nav i.disabled {
+  color: $red-light;
+}
+
+nav h2, .nav-info h2 {
+  font-size: 24px;
+  display: inline-block;
+  line-height: 3rem;
+  margin: 0;
+}
+
+.nav-right-icons {
+  float: right;
+}
+
+.nav-offset {
+  margin: 0;
+  height: 4rem;
+  border: 0;
+}
+
+// Dodatocny blok az navigacnym panelom, ktory obsahuje informacie o danej stranke
+.nav-info {
+  @include bold;
+  @include red-light-white;
+  padding: 1rem 0;
+  text-align: center;
+}
