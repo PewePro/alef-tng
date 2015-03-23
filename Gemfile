@@ -52,5 +52,16 @@ group :development, :test do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
+
+  # Use Devise - a flexible authentication solution (login, registration, ...)
+  gem 'devise'
+  gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+
+  gem 'factory_girl_rails'
+
+  gem 'nokogiri'
+
+  gem 'pandoc-ruby', '~> 1.0.0'
+
 end
 
