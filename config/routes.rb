@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  #devise_for :users
+  devise_for :users, controllers: { sessions: :sessions, registrations: :registrations }, path: '', path_names: { sign_up: :join, sign_in: :login, sign_out: :logout }
+
   get 'w' => 'weeks#list'
   # Vypis tyzdnov z daneho setupu, napr. /PSI
 
@@ -11,9 +14,6 @@ Rails.application.routes.draw do
 
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
   # Opravi otazku a vrati spravnu odpoved
-
-
-  devise_for :user
 
   root :to =>'home#index'
 
