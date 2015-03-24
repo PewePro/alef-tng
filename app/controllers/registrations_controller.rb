@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  default_tab :profile, only: :edit
+  # default_tab :profile, only: :edit
 
   def destroy
     fail
