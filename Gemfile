@@ -37,6 +37,13 @@ gem 'therubyracer'
 
 gem 'passenger'
 
+# Use Devise - a flexible authentication solution (login, registration, ...)
+gem 'devise'
+gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+
+gem 'nokogiri'
+gem 'pandoc-ruby', '~> 1.0.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -54,15 +61,7 @@ group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
 
-  # Use Devise - a flexible authentication solution (login, registration, ...)
-  gem 'devise'
-  gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
-
   gem 'factory_girl_rails'
-
-  gem 'nokogiri'
-
-  gem 'pandoc-ruby', '~> 1.0.0'
 
 end
 
