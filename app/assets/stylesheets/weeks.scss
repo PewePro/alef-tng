@@ -3,7 +3,7 @@
   height: 1.5rem;
   background-color: $red;
   border: 1px solid $white;
-  margin: 0.5rem 1rem;
+  margin: 0.5rem 1rem 0;
 }
 
 .week-progressbar > .ui-progressbar-value {
@@ -21,7 +21,7 @@
   z-index: 20;
 }
 
-.question-card {
+.card {
   @include small-font;
   padding: 1rem 1.5rem;
   border-bottom: 1px $gray solid;
@@ -39,7 +39,7 @@
   overflow: hidden;
 }
 
-.question-card-header {
+.card-header {
   font-size: 0.875rem;
   line-height: 1.5rem;
   text-transform: lowercase;
@@ -47,11 +47,11 @@
   margin: 0;
 }
 
-.question-card-text {
+.card-text {
   margin: 0;
 }
 
-.question-card-info {
+.card-info {
   line-height: 1.5rem;
 
   i {
