@@ -21,40 +21,7 @@
   z-index: 20;
 }
 
-.card {
-  @include small-font;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px $gray solid;
-  display: block;
-
-  &:hover {
-    background-color: $porcelain;
-    cursor: pointer;
-  }
-
-}
-
 .question-card-content {
   height: 4.5rem;
   overflow: hidden;
-}
-
-.card-header {
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  text-transform: lowercase;
-  font-variant: small-caps;
-  margin: 0;
-}
-
-.card-text {
-  margin: 0;
-}
-
-.card-info {
-  line-height: 1.5rem;
-
-  i {
-    font-size: 1.2em;
-  }
 }
