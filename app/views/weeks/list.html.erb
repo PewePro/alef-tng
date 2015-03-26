@@ -19,7 +19,7 @@
       <h3 class="card-header"><%= w.number %>. týždeň <date class="week-date"><%=
           start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")
       %></date></h3>
-    <div class="week-progressbar" data-number-all="11" data-number-done="6">
+    <div class="week-progressbar" data-number-all="<%= @weeks_info[w.id][:count] %>" data-number-done="<%= @weeks_info[w.id][:done] %>">
       <div class="progressbar-caption"></div>
     </div>
   </a>

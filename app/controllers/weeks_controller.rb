@@ -22,14 +22,19 @@ class WeeksController < ApplicationController
       ids = Rails.cache.fetch('setup_' + x.id.to_s, {expires_in: 1.day}) do
         x.learning_objects.pluck(:id)
       end
-      week_lo_ids.push(ids.uniq)
+      week_lo_ids[x.id] = ids.uniq
     end
 
     learning_objects = Setup.take.learning_objects.distinct
     relations = UserToLoRelation.get_basic_relations(learning_objects, 1)
 
     @weeks_info = Array.new
-    # najdi pocet learning objectov pre week
-    # najdi pocet hotovych
+    @weeks.each do |w|
+      count = week_lo_ids[w.id].count
+      done = week_lo_ids[w.id].select do |x|
+          relations[[x,"UserSolvedLoRelation"]] != nil
+        end.count
+      @weeks_info[w.id] = {count: count, done: done}
+    end
   end
 end
