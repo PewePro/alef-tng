@@ -17,6 +17,10 @@ var ready = (function () {
         Slider.setupEvaluatorSlider();
         Question.setupForm();
     }
+
+    if ($('#body-weeks-list').length) {
+        Progressbar.setupProgressbars();
+    }
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani

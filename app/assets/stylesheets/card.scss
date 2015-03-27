@@ -1,0 +1,37 @@
+.card {
+  @include small-font;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px $gray solid;
+  display: block;
+
+  &:hover {
+    background-color: $porcelain;
+    cursor: pointer;
+  }
+
+}
+
+.card-header {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-transform: lowercase;
+  font-variant: small-caps;
+  margin: 0;
+}
+
+.card-text {
+  margin: 0;
+}
+
+.card-info {
+  line-height: 1.5rem;
+
+  i {
+    font-size: 1.2em;
+  }
+}
+
+.card .week-progressbar {
+  border: 1px solid $gray;
+  margin: 1rem 0 0.5rem;
+}
