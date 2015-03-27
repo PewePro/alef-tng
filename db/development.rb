@@ -20,9 +20,11 @@ weeks[2].concepts << [concepts[3],concepts[1],concepts[0]]
 weeks[3].concepts << [concepts[3]]
 
 users = User.create!([
-  {login: 'peter', aisid: 1000, role: 2, first_name: 'Peter', last_name: 'Rohac', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'rohac@gmail.com'},
-  {login: 'roman', aisid: 2000, role: 2, first_name: 'Roman', last_name: 'Mak', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'mak@gmail.com'},
-  {login: 'lubos', aisid: 3000, role: 2, first_name: 'Lubos', last_name: 'Tatarka', password: '12345678', salt: 'solnicka', authorization: 'solidna', email: 'tatarka@gmail.com'}
+  {login: 'student1', role: User::ROLES[:STUDENT], first_name: 'Peter', last_name: 'Studentovic', password: 'student1', type: 'LocalUser'},
+  {login: 'student2', role: User::ROLES[:STUDENT], first_name: 'Roman', last_name: 'Studentovic', password: 'student2', type: 'LocalUser'},
+  {login: 'teacher1', role: User::ROLES[:TEACHER], first_name: 'Fero', last_name: 'Ucitelovic', password: 'teacher1', type: 'LocalUser'},
+  {login: 'administrator1', role: User::ROLES[:ADMINISTRATOR], first_name: 'Lubos', last_name: 'Adminovic', password: 'administrator1', type: 'LocalUser'},
+  {login: 'xpriezvisko', aisid: 12345, role: User::ROLES[:STUDENT], first_name: 'Igor', last_name: 'AISovic', password: '', type: 'LdapUser'}
 ])
 
 SetupsUser.create!([

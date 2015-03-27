@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
 
-  #devise_for :users
-  devise_for :users, controllers: { sessions: :sessions, registrations: :registrations }, path: '', path_names: { sign_up: :join, sign_in: :login, sign_out: :logout }
+  root to: redirect('w')
+
+  devise_for :ldap_users, :local_users, skip: [:sessions]
+  # the login controllers and views are shared for local and ldap users, use :local_user for routes
+  devise_scope :local_user do
+    get 'login',     to: 'users/sessions#new',     as: 'new_user_session'
+    post 'login',    to: 'users/sessions#create',  as: 'user_session'
+    delete 'logout', to: 'users/sessions#destroy', as: 'destroy_user_session'
+  end
 
   get 'w' => 'weeks#list'
   # Vypis tyzdnov z daneho setupu, napr. /PSI
@@ -15,7 +22,6 @@ Rails.application.routes.draw do
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
   # Opravi otazku a vrati spravnu odpoved
 
-  root :to =>'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

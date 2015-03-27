@@ -39,14 +39,18 @@ gem 'passenger'
 
 # Use Devise - a flexible authentication solution (login, registration, ...)
 gem 'devise'
-gem "devise_ldap_authenticatable", :git => "git://github.com/cschiewek/devise_ldap_authenticatable.git"
+# Authenticate through LDAP
+gem 'devise_ldap_authenticatable'
 
 gem 'nokogiri'
 gem 'pandoc-ruby', '~> 1.0.0'
 
+# for nice nil safeguarding
+gem 'andand'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
