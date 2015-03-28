@@ -9,6 +9,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body id="body-<%= controller_name %>-<%= action_name %>">
+<div id="gonvariables">
+<%= include_gon(:init => true) %>
+</div>
 
 <% if notice %>
   <p class="alert alert-success"><%= notice %></p>

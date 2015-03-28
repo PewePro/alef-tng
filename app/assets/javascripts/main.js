@@ -26,3 +26,8 @@ var ready = (function () {
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
+var gonfix = function(){
+    eval($("#gonvariables > script").html());
+};
+$(document).on('page:restore', gonfix);
