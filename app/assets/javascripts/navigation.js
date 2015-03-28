@@ -3,7 +3,7 @@ var Nav = {
     ueHeight : null, //user element height
 
     initUserElement : function() {
-        this.ueHeight = $('#user-element').height();
+        this.ueHeight = $('#user-element').outerHeight();
         $('.nav-offset').css( "height", "+="+this.ueHeight );
         $(document).scrollTop(this.ueHeight);
         $(window).scroll(function() {
