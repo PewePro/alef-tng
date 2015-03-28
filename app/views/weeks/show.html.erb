@@ -6,8 +6,6 @@
 <%= render 'week_info'%>
 
 <div class="mobile-content main">
-  <div id="toggle-show-solutions" class="icon-toggle-off">ZOBRAZOVAT ODPOVEDE</div>
-  <div id="toggle-dont-show-solutions" class="icon-toggle-on">NEZOBRAZOVAT ODPOVEDE</div>
   <% @learning_objects.each do |lo| %>
       <a href="<%=
           url_for :controller => 'questions', :action => 'show', :id => lo.url_name

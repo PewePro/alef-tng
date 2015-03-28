@@ -3,7 +3,7 @@
   height: 1.5rem;
   background-color: $red;
   border: 1px solid $white;
-  margin: 0.5rem 1rem 0;
+  margin: 0.5rem 1rem 0.5rem;
 }
 
 .week-progressbar > .ui-progressbar-value {
@@ -24,4 +24,16 @@
 .question-card-content {
   height: 4.5rem;
   overflow: hidden;
+}
+
+#week-toggles {
+  @include small-font;
+  text-align: left;
+  padding: 0 1rem;
+}
+
+#week-toggles i {
+  font-size: 1.2rem;
+  position: relative;
+  top: 2px;
 }

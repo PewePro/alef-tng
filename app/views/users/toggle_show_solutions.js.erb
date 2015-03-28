@@ -1,0 +1,7 @@
+<% if @user.show_solutions %>
+$('#toggle-show-solutions').hide();
+$('#toggle-dont-show-solutions').show();
+<% else %>
+$('#toggle-dont-show-solutions').hide();
+$('#toggle-show-solutions').show();
+<% end %>
