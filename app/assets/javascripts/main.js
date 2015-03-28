@@ -13,7 +13,7 @@ var ready = (function () {
     }
 
     if ($('#body-questions-show').length) {
-        Nav.initAutohideNav();
+        //Nav.initAutohideNav();
         Slider.setupEvaluatorSlider();
         Question.setupForm();
     }
@@ -26,3 +26,11 @@ var ready = (function () {
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani
 $(document).ready(ready);
 $(document).on('page:load', ready);
+$(document).on('page:restore', ready);
+
+
+// Vyhodnotenie gon premennych pri restorovani stranky (napr. "back" v prehliadaci)
+var gonfix = function(){
+    eval($("#gonvariables > script").html());
+};
+$(document).on('page:restore', gonfix);
