@@ -2,7 +2,9 @@
   <%= render 'nav' %>
 <hr class="nav-offset">
 <div class="question-name">
-  <h2 class="mobile-content"><%= @question.lo_id %></h2>
+  <div class="mobile-content">
+  <h2><%= @question.lo_id %></h2>
+  </div>
 </div>
 <div class="mobile-content main">
   <%= render 'question_info' %>
