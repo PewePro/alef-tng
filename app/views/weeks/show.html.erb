@@ -6,17 +6,42 @@
 <%= render 'week_info'%>
 
 <div class="mobile-content main">
+  <div id="toggle-show-solutions">ZOBRAZOVAT ODPOVEDE</div>
+  <div id="toggle-dont-show-solutions">NEZOBRAZOVAT ODPOVEDE</div>
   <% @learning_objects.each do |lo| %>
       <a href="<%=
           url_for :controller => 'questions', :action => 'show', :id => lo.url_name
       %>" class="card">
         <div class="question-card-content">
-            <h3 class="card-header"><%= lo.lo_id %></h3>
-            <p class="card-text">
-                <%= lo.question_text %>
-            </p>
+          <h3 class="card-header"><%= lo.lo_id %></h3>
+          <p class="card-text">
+            <%= lo.question_text %>
+          </p>
         </div>
         <%= render :partial => 'question_icons', :locals => { lo: lo } %>
       </a>
   <% end %>
 </div>
+
+<script>
+
+  $('#toggle-show-solutions').click(function() {
+      $.ajax({
+          url: '/user/toggle-show-solutions',
+          method: 'POST',
+          data: {
+              show_solutions: true
+          }
+      });
+  });
+
+  $('#toggle-dont-show-solutions').click(function() {
+      $.ajax({
+          url: '/user/toggle-show-solutions',
+          method: 'POST',
+          data: {
+              show_solutions: false
+          }
+      });
+  });
+</script>
