@@ -52,6 +52,9 @@ gem 'andand'
 # passing data from controllers to javascript
 gem 'gon'
 
+# performance monitoring with newrelic
+gem 'newrelic_rpm'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
