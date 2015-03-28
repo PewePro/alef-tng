@@ -5,6 +5,12 @@ var Nav = {
     initUserElement : function() {
         this.ueHeight = $('#user-element').outerHeight();
         $('.nav-offset').css( "height", "+="+this.ueHeight );
+
+        // pripad ked je prilis mala obrazovka a neslo by zoscrollovat dost dole
+        if($(document).height() - $(window).height() - $(window).scrollTop() == 0) {
+            $('#faux-background').css( "height", "+="+this.ueHeight );
+        }
+
         $(document).scrollTop(this.ueHeight);
         $(window).scroll(function() {
             Nav.autoScrollNav();

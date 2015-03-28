@@ -9,6 +9,7 @@ var ready = (function () {
     }
 
     if ($('#body-weeks-show').length) {
+        Nav.initUserElement();
         Progressbar.setupProgressbars();
     }
 
@@ -19,6 +20,7 @@ var ready = (function () {
     }
 
     if ($('#body-weeks-list').length) {
+        Nav.initUserElement();
         Progressbar.setupProgressbars();
     }
 });
