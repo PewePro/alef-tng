@@ -30,7 +30,12 @@ Create the database.
 ```
 RAILS_ENV=development rake db:create && rake db:migrate
 ```
-!TODO! Seed database
+
+Optionally, seed the database with development data.
+
+```
+RAILS_ENV=development rake db:seed
+```
 
 ## Testing
 
