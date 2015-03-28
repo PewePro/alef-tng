@@ -17,6 +17,7 @@ class WeeksController < ApplicationController
   def list
     @setup = Setup.take
     @weeks = @setup.weeks
+    @user = current_user
 
     week_lo_ids = Array.new
     @weeks.each do |x|

@@ -1,6 +1,7 @@
 nav {
   @include red-white;
   position: fixed;
+  top: 0;
   width: 100%;
   padding: 0.5rem 0;
   z-index: 100;
@@ -38,6 +39,7 @@ nav h2 {
   margin: 0;
   height: 4rem;
   border: 0;
+  background-color: $red;
 }
 
 // Dodatocny blok az navigacnym panelom, ktory obsahuje informacie o danej stranke
@@ -46,4 +48,30 @@ nav h2 {
   @include red-light-white;
   padding: 1rem 0 0.5rem;
   text-align: center;
+}
+
+#user-element {
+  @include dark-white;
+  position: absolute;
+  width: 100%;
+  z-index: 200;
+  padding: 1rem 0;
+
+  #name {
+    font-style: italic;
+    padding: 0 1rem;
+    float: left;
+    line-height: 2rem;
+  }
+
+  #signout {
+    display: block;
+    border: 1px solid $white;
+    @include border-radius(1rem);
+    height: 2rem;
+    float: right;
+    padding: 0 1.5rem;
+    line-height: 2rem;
+    margin: 0 1rem;
+  }
 }
