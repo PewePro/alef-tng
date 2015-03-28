@@ -1,6 +1,9 @@
-.question-nav h2 {
-  padding: 0 1rem;
-  display: block;
+.question-name {
+  @include red-white;
+  padding: 0 1rem 0.5rem;
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 #question-info {
