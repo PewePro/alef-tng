@@ -1,6 +1,6 @@
 <div id="user-element">
   <div class="mobile-content">
-    <div id="name"><%= @user.first_name + ' ' + @user.last_name %></div>
+    <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
     <%= link_to "Sign Out", destroy_user_session_path, :method => :delete, id: 'signout' %>
   </div>
 </div>
