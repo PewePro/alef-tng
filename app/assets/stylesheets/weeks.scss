@@ -1,7 +1,8 @@
 .week-progressbar {
   @include border-radius(0.75rem);
   height: 1.5rem;
-  background-color: $red;
+  background-color: $white;
+  background-image: none;
   border: 1px solid $white;
   margin: 0.5rem 1rem 0;
 }
