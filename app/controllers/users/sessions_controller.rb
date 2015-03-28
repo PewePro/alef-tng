@@ -7,10 +7,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
-    # super
-    self.resource = User.new(sign_in_params)
-    # clean_up_passwords(resource)
-    # respond_with(resource, serialize_options(resource))
+    self.resource = User.new
   end
 
   # POST /resource/sign_in
