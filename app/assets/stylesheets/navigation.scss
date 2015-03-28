@@ -19,8 +19,8 @@ nav i.disabled {
   color: $red-light;
 }
 
-nav h2, .nav-info h2 {
-  font-size: 24px;
+nav h2 {
+  font-size: 1.5rem;
   display: inline-block;
   line-height: 3rem;
   margin: 0;
@@ -44,6 +44,6 @@ nav h2, .nav-info h2 {
 .nav-info {
   @include bold;
   @include red-light-white;
-  padding: 1rem 0 1.5rem;
+  padding: 1rem 0 0.5rem;
   text-align: center;
 }

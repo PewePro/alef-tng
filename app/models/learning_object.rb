@@ -12,7 +12,7 @@ class LearningObject < ActiveRecord::Base
   end
 
   def seen_by_user(user_id)
-    UserVisitedLoRelation.create(user_id: user_id, learning_object_id: self.id, setup_id: 1, interaction: '??')
+    UserVisitedLoRelation.create(user_id: user_id, learning_object_id: self.id, setup_id: 1)
   end
 
   def url_name

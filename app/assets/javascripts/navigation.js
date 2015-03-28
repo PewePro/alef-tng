@@ -1,7 +1,7 @@
 var Nav = {
 
     initAutohideNav : function() {
-        $('.nav-offset').height($('nav').height());
+        $('.nav-offset').height($('nav').outerHeight());
         Nav.autohideNav();
         $(window).scroll(function() {
             Nav.autohideNav();

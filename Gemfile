@@ -49,6 +49,9 @@ gem 'pandoc-ruby', '~> 1.0.0'
 # for nice nil safeguarding
 gem 'andand'
 
+# passing data from controllers to javascript
+gem 'gon'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
