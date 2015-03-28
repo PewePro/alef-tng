@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
+//= require jquery.ui.touch-punch
 //= require_tree .
