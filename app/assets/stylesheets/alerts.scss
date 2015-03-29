@@ -1,0 +1,35 @@
+.alert {
+  position: fixed;
+  bottom: 2rem;
+  width: 100%;
+  z-index: 300;
+  animation-name: alert-kfs;
+  animation-duration: 2s;
+  animation-delay: 2s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+
+  #body-sessions-new > & {
+    bottom: auto;
+    top: 2rem;
+
+    .message {
+      @include white-red;
+    }
+  }
+
+  .message {
+    width: 60%;
+    padding: 2rem;
+    max-width: 560px;
+    @include border-radius(0.5rem);
+    text-align: center;
+    @include center-block;
+    @include red-white;
+  }
+}
+
+@keyframes alert-kfs {
+  0%   {opacity: 1;}
+  100% {opacity: 0;}
+}
