@@ -35,6 +35,16 @@
   max-width: 300px;
 }
 
+.login-remember-me {
+  @include center-block;
+  width: 70%;
+  max-width: 300px;
+}
+
+.login-remember-me-check {
+  display: inline;
+}
+
 #login-fieldset > label {
   @include big-top-margin;
   @include center-block;
