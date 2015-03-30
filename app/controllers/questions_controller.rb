@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def show
-    user_id = 1
-    @user = User.find(user_id)
+    @user = current_user
+    user_id = @user.id
 
     @question = LearningObject.find(params[:id])
     @question.seen_by_user(user_id)
@@ -31,7 +31,8 @@ class QuestionsController < ApplicationController
     lo = lo_class.find(params[:id])
     @solution = lo.get_solution
 
-    user_id = 1
+    @user = current_user
+    user_id = @user.id
     setup_id = 1
 
     rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id)
