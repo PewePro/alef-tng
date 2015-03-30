@@ -14,9 +14,6 @@
         <%= f.password_field :password, autocomplete: "off", class: "login-text" %>
 
         <% if devise_mapping.rememberable? -%>
-            <%#= f.check_box :remember_me %>
-            <%#= f.label :remember_me, "Zapamätať prihlásenie" %>
-
             <%= f.label :remember_me, class: "login-remember-me" do %>
                 <%= f.check_box :remember_me, class: "login-remember-me-check" %> &nbsp; Zapamätať prihlásenie
             <% end %>
