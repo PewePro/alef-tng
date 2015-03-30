@@ -8,6 +8,11 @@
   animation-delay: 2s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
+  -webkit-animation-name: alert-kfs;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 2s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: forwards;
 
   #body-sessions-new > & {
     bottom: auto;
@@ -30,6 +35,11 @@
 }
 
 @keyframes alert-kfs {
+  0%   {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@-webkit-keyframes alert-kfs {
   0%   {opacity: 1;}
   100% {opacity: 0;}
 }
