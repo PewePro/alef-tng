@@ -1,12 +1,22 @@
 class QuestionsController < ApplicationController
   def show
+    user_id = 1
+    @user = User.find(user_id)
+
     @question = LearningObject.find(params[:id])
-    @question.seen_by_user(1)
+    @question.seen_by_user(user_id)
     @next_question = @question.next(params[:week_number])
     @previous_question = @question.previous(params[:week_number])
 
     @answers = @question.answers
-    @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: 1).group('type').count
+    @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: user_id).group('type').count
+
+    if @user.show_solutions
+      UserViewedSolutionLoRelation.create(user_id: user_id, learning_object_id: params[:id], setup_id: 1, )
+      solution = @question.get_solution
+      gon.show_solutions = TRUE
+      gon.solution = solution
+    end
   end
 
   def evaluate
@@ -32,7 +42,6 @@ class QuestionsController < ApplicationController
       rel.interaction = params[:answer]
     end
 
-    rel.type = 'UserViewedSolutionLoRelation' if params[:commit] == 'show_solution'
     rel.type = 'UserDidntKnowLoRelation' if params[:commit] == 'dont_know'
     rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
     rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result

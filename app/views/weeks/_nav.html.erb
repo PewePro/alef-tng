@@ -14,7 +14,9 @@
             url_for :controller => 'weeks', :action => 'show', :week_number => @next_week.number
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
-    <%# <i class="nav-right-icons icon-calendar"></i> %>
+    <a href="<%=
+        url_for :controller => 'weeks', :action => 'list'
+    %>"><i class="nav-right-icons icon-calendar"></i></a>
     <h2><%= @week.number %>. týždeň</h2>
   </div>
 </nav>

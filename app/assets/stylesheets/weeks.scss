@@ -1,9 +1,10 @@
 .week-progressbar {
   @include border-radius(0.75rem);
   height: 1.5rem;
-  background-color: $red;
+  background-color: $white;
+  background-image: none;
   border: 1px solid $white;
-  margin: 0.5rem 1rem;
+  margin: 0.5rem 1rem 0.5rem;
 }
 
 .week-progressbar > .ui-progressbar-value {
@@ -21,40 +22,19 @@
   z-index: 20;
 }
 
-.question-card {
-  @include small-font;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px $gray solid;
-  display: block;
-
-  &:hover {
-    background-color: $porcelain;
-    cursor: pointer;
-  }
-
-}
-
 .question-card-content {
   height: 4.5rem;
   overflow: hidden;
 }
 
-.question-card-header {
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  text-transform: lowercase;
-  font-variant: small-caps;
-  margin: 0;
+#week-toggles {
+  @include small-font;
+  text-align: left;
+  padding: 0 1rem;
 }
 
-.question-card-text {
-  margin: 0;
-}
-
-.question-card-info {
-  line-height: 1.5rem;
-
-  i {
-    font-size: 1.2em;
-  }
+#week-toggles i {
+  font-size: 1.2rem;
+  position: relative;
+  top: 2px;
 }

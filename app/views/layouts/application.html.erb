@@ -2,19 +2,30 @@
 <html>
 <head>
   <title>Alef</title>
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body id="body-<%= controller_name %>-<%= action_name %>">
+<div id="gonvariables">
+<%= include_gon(:init => true) %>
+</div>
 
 <% if notice %>
-  <p class="alert alert-success"><%= notice %></p>
+  <div class="alert">
+    <div class="success message">
+      <%= notice %>
+    </div>
+  </div>
 <% end %>
 <% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
+    <div class="alert">
+      <div class="danger message">
+        <%= alert %>
+      </div>
+    </div>
 <% end %>
 
 <%= yield %>

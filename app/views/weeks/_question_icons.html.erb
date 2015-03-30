@@ -1,4 +1,4 @@
-<div class="question-card-info">
+<div class="card-info">
   <%
      views = @relations[[lo.id, "UserVisitedLoRelation"]]
      done = @relations[[lo.id, "UserSolvedLoRelation"]]
@@ -11,6 +11,6 @@
      end
      if done != nil
   %>
-      <i class="icon-done"></i> Vyriešené
+      <i class="icon-done"></i> Vyriešené (<%= done %>x)
   <% end %>
 </div>

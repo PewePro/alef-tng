@@ -5,6 +5,7 @@ var Question = {
     isSingleChoice : function() { return this.type == "singlechoicequestion"; },
     isMultiChoice : function() { return this.type == "multichoicequestion"; },
     isEvaluator : function() { return this.type == "evaluatorquestion"; },
+
     setupForm : function() {
 
         // nastavi typ otazky
@@ -14,6 +15,12 @@ var Question = {
         // nastavi formular
         $('.question-evaluations').hide();
         $('.answer-input').prop('disabled',false);
+
+        // pripad ked prezerame odpovede
+        if(gon.show_solutions) {
+            this.disableForm();
+            this.showSolution(gon.solution);
+        }
     },
 
     disableForm : function() {
