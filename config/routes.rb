@@ -24,6 +24,9 @@ Rails.application.routes.draw do
 
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'
 
+  # Administracia
+  get 'admin' => 'administrations#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
