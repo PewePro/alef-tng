@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def show
-    user_id = 1
-    user = User.find(user_id)
+    @user = current_user
+    user_id = @user.id
 
     @question = LearningObject.find(params[:id])
     @question.seen_by_user(user_id)
@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers
     @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: user_id).group('type').count
 
-    if user.show_solutions
+    if @user.show_solutions
       UserViewedSolutionLoRelation.create(user_id: user_id, learning_object_id: params[:id], setup_id: 1, )
       solution = @question.get_solution
       gon.show_solutions = TRUE
@@ -31,7 +31,8 @@ class QuestionsController < ApplicationController
     lo = lo_class.find(params[:id])
     @solution = lo.get_solution
 
-    user_id = 1
+    @user = current_user
+    user_id = @user.id
     setup_id = 1
 
     rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id)

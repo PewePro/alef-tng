@@ -17,6 +17,7 @@ class WeeksController < ApplicationController
   def list
     @setup = Setup.take
     @weeks = @setup.weeks
+    @user = current_user
 
     week_lo_ids = Array.new
     @weeks.each do |x|
@@ -27,7 +28,7 @@ class WeeksController < ApplicationController
     end
 
     learning_objects = Setup.take.learning_objects.distinct
-    relations = UserToLoRelation.get_basic_relations(learning_objects, 1)
+    relations = UserToLoRelation.get_basic_relations(learning_objects, @user.id)
 
     @weeks_info = Array.new
     @weeks.each do |w|

@@ -58,3 +58,10 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+  unauthorized:
+    default: "You are not authorized to access this page."
+    #manage:
+    # all: "Not authorized to %{action} %{subject}."
+    # user: "Not allowed to manage other user accounts."
+    #update:
+    # project: "Not allowed to update this project."

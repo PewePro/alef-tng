@@ -1,5 +1,5 @@
 class Setup < ActiveRecord::Base
-  has_many :concepts
+  belongs_to :course
   has_many :user_to_lo_relations
   has_many :setups_users
   has_many :weeks
