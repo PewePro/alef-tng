@@ -63,3 +63,9 @@ staging:
   database: aleftng_staging
   username: aleftng
   password: <%= ENV['ALEFTNG_DATABASE_PASSWORD'] %>
+
+sandbox:
+  <<: *default
+  database: aleftng_sandbox
+  username: aleftng
+  password: <%= ENV['ALEFTNG_DATABASE_PASSWORD'] %>

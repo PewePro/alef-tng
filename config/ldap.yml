@@ -13,6 +13,9 @@ development:
 test:
   <<: *STUBA_LDAP
 
+sandbox:
+  <<: *STUBA_LDAP
+
 staging:
   <<: *STUBA_LDAP
 
