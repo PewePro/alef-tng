@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20150401132203) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "pseudo"
-    t.integer  "course_id"
+    t.boolean  "pseudo",     default: true, null: false
+    t.integer  "course_id",                 null: false
   end
 
   create_table "concepts_learning_objects", force: :cascade do |t|
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150401132203) do
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id"
+    t.integer  "course_id",     null: false
   end
 
   create_table "setups_users", force: :cascade do |t|
@@ -112,10 +112,12 @@ ActiveRecord::Schema.define(version: 20150401132203) do
   end
 
   add_foreign_key "answers", "learning_objects"
+  add_foreign_key "concepts", "courses"
   add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
   add_foreign_key "user_to_lo_relations", "learning_objects"
