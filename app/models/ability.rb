@@ -3,17 +3,15 @@ class Ability
 
   def initialize(user)
 
-    role = user.role
-
-    if role == "administrator"
+    if user.administrator?
       can :manage, :administration
     end
 
-    if role == "teacher"
+    if user.teacher?
       can :manage, :administration
     end
 
-    if role == "student"
+    if user.student?
       cannot :manage, :administration
     end
     # Define abilities for the passed in user here. For example:
