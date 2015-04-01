@@ -55,16 +55,14 @@ nav h2 {
   position: absolute;
   width: 100%;
   z-index: 200;
-  padding: 1rem 0;
 
   #name {
     font-style: italic;
-    padding: 0 1rem;
-    float: left;
+    padding: 1rem;
     line-height: 2rem;
   }
 
-  #signout {
+  .user-panel-button {
     display: block;
     border: 1px solid $white;
     @include border-radius(1rem);
@@ -72,6 +70,6 @@ nav h2 {
     float: right;
     padding: 0 1.5rem;
     line-height: 2rem;
-    margin: 0 1rem;
+    margin: 0 1rem 1rem;
   }
 }
