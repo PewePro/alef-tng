@@ -10,10 +10,10 @@ weeks = Week.create!([
 ])
 
 concepts = Concept.create!([
-  {course_id: course.id, name: 'Diagram prípadov použitia'},
-  {course_id: course.id, name: 'Diagram toku údajov'},
-  {course_id: course.id, name: 'Softvérové inžinierstvo'},
-  {course_id: course.id, name: 'Diagram aktivít'}
+  {course_id: course.id, pseudo: false, name: 'Diagram prípadov použitia'},
+  {course_id: course.id, pseudo: false, name: 'Diagram toku údajov'},
+  {course_id: course.id, pseudo: false, name: 'Softvérové inžinierstvo'},
+  {course_id: course.id, pseudo: false, name: 'Diagram aktivít'}
 ])
 
 weeks[0].concepts << [concepts[0],concepts[1]]
