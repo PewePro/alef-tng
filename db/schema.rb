@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150328152458) do
+ActiveRecord::Schema.define(version: 20150401132203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,10 +25,11 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   end
 
   create_table "concepts", force: :cascade do |t|
-    t.integer  "setup_id",   null: false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "pseudo"
+    t.integer  "course_id"
   end
 
   create_table "concepts_learning_objects", force: :cascade do |t|
@@ -39,6 +40,12 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   create_table "concepts_weeks", force: :cascade do |t|
     t.integer "week_id",    null: false
     t.integer "concept_id", null: false
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "learning_objects", force: :cascade do |t|
@@ -55,6 +62,7 @@ ActiveRecord::Schema.define(version: 20150328152458) do
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id"
   end
 
   create_table "setups_users", force: :cascade do |t|
@@ -104,7 +112,6 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   end
 
   add_foreign_key "answers", "learning_objects"
-  add_foreign_key "concepts", "setups"
   add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
