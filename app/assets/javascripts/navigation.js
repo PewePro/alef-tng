@@ -4,6 +4,7 @@ var Nav = {
 
     initUserElement : function() {
         this.ueHeight = $('#user-element').outerHeight();
+        $('.nav-offset').css( "height", "4rem");
         $('.nav-offset').css( "height", "+="+this.ueHeight );
 
         // pripad ked je prilis mala obrazovka a neslo by zoscrollovat dost dole
