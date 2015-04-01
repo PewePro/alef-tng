@@ -65,3 +65,10 @@ sk:
         few: ! '%{resource} nebol uložený kvôli %{count} chybám:'
         one: ! '%{resource} nebol uložený kvôli chybe:'
         other: ! '%{resource} nebol uložený kvôli %{count} chybám:'
+  unauthorized:
+    default: "Na túto stránku nemáte prístup."
+    #manage:
+    # all: "Not authorized to %{action} %{subject}."
+    # user: "Not allowed to manage other user accounts."
+    #update:
+    # project: "Not allowed to update this project."
