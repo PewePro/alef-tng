@@ -42,6 +42,8 @@ gem 'passenger'
 gem 'devise'
 # Authenticate through LDAP
 gem 'devise_ldap_authenticatable'
+# User permission management
+gem 'cancan'
 
 gem 'nokogiri'
 gem 'pandoc-ruby', '~> 1.0.0'

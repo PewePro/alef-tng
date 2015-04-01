@@ -1,0 +1,9 @@
+<div id="user-element">
+  <div class="mobile-content">
+    <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
+    <%= link_to "Odhlásiť", destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>
+    <% if can? :manage, :administration %>
+        <%= link_to "Administracia", administration_path, class: 'user-panel-button' %>
+    <% end %>
+  </div>
+</div>

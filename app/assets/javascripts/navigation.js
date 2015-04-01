@@ -1,24 +1,29 @@
 var Nav = {
 
-    initAutohideNav : function() {
-        $('.nav-offset').height($('nav').outerHeight());
-        Nav.autohideNav();
+    ueHeight : null, //user element height
+
+    initUserElement : function() {
+        this.ueHeight = $('#user-element').outerHeight();
+        $('.nav-offset').css( "height", "4rem");
+        $('.nav-offset').css( "height", "+="+this.ueHeight );
+
+        // pripad ked je prilis mala obrazovka a neslo by zoscrollovat dost dole
+        if($(document).height() - $(window).height() - $(window).scrollTop() == 0) {
+            $('#faux-background').css( "height", "+="+this.ueHeight );
+        }
+
+        $(document).scrollTop(this.ueHeight);
         $(window).scroll(function() {
-            Nav.autohideNav();
+            Nav.autoScrollNav();
         });
     },
 
-    autohideNav : function() {
+    autoScrollNav : function() {
         var scroll = $(document).scrollTop();
-        var size = $('nav h2').height();
-        if(scroll > size) {
-            $('nav').css('position','fixed');
-            $('nav h2').hide();
-            $('.nav-offset').show();
+        if(scroll < this.ueHeight) {
+            $('nav').css('top', this.ueHeight - scroll);
         } else {
-            $('nav').css('position','static');
-            $('nav h2').show();
-            $('.nav-offset').hide();
+            $('nav').css('top',0);
         }
     }
 };

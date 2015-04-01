@@ -45,6 +45,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    cancan (1.6.10)
     capistrano (3.3.5)
       capistrano-stats (~> 1.1.0)
       i18n
@@ -217,6 +218,7 @@ PLATFORMS
 DEPENDENCIES
   airbrake
   andand
+  cancan
   capistrano
   capistrano-bundler
   capistrano-passenger

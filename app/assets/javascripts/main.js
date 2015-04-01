@@ -9,16 +9,18 @@ var ready = (function () {
     }
 
     if ($('#body-weeks-show').length) {
+        Nav.initUserElement();
         Progressbar.setupProgressbars();
     }
 
     if ($('#body-questions-show').length) {
-        //Nav.initAutohideNav();
+        Nav.initUserElement();
         Slider.setupEvaluatorSlider();
         Question.setupForm();
     }
 
     if ($('#body-weeks-list').length) {
+        Nav.initUserElement();
         Progressbar.setupProgressbars();
     }
 });
