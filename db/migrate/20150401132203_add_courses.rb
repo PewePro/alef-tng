@@ -5,8 +5,10 @@ class AddCourses < ActiveRecord::Migration
       t.timestamps
     end
     remove_column :concepts, :setup_id
-    add_column :setups, :course_id, :integer
-    add_column :concepts, :pseudo, :boolean
-    add_column :concepts, :course_id, :integer
+    add_column :setups, :course_id, :integer, null: false
+    add_column :concepts, :pseudo, :boolean, default: true, null: false
+    add_column :concepts, :course_id, :integer, null: false
+    add_foreign_key :setups, :courses
+    add_foreign_key :concepts, :courses
   end
 end
