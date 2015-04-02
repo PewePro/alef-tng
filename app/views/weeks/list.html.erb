@@ -9,20 +9,20 @@
 
 
 <div class="mobile-content main">
-  <% @weeks.each do |w| %>
-  <a href="<%=
-    url_for controller: 'weeks', action: 'show', week_number: w.number
-  %>" class="card">
-  <%
-       start_at = @setup.first_week_at.to_date + w.number * 7
-       end_at = start_at + 6
+  <% @weeks.each do |w|
+    start_at = @setup.first_week_at.to_date + w.number * 7 - 7
+    end_at = start_at + 6
+    actual = (Date.today-start_at).to_i.between?(0,6)
   %>
-      <h3 class="card-header"><%= w.number %>. týždeň <date class="week-date"><%=
-          start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")
-      %></date></h3>
-    <div class="week-progressbar" data-number-all="<%= @weeks_info[w.id][:count] %>" data-number-done="<%= @weeks_info[w.id][:done] %>">
-      <div class="progressbar-caption"></div>
-    </div>
-  </a>
+      <a href="<%=
+          url_for controller: 'weeks', action: 'show', week_number: w.number
+      %>" class="card <%= 'week-current' if actual %>">
+        <h3 class="card-header"><%= w.number %>. týždeň <%= '(aktuálny)' if actual %><date class="week-date"><%=
+            start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")
+        %></date></h3>
+        <div class="week-progressbar" data-number-all="<%= @weeks_info[w.id][:count] %>" data-number-done="<%= @weeks_info[w.id][:done] %>">
+          <div class="progressbar-caption"></div>
+        </div>
+      </a>
   <% end %>
 </div>
