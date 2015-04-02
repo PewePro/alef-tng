@@ -1,0 +1,7 @@
+<%= @setup.name %><br>
+<%= @setup.week_count %><br>
+<%= @setup.first_week_at %><br>
+<br>
+<% @concepts.each do |c| %>
+    <%= c.name %> - <%= c.weeks.ids %><br>
+<% end %>
