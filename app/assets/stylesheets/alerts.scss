@@ -3,18 +3,21 @@
   bottom: 2rem;
   width: 100%;
   z-index: 300;
+  pointer-events: none;
+
   animation-name: alert-kfs;
   animation-duration: 2s;
   animation-delay: 2s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
+
   -webkit-animation-name: alert-kfs;
   -webkit-animation-duration: 2s;
   -webkit-animation-delay: 2s;
   -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-fill-mode: forwards;
 
-  #body-sessions-new > & {
+  #body-sessions-new > &, body[id^="body-administration"] > & {
     bottom: auto;
     top: 2rem;
 
