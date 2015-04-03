@@ -11,4 +11,10 @@ class Week < ActiveRecord::Base
     Week.where('number < ? AND setup_id = ?', self.number, self.setup_id).order(number: :desc).first
   end
 
+  before_destroy do |week|
+    Concept.all.each do |concept|
+      concept.weeks.delete(week)
+    end
+  end
+
 end
