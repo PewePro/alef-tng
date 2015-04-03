@@ -1,7 +1,13 @@
-<%= @setup.name %><br>
-<%= @setup.week_count %><br>
-<%= @setup.first_week_at %><br>
-<br>
-<% @concepts.each do |c| %>
-    <%= c.name %> - <%= c.weeks.ids %><br>
-<% end %>
+<div class="admin">
+  <%= @setup.name %><br>
+  <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
+    <%= s.text_field :week_count %>
+    <%= date_select :setup, :first_week_at %>
+    <%= s.submit "Odoslať" %>
+  <% end %>
+
+    <br>
+    <% @concepts.each do |c| %>
+        <%= c.name %> - <%= c.weeks.ids %><br>
+    <% end %>
+</div>
