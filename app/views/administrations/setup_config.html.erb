@@ -6,8 +6,30 @@
     <%= s.submit "Odoslať" %>
   <% end %>
 
-    <br>
+  <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
+  <table>
+    <tr>
+      <th>Názov konceptu</th>
+      <% (1..@setup.week_count).each do |w| %>
+          <th>
+            <%= w %>
+          </th>
+      <% end %>
+    </tr>
     <% @concepts.each do |c| %>
-        <%= c.name %> - <%= c.weeks.ids %><br>
+      <tr>
+      <td>
+        <%= c.name %>
+      </td>
+      <% (1..@setup.week_count).each do |w| %>
+          <td>
+            <%= check_box_tag "relations[#{c.id}][#{w}]", "1", (w.in? c.weeks.map(&:number)) %>
+          </td>
+      <% end %>
+      </tr>
     <% end %>
+  </table>
+  <%= submit_tag "Odoslať" %>
+  <% end %>
 </div>
+

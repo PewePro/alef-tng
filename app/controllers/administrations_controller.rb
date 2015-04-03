@@ -26,7 +26,13 @@ class AdministrationsController < ApplicationController
   end
 
   def setup_config_relations
-    render nothing: true
+    relations = params[:relations]
+    relations.each do |concept, weeks|
+      c = Concept.find(concept)
+      w = Setup.find(params[:setup_id]).weeks.where(number: weeks.keys)
+      c.weeks = w
+    end
+    redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
 end
