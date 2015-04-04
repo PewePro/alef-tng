@@ -10,9 +10,9 @@
   <table>
     <tr>
       <th>Názov konceptu</th>
-      <% (1..@setup.week_count).each do |w| %>
+      <% @weeks.each do |w| %>
           <th>
-            <%= w %>
+            <%= w.number %>
           </th>
       <% end %>
     </tr>
@@ -21,13 +21,21 @@
       <td>
         <%= c.name %>
       </td>
-      <% (1..@setup.week_count).each do |w| %>
+      <% @weeks.each do |w| %>
           <td>
-            <%= check_box_tag "relations[#{c.id}][#{w}]", "1", (w.in? c.weeks.map(&:number)) %>
+            <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)) %>
           </td>
       <% end %>
       </tr>
     <% end %>
+    <tr>
+      <th>Počet otázok</th>
+      <% @weeks.each do |w| %>
+          <td>
+            <%= w.question_count %>
+          </td>
+      <% end %>
+    </tr>
   </table>
   <%= submit_tag "Odoslať" %>
   <% end %>

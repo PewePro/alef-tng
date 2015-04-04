@@ -6,6 +6,7 @@ class AdministrationsController < ApplicationController
   def setup_config
     @setup = Setup.find(params[:setup_id])
     @concepts = @setup.course.concepts.includes(:weeks)
+    @weeks = @setup.weeks.order(:number)
   end
 
   def setup_config_attributes
@@ -29,7 +30,7 @@ class AdministrationsController < ApplicationController
     relations = params[:relations]
     relations.each do |concept, weeks|
       c = Concept.find(concept)
-      w = Setup.find(params[:setup_id]).weeks.where(number: weeks.keys)
+      w = Setup.find(params[:setup_id]).weeks.find(weeks.keys)
       c.weeks = w
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
