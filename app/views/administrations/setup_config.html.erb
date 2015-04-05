@@ -31,7 +31,7 @@
     <% @concepts.each do |c| %>
       <tr>
       <td>
-        <%= c.name %>
+        <%= c.name %> (<%= c.question_count %>)
       </td>
       <% @weeks.each do |w| %>
           <td>
