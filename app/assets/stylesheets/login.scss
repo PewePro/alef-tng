@@ -45,6 +45,29 @@
   display: inline;
 }
 
+.remember-me-icon {
+  @include color-transition;
+  padding: 0.8rem 0.7rem; // od oka odladene odsadenie ikoniek
+  font-size: 1.25em;
+}
+
+.remember-me-input {
+  display: none;
+
+  //&:checked ~ .remember-me-text,
+  &:checked + .remember-me-icon {
+    color: $red;
+  }
+
+  &[type="checkbox"]:checked + .remember-me-icon::before {
+    content: '\e809';
+  }
+
+  &[type="radio"]:checked + .remember-me-icon::before {
+    content: '\e806';
+  }
+}
+
 #login-fieldset > label {
   @include big-top-margin;
   @include center-block;
