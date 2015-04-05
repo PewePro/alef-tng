@@ -1,13 +1,25 @@
-<div class="admin">
-  <%= @setup.name %><br>
-  <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
-    <%= s.text_field :week_count %>
-    <%= date_select :setup, :first_week_at %>
-    <%= s.submit "Odoslať" %>
-  <% end %>
+<nav>
+   <div class="admin-nav">
+    <h2><%= @setup.name %></h2>
+     <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+   </div>
+</nav>
+<hr class="nav-offset">
 
+<div class="admin">
+  <h3>Základné nastavenia</h3>
+  <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
+    <table>
+    <tr><th>Počet týždňov:</th><td><%= s.text_field :week_count %></td></tr>
+    <tr><th>Začiatok kurzu:</th><td><%= date_select :setup, :first_week_at %></td></tr>
+    </table>
+    <%= s.submit "Uložiť" %>
+  <% end %>
+</div>
+<div class="admin">
+  <h3>Nastavenia konceptov</h3>
   <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
-  <table>
+  <table id="setup-relations-table">
     <tr>
       <th>Názov konceptu</th>
       <% @weeks.each do |w| %>
@@ -37,7 +49,7 @@
       <% end %>
     </tr>
   </table>
-  <%= submit_tag "Odoslať" %>
+  <%= submit_tag "Uložiť" %>
   <% end %>
 </div>
 

@@ -1,6 +1,7 @@
 class AdministrationsController < ApplicationController
   authorize_resource :class => false
   def index
+    @setups = Setup.all
   end
 
   def setup_config
