@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20150401132203) do
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
-  
+
   create_table "weeks", force: :cascade do |t|
     t.integer "setup_id"
     t.integer "number"
