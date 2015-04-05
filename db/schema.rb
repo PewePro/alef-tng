@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150328152458) do
+ActiveRecord::Schema.define(version: 20150401132203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,10 +25,11 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   end
 
   create_table "concepts", force: :cascade do |t|
-    t.integer  "setup_id",   null: false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "pseudo",     default: true, null: false
+    t.integer  "course_id",                 null: false
   end
 
   create_table "concepts_learning_objects", force: :cascade do |t|
@@ -39,6 +40,12 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   create_table "concepts_weeks", force: :cascade do |t|
     t.integer "week_id",    null: false
     t.integer "concept_id", null: false
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "learning_objects", force: :cascade do |t|
@@ -55,6 +62,7 @@ ActiveRecord::Schema.define(version: 20150328152458) do
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "course_id",     null: false
   end
 
   create_table "setups_users", force: :cascade do |t|
@@ -83,20 +91,33 @@ ActiveRecord::Schema.define(version: 20150328152458) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email",                  default: "",        null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0,         null: false
+    t.integer  "sign_in_count",          default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "aislogin"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        default: 0,         null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
     t.string   "remember_token"
-    t.string   "role",                default: "student", null: false
-    t.string   "encrypted_password",  default: "",        null: false
-    t.string   "type",                default: "",        null: false
-    t.boolean  "show_solutions",      default: false
+    t.string   "role",                   default: "student", null: false
+    t.string   "encrypted_password",     default: "",        null: false
+    t.string   "type",                   default: "",        null: false
+    t.boolean  "show_solutions",         default: false
   end
 
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "weeks", force: :cascade do |t|
     t.integer "setup_id"
@@ -104,11 +125,12 @@ ActiveRecord::Schema.define(version: 20150328152458) do
   end
 
   add_foreign_key "answers", "learning_objects"
-  add_foreign_key "concepts", "setups"
+  add_foreign_key "concepts", "courses"
   add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
   add_foreign_key "user_to_lo_relations", "learning_objects"

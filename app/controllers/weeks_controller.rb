@@ -28,7 +28,7 @@ class WeeksController < ApplicationController
     end
 
     learning_objects = Setup.take.learning_objects.distinct
-    relations = UserToLoRelation.get_basic_relations(learning_objects, 1)
+    relations = UserToLoRelation.get_basic_relations(learning_objects, @user.id)
 
     @weeks_info = Array.new
     @weeks.each do |w|

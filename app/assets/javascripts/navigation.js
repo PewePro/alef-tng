@@ -1,28 +1,35 @@
 var Nav = {
 
     ueHeight : null, //user element height
+    nav : null,
 
     initUserElement : function() {
+        this.nav = $('nav');
         this.ueHeight = $('#user-element').outerHeight();
-        $('.nav-offset').css( "height", "+="+this.ueHeight );
+        navHeight = this.nav.outerHeight();
+        $('.nav-offset').css( "height", navHeight + this.ueHeight );
 
-        // pripad ked je prilis mala obrazovka a neslo by zoscrollovat dost dole
-        if($(document).height() - $(window).height() - $(window).scrollTop() == 0) {
-            $('#faux-background').css( "height", "+="+this.ueHeight );
-        }
+        $('#faux-background').css( "top", this.ueHeight  );
 
-        $(document).scrollTop(this.ueHeight);
+
+        Nav.autoScrollNav();
         $(window).scroll(function() {
             Nav.autoScrollNav();
         });
+
+        $(document).scrollTop(this.ueHeight);
     },
 
     autoScrollNav : function() {
         var scroll = $(document).scrollTop();
         if(scroll < this.ueHeight) {
-            $('nav').css('top', this.ueHeight - scroll);
+
+            this.nav.css('position','absolute');
+            this.nav.css('top',this.ueHeight);
+
         } else {
-            $('nav').css('top',0);
+            this.nav.css('position','fixed');
+            this.nav.css('top',0);
         }
     }
 };
