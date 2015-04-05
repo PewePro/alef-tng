@@ -2,6 +2,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 require 'pandoc-ruby'
+require 'csv'
 
 # task which convert ALEF questions from docbook format to markdown format
 # and save them into database
@@ -74,5 +75,138 @@ namespace :aleftng do
 
       end
     end
+  end
+
+  def find_and_replace_in_text(find, replace, text)
+    #puts "Search and replace #{find.inspect} => #{replace.inspect}"
+    text.gsub!(find, replace)
+    return text
+  end
+
+  # TODO - Výnimka - iný typ otázky ako tieto základné
+  def find_question_type(text)
+    if text == "single-choice"
+      return "SingleChoiceQuestion"
+    elsif text == "multi-choice"
+      return "MultiChoiceQuestion"
+    elsif text == "answer-validator"
+      return "EvaluatorQuestion"
+    elsif text == "complement"
+      return "Complement"
+    end
+  end
+
+  def find_substring(text)
+    if text.include? "<correct>"
+      return true
+    else
+      return false
+    end
+  end
+
+  def import_Choice_questions(dir)
+    # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
+    parsed_file = CSV.read(dir, :headers => false)
+    parsed_file.each do |row|
+
+      # Predspracovanie
+      zero_version = row[4]
+      picture = row[1]
+      external_reference = row[0]
+      question_text = PandocRuby.new(row[5], :from => :docbook, :to => :markdown)
+      question_text = find_and_replace_in_text("\n", "", question_text.to_s)
+      answers = row[11]
+      question_type = find_question_type(row[9])
+
+      # Vyberieme otázky do nultej verzie a bez obrázku
+      if (!zero_version.nil? && picture.nil?)
+        lo = LearningObject.find_by_external_reference(external_reference)
+        if (lo.nil?)
+          #puts "QUESTION NOT EXISTS"
+          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_text}"
+          splitted_answers = find_and_replace_in_text(";", "\n", answers).split(/\r?\n/)
+          splitted_answers.each do |answer|
+            correct_answer = find_substring(answer)
+            answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+            answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+            Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
+            #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
+          end
+          #puts "QUESTION NOT EXISTS"
+        else
+          #puts "QUESTION EXISTS"
+          lo.update( type: question_type, question_text: question_text )
+          #puts "QUESTION: #{question_text}"
+          ans = Answer.where(learning_object_id: lo.id)
+          ans.destroy_all
+          splitted_answers = find_and_replace_in_text(";", "\n", answers).split(/\r?\n/)
+          splitted_answers.each do |answer|
+            correct_answer = find_substring(answer)
+            answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+            answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+            Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
+            #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
+          end
+          #puts "QUESTION EXISTS"
+        end
+      end
+
+    end
+  end
+
+  def import_QALO_questions(dir)
+    # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
+    parsed_file = CSV.read(dir, :headers => false)
+    parsed_file.each do |row|
+
+      # Predspracovanie
+      zero_version = row[2]
+      picture = row[9]
+      external_reference = "#{row[0]}:#{row[1]}"
+      question_text = PandocRuby.new(row[8], :from => :docbook, :to => :markdown)
+      question_text = find_and_replace_in_text("\n", "", question_text.to_s)
+      answer = row[10]
+      question_type = "EvaluatorQuestion"
+
+      # Vyberieme otázky do nultej verzie a bez obrázku
+      if (!zero_version.nil? && picture.nil?)
+        lo = LearningObject.find_by_external_reference(external_reference)
+        if (lo.nil?)
+          #puts "QUESTION NOT EXISTS"
+          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_text}"
+          answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+          answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+          Answer.create!( learning_object_id: lo.id, answer_text: answer_text )
+          #puts "ANSWER: #{answer} | #{answer_text}"
+          #puts "QUESTION NOT EXISTS"
+        else
+          #puts "QUESTION EXISTS"
+          lo.update( type: question_type, question_text: question_text )
+          #puts "QUESTION: #{question_text}"
+          answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+          answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+          ans = Answer.find_by_learning_object_id(lo.id)
+          ans.update(answer_text: answer_text)
+          #puts "ANSWER: #{answer} | #{answer_text}"
+          #puts "QUESTION EXISTS"
+        end
+      end
+
+    end
+  end
+
+  # task which convert ALEF questions from CSV files
+  # and save them into database
+  # run it this way -> rake aleftng:import_alef_los_from_csv_files["path_to_csv_file_with_QALO_questions,path_to_csv_file_with_Choice_questions"]
+  task :import_alef_los_from_csv_files, [:QALO_dir, :Choice_dir] => :environment do |t, args|
+
+    directory = args.Choice_dir
+    import_Choice_questions(directory)
+
+    directory = args.QALO_dir
+    import_QALO_questions(directory)
+
   end
 end
