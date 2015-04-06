@@ -77,32 +77,12 @@ namespace :aleftng do
     end
   end
 
-  def find_and_replace_in_text(find, replace, text)
-    #puts "Search and replace #{find.inspect} => #{replace.inspect}"
-    text.gsub!(find, replace)
-    return text
-  end
-
-  # TODO - Výnimka - iný typ otázky ako tieto základné
-  def find_question_type(text)
-    if text == "single-choice"
-      return "SingleChoiceQuestion"
-    elsif text == "multi-choice"
-      return "MultiChoiceQuestion"
-    elsif text == "answer-validator"
-      return "EvaluatorQuestion"
-    elsif text == "complement"
-      return "Complement"
-    end
-  end
-
-  def find_substring(text)
-    if text.include? "<correct>"
-      return true
-    else
-      return false
-    end
-  end
+  IMPORTED_QUESTION_TYPES = {
+      "single-choice" => 'SingleChoiceQuestion',
+      "multi-choice" => 'MultiChoiceQuestion',
+      "answer-validator" => 'EvaluatorQuestion',
+      "complement" => 'Complement'
+  }
 
   def import_Choice_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
@@ -114,9 +94,9 @@ namespace :aleftng do
       picture = row[1]
       external_reference = row[0]
       question_text = PandocRuby.new(row[5], :from => :docbook, :to => :markdown)
-      question_text = find_and_replace_in_text("\n", "", question_text.to_s)
+      question_text = (question_text.to_s).gsub!("\n", "")
       answers = row[11]
-      question_type = find_question_type(row[9])
+      question_type = IMPORTED_QUESTION_TYPES[row[9]]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
       if (!zero_version.nil? && picture.nil?)
@@ -125,30 +105,22 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
           lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_text}"
-          splitted_answers = find_and_replace_in_text(";", "\n", answers).split(/\r?\n/)
-          splitted_answers.each do |answer|
-            correct_answer = find_substring(answer)
-            answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
-            answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
-            Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
-            #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
-          end
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
           lo.update( type: question_type, question_text: question_text )
-          #puts "QUESTION: #{question_text}"
           ans = Answer.where(learning_object_id: lo.id)
           ans.destroy_all
-          splitted_answers = find_and_replace_in_text(";", "\n", answers).split(/\r?\n/)
-          splitted_answers.each do |answer|
-            correct_answer = find_substring(answer)
-            answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
-            answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
-            Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
-            #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
-          end
+          #puts "QUESTION: #{question_text}"
           #puts "QUESTION EXISTS"
+        end
+        splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
+        splitted_answers.each do |answer|
+          correct_answer = answer.include? "<correct>"
+          answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+          answer_text = (answer_text.to_s).gsub!("\n", "")
+          Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
+          #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
         end
       end
 
@@ -165,7 +137,7 @@ namespace :aleftng do
       picture = row[9]
       external_reference = "#{row[0]}:#{row[1]}"
       question_text = PandocRuby.new(row[8], :from => :docbook, :to => :markdown)
-      question_text = find_and_replace_in_text("\n", "", question_text.to_s)
+      question_text = (question_text.to_s).gsub!("\n", "")
       answer = row[10]
       question_type = "EvaluatorQuestion"
 
@@ -177,7 +149,7 @@ namespace :aleftng do
           lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
-          answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+          answer_text = (answer_text.to_s).gsub!("\n", "")
           Answer.create!( learning_object_id: lo.id, answer_text: answer_text )
           #puts "ANSWER: #{answer} | #{answer_text}"
           #puts "QUESTION NOT EXISTS"
@@ -186,7 +158,7 @@ namespace :aleftng do
           lo.update( type: question_type, question_text: question_text )
           #puts "QUESTION: #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
-          answer_text = find_and_replace_in_text("\n", "", answer_text.to_s)
+          answer_text = (answer_text.to_s).gsub!("\n", "")
           ans = Answer.find_by_learning_object_id(lo.id)
           ans.update(answer_text: answer_text)
           #puts "ANSWER: #{answer} | #{answer_text}"
