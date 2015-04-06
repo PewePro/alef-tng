@@ -105,23 +105,22 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
           lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_text}"
+          splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
+          splitted_answers.each do |answer|
+            correct_answer = answer.include? "<correct>"
+            answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
+            answer_text = (answer_text.to_s).gsub!("\n", "")
+            Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
+            #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
+          end
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
           lo.update( type: question_type, question_text: question_text )
-          ans = Answer.where(learning_object_id: lo.id)
-          ans.destroy_all
           #puts "QUESTION: #{question_text}"
           #puts "QUESTION EXISTS"
         end
-        splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
-        splitted_answers.each do |answer|
-          correct_answer = answer.include? "<correct>"
-          answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
-          answer_text = (answer_text.to_s).gsub!("\n", "")
-          Answer.create!( learning_object_id: lo.id, answer_text: answer_text, is_correct: correct_answer )
-          #puts "ANSWER: #{answer} | #{answer_text} | #{correct_answer}"
-        end
+
       end
 
     end
