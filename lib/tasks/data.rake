@@ -93,6 +93,7 @@ namespace :aleftng do
       zero_version = row[4]
       picture = row[1]
       external_reference = row[0]
+      question_name = row[2]
       question_text = PandocRuby.new(row[5], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answers = row[11]
@@ -103,8 +104,8 @@ namespace :aleftng do
         lo = LearningObject.find_by_external_reference(external_reference)
         if (lo.nil?)
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
-          #puts "QUESTION: #{question_text}"
+          lo = LearningObject.create!( type: question_type, question_name: question_name, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
           splitted_answers.each do |answer|
             correct_answer = answer.include? "<correct>"
@@ -116,8 +117,8 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_text: question_text )
-          #puts "QUESTION: #{question_text}"
+          lo.update( type: question_type, question_name: question_name, question_text: question_text )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
 
@@ -135,6 +136,7 @@ namespace :aleftng do
       zero_version = row[2]
       picture = row[9]
       external_reference = "#{row[0]}:#{row[1]}"
+      question_name = row[5]
       question_text = PandocRuby.new(row[8], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answer = row[10]
@@ -145,8 +147,8 @@ namespace :aleftng do
         lo = LearningObject.find_by_external_reference(external_reference)
         if (lo.nil?)
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
-          #puts "QUESTION: #{question_text}"
+          lo = LearningObject.create!( type: question_type, question_name: question_name, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
           Answer.create!( learning_object_id: lo.id, answer_text: answer_text )
@@ -154,8 +156,8 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_text: question_text )
-          #puts "QUESTION: #{question_text}"
+          lo.update( type: question_type, question_name: question_name, question_text: question_text )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
           ans = Answer.find_by_learning_object_id(lo.id)
