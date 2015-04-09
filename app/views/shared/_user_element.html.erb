@@ -1,4 +1,4 @@
-<div id="user-element">
+<div id="user-element" class="not-zoomable">
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
     <%= link_to "Odhlásiť", destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>

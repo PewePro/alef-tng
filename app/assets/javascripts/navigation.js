@@ -27,7 +27,7 @@ var Nav = {
         // nastavovanie spravania pri zoomovani
         this.startingWidth = window.innerWidth;
         this.lastWidth = window.innerWidth;
-        setInterval(this.checkZoom, 10);
+        setInterval(this.checkZoom, 50);
     },
 
     checkZoom : function() {
@@ -44,15 +44,11 @@ var Nav = {
     },
 
     showNav : function () {
-        this.nav.css('visibility','visible');
-        this.ue.css('visibility','visible');
-        $('.question-name, .nav-offset').css('visibility','visible');
+        $('.not-zoomable').css('visibility','visible');
     },
 
     hideNav : function() {
-        this.nav.css('visibility','hidden');
-        this.ue.css('visibility','hidden');
-        $('.question-name, .nav-offset').css('visibility','hidden');
+        $('.not-zoomable').css('visibility','hidden');
     },
 
     autoScrollNav : function() {
