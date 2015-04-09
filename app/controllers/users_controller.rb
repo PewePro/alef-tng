@@ -16,6 +16,5 @@ class UsersController < ApplicationController
         accept: request.env['HTTP_USER_ACCEPT'],
         url: request.env['HTTP_REFERER']
     )
-    render nothing: true
   end
 end
