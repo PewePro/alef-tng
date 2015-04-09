@@ -1,3 +1,19 @@
+@mixin button {
+  display: block;
+  @include border-radius(1rem);
+  @include medium-font;
+  height: 2rem;
+  padding: 0 1.5rem;
+  line-height: 2rem;
+  cursor: pointer;
+  border: 1px solid $white;
+
+  &:active, &:hover {
+    background-color: $white;
+    color: $dark;
+  }
+}
+
 @mixin color-transition {
   transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
   -webkit-transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;

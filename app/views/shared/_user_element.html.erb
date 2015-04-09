@@ -1,9 +1,19 @@
+<form><div id="contact">
+ <textarea id="contact-textarea"></textarea>
+  <div id="contact-button-field">
+    <button>Odoslať</button>
+    <button>Zrušiť</button>
+  </div>
+</div></form>
 <div id="user-element">
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
+
+
     <%= link_to "Odhlásiť", destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>
     <% if can? :manage, :administration %>
         <%= link_to "Administrácia", administration_path, class: 'user-panel-button' %>
     <% end %>
+    <a class="user-panel-button" id="contact-btn">Kontakt</a>
   </div>
 </div>
