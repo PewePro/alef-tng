@@ -1,10 +1,12 @@
-<form><div id="contact">
- <textarea id="contact-textarea"></textarea>
+<%= form_tag feedback_path, method: 'post', remote: true do %>
+<div id="contact">
+  <%= text_area_tag :message, '', id: 'contact-textarea' %>
   <div id="contact-button-field">
-    <button>Odoslať</button>
-    <button>Zrušiť</button>
+    <button id="contact-send-btn">Odoslať</button>
+    <button id="contact-cancel-btn">Zrušiť</button>
   </div>
-</div></form>
+</div>
+<% end %>
 <div id="user-element">
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>

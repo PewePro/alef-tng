@@ -22,7 +22,10 @@ Rails.application.routes.draw do
   # Opravi otazku a vrati spravnu odpoved
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
 
+  # Prepina zobrazovenie odpovedi ku otazkam
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'
+
+  post 'feedback' => 'users#send_feedback', as: 'feedback'
 
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
