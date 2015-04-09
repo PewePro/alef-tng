@@ -44,11 +44,11 @@ var Nav = {
     },
 
     showNav : function () {
-        $('.not-zoomable').css('visibility','visible');
+        $('.not-zoomable').css('opacity',1);
     },
 
     hideNav : function() {
-        $('.not-zoomable').css('visibility','hidden');
+        $('.not-zoomable').css('opacity',0);
     },
 
     autoScrollNav : function() {
