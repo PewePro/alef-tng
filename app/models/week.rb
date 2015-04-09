@@ -17,7 +17,9 @@ class Week < ActiveRecord::Base
 
   def question_count_done user_id
     lo_ids = self.learning_objects.uniq.map(&:id)
-    UserSolvedLoRelation.where(learning_object_id: lo_ids, user_id: user_id).count
+    UserSolvedLoRelation.where(learning_object_id: lo_ids, user_id: user_id).
+        group(:learning_object_id).count.
+        count
   end
 
   before_destroy do |week|
