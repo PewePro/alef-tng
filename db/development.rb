@@ -1,6 +1,6 @@
 course = Course.create!(name: 'PSI')
 
-setup = Setup.create!(name: 'PSI 2015', first_week_at: '2015-09-21 00:00:00.00000', week_count: 12, course_id: course.id)
+setup = Setup.create!(name: 'PSI 2015', first_week_at: '2015-09-21 00:00:00.00000', week_count: 4, course_id: course.id)
 
 weeks = Week.create!([
   {setup_id: setup.id, number: 1},
