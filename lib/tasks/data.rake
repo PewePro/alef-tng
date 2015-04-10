@@ -84,6 +84,35 @@ namespace :aleftng do
       "complement" => 'Complement'
   }
 
+  def import_Concepts(concept_names,learning_object_id)
+
+    splitted_concept_names = (concept_names.gsub!(",", "\n")).split(/\r?\n/)
+    splitted_concept_names.each do |concept_name|
+      concept = Concept.find_by_name(concept_name)
+      if(concept.nil?)
+        concept = Concept.create!(name: concept_name, course_id: 1)  # TODO: MS course_id: 1
+        # TODO: MS Vytvorenie prepojenia
+        # ConceptLearningObject.create!(concept_id: concept.id, learning_object_id: learning_object_id)
+      else # if(!concept.nil?)
+        # TODO: MS Vytvorenie prepojenia ak concept existuje
+        # clo = ConceptLearningObject.find_by_learning_object_id(learning_object_id)
+        # if(clo.nil? || (!(clo.nil?) && clo.concept_id != concept.id))
+        #   ConceptLearningObject.create!(concept_id: concept.id, learning_object_id: learning_object_id)
+        # end
+      end
+    end
+
+    # TODO: MS Odstránenie prepojení, ktoré niesú v predspracovaných dátach
+    # db_col = ConceptLearningObject.where(learning_object_id: learning_object_id)
+    # db_col.each do |col|
+    #   c = Concept.find_by_id(col.concept_id)
+    #   if (!concept_names.include? c.name)
+    #     col.destroy
+    #   end
+    # end
+
+  end
+
   def import_Choice_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
     parsed_file = CSV.read(dir, :headers => false)
@@ -98,6 +127,7 @@ namespace :aleftng do
       question_text = (question_text.to_s).gsub!("\n", "")
       answers = row[11]
       question_type = IMPORTED_QUESTION_TYPES[row[9]]
+      concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
       if (!zero_version.nil? && picture.nil?)
@@ -121,9 +151,8 @@ namespace :aleftng do
           #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
-
+        import_Concepts(concept_names, lo.id)
       end
-
     end
   end
 
@@ -141,6 +170,7 @@ namespace :aleftng do
       question_text = (question_text.to_s).gsub!("\n", "")
       answer = row[10]
       question_type = "EvaluatorQuestion"
+      concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
       if (!zero_version.nil? && picture.nil?)
@@ -165,8 +195,8 @@ namespace :aleftng do
           #puts "ANSWER: #{answer} | #{answer_text}"
           #puts "QUESTION EXISTS"
         end
+        import_Concepts(concept_names, lo.id)
       end
-
     end
   end
 
