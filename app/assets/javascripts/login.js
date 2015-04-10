@@ -1,6 +1,6 @@
 var Login = {
     
-    initLogin : function() {
+    init : function() {
         Login.positionLogo();
         $(window).resize(function() {
             Login.positionLogo();

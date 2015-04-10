@@ -48,6 +48,16 @@ ActiveRecord::Schema.define(version: 20150410183933) do
     t.datetime "updated_at"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.text     "message",    null: false
+    t.integer  "user_id"
+    t.text     "url"
+    t.text     "accept"
+    t.text     "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "learning_objects", force: :cascade do |t|
     t.string   "lo_id"
     t.string   "type"

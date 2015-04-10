@@ -1,0 +1,16 @@
+<nav>
+  <div class="admin-nav">
+    <h2>Administrácia</h2>
+    <%= link_to "Domov", root_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="admin">
+  <h3>Nastavenia setupov</h3>
+  <ul>
+<% @setups.each do |s| %>
+    <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link" %></li>
+<% end %>
+  </ul>
+</div>
