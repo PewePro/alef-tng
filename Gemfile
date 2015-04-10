@@ -57,6 +57,9 @@ gem 'gon'
 # performance monitoring with newrelic
 gem 'newrelic_rpm'
 
+# Localization
+gem 'rails-i18n'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
@@ -75,6 +78,5 @@ group :development, :test do
   gem 'capistrano-passenger'
 
   gem 'factory_girl_rails'
-
 end
 
