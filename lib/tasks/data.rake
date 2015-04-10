@@ -104,7 +104,7 @@ namespace :aleftng do
         lo = LearningObject.find_by_external_reference(external_reference)
         if (lo.nil?)
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_name: question_name, question_text: question_text, external_reference: external_reference )
+          lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_name} | #{question_text}"
           splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
           splitted_answers.each do |answer|
@@ -117,7 +117,7 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_name: question_name, question_text: question_text )
+          lo.update( type: question_type, lo_id: question_name, question_text: question_text )
           #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
@@ -147,7 +147,7 @@ namespace :aleftng do
         lo = LearningObject.find_by_external_reference(external_reference)
         if (lo.nil?)
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_name: question_name, question_text: question_text, external_reference: external_reference )
+          lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
@@ -156,7 +156,7 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_name: question_name, question_text: question_text )
+          lo.update( type: question_type, lo_id: question_name, question_text: question_text )
           #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
