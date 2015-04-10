@@ -27,6 +27,11 @@ $porcelain: #ECF0F1; // jemne tmavsi odtien bielej, pri :hover nad bielymi prvka
   color: $dark;
 }
 
+@mixin dark-red {
+  background-color: $dark;
+  color: $red;
+}
+
 @mixin gray-white {
   background-color: $gray;
   color: $white;

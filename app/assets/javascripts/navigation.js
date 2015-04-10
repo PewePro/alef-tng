@@ -4,6 +4,8 @@ var Nav = {
     nav : null,
 
     initUserElement : function() {
+        Contact.init();
+
         this.nav = $('nav');
         this.ueHeight = $('#user-element').outerHeight();
         navHeight = this.nav.outerHeight();
