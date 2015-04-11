@@ -84,32 +84,41 @@ namespace :aleftng do
       "complement" => 'Complement'
   }
 
-  def import_Concepts(concept_names,learning_object_id)
-
-    splitted_concept_names = (concept_names.gsub!(",", "\n")).split(/\r?\n/)
+  def import_Concepts(concept_names,learning_object)
+    puts "CONCEPT_NAMES: #{concept_names}"
+    splitted_concept_names = (concept_names.gsub!(",", "\n") || concept_names).split(/\r?\n/)
     splitted_concept_names.each do |concept_name|
+      puts "Concept: #{concept_name}"
       concept = Concept.find_by_name(concept_name)
       if(concept.nil?)
-        concept = Concept.create!(name: concept_name, course_id: 1)  # TODO: MS course_id: 1
-        # TODO: MS Vytvorenie prepojenia
-        # ConceptLearningObject.create!(concept_id: concept.id, learning_object_id: learning_object_id)
+        puts "Concept neexistuje"
+        # Vytvorenie concept-u aj prepojenia
+        first_course = Course.first
+        concept = Concept.create!(name: concept_name, course_id: first_course.id)
+        concept.learning_objects << learning_object  # Vytvorenie prepojenia
       else # if(!concept.nil?)
-        # TODO: MS Vytvorenie prepojenia ak concept existuje
-        # clo = ConceptLearningObject.find_by_learning_object_id(learning_object_id)
-        # if(clo.nil? || (!(clo.nil?) && clo.concept_id != concept.id))
-        #   ConceptLearningObject.create!(concept_id: concept.id, learning_object_id: learning_object_id)
-        # end
+        puts "Concept existuje"
+        # Vytvorenie prepojenia ak concept existuje
+        lo_in_c = concept.learning_objects.find_by_id(learning_object.id)
+        if (lo_in_c.nil?)
+          puts "Prepojenie neexistuje"
+          concept.learning_objects << learning_object  # Vytvorenie prepojenia
+        end
       end
     end
 
-    # TODO: MS Odstránenie prepojení, ktoré niesú v predspracovaných dátach
-    # db_col = ConceptLearningObject.where(learning_object_id: learning_object_id)
-    # db_col.each do |col|
-    #   c = Concept.find_by_id(col.concept_id)
-    #   if (!concept_names.include? c.name)
-    #     col.destroy
-    #   end
-    # end
+    # Odstránenie prepojení, ktoré niesú v predspracovaných dátach
+    c_in_lo = learning_object.concepts
+    if(!c_in_lo.nil?)
+      c_in_lo.each do |c|
+        if (!(concept_names.include? c.name))
+          puts "Odstranujem: c.name"
+          learning_object.concepts.delete(c)
+        end
+      end
+    end
+
+    puts "-------------------------------------"
 
   end
 
@@ -151,7 +160,7 @@ namespace :aleftng do
           #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
-        import_Concepts(concept_names, lo.id)
+        import_Concepts(concept_names, lo) if !concept_names.nil?
       end
     end
   end
@@ -195,7 +204,7 @@ namespace :aleftng do
           #puts "ANSWER: #{answer} | #{answer_text}"
           #puts "QUESTION EXISTS"
         end
-        import_Concepts(concept_names, lo.id)
+        import_Concepts(concept_names, lo) if !concept_names.nil?
       end
     end
   end
