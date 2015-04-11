@@ -1,0 +1,62 @@
+.admin {
+  width: 100%;
+  max-width: 960px;
+  @include white-dark;
+  margin: 2rem auto;
+  padding: 1rem;
+
+  h3 {
+    border-bottom: 1px solid $gray;
+  }
+
+  th {
+    padding: 0.25rem 1rem;
+  }
+
+  input[type="submit"] {
+    @include red-white;
+    border: none;
+  }
+}
+
+.admin-nav {
+  width: 100%;
+  max-width: 960px;
+  @include center-block;
+}
+
+.admin input, .admin select {
+  @include medium-font;
+  @include border-radius(0.5rem);
+  margin: 1rem 0;
+  border: 1px solid $gray;
+  padding: 0.5rem 1rem;
+}
+
+#setup-relations-table {
+  td:not(:first-child) {text-align: center;}
+  td:first-child {text-align: right; padding: 0 1rem;}
+  td:nth-child(2n) {background-color: $porcelain;}
+  input {display: inline-block;}
+  tr:not(:first-child) {border-top: 1px solid $gray;}
+}
+
+.admin-nav-button {
+  display: block;
+  border: 1px solid $white;
+  @include border-radius(1rem);
+  height: 2rem;
+  float: right;
+  padding: 0 1.5rem;
+  line-height: 2rem;
+  margin: 0.5rem 1rem 0 0;
+}
+
+.admin-link {
+  border-width: 0;
+  border-bottom: 1px dashed $dark;
+
+  &:hover {
+    border-style: solid;
+  }
+}

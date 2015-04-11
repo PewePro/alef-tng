@@ -22,10 +22,16 @@ Rails.application.routes.draw do
   # Opravi otazku a vrati spravnu odpoved
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
 
+  # Prepina zobrazovenie odpovedi ku otazkam
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'
+
+  post 'feedback' => 'users#send_feedback', as: 'feedback'
 
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
+  get 'admin/setup_config/:setup_id' => 'administrations#setup_config', as: 'setup_config'
+  post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
+  post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
