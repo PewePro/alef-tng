@@ -84,21 +84,21 @@ namespace :aleftng do
       "complement" => 'Complement'
   }
 
-  def import_Concepts(concept_names,learning_object)
+  def import_concepts(concept_names,learning_object)
     #puts "CONCEPT_NAMES: #{concept_names}"
     splitted_concept_names = (concept_names.gsub!(",", "\n") || concept_names).split(/\r?\n/)
     splitted_concept_names.each do |concept_name|
       #puts "Concept: #{concept_name}"
       concept = Concept.find_by_name(concept_name)
-      if(concept.nil?)
+      if concept.nil?
         #puts "Concept neexistuje"
         first_course = Course.first
         concept = Concept.create!(name: concept_name, course_id: first_course.id)
         concept.learning_objects << learning_object  # Vytvorenie prepojenia
-      else # if(!concept.nil?)
+      else # if !concept.nil?
         #puts "Concept existuje"
         lo_in_c = concept.learning_objects.find_by_id(learning_object.id)
-        if (lo_in_c.nil?)
+        if lo_in_c.nil?
           #puts "Prepojenie neexistuje"
           concept.learning_objects << learning_object  # Vytvorenie prepojenia
         end
@@ -107,9 +107,9 @@ namespace :aleftng do
 
     # Odstránenie prepojení, ktoré niesú v predspracovaných dátach
     c_in_lo = learning_object.concepts
-    if(!c_in_lo.nil?)
+    if !c_in_lo.nil?
       c_in_lo.each do |c|
-        if (!(concept_names.include? c.name))
+        if !(concept_names.include? c.name)
           #puts "Odstranujem: c.name"
           learning_object.concepts.delete(c)
         end
@@ -135,9 +135,9 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if (!zero_version.nil? && picture.nil?)
+      if !zero_version.nil? && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
-        if (lo.nil?)
+        if lo.nil?
           #puts "QUESTION NOT EXISTS"
           lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_name} | #{question_text}"
@@ -156,7 +156,7 @@ namespace :aleftng do
           #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
-        import_Concepts(concept_names, lo) if !concept_names.nil?
+        import_concepts(concept_names, lo) if concept_names
       end
     end
   end
@@ -178,9 +178,9 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if (!zero_version.nil? && picture.nil?)
+      if !zero_version.nil? && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
-        if (lo.nil?)
+        if lo.nil?
           #puts "QUESTION NOT EXISTS"
           lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
           #puts "QUESTION: #{question_name} | #{question_text}"
@@ -200,7 +200,7 @@ namespace :aleftng do
           #puts "ANSWER: #{answer} | #{answer_text}"
           #puts "QUESTION EXISTS"
         end
-        import_Concepts(concept_names, lo) if !concept_names.nil?
+        import_concepts(concept_names, lo) if concept_names
       end
     end
   end
