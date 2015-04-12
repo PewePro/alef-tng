@@ -86,7 +86,8 @@ namespace :aleftng do
 
   def import_concepts(concept_names,learning_object)
     #puts "CONCEPT_NAMES: #{concept_names}"
-    splitted_concept_names = (concept_names.gsub!(",", "\n") || concept_names).split(/\r?\n/)
+    concept_names.gsub!(",", "\n") || concept_names
+    splitted_concept_names = concept_names.split(/\r?\n/)
     splitted_concept_names.each do |concept_name|
       #puts "Concept: #{concept_name}"
       concept = Concept.find_by_name(concept_name)
@@ -107,7 +108,7 @@ namespace :aleftng do
 
     # Odstránenie prepojení, ktoré niesú v predspracovaných dátach
     c_in_lo = learning_object.concepts
-    if !c_in_lo.nil?
+    if c_in_lo
       c_in_lo.each do |c|
         if !(concept_names.include? c.name)
           #puts "Odstranujem: c.name"
@@ -118,7 +119,7 @@ namespace :aleftng do
     #puts "-------------------END-------------------"
   end
 
-  def import_Choice_questions(dir)
+  def import_choice_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
     parsed_file = CSV.read(dir, :headers => false)
     parsed_file.each do |row|
@@ -135,7 +136,7 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if !zero_version.nil? && picture.nil?
+      if zero_version && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
         if lo.nil?
           #puts "QUESTION NOT EXISTS"
@@ -161,7 +162,7 @@ namespace :aleftng do
     end
   end
 
-  def import_QALO_questions(dir)
+  def import_qalo_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
     parsed_file = CSV.read(dir, :headers => false)
     parsed_file.each do |row|
@@ -178,7 +179,7 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if !zero_version.nil? && picture.nil?
+      if zero_version && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
         if lo.nil?
           #puts "QUESTION NOT EXISTS"
@@ -211,10 +212,10 @@ namespace :aleftng do
   task :import_alef_los_from_csv_files, [:QALO_dir, :Choice_dir] => :environment do |t, args|
 
     directory = args.Choice_dir
-    import_Choice_questions(directory)
+    import_choice_questions(directory)
 
     directory = args.QALO_dir
-    import_QALO_questions(directory)
+    import_qalo_questions(directory)
 
   end
 end
