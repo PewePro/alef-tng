@@ -16,4 +16,5 @@
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
+//= require detect-zoom
 //= require_tree .

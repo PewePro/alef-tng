@@ -25,13 +25,16 @@ var Nav = {
         $(document).scrollTop(this.ueHeight);
 
         // nastavovanie spravania pri zoomovani
-        this.startingWidth = window.innerWidth;
-        this.lastWidth = window.innerWidth;
-        setInterval(this.checkZoom, 50);
+        /*this.startingWidth = window.innerWidth;
+        this.lastWidth = window.innerWidth;*/
+        setInterval(this.checkZoom, 2000);
     },
 
     checkZoom : function() {
-        var nowWidth = window.innerWidth
+        var zoom = detectZoom.zoom();
+        var device = detectZoom.device();
+        alert(zoom+' '+device);
+       /* var nowWidth = window.innerWidth
 
         if (nowWidth == Nav.lastWidth) return;
 
@@ -39,7 +42,7 @@ var Nav = {
         if (nowWidth >= Nav.startingWidth && Nav.lastWidth < Nav.startingWidth) Nav.showNav();
         if (nowWidth < Nav.startingWidth && Nav.lastWidth >= Nav.startingWidth) Nav.hideNav();
 
-        Nav.lastWidth = nowWidth;
+        Nav.lastWidth = nowWidth;*/
 
     },
 
