@@ -128,7 +128,7 @@ namespace :aleftng do
       zero_version = row[4]
       picture = row[1]
       external_reference = row[0]
-      question_name = row[2]
+      question_name = row[2] || ''
       question_text = PandocRuby.new(row[5], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answers = row[11]
@@ -171,7 +171,7 @@ namespace :aleftng do
       zero_version = row[2]
       picture = row[9]
       external_reference = "#{row[0]}:#{row[1]}"
-      question_name = row[5]
+      question_name = row[5] || ''
       question_text = PandocRuby.new(row[8], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answer = row[10]
