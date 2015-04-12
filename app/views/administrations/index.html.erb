@@ -9,8 +9,10 @@
 <div class="admin">
   <h3>Nastavenia setupov</h3>
   <ul>
-<% @setups.each do |s| %>
+  <% @setups.each do |s| %>
     <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link" %></li>
-<% end %>
+  <% end %>
   </ul>
+  <h3>Aktivita študentov - štatistiky</h3>
+  <ul>Vygeneruj štatistiky</ul>
 </div>
