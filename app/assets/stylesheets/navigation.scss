@@ -39,7 +39,12 @@ nav h2 {
   margin: 0;
   height: 4rem;
   border: 0;
-  //background-color: $red;
+  background-color: $red;
+  transition: background-color 250ms;
+
+  &.hidden {
+    background-color: $white;
+  }
 }
 
 // Dodatocny blok az navigacnym panelom, ktory obsahuje informacie o danej stranke

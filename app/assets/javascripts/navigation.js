@@ -3,9 +3,9 @@ var Nav = {
     ueHeight : null, //user element height
     ue : null,
     nav : null,
+    offset : null,
 
-    startingWidth : null, // pouziva sa pri kontrole zoomu
-    lastWidth : null,
+    lastZoom : null,
 
     init : function() {
 
@@ -13,8 +13,9 @@ var Nav = {
         this.nav = $('nav');
         this.ue = $('#user-element');
         this.ueHeight = this.ue.outerHeight();
+        this.offset = $('.nav-offset');
         navHeight = this.nav.outerHeight();
-        $('.nav-offset').css( "height", navHeight + this.ueHeight );
+        this.offset.css( "height", navHeight + this.ueHeight );
         $('#faux-background').css( "height", '+='+this.ueHeight  );
 
         // nastavovanie spravania pri scrollovani
@@ -25,33 +26,29 @@ var Nav = {
         $(document).scrollTop(this.ueHeight);
 
         // nastavovanie spravania pri zoomovani
-        /*this.startingWidth = window.innerWidth;
-        this.lastWidth = window.innerWidth;*/
-        setInterval(this.checkZoom, 2000);
+        lastZoom = detectZoom.zoom();
+        setInterval(this.checkZoom, 500);
     },
 
     checkZoom : function() {
-        var zoom = detectZoom.zoom();
-        var device = detectZoom.device();
-        alert(zoom+' '+device);
-       /* var nowWidth = window.innerWidth
-
-        if (nowWidth == Nav.lastWidth) return;
-
-
-        if (nowWidth >= Nav.startingWidth && Nav.lastWidth < Nav.startingWidth) Nav.showNav();
-        if (nowWidth < Nav.startingWidth && Nav.lastWidth >= Nav.startingWidth) Nav.hideNav();
-
-        Nav.lastWidth = nowWidth;*/
-
+        var currentZoom = detectZoom.zoom();
+        if(currentZoom > 1 && Nav.lastZoom <= 1) {
+            Nav.hideNav();
+        }
+        if(currentZoom <= 1 && Nav.lastZoom > 1) {
+            Nav.showNav();
+        }
+        Nav.lastZoom = currentZoom;
     },
 
     showNav : function () {
         $('.not-zoomable').css('opacity',1);
+        this.offset.toggleClass('hidden');
     },
 
     hideNav : function() {
         $('.not-zoomable').css('opacity',0);
+        this.offset.toggleClass('hidden');
     },
 
     autoScrollNav : function() {
