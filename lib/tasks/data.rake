@@ -85,23 +85,21 @@ namespace :aleftng do
   }
 
   def import_Concepts(concept_names,learning_object)
-    puts "CONCEPT_NAMES: #{concept_names}"
+    #puts "CONCEPT_NAMES: #{concept_names}"
     splitted_concept_names = (concept_names.gsub!(",", "\n") || concept_names).split(/\r?\n/)
     splitted_concept_names.each do |concept_name|
-      puts "Concept: #{concept_name}"
+      #puts "Concept: #{concept_name}"
       concept = Concept.find_by_name(concept_name)
       if(concept.nil?)
-        puts "Concept neexistuje"
-        # Vytvorenie concept-u aj prepojenia
+        #puts "Concept neexistuje"
         first_course = Course.first
         concept = Concept.create!(name: concept_name, course_id: first_course.id)
         concept.learning_objects << learning_object  # Vytvorenie prepojenia
       else # if(!concept.nil?)
-        puts "Concept existuje"
-        # Vytvorenie prepojenia ak concept existuje
+        #puts "Concept existuje"
         lo_in_c = concept.learning_objects.find_by_id(learning_object.id)
         if (lo_in_c.nil?)
-          puts "Prepojenie neexistuje"
+          #puts "Prepojenie neexistuje"
           concept.learning_objects << learning_object  # Vytvorenie prepojenia
         end
       end
@@ -112,14 +110,12 @@ namespace :aleftng do
     if(!c_in_lo.nil?)
       c_in_lo.each do |c|
         if (!(concept_names.include? c.name))
-          puts "Odstranujem: c.name"
+          #puts "Odstranujem: c.name"
           learning_object.concepts.delete(c)
         end
       end
     end
-
-    puts "-------------------------------------"
-
+    #puts "-------------------END-------------------"
   end
 
   def import_Choice_questions(dir)
