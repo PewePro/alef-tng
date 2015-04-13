@@ -18,4 +18,5 @@ class LearningObject < ActiveRecord::Base
   def url_name
     "#{id}-#{lo_id.parameterize}"
   end
+
 end

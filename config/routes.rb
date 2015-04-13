@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/:week_number/:id' => 'questions#show'
+  get 'w/:week_number/:id/image' => 'questions#show_image'
 
   # Opravi otazku a vrati spravnu odpoved
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'

@@ -11,6 +11,7 @@
   <%= render 'question_info' %>
 <div id="question-text">
     <%= @question.question_text %>
+    <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => @question.id) %>
 </div>
   <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
       <input type="hidden" name="type" value="<%= @question.type %>">
