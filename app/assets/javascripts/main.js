@@ -5,7 +5,7 @@ var ready = (function () {
     $(window).off('scroll');
 
     if ($('#body-sessions-new').length) {
-        Login.initLogin();
+        Login.init();
     }
 
     if ($('#body-weeks-show').length) {

@@ -84,7 +84,42 @@ namespace :aleftng do
       "complement" => 'Complement'
   }
 
-  def import_Choice_questions(dir)
+  def import_concepts(concept_names,learning_object)
+    #puts "CONCEPT_NAMES: #{concept_names}"
+    concept_names.gsub!(",", "\n") || concept_names
+    splitted_concept_names = concept_names.split(/\r?\n/)
+    splitted_concept_names.each do |concept_name|
+      #puts "Concept: #{concept_name}"
+      concept = Concept.find_by_name(concept_name)
+      if concept.nil?
+        #puts "Concept neexistuje"
+        first_course = Course.first
+        concept = Concept.create!(name: concept_name, course_id: first_course.id)
+        concept.learning_objects << learning_object  # Vytvorenie prepojenia
+      else # if !concept.nil?
+        #puts "Concept existuje"
+        lo_in_c = concept.learning_objects.find_by_id(learning_object.id)
+        if lo_in_c.nil?
+          #puts "Prepojenie neexistuje"
+          concept.learning_objects << learning_object  # Vytvorenie prepojenia
+        end
+      end
+    end
+
+    # Odstránenie prepojení, ktoré niesú v predspracovaných dátach
+    c_in_lo = learning_object.concepts
+    if c_in_lo
+      c_in_lo.each do |c|
+        if !(concept_names.include? c.name)
+          #puts "Odstranujem: c.name"
+          learning_object.concepts.delete(c)
+        end
+      end
+    end
+    #puts "-------------------END-------------------"
+  end
+
+  def import_choice_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
     parsed_file = CSV.read(dir, :headers => false)
     parsed_file.each do |row|
@@ -93,18 +128,20 @@ namespace :aleftng do
       zero_version = row[4]
       picture = row[1]
       external_reference = row[0]
+      question_name = row[2] || ''
       question_text = PandocRuby.new(row[5], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answers = row[11]
       question_type = IMPORTED_QUESTION_TYPES[row[9]]
+      concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if (!zero_version.nil? && picture.nil?)
+      if zero_version && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
-        if (lo.nil?)
+        if lo.nil?
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
-          #puts "QUESTION: #{question_text}"
+          lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           splitted_answers = (answers.gsub!(";", "\n")).split(/\r?\n/)
           splitted_answers.each do |answer|
             correct_answer = answer.include? "<correct>"
@@ -116,17 +153,16 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_text: question_text )
-          #puts "QUESTION: #{question_text}"
+          lo.update( type: question_type, lo_id: question_name, question_text: question_text )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           #puts "QUESTION EXISTS"
         end
-
+        import_concepts(concept_names, lo) if concept_names
       end
-
     end
   end
 
-  def import_QALO_questions(dir)
+  def import_qalo_questions(dir)
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
     parsed_file = CSV.read(dir, :headers => false)
     parsed_file.each do |row|
@@ -135,18 +171,20 @@ namespace :aleftng do
       zero_version = row[2]
       picture = row[9]
       external_reference = "#{row[0]}:#{row[1]}"
+      question_name = row[5] || ''
       question_text = PandocRuby.new(row[8], :from => :docbook, :to => :markdown)
       question_text = (question_text.to_s).gsub!("\n", "")
       answer = row[10]
       question_type = "EvaluatorQuestion"
+      concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if (!zero_version.nil? && picture.nil?)
+      if zero_version && picture.nil?
         lo = LearningObject.find_by_external_reference(external_reference)
-        if (lo.nil?)
+        if lo.nil?
           #puts "QUESTION NOT EXISTS"
-          lo = LearningObject.create!( type: question_type, question_text: question_text, external_reference: external_reference )
-          #puts "QUESTION: #{question_text}"
+          lo = LearningObject.create!( type: question_type, lo_id: question_name, question_text: question_text, external_reference: external_reference )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
           Answer.create!( learning_object_id: lo.id, answer_text: answer_text )
@@ -154,8 +192,8 @@ namespace :aleftng do
           #puts "QUESTION NOT EXISTS"
         else
           #puts "QUESTION EXISTS"
-          lo.update( type: question_type, question_text: question_text )
-          #puts "QUESTION: #{question_text}"
+          lo.update( type: question_type, lo_id: question_name, question_text: question_text )
+          #puts "QUESTION: #{question_name} | #{question_text}"
           answer_text = PandocRuby.new(answer, :from => :docbook, :to => :markdown)
           answer_text = (answer_text.to_s).gsub!("\n", "")
           ans = Answer.find_by_learning_object_id(lo.id)
@@ -163,8 +201,8 @@ namespace :aleftng do
           #puts "ANSWER: #{answer} | #{answer_text}"
           #puts "QUESTION EXISTS"
         end
+        import_concepts(concept_names, lo) if concept_names
       end
-
     end
   end
 
@@ -174,10 +212,10 @@ namespace :aleftng do
   task :import_alef_los_from_csv_files, [:QALO_dir, :Choice_dir] => :environment do |t, args|
 
     directory = args.Choice_dir
-    import_Choice_questions(directory)
+    import_choice_questions(directory)
 
     directory = args.QALO_dir
-    import_QALO_questions(directory)
+    import_qalo_questions(directory)
 
   end
 end
