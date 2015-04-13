@@ -116,7 +116,6 @@ namespace :aleftng do
         end
       end
     end
-    #puts "--------CONCEPT_END--------"
   end
 
   def import_choice_questions(file, pictures_dir)
@@ -162,6 +161,7 @@ namespace :aleftng do
         end
         import_concepts(concept_names, lo) if concept_names
 
+        # Pridanie obrázov do prisluchajuceho learning objectu
         if picture
           picture = picture.split('/').last
           #puts "PICTURE CHOICE: #{picture}"
@@ -169,10 +169,12 @@ namespace :aleftng do
           if picture_names.include? picture
             index = picture_names.index(picture)
             image = File.read(picture_paths[index])
-            LearningObject.where(id: lo.id).update_all(image: image)
+            LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
             #puts "FILE: #{picture_paths[index]}"
           else
             # exception
+            puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
+            return
           end
         end
 
@@ -224,6 +226,7 @@ namespace :aleftng do
         end
         import_concepts(concept_names, lo) if concept_names
 
+        # Pridanie obrázov do prisluchajuceho learning objectu
         if picture
           picture = picture.split('/').last
           #puts "PICTURE QALO: #{picture}"
@@ -231,10 +234,12 @@ namespace :aleftng do
           if picture_names.include? picture
             index = picture_names.index(picture)
             image = File.read(picture_paths[index])
-            LearningObject.where(id: lo.id).update_all(image: image)
+            LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
             #puts "FILE: #{picture_paths[index]}"
           else
             # exception
+            puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
+            return
           end
         end
 
