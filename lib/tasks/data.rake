@@ -118,8 +118,25 @@ namespace :aleftng do
     end
   end
 
+  def import_pictures(picture, picture_names, pictures_dir, lo)
+
+    # Pridanie obrázov do prisluchajuceho learning objectu
+    picture = picture.split('/').last
+    #puts "PICTURE CHOICE: #{picture}"
+
+    if picture_names.include? picture
+      image = File.read(pictures_dir + "/" + picture)
+      LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
+      #puts "FILE: #{pictures_dir}/#{picture}"
+    else
+      # exception
+      puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
+      return
+    end
+
+  end
+
   def import_choice_questions(file, pictures_dir)
-    picture_paths = Dir.glob(pictures_dir + "/**")
     picture_names = Dir.entries(pictures_dir)
 
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
@@ -161,29 +178,13 @@ namespace :aleftng do
         end
         import_concepts(concept_names, lo) if concept_names
 
-        # Pridanie obrázov do prisluchajuceho learning objectu
-        if picture
-          picture = picture.split('/').last
-          #puts "PICTURE CHOICE: #{picture}"
-
-          if picture_names.include? picture
-            index = picture_names.index(picture)
-            image = File.read(picture_paths[index])
-            LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
-            #puts "FILE: #{picture_paths[index]}"
-          else
-            # exception
-            puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
-            return
-          end
-        end
+        import_pictures(picture, picture_names, pictures_dir, lo) if picture
 
       end
     end
   end
 
   def import_qalo_questions(file, pictures_dir)
-    picture_paths = Dir.glob(pictures_dir + "/**")
     picture_names = Dir.entries(pictures_dir)
 
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
@@ -226,22 +227,7 @@ namespace :aleftng do
         end
         import_concepts(concept_names, lo) if concept_names
 
-        # Pridanie obrázov do prisluchajuceho learning objectu
-        if picture
-          picture = picture.split('/').last
-          #puts "PICTURE QALO: #{picture}"
-
-          if picture_names.include? picture
-            index = picture_names.index(picture)
-            image = File.read(picture_paths[index])
-            LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
-            #puts "FILE: #{picture_paths[index]}"
-          else
-            # exception
-            puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
-            return
-          end
-        end
+        import_pictures(picture, picture_names, pictures_dir, lo) if picture
 
       end
     end
