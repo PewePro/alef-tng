@@ -9,6 +9,11 @@
   line-height: 2rem;
 }
 
+.question-image {
+  width: 100%;
+  margin: 1rem 0;
+}
+
 #question-info {
   @include small-font;
   padding: 1rem 1rem 0.5rem;
@@ -18,7 +23,7 @@
   }
 }
 
-#question-text {
+.question-text {
   padding: 0.5rem 1rem 0.5rem;
   @include bold;
   line-height: 1.5rem;

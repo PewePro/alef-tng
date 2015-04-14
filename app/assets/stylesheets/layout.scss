@@ -21,3 +21,8 @@ body {
   left:0;
   right:0;
 }
+
+.not-zoomable {
+  opacity: 1;
+  transition: opacity 250ms ease;
+}

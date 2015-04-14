@@ -111,17 +111,36 @@ namespace :aleftng do
     if c_in_lo
       c_in_lo.each do |c|
         if !(concept_names.include? c.name)
-          #puts "Odstranujem: c.name"
+          #puts "Odstranujem: #{c.name}"
           learning_object.concepts.delete(c)
         end
       end
     end
-    #puts "-------------------END-------------------"
   end
 
-  def import_choice_questions(dir)
+  def import_pictures(picture, picture_names, pictures_dir, lo)
+
+    # Pridanie obrázov do prisluchajuceho learning objectu
+    picture = picture.split('/').last
+    #puts "PICTURE CHOICE: #{picture}"
+
+    if picture_names.include? picture
+      image = File.read(pictures_dir + "/" + picture)
+      LearningObject.where(id: lo.id).update_all(image: image) # pridávanie obrázkov do LO
+      #puts "FILE: #{pictures_dir}/#{picture}"
+    else
+      # exception
+      puts "Obrázok #{picture} sa nenachádza v uvedenom adresári !!!"
+      return
+    end
+
+  end
+
+  def import_choice_questions(file, pictures_dir)
+    picture_names = Dir.entries(pictures_dir)
+
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
-    parsed_file = CSV.read(dir, :headers => false)
+    parsed_file = CSV.read(file, :headers => false)
     parsed_file.each do |row|
 
       # Predspracovanie
@@ -136,7 +155,7 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if zero_version && picture.nil?
+      if zero_version == "y"
         lo = LearningObject.find_by_external_reference(external_reference)
         if lo.nil?
           #puts "QUESTION NOT EXISTS"
@@ -158,13 +177,18 @@ namespace :aleftng do
           #puts "QUESTION EXISTS"
         end
         import_concepts(concept_names, lo) if concept_names
+
+        import_pictures(picture, picture_names, pictures_dir, lo) if picture
+
       end
     end
   end
 
-  def import_qalo_questions(dir)
+  def import_qalo_questions(file, pictures_dir)
+    picture_names = Dir.entries(pictures_dir)
+
     # Prečitanie súboru a vynechanie vypísania hlavičky pri každom zázname
-    parsed_file = CSV.read(dir, :headers => false)
+    parsed_file = CSV.read(file, :headers => false)
     parsed_file.each do |row|
 
       # Predspracovanie
@@ -179,7 +203,7 @@ namespace :aleftng do
       concept_names = row[6]
 
       # Vyberieme otázky do nultej verzie a bez obrázku
-      if zero_version && picture.nil?
+      if zero_version == "y"
         lo = LearningObject.find_by_external_reference(external_reference)
         if lo.nil?
           #puts "QUESTION NOT EXISTS"
@@ -202,20 +226,24 @@ namespace :aleftng do
           #puts "QUESTION EXISTS"
         end
         import_concepts(concept_names, lo) if concept_names
+
+        import_pictures(picture, picture_names, pictures_dir, lo) if picture
+
       end
     end
   end
 
   # task which convert ALEF questions from CSV files
   # and save them into database
-  # run it this way -> rake aleftng:import_alef_los_from_csv_files["path_to_csv_file_with_QALO_questions,path_to_csv_file_with_Choice_questions"]
-  task :import_alef_los_from_csv_files, [:QALO_dir, :Choice_dir] => :environment do |t, args|
+  # run it this way -> rake aleftng:import_alef_los_from_csv_files["path_to_csv_file_with_QALO_questions","path_to_csv_file_with_Choice_questions","pat_to_directory_with_pictures"]
+  task :import_alef_los_from_csv_files, [:QALO_questions, :Choice_questions, :Pictures_dir] => :environment do |t, args|
 
-    directory = args.Choice_dir
-    import_choice_questions(directory)
+    pictures_dir = args.Pictures_dir
+    file_choice = args.Choice_questions
+    file_qalo = args.QALO_questions
 
-    directory = args.QALO_dir
-    import_qalo_questions(directory)
+    import_choice_questions(file_choice, pictures_dir)
+    import_qalo_questions(file_qalo, pictures_dir)
 
   end
 end
