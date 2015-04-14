@@ -33,6 +33,7 @@
   @include login-input;
   width: 70%;
   max-width: 300px;
+  background-color: $dark;
 }
 
 .login-remember-me {
