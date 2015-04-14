@@ -50,4 +50,9 @@ class QuestionsController < ApplicationController
     lo.user_to_lo_relations << rel
 
   end
+
+  def show_image
+    lo = LearningObject.find(params[:id])
+    send_data lo.image, :type => 'image/png', :disposition => 'inline'
+  end
 end
