@@ -9,7 +9,7 @@
 </div>
 <div class="mobile-content main">
   <%= render 'question_info' %>
-<div id="question-text">
+<div class="question-text">
     <%= @question.question_text %>
 </div>
   <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
