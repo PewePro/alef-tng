@@ -8,10 +8,10 @@
         <label>Prihláste sa AIS údajmi.</label>
 
         <%= f.label :login, "Prihlasovacie meno" %>
-        <%= f.text_field :login, autofocus: true, class: "login-text" %>
+        <%= f.text_field :login, autofocus: true, class: "login-text", tabindex: 1 %>
 
         <%= f.label :password, "Heslo" %>
-        <%= f.password_field :password, autocomplete: "off", class: "login-text" %>
+        <%= f.password_field :password, autocomplete: "off", class: "login-text", tabindex: 2 %>
 
         <% if devise_mapping.rememberable? -%>
             <%= f.label :remember_me, class: "login-remember-me" do %>
