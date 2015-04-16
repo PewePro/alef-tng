@@ -16,7 +16,7 @@ class WeeksController < ApplicationController
 
   def list
     @setup = Setup.take
-    @weeks = @setup.weeks
+    @weeks = @setup.weeks.order(number: :desc)
     @user = current_user
   end
 end
