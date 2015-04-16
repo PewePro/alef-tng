@@ -1,4 +1,4 @@
-.toggle {
+.toggle-item-list {
   border: 1px solid white;
   @include border-radius(1rem);
   height: 1.5rem;
@@ -11,6 +11,7 @@
   display: inline-block;
   line-height: 1.5rem;
   padding: 0 1rem;
+  cursor: pointer;
 
   &.active {
    @include white-dark;
@@ -26,4 +27,20 @@
   overflow: hidden;
   display: inline-block;
   padding-right: 0.5rem;
+
+  .icon-help {
+   @include big-font;
+   cursor:pointer;
+  }
+}
+
+.toggle-help {
+  text-align: left;
+  height: 0;
+  overflow: hidden;
+
+  &.active {
+    padding: 1rem 0;
+    height: auto;
+  }
 }

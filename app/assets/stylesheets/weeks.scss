@@ -31,4 +31,8 @@
 #week-toggle {
   @include small-font;
   padding: 1rem 1rem 0;
+
+  .toggle-item {
+    width: 4rem;
+  }
 }
