@@ -13,6 +13,8 @@
     start_at = @setup.first_week_at.to_date + w.number * 7 - 7
     end_at = start_at + 6
     actual = (Date.today-start_at).to_i.between?(0,6)
+
+     if @setup.show_all || Date.today > start_at
   %>
       <a href="<%=
           url_for controller: 'weeks', action: 'show', week_number: w.number
@@ -28,5 +30,6 @@
             Žiadne otázky
         <% end %>
       </a>
-  <% end %>
+  <% end
+  end %>
 </div>
