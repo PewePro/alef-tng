@@ -17,3 +17,13 @@
    @include bold;
   }
 }
+
+.toggle-caption {
+  @include bold;
+  @include medium-font;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  display: inline-block;
+  padding-right: 0.5rem;
+}

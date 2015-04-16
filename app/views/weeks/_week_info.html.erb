@@ -7,21 +7,16 @@
   <div class="week-progressbar" data-number-all="<%= @lo_number_all %>" data-number-done="<%= @lo_number_done %>">
     <div class="progressbar-caption"></div>
   </div>
-  <div id="week-toggles">
-    Režim:
+  <div id="week-toggle">
+    <div class="toggle-caption">
+    Režim
+    </div>
     <div class="toggle">
-      <div class="toggle-item active">
+      <div class="toggle-item active" id="week-toggle-testing">
         Testovanie
-      </div><div class="toggle-item">
+      </div><div class="toggle-item" id="week-toggle-learning">
         Učenie
       </div>
     </div>
-    <!--Zobrazovenie odpovedí:
-    <span id="toggle-show-solutions" <%=raw 'style="display: none"' if @user.show_solutions %>>
-      <i class="icon-toggle-off"></i> Vypnuté
-    </span>
-    <span id="toggle-dont-show-solutions" <%=raw 'style="display: none"' unless @user.show_solutions %>>
-      <i class="icon-toggle-on"></i> Zapnuté-->
-    </span>
   </div>
 </div>

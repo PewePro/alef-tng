@@ -27,14 +27,8 @@
   overflow: hidden;
 }
 
-#week-toggles {
-  @include small-font;
-  text-align: left;
-  padding: 0 1rem;
-}
 
-#week-toggles i {
-  font-size: 1.2rem;
-  position: relative;
-  top: 2px;
+#week-toggle {
+  @include small-font;
+  padding: 1rem 1rem 0;
 }
