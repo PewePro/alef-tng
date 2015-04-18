@@ -28,13 +28,14 @@ vim config/database.yml
 Create the database.
 
 ```
-RAILS_ENV=development rake db:create && rake db:migrate
+rake db:create && rake db:migrate
 ```
 
-Optionally, seed the database with development data.
+Optionally, seed the database with setups and import your question data.
 
 ```
-RAILS_ENV=development rake db:seed
+rake db:seed
+rake alef:data:import_csv['evaluator_questions.csv','choice_questions.csv','pics_dir']
 ```
 
 ## Testing
