@@ -8,6 +8,7 @@ var Nav = {
     lastZoom : null,
 
     init : function() {
+        Contact.init();
 
         // nastavovanie vysok a umiestneni rozlicnych elementov
         this.nav = $('nav');
