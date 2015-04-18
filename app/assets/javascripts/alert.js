@@ -2,7 +2,7 @@ var Alert = {
     success : function(message) {
 
         outerDiv = $('<div/>', {
-            class: 'alert',
+            class: 'alert'
         }).prependTo('body');
 
         $('<div/>', {
