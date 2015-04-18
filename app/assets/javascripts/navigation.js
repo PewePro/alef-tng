@@ -2,6 +2,7 @@ var Nav = {
 
     ueHeight : null, //user element height
     nav : null,
+    offset : null,
     lastZoom : null,
 
     init : function() {
@@ -16,7 +17,8 @@ var Nav = {
         $(document).scrollTop(this.ueHeight);
 
         // nastavovanie spravania pri zoomovani
-        lastZoom = detectZoom.zoom();
+        Nav.lastZoom = detectZoom.zoom();
+        Nav.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
         setInterval(this.checkZoom, 500);
     },
 
@@ -24,19 +26,21 @@ var Nav = {
         // nastavovanie vysok a umiestneni rozlicnych elementov
         this.nav = $('nav');
         this.ueHeight = $('#user-element').outerHeight();
+        this.offset = $('.nav-offset');
         var navHeight = this.nav.outerHeight();
-        $('.nav-offset').css( "height", navHeight + this.ueHeight );
+        this.offset.css( "height", navHeight + this.ueHeight );
         $('#faux-background').css( "top", this.ueHeight  );
     },
 
     checkZoom : function() {
         var currentZoom = detectZoom.zoom();
-        if(currentZoom > 1 && Nav.lastZoom <= 1) {
+        if(currentZoom > Nav.firstZoom && Nav.lastZoom <= Nav.firstZoom) {
             Nav.hideNav();
         }
-        if(currentZoom <= 1 && Nav.lastZoom > 1) {
+        if(currentZoom <= Nav.firstZoom && Nav.lastZoom > Nav.firstZoom) {
             Nav.showNav();
         }
+        console.log(currentZoom+' '+Nav.lastZoom);
         Nav.lastZoom = currentZoom;
     },
 
