@@ -1,5 +1,13 @@
+<%= form_tag feedback_path, method: 'post', remote: true do %>
+    <div id="contact">
+      <%= text_area_tag :message, '', id: 'contact-textarea' %>
+      <div id="contact-button-field">
+        <button id="contact-send-btn">Odoslať</button>
+        <button id="contact-cancel-btn">Zrušiť</button>
+      </div>
+    </div>
+<% end %>
 <div id="user-element" class="not-zoomable">
-
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
 

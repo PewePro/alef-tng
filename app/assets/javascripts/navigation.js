@@ -1,22 +1,12 @@
 var Nav = {
 
     ueHeight : null, //user element height
-    ue : null,
     nav : null,
-    offset : null,
-
     lastZoom : null,
 
     init : function() {
-
-        // nastavovanie vysok a umiestneni rozlicnych elementov
-        this.nav = $('nav');
-        this.ue = $('#user-element');
-        this.ueHeight = this.ue.outerHeight();
-        this.offset = $('.nav-offset');
-        navHeight = this.nav.outerHeight();
-        this.offset.css( "height", navHeight + this.ueHeight );
-        $('#faux-background').css( "height", '+='+this.ueHeight  );
+        Contact.init();
+        Nav.initUserElement();
 
         // nastavovanie spravania pri scrollovani
         Nav.autoScrollNav();
@@ -28,6 +18,15 @@ var Nav = {
         // nastavovanie spravania pri zoomovani
         lastZoom = detectZoom.zoom();
         setInterval(this.checkZoom, 500);
+    },
+
+    initUserElement : function() {
+        // nastavovanie vysok a umiestneni rozlicnych elementov
+        this.nav = $('nav');
+        this.ueHeight = $('#user-element').outerHeight();
+        var navHeight = this.nav.outerHeight();
+        $('.nav-offset').css( "height", navHeight + this.ueHeight );
+        $('#faux-background').css( "top", this.ueHeight  );
     },
 
     checkZoom : function() {

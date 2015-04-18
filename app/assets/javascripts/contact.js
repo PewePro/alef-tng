@@ -1,4 +1,4 @@
-var Contact = {
+    var Contact = {
   div : null,
   ctaBtn : null,
   cancelBtn : null,
