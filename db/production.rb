@@ -1,4 +1,10 @@
-course = Course.create!(name: 'PSI')
+course = Course.where(name: 'Course One').first
+if course
+  course.update(name: 'PSI')
+else
+  course = Course.create!(name: 'PSI')
+end
+
 setup = Setup.create!(name: 'PSI 2015', first_week_at: '2015-02-18 00:00:00.00000', week_count: 0, course_id: course.id)
 
 users = User.create!([
