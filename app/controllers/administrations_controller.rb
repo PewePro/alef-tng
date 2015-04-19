@@ -22,7 +22,7 @@ class AdministrationsController < ApplicationController
       else
           weeks.where(number: week_count+1..@setup.week_count).destroy_all
       end
-      @setup.update(params.require(:setup).permit(:week_count, :first_week_at))
+      @setup.update(params.require(:setup).permit(:week_count, :first_week_at, :show_all))
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end

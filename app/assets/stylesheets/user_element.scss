@@ -1,0 +1,63 @@
+#user-element {
+  @include dark-white;
+  position: absolute;
+  width: 100%;
+  z-index: 200;
+
+  #name {
+    font-style: italic;
+    padding: 1rem;
+    line-height: 2rem;
+  }
+
+  .user-panel-button {
+    @include button;
+    border: 1px solid $white;
+    float: right;
+    margin: 0 1rem 1rem 0;
+  }
+}
+
+#contact {
+  @include red-white;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 300;
+  bottom: 100%;
+  transition: bottom 500ms ease-out;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+  @include bold;
+}
+
+#contact-text {
+  @media screen and (max-width: 360px) {
+    display: none;
+  }
+}
+
+#contact-textarea {
+    @include white-red;
+    @include bold;
+    @include medium-font;
+    width: 100%;
+    height: 80%;
+    padding: 1rem;
+    border: 1px solid $white;
+    @include border-radius(1rem);
+    box-sizing: border-box;
+  }
+
+#contact-button-field {
+  height: 20%;
+  box-sizing: border-box;
+  text-align: center;
+
+  & > button {
+    @include button;
+    display: inline-block;
+    margin: 1rem 1rem 0 0;
+  }
+}

@@ -5,23 +5,23 @@ var ready = (function () {
     $(window).off('scroll');
 
     if ($('#body-sessions-new').length) {
-        Login.initLogin();
+        Login.init();
     }
 
     if ($('#body-weeks-show').length) {
         Toggle.initWeekToggle();
-        Nav.initUserElement();
+        Nav.init();
         Progressbar.setupProgressbars();
     }
 
     if ($('#body-questions-show').length) {
-        Nav.initUserElement();
+        Nav.init();
         Slider.setupEvaluatorSlider();
         Question.setupForm();
     }
 
     if ($('#body-weeks-list').length) {
-        Nav.initUserElement();
+        Nav.init();
         Progressbar.setupProgressbars();
     }
 });

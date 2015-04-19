@@ -1,10 +1,20 @@
 var Login = {
     
-    initLogin : function() {
+    init : function() {
         Login.positionLogo();
         $(window).resize(function() {
             Login.positionLogo();
         });
+
+        $('#new_local_user').submit(Login.preventEmptyPassword);
+    },
+
+    preventEmptyPassword : function(event) {
+        var password = $('#local_user_password');
+        if(password.val().length == 0) {
+            event.preventDefault();
+            password.focus();
+        }
     },
 
     positionLogo : function() {

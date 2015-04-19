@@ -1,9 +1,25 @@
-<div id="user-element">
+<%= form_tag feedback_path, method: 'post', remote: true do %>
+    <div id="contact">
+      <div id="contact-text">
+      Napíšte spätnú väzbu pre tím Alef<br>
+      URL <%= request.original_url %>
+      </div>
+      <%= text_area_tag :message, '', id: 'contact-textarea' %>
+      <div id="contact-button-field">
+        <button id="contact-send-btn">Odoslať</button>
+        <button id="contact-cancel-btn">Zrušiť</button>
+      </div>
+    </div>
+<% end %>
+<div id="user-element" class="not-zoomable">
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
+
+
     <%= link_to "Odhlásiť", destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>
     <% if can? :manage, :administration %>
         <%= link_to "Administrácia", administration_path, class: 'user-panel-button' %>
     <% end %>
+    <a class="user-panel-button" id="contact-btn">Kontakt</a>
   </div>
 </div>
