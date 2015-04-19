@@ -6,7 +6,7 @@ class AdministrationsController < ApplicationController
 
   def setup_config
     @setup = Setup.find(params[:setup_id])
-    @concepts = @setup.course.concepts.includes(:weeks)
+    @concepts = @setup.course.concepts.includes(:weeks).order(:pseudo, :name)
     @weeks = @setup.weeks.order(:number)
   end
 
