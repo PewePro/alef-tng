@@ -49,11 +49,13 @@ var Nav = {
     },
 
     showNav : function () {
+        this.isScrolling = false;
         $('.not-zoomable').css('opacity',1);
         this.offset.toggleClass('hidden');
     },
 
     hideNav : function() {
+        this.isScrolling = true;
         $('.not-zoomable').css('opacity',0);
         this.offset.toggleClass('hidden');
     },
