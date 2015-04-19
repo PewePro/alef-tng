@@ -20,7 +20,7 @@
           url_for controller: 'weeks', action: 'show', week_number: w.number
       %>" class="card <%= 'week-current' if actual %>">
         <h3 class="card-header"><%= w.number %>. týždeň <%= '(aktuálny)' if actual %><date class="week-date"><%=
-            start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")
+            start_at.strftime("%-d.%-m.")  %> - <%= end_at.strftime("%-d.%-m.%Y")
         %></date></h3>
         <% if w.question_count > 0 %>
             <div class="week-progressbar" data-number-all="<%= w.question_count %>" data-number-done="<%= w.question_count_done @user.id %>">
