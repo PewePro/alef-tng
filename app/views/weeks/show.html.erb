@@ -20,26 +20,3 @@
       </a>
   <% end %>
 </div>
-
-<script>
-
-  $('#toggle-show-solutions').click(function() {
-      $.ajax({
-          url: '/user/toggle-show-solutions',
-          method: 'POST',
-          data: {
-              show_solutions: true
-          }
-      });
-  });
-
-  $('#toggle-dont-show-solutions').click(function() {
-      $.ajax({
-          url: '/user/toggle-show-solutions',
-          method: 'POST',
-          data: {
-              show_solutions: false
-          }
-      });
-  });
-</script>

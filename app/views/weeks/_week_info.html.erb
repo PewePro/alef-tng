@@ -7,13 +7,21 @@
   <div class="week-progressbar" data-number-all="<%= @week.question_count %>" data-number-done="<%= @week.question_count_done current_user.id %>">
     <div class="progressbar-caption"></div>
   </div>
-  <div id="week-toggles">
-    Zobrazovenie odpovedí:
-    <span id="toggle-show-solutions" <%=raw 'style="display: none"' if @user.show_solutions %>>
-      <i class="icon-toggle-off"></i> Vypnuté
-    </span>
-    <span id="toggle-dont-show-solutions" <%=raw 'style="display: none"' unless @user.show_solutions %>>
-      <i class="icon-toggle-on"></i> Zapnuté
-    </span>
+  <div id="week-toggle" class="toggle">
+    <div class="toggle-caption">Režim
+    </div>
+    <div class="toggle-item-list">
+      <div class="toggle-item <%= 'active' unless current_user.show_solutions %>" id="week-toggle-testing">
+        Testovanie
+      </div><div class="toggle-item <%= 'active' if current_user.show_solutions %>" id="week-toggle-learning">
+        Učenie
+      </div>
+    </div>
+    <div class="toggle-caption">
+      <i class="icon-help toggle-help-btn"></i>
+    </div>
+    <div class="toggle-help" id="week-toggle-help">
+      V režime <strong>Testovanie</strong> sa môžete otestovať riešením otázok. V režime <strong>Učenie</strong> sa Vám okamžite zobrazia otázky aj so správnymi odpovedami.
+    </div>
   </div>
 </div>
