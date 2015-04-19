@@ -3,18 +3,23 @@ var Nav = {
     ueHeight : null, //user element height
     nav : null,
     offset : null,
+
     lastZoom : null,
+    firstZoom : null,
+    lastScroll : null,
+    isScrolling : false,
 
     init : function() {
         Contact.init();
         Nav.initUserElement();
 
         // nastavovanie spravania pri scrollovani
+        $(document).scrollTop(this.ueHeight);
+        this.lastScroll = this.ueHeight;
         Nav.autoScrollNav();
         $(window).scroll(function() {
             Nav.autoScrollNav();
         });
-        $(document).scrollTop(this.ueHeight);
 
         // nastavovanie spravania pri zoomovani
         Nav.lastZoom = detectZoom.zoom();
@@ -40,7 +45,6 @@ var Nav = {
         if(currentZoom <= Nav.firstZoom && Nav.lastZoom > Nav.firstZoom) {
             Nav.showNav();
         }
-        console.log(currentZoom+' '+Nav.lastZoom);
         Nav.lastZoom = currentZoom;
     },
 
@@ -55,15 +59,37 @@ var Nav = {
     },
 
     autoScrollNav : function() {
-        var scroll = $(document).scrollTop();
-        if(scroll < this.ueHeight) {
+        if(this.isScrolling == false) {
+            var scroll = Math.round($(document).scrollTop());
 
-            this.nav.css('position','absolute');
-            this.nav.css('top',this.ueHeight);
+            // schovavanie user elementu
+            if(scroll < this.ueHeight && scroll > this.lastScroll) {
+                this.isScrolling = true;
+                $('html,body').animate({
+                    scrollTop: this.ueHeight
+                }, 500, function() {
+                    Nav.isScrolling = false;
+                    Nav.nav.css('position','fixed');
+                    Nav.nav.css('top',0);
+                    Nav.lastScroll = Math.round($(document).scrollTop());
+                });
+            }
 
-        } else {
-            this.nav.css('position','fixed');
-            this.nav.css('top',0);
+            // zobrazovanie user elementu
+            if(scroll < this.ueHeight && scroll < this.lastScroll) {
+                this.nav.css('position','absolute');
+                this.nav.css('top',this.ueHeight);
+                this.isScrolling = true;
+                $('html,body').animate({
+                    scrollTop: 0
+                }, 500, function() {
+                    Nav.isScrolling = false;
+                    Nav.lastScroll = Math.round($(document).scrollTop());
+                });
+            }
+
+            this.lastScroll = Math.round($(document).scrollTop());
+
         }
     }
 };
