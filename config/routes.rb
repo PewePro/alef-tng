@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get 'admin' => 'administrations#index', as: 'administration'
   get 'admin/setup_config/:setup_id' => 'administrations#setup_config', as: 'setup_config'
   get 'admin/download_statistics/:setup_id' => 'administrations#download_statistics', as: 'download_statistics'
+  #get 'admin/setup_config/:setup_id/download_statistics' => 'administrations#download_statistics', as: 'download_statistics'
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 

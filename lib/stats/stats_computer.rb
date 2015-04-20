@@ -5,7 +5,7 @@ module Stats
 
     #COLORS = { red: "FFB00000", green: "FF00B000" , yellow: "FFB0B000"}
 
-    def self.save_stats(setup, filename)
+    def self.save_stats(setup, filename, week)
 
       s = Axlsx::Package.new
       s.workbook do |workbook|
@@ -14,7 +14,7 @@ module Stats
         STATS_PROCESSORS.each do |sprocessor|
           workbook.add_worksheet(:name => sprocessor.sheetname) do |worksheet|
 
-            (header, table) = sprocessor.process(setup)
+            (header, table) = sprocessor.process(setup, week)
 
             add_data(worksheet, splitter_styles, header, table)
 

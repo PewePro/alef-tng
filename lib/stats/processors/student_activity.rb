@@ -7,7 +7,7 @@ module Stats
 
       sheet_split "D2"
 
-      def self.process(setup)
+      def self.process(setup, week)
 
         # Testovacia verzia
         su = User.where(role: "teacher")
@@ -18,6 +18,9 @@ module Stats
         #su = SetupsUser.find_by_setup_id(setup.id)
         #su_map = su.map(&:user_id)
         #users = User.where(id: su_map)
+
+        start_at = setup.first_week_at.to_date + week.number * 7
+        end_at = start_at + 6
 
         # ------------------------------------------------------------------
 
@@ -40,12 +43,12 @@ module Stats
 
         # ------------------------------------------------------------------
 
-        user_completed_lo = UserCompletedLoRelation.where(user_id: users, setup_id: setup.id)
-        user_didnt_know_lo = UserDidntKnowLoRelation.where(user_id: users, setup_id: setup.id)
-        user_visited_lo = UserVisitedLoRelation.where(user_id: users, setup_id: setup.id)
-        user_viewed_solution_lo = UserViewedSolutionLoRelation.where(user_id: users, setup_id: setup.id)
-        user_solved_lo = UserSolvedLoRelation.where(user_id: users, setup_id: setup.id)
-        user_failed_lo = UserFailedLoRelation.where(user_id: users, setup_id: setup.id)
+        user_completed_lo = UserCompletedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
+        user_didnt_know_lo = UserDidntKnowLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
+        user_visited_lo = UserVisitedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
+        user_viewed_solution_lo = UserViewedSolutionLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
+        user_solved_lo = UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
+        user_failed_lo = UserFailedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (start_at)..(end_at))
 
         table = []
 

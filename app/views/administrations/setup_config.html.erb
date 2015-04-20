@@ -7,6 +7,12 @@
 <hr class="nav-offset">
 
 <div class="admin">
+  <h3>Aktivita študentov - Štatistiky</h3>
+  <% @weeks.each do |w| %>
+      <ul><%= link_to "#{@setup.name} Štatistiky pre týždeň číslo #{w.number}", download_statistics_path(:_setup_id => @setup.id,:_week_id => w.id), class: "admin-link" %></ul>
+  <% end %>
+</div>
+<div class="admin">
   <h3>Základné nastavenia</h3>
   <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
     <table>

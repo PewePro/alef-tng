@@ -21,18 +21,16 @@ class Setup < ActiveRecord::Base
     FileUtils.mkdir_p File.join(FILEPATH_ABSOLUTEPREFIX, FILEPATH_RELATIVE)
   end
 
-  def compute_stats
-    current_week = Week.first
-    filename = "course#{self.id}_week#{current_week.number}_report_#{Time.now.strftime("%Y_%m_%d_-_%H_%M_%S")}.xlsx"
+  def compute_stats(week_id)
+    week = Week.find_by_id(week_id)
+    filename = "course#{self.id}_week#{week.number}_report_#{Time.now.strftime("%Y_%m_%d_-_%H_%M_%S")}.xlsx"
 
     filepath_relative = self.class.get_relative_path(filename)
     filepath_full = self.class.get_full_path(filepath_relative)
 
-    puts "FILEPATH_FULL_1 ----------------------> #{filepath_full}"
-
     self.class.ensure_reports_path_exists
 
-    Stats::StatsComputer::save_stats(self, filepath_full)
+    Stats::StatsComputer::save_stats(self, filepath_full, week)
 
     return filepath_full
   end
