@@ -9,10 +9,12 @@ module Stats
 
       def self.process(setup)
 
+        # Testovacia verzia
         su = User.where(role: "teacher")
         su_map = su.map(&:id)
         users = User.where(id: su_map)
 
+        # Realna verzia
         #su = SetupsUser.find_by_setup_id(setup.id)
         #su_map = su.map(&:user_id)
         #users = User.where(id: su_map)
