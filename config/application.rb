@@ -25,5 +25,8 @@ module AlefTng
 
     # Prehladavanie adresarov s modelmi
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**/}')]
+
+    # Autoloadable lib directories with classes and modules.
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end

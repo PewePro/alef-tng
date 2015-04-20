@@ -9,7 +9,13 @@ module Stats
 
       def self.process(setup)
 
-        users = User.where(role: "student")
+        su = User.where(role: "teacher")
+        su_map = su.map(&:id)
+        users = User.where(id: su_map)
+
+        #su = SetupsUser.find_by_setup_id(setup.id)
+        #su_map = su.map(&:user_id)
+        #users = User.where(id: su_map)
 
         # ------------------------------------------------------------------
 
@@ -24,7 +30,8 @@ module Stats
         # user_failed_lo_relation.rb - pocet doteraz nespravne zodpovedanych pokusov
         # - pocet hodnoteni spravnosti (evaluator otazky)
 
-        header =  ["Počet zobrazených otázok v režime učenia",
+        header =  ["AISID", "Login", "Priezvisko", "Meno",
+                   "Počet zobrazených otázok v režime učenia",
                    "Počet zobrazených správnych odpovedí v režime prezerania",
                    "Počet doteraz správne zodpovedaných pokusov",
                    "Počet doteraz nesprávne zodpovedaných pokusov"]
@@ -44,10 +51,20 @@ module Stats
           row = [u.aisid, u.login, u.last_name, u.first_name ]
 
           # Počet zobrazených otázok v režime učenia
-          row << user_visited_lo[[u.id]]
+          uvlo = user_visited_lo.where(user_id: u)
+          row << uvlo.count if uvlo
 
           # Počet zobrazených správnych odpovedí v režime prezerania
-          row << user_viewed_solution_lo[[u.id]]
+          ucslo = user_viewed_solution_lo.where(user_id: u)
+          row << ucslo.count if ucslo
+
+          # Počet doteraz správne zodpovedaných pokusov
+          uslo = user_solved_lo.where(user_id: u)
+          row << uslo.count if uslo
+
+          # Počet doteraz nesprávne zodpovedaných pokusov
+          uflo = user_failed_lo.where(user_id: u)
+          row << uflo.count if uflo
 
           # TODO: dolpnenie ďalších záznamov podľa redmine zoznamu nad header-om
 

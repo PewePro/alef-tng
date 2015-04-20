@@ -37,4 +37,10 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
+  def download_statistics
+    @setup = Setup.first
+    filepath_full = @setup.compute_stats
+    send_file filepath_full
+  end
+
 end

@@ -22,7 +22,7 @@ module Stats
         end
       end
 
-      p.serialize(filename)
+      s.serialize(filename)
     end
 
     private

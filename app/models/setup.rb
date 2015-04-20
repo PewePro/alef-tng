@@ -5,4 +5,35 @@ class Setup < ActiveRecord::Base
   has_many :weeks
   has_many :learning_objects, through: :weeks
   has_and_belongs_to_many :users
+
+  FILEPATH_RELATIVE = "shared/statreports/"
+  FILEPATH_ABSOLUTEPREFIX = Rails.root
+
+  def self.get_full_path(report_relative_path)
+    return File.join(FILEPATH_ABSOLUTEPREFIX, report_relative_path)
+  end
+
+  def self.get_relative_path(report_filename)
+    return File.join(FILEPATH_RELATIVE, report_filename)
+  end
+
+  def self.ensure_reports_path_exists
+    FileUtils.mkdir_p File.join(FILEPATH_ABSOLUTEPREFIX, FILEPATH_RELATIVE)
+  end
+
+  def compute_stats
+    current_week = Week.first
+    filename = "course#{self.id}_week#{current_week.number}_report_#{Time.now.strftime("%Y_%m_%d_-_%H_%M_%S")}.xlsx"
+
+    filepath_relative = self.class.get_relative_path(filename)
+    filepath_full = self.class.get_full_path(filepath_relative)
+
+    puts "FILEPATH_FULL_1 ----------------------> #{filepath_full}"
+
+    self.class.ensure_reports_path_exists
+
+    Stats::StatsComputer::save_stats(self, filepath_full)
+
+    return filepath_full
+  end
 end

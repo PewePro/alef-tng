@@ -14,5 +14,5 @@
   <% end %>
   </ul>
   <h3>Aktivita študentov - štatistiky</h3>
-  <ul>Vygeneruj štatistiky</ul>
+  <ul><%= link_to "Vygeneruj štatistiky", download_statistics_path(@setups.first.id), class: "admin-statistics-link" %> Vygeneruj štatistiky</ul>
 </div>
