@@ -1,3 +1,17 @@
+<%= form_tag edit_concept_path, method: 'post', remote: true do %>
+    <div id="contact">
+      <div id="contact-text">
+        Napíšte spätnú väzbu pre tím Alef<br>
+        URL <%= request.original_url %>
+      </div>
+      <%= text_area_tag :message, '', id: 'contact-textarea' %>
+      <div id="contact-button-field">
+        <button id="contact-send-btn">Odoslať</button>
+        <button id="contact-cancel-btn">Zrušiť</button>
+      </div>
+    </div>
+<% end %>
+
 <nav>
    <div class="admin-nav">
     <h2><%= @setup.name %></h2>
@@ -39,6 +53,8 @@
             <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)) %>
           </td>
       <% end %>
+        <td style='width: 40px;'><%= link_to(image_tag("Edit.png", class: "style_image", size: "20x20", alt: "Edit concept"), id: "contact-btn")%></td>
+        <td style='width: 40px;'><%= link_to(image_tag("trash.png", class: "style_image", size: "20x20", alt: "Delete concept"), url_for(delete_concept_path(:concept_id => c.id)))%></td>
       </tr>
     <% end %>
     <tr>
@@ -51,6 +67,22 @@
     </tr>
   </table>
   <%= submit_tag "Uložiť" %>
+  <% end %>
+</div>
+<div class="admin">
+  <h3>Pridaj nový koncept</h3>
+  <%= form_tag url_for(add_concept_path), html: {method: 'post'} do %>
+      <%#= label_tag :concept_name %><br/>
+      <%= text_field_tag :concept_name, "Názov konceptu" %>
+
+      <table>
+      <tr><td><%= radio_button_tag(:pseudo_concept, true) %> <%= label_tag "skutočný koncept" %></td></tr>
+      <tr><td><%= radio_button_tag(:pseudo_concept, false) %> <%= label_tag "pseudo koncept" %></td></tr>
+      </table>
+
+      <%#= check_box_tag :pseudo_concept, :pseudo_concept, false %> <%#= label_tag "pseudo koncept" %>
+
+      <%= submit_tag "Pridaj koncept" %>
   <% end %>
 </div>
 

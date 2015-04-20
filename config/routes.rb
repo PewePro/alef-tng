@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
   get 'admin/setup_config/:setup_id' => 'administrations#setup_config', as: 'setup_config'
+  get 'admin/setup_config/:setup_id/delete_concept' => 'administrations#setup_delete_concept', as: 'delete_concept'
+  post 'admin/setup_config/:setup_id/add_concept' => 'administrations#setup_add_concept', as: 'add_concept'
+  post 'admin/setup_config/:setup_id/edit_concept' => 'administrations#setup_edit_concept', as: 'edit_concept'
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
