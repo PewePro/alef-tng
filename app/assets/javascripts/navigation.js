@@ -14,12 +14,9 @@ var Nav = {
     },
 
     initUserElement : function() {
-        // nastavovanie vysok a umiestneni rozlicnych elementov
-/*        this.nav = $('nav');
-        this.ueHeight = $('#user-element').outerHeight();
-        var navHeight = this.nav.outerHeight();
-        $('.nav-offset').css( "height", navHeight + this.ueHeight );
-        $('#faux-background').css( "top", this.ueHeight  );*/
+        var ue = $('#user-element');
+        this.ueHeight = ue.outerHeight();
+        this.ueHeight = ue.height(0);
     },
 
     checkZoom : function() {
