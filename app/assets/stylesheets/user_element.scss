@@ -1,9 +1,10 @@
 #user-element {
   @include dark-white;
-  position: absolute;
   width: 100%;
-  z-index: 200;
-  break: both;
+  margin: -0.5rem 0 0.5rem;
+  overflow: auto;
+  transition: height 500ms ease-out;
+  height: 0;
 
   #name {
     font-style: italic;
@@ -28,6 +29,7 @@
     width: 1rem;
     font-size: 1rem;
     text-align: center;
+    line-height: inherit;
   }
 
   &:hover {
