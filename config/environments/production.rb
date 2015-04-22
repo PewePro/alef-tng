@@ -86,6 +86,5 @@ Rails.application.configure do
       user_name:            ENV['ALEFTNG_MAIL_USERNAME'],
       password:             ENV['ALEFTNG_MAIL_PASSWORD'],
       authentication:       'plain',
-      enable_starttls_auto: true,
-      openssl_verify_mode:  'none' }
+      enable_starttls_auto: true }
 end
