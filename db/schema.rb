@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416132600) do
+ActiveRecord::Schema.define(version: 20150422120318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(version: 20150416132600) do
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id",     null: false
-    t.boolean  "show_all"
+    t.integer  "course_id",                     null: false
+    t.boolean  "show_all",      default: false
   end
 
   create_table "setups_users", force: :cascade do |t|
@@ -115,6 +115,8 @@ ActiveRecord::Schema.define(version: 20150416132600) do
     t.string   "encrypted_password",  default: "",        null: false
     t.string   "type",                default: "",        null: false
     t.boolean  "show_solutions",      default: false
+    t.string   "email"
+    t.string   "ais_email"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
