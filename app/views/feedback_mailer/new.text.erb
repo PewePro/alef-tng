@@ -1,13 +1,15 @@
-Autor:
-<%= @user.first_name %> <%= @user.last_name %>
+Autor: <%= @user.first_name %> <%= @user.last_name %>
 <%= @user.email %>
 <%= @user.ais_email %>
 
-Datum:
-<%= @feedback.created_at.in_time_zone %>
+Datum: <%= @feedback.created_at %>
+
+-------------------------------------
 
 Sprava:
 <%= @feedback.message %>
+
+-------------------------------------
 
 Url:
 <%= @feedback.url %>
