@@ -1,7 +1,10 @@
-<% if @user.show_solutions %>
-$('#toggle-show-solutions').hide();
-$('#toggle-dont-show-solutions').show();
-<% else %>
-$('#toggle-dont-show-solutions').hide();
-$('#toggle-show-solutions').show();
-<% end %>
+(function() {
+    var toggle = $('#week-toggle');
+    Toggle.reset(toggle);
+    <% if @user.show_solutions %>
+        Toggle.select(toggle,'learning');
+    <% else %>
+        Toggle.select(toggle,'testing');
+    <% end %>
+})();
+

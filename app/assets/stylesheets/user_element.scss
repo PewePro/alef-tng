@@ -48,6 +48,14 @@
   transition: bottom 500ms ease-out;
   padding: 1rem;
   box-sizing: border-box;
+  text-align: center;
+  @include bold;
+}
+
+#contact-text {
+  @media screen and (max-width: 360px) {
+    display: none;
+  }
 }
 
 #contact-textarea {

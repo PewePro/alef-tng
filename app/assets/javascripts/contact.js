@@ -13,18 +13,26 @@
       this.textarea = $('#contact textarea')
 
       this.ctaBtn.click(function() {
-          Contact.div.css('bottom',0);
-          Contact.textarea.focus();
+        Contact.show();
       });
 
       this.sendBtn.click(function() {
-          Contact.div.css('bottom','100%');
+          Contact.hide();
       });
 
       this.cancelBtn.click(function() {
-          Contact.div.css('bottom','100%');
+          Contact.hide();
           return false; // Zabrani odosielaniu formulara
       });
+  },
+
+  show : function() {
+      Contact.div.css('bottom',0);
+      Contact.textarea.focus();
+  },
+
+  hide : function() {
+      Contact.div.css('bottom','100%');
   }
 
 

@@ -9,6 +9,7 @@ var ready = (function () {
     }
 
     if ($('#body-weeks-show').length) {
+        Toggle.initWeekToggle();
         Nav.init();
         Progressbar.setupProgressbars();
     }

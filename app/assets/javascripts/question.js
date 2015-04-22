@@ -13,8 +13,9 @@ var Question = {
         this.type = (/form-(.*)/.exec(formId))[1];
 
         // nastavi formular
-        $('.question-evaluations').hide();
+        $('#question-options-evaluate').hide();
         $('.answer-input').prop('disabled',false);
+        $('#question-error-button').click(Contact.show);
 
         // pripad ked prezerame odpovede
         if(gon.show_solutions) {
@@ -33,7 +34,7 @@ var Question = {
         if (this.isSingleChoice() || this.isMultiChoice()) {
             $('.answer-input').prop('disabled',true);
         }
-        $('.question-button').hide();
+        $('#question-options-show').hide();
     },
 
     evaluateAnswers : function(solution) {
@@ -44,7 +45,7 @@ var Question = {
         if (this.isSingleChoice() || this.isMultiChoice()) {
             this.evaluateChoiceQuestion(solution);
         }
-        $('#question-evaluation-next').show();
+        $('#question-options-evaluate').show();
     },
 
     evaluateEvaluatorQuestion : function(solution) {
@@ -56,8 +57,6 @@ var Question = {
 
         Slider.evaluateAnswer(solution);
         this.setMessage("bol zobrazený priemer odpovedí");
-
-        $('#question-evaluation-next').show();
     },
 
     evaluateChoiceQuestion : function(solution) {
@@ -94,7 +93,7 @@ var Question = {
             this.showChoiceSolution(solution);
         }
 
-        $('#question-evaluation-next').show();
+        $('#question-options-evaluate').show();
     },
 
     showEvaluatorSolution : function(solution) {
@@ -108,7 +107,6 @@ var Question = {
         Slider.showSolution(solution);
         this.setMessage("bol zobrazený priemer odpovedí");
 
-        $('#question-evaluation-next').show();
     },
 
     showChoiceSolution : function(solution) {

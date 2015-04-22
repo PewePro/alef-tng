@@ -33,37 +33,27 @@
   display: none;
 }
 
-.question-options-container {
-  text-align: center;
-}
-
-.question-options-wrapper {
-  display: inline-block;
-  height: 12rem;
-}
-
-@mixin question-options {
-  @include bold;
-  box-sizing: border-box;
-  display: block;
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-  width: 100%;
-  margin: 1rem auto 0;
-  padding: 0.5rem 2rem;
-  text-align: center;
-  font-variant: small-caps;
-}
 
 .question-button {
-  @include question-options;
+  @include button-font;
   @include gray-white;
   @include border-radius(0.5rem);
+  margin: 1rem auto;
+  padding: 0.5rem 0;
+  width: 12rem;
+  display: block;
+  cursor: pointer;
 }
 
-.question-evaluations {
-  @include question-options;
+#question-options-wrapper {
+  padding: 1rem 0;
+}
+
+.question-options-message {
+  @include button-font;
   color: $red;
+  margin-top: 1rem;
+  padding: 0.5rem 0;
 }
 
 .question-button-red {

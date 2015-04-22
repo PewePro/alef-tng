@@ -8,10 +8,6 @@ class WeeksController < ApplicationController
     @learning_objects = @week.learning_objects.distinct
 
     @user = current_user
-    @relations = UserToLoRelation.get_basic_relations(@learning_objects, @user.id)
-
-    @lo_number_all = @learning_objects.count
-    @lo_number_done = @relations.select {|k,_| k[1] == "UserSolvedLoRelation"}.size
   end
 
   def list

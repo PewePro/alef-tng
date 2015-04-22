@@ -9,7 +9,8 @@ var Nav = {
         Nav.initUserElement();
 
         // nastavovanie spravania pri zoomovani
-        lastZoom = detectZoom.zoom();
+        Nav.lastZoom = detectZoom.zoom();
+        Nav.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
         setInterval(this.checkZoom, 500);
     },
 
@@ -21,10 +22,10 @@ var Nav = {
 
     checkZoom : function() {
         var currentZoom = detectZoom.zoom();
-        if(currentZoom > 1 && Nav.lastZoom <= 1) {
+        if(currentZoom > Nav.firstZoom && Nav.lastZoom <= Nav.firstZoom) {
             Nav.hideNav();
         }
-        if(currentZoom <= 1 && Nav.lastZoom > 1) {
+        if(currentZoom <= Nav.firstZoom && Nav.lastZoom > Nav.firstZoom) {
             Nav.showNav();
         }
         Nav.lastZoom = currentZoom;
@@ -38,6 +39,19 @@ var Nav = {
     hideNav : function() {
         $('.not-zoomable').css('opacity',0);
         this.offset.toggleClass('hidden');
+    },
+
+    autoScrollNav : function() {
+        var scroll = $(document).scrollTop();
+        if(scroll < this.ueHeight) {
+
+            this.nav.css('position','absolute');
+            this.nav.css('top',this.ueHeight);
+
+        } else {
+            this.nav.css('position','fixed');
+            this.nav.css('top',0);
+        }
     }
 
 };

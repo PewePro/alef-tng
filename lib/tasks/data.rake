@@ -87,7 +87,7 @@ namespace :alef do
     }
 
     def convert_format(source_string, is_answer = false)
-      is_answer ? source_string.gsub('<correct>|</correct>','') : source_string
+      is_answer ? source_string.gsub(/<correct>|<\/correct>/,'') : source_string
     end
 
     def import_concepts(concepts_string,learning_object)
