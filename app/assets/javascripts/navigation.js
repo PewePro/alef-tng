@@ -1,6 +1,7 @@
 var Nav = {
 
     ueHeight : null, //user element height
+    offset : null,
     nav : null,
     lastZoom : null,
 
@@ -9,15 +10,28 @@ var Nav = {
         Nav.initUserElement();
 
         // nastavovanie spravania pri zoomovani
-        Nav.lastZoom = detectZoom.zoom();
-        Nav.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
+        this.lastZoom = detectZoom.zoom();
+        this.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
         setInterval(this.checkZoom, 500);
     },
 
     initUserElement : function() {
         var ue = $('#user-element');
         this.ueHeight = ue.outerHeight();
-        this.ueHeight = ue.height(0);
+        this.offset = $('.nav-offset');
+        ue.outerHeight(0);
+        $('.user-element-cta').click(function() {
+            var ue = $('#user-element');
+            console.log(ue.outerHeight());
+            console.log(Nav.ueHeight);
+            if(ue.outerHeight() == 0) {
+                ue.outerHeight(Nav.ueHeight);
+                Nav.offset.css( "height", '+='+Nav.ueHeight );
+            } else {
+                ue.outerHeight(0);
+                Nav.offset.css( "height", '-='+Nav.ueHeight );
+            }
+        });
     },
 
     checkZoom : function() {
