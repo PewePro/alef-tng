@@ -1,21 +1,45 @@
 #user-element {
   @include dark-white;
-  position: absolute;
   width: 100%;
-  z-index: 200;
+  margin: -0.5rem 0 0.5rem;
+  overflow: auto;
+  transition: height 500ms ease-out;
 
   #name {
     font-style: italic;
     padding: 1rem;
     line-height: 2rem;
   }
+}
 
-  .user-panel-button {
-    @include button;
-    border: 1px solid $white;
-    float: right;
-    margin: 0 1rem 1rem 0;
+.user-panel-button {
+  display: block;
+  padding: 0.5rem 1rem;
+  @include medium-font;
+  border-bottom: 1px solid $madison;
+  float: left;
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+
+  i {
+    display: inline-block;
+    padding-right: 1.5rem;
+    width: 1rem;
+    font-size: 1rem;
+    text-align: center;
+    line-height: inherit;
   }
+
+  &:hover {
+    background-color: $madison;
+    cursor: pointer;
+  }
+
+}
+
+.user-element-cta {
+  cursor: pointer;
 }
 
 #contact {

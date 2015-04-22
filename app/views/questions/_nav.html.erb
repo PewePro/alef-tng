@@ -1,4 +1,5 @@
 <nav class="question-nav not-zoomable">
+  <%= render 'shared/user_element' %>
   <div class="mobile-content">
     <% if @previous_question == nil %>
         <i class="icon-left disabled"></i>
@@ -17,5 +18,6 @@
     <a href="<%= url_for controller: 'weeks', action: 'show' %>">
       <i class="nav-right-icons icon-level-up"></i>
     </a>
+    <a class="user-element-cta"><i class="nav-right-icons icon-user"></i></a>
   </div>
 </nav>
