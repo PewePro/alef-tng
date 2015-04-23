@@ -54,3 +54,14 @@
   <% end %>
 </div>
 
+<script>
+  $('#setup-relations-table td').click(function() {
+      var i = $(this).find('input');
+      if(i.is(':checked')) {
+          i.prop( "checked", false );
+      } else {
+          i.prop( "checked", true );
+      }
+  });
+</script>
+

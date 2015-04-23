@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(version: 20150422120318) do
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id",                     null: false
-    t.boolean  "show_all",      default: false
+    t.integer  "course_id",     null: false
+    t.boolean  "show_all"
   end
 
   create_table "setups_users", force: :cascade do |t|
