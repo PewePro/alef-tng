@@ -39,6 +39,7 @@
   td:nth-child(2n) {background-color: $porcelain;}
   input {display: inline-block;}
   tr:not(:first-child) {border-top: 1px solid $gray;}
+  td.active {background-color: $red-lighter}
 }
 
 .admin-nav-button {

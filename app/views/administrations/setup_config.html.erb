@@ -35,7 +35,7 @@
         <%= c.name %> (<%= c.question_count %>)
       </td>
       <% @weeks.each do |w| %>
-          <td>
+          <td <%= if w.actual?; 'class="active"'.html_safe; end %>>
             <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)) %>
           </td>
       <% end %>
