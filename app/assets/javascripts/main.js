@@ -24,6 +24,10 @@ var ready = (function () {
         Nav.init();
         Progressbar.setupProgressbars();
     }
+
+    if ($('#body-administrations-setup_config').length) {
+        Admin.setupWeekConceptTable();
+    }
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani

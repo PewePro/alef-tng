@@ -20,7 +20,7 @@
 <div class="admin">
   <h3>Nastavenia konceptov</h3>
   <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
-  <table id="setup-relations-table">
+  <table id="week-concept-table">
     <tr>
       <th>Názov konceptu</th>
       <% @weeks.each do |w| %>
@@ -36,7 +36,7 @@
       </td>
       <% @weeks.each do |w| %>
           <td <%= if w.actual?; 'class="active"'.html_safe; end %>>
-            <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)) %>
+            <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)), class: "week-concept", 'data-week' => w.id %>
           </td>
       <% end %>
       </tr>
@@ -53,7 +53,7 @@
       <th>Nastaviť všetky</th>
       <% @weeks.each do |w| %>
           <td>
-            <%= check_box_tag "switch_all[#{w.id}]", nil, false %>
+            <%= check_box_tag "switch_all", nil, false, class: "switch-all", 'data-week' => w.id %>
           </td>
       <% end %>
     </tr>
@@ -61,23 +61,4 @@
   <%= submit_tag "Uložiť" %>
   <% end %>
 </div>
-
-<script>
-  $('#setup-relations-table td').click(function() {
-      var i = $(this).find('input[type=checkbox]');
-      if(i.is(':checked')) {
-          i.prop( "checked", false );
-      } else {
-          i.prop( "checked", true );
-      }
-  });
-
-  $('#setup-relations-table td input').click(function(event) {
-
-      event.stopPropagation();
-
-  });
-
-
-</script>
 
