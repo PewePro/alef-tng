@@ -3,9 +3,9 @@ var Admin = {
         $('#week-concept-table td').click(function() {
             var i = $(this).find('input[type=checkbox]');
             if(i.is(':checked')) {
-                i.prop( "checked", false );
+                i.click();
             } else {
-                i.prop( "checked", true );
+                i.click();
             }
         });
 
