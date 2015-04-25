@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
-  get 'admin/question_concept_config/' => 'administrations#question_concept_config', as: 'question_concept_config'
+  get 'admin/question_concept_config/:course_id' => 'administrations#question_concept_config', as: 'question_concept_config'
   post 'admin/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
   post 'admin/add_question_concept' => 'administrations#add_question_concept', as: 'add_question_concept'
 

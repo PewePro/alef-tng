@@ -39,8 +39,9 @@ class AdministrationsController < ApplicationController
   end
 
   def question_concept_config
-    @questions = LearningObject.includes(:answers,:concepts).all
-    gon.concepts = Concept.all.pluck(:name)
+    course = Course.find(params[:course_id])
+    @questions = course.learning_objects.includes(:answers,:concepts).all
+    gon.concepts = course.concepts.pluck(:name)
   end
 
   def delete_question_concept
@@ -49,13 +50,18 @@ class AdministrationsController < ApplicationController
   end
 
   def add_question_concept
-    @c = Concept.find_by_name(params[:concept_name])
-    @q = LearningObject.find(params[:question_id])
-    unless @q.concepts.include? @c
-      @q.concepts << @c
+    if params[:concept_name].empty?
+      render nothing: true
       return
     end
 
+    @concept = Concept.find_by_name(params[:concept_name])
+    @question = LearningObject.find(params[:question_id])
+
+    unless @question.concepts.include? @concept
+      @question.concepts << @concept
+      return
+    end
     render nothing: true
   end
 

@@ -2,6 +2,7 @@ class LearningObject < ActiveRecord::Base
   has_many :answers
   has_many :user_to_lo_relations
   has_and_belongs_to_many :concepts, -> { uniq }
+  belongs_to :course
 
   def next(week_number)
     Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
