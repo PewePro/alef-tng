@@ -33,12 +33,13 @@
   padding: 0.5rem 1rem;
 }
 
-#setup-relations-table {
+#week-concept-table {
   td:not(:first-child) {text-align: center;}
   td:first-child {text-align: right; padding: 0 1rem;}
   td:nth-child(2n) {background-color: $porcelain;}
   input {display: inline-block;}
   tr:not(:first-child) {border-top: 1px solid $gray;}
+  td.active {background-color: $red-lighter}
 }
 
 .admin-nav-button {
