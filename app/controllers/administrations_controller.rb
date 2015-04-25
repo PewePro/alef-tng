@@ -2,6 +2,7 @@ class AdministrationsController < ApplicationController
   authorize_resource :class => false
   def index
     @setups = Setup.all
+    @courses = Course.all
   end
 
   def setup_config
@@ -35,6 +36,27 @@ class AdministrationsController < ApplicationController
       c.weeks = w
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
+  end
+
+  def question_concept_config
+    @questions = LearningObject.includes(:answers,:concepts).all
+    gon.concepts = Concept.all.pluck(:name)
+  end
+
+  def delete_question_concept
+    question = LearningObject.find(params[:question_id])
+    Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
+  def add_question_concept
+    @c = Concept.find_by_name(params[:concept_name])
+    @q = LearningObject.find(params[:question_id])
+    unless @q.concepts.include? @c
+      @q.concepts << @c
+      return
+    end
+
+    render nothing: true
   end
 
 end
