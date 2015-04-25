@@ -45,7 +45,7 @@ var Admin = {
 
     addConcept : function(input) {
         $.ajax({
-            url: '/admin/add_question_concept',
+            url: window.location+'/add_question_concept',
             method: 'POST',
             data: {
                 question_id: input.data('question-id'),
@@ -57,7 +57,7 @@ var Admin = {
     setupConceptDelete : function() {
         $('.concept-delete').click(function() {
             $.ajax({
-                url: '/admin/delete_question_concept',
+                url: window.location+'/delete_question_concept',
                 method: 'POST',
                 data: {
                     question_id: $(this).data('question-id'),

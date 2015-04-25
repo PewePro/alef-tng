@@ -55,10 +55,10 @@ class AdministrationsController < ApplicationController
       return
     end
 
-    @concept = Concept.find_by_name(params[:concept_name])
+    @concept = Course.find(params[:course_id]).concepts.find_by_name(params[:concept_name])
     @question = LearningObject.find(params[:question_id])
 
-    unless @question.concepts.include? @concept
+    if (not(@concept.nil?)) && (not(@question.concepts.include? @concept))
       @question.concepts << @concept
       return
     end
