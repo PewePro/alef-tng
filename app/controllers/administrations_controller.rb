@@ -51,7 +51,12 @@ class AdministrationsController < ApplicationController
   def add_question_concept
     @c = Concept.find_by_name(params[:concept_name])
     @q = LearningObject.find(params[:question_id])
-    @q.concepts << @c
+    unless @q.concepts.include? @c
+      @q.concepts << @c
+      return
+    end
+
+    render nothing: true
   end
 
 end
