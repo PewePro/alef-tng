@@ -18,5 +18,43 @@ var Admin = {
             var week = $(this).data('week');
             $('input[data-week='+week+']').prop("checked",val);
         });
+    },
+
+    setupQuestionConceptConfig : function() {
+        this.setupConceptDelete();
+        $('.question-concept-table-cell').click(function() {
+            $(this).toggleClass('show');
+        });
+
+        $( ".concept-autocomplete" ).autocomplete({
+            source: gon.concepts
+        });
+
+        $('.concept-add').click(function() {
+            var input = $('.concept-autocomplete[data-question-id='+$(this).data('question-id')+']');
+
+            $.ajax({
+                url: '/admin/add_question_concept',
+                method: 'POST',
+                data: {
+                    question_id: input.data('question-id'),
+                    concept_name: input.val()
+                }
+            });
+        });
+    },
+
+    setupConceptDelete : function() {
+        $('.concept-delete').click(function() {
+            $.ajax({
+                url: '/admin/delete_question_concept',
+                method: 'POST',
+                data: {
+                    question_id: $(this).data('question-id'),
+                    concept_id: $(this).data('concept-id')
+                }
+            });
+        });
     }
+
 };

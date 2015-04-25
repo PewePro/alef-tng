@@ -28,6 +28,10 @@ var ready = (function () {
     if ($('#body-administrations-setup_config').length) {
         Admin.setupWeekConceptTable();
     }
+
+    if ($('#body-administrations-question_concept_config').length) {
+        Admin.setupQuestionConceptConfig()
+    }
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani
