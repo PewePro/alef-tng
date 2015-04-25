@@ -10,7 +10,7 @@
   <table id="question-concept-table">
     <% @questions.each do |q| %>
         <tr>
-            <td>
+            <td style="width: 40%;">
               <div class="question-concept-table-cell">
                   <strong><%=q.lo_id %></strong>
                   <%=q.question_text %>
@@ -21,12 +21,14 @@
                 </span>
               </div>
             </td>
-            <td style="width: 50%;">
-              <div class="question-concept-table-cell">
+            <td>
               <% q.concepts.each do |c| %>
                   <%= render partial: 'concept', locals: {concept: c, question: q} %>
               <% end %>
-              </div>
+            </td>
+            <td nowrap>
+              <%= text_field_tag "a", nil, placeholder: 'Pridať koncept', class: 'concept-autocomplete', data: { question_id: q.id } %>
+              <%= button_tag '<i class="icon-edit"></i>'.html_safe, type: 'button', class: 'concept-add', data: { question_id: q.id } %>
             </td>
         </tr>
     <% end %>
@@ -36,8 +38,8 @@
 
 
 <script>
-  $('td:first-child .question-concept-table-cell').click(function() {
-     $(this).closest('tr').find('.question-concept-table-cell').toggleClass('show');
+  $('.question-concept-table-cell').click(function() {
+     $(this).toggleClass('show');
   });
 
   $('.concept-delete').click(function() {
@@ -49,6 +51,10 @@
               concept_id: $(this).data('concept-id')
           }
       });
+  });
+
+  $( ".concept-autocomplete" ).autocomplete({
+      source: gon.concepts
   });
 
 </script>
