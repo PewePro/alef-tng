@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
   get 'admin/question_concept_config/' => 'administrations#question_concept_config', as: 'question_concept_config'
+  post 'admin/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

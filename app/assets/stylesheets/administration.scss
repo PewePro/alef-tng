@@ -57,6 +57,7 @@
     height: 4.2rem;
     min-height: 4.2rem;
     overflow: hidden;
+    padding: 0.5rem 0.5rem;
 
     &.show {
       height: auto;
@@ -86,5 +87,23 @@
 
   &:hover {
     border-style: solid;
+  }
+}
+
+.concept {
+  display: inline-block;
+  background-color: $porcelain;
+  color: $dark;
+  border: 1px solid $gray;
+  padding: 0 1rem;
+  @include border-radius(1rem);
+
+  &:hover {
+    background-color: $white;
+  }
+
+  .concept-delete {
+    display: inline-block;
+    padding: 0;
   }
 }

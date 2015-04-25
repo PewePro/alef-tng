@@ -42,4 +42,10 @@ class AdministrationsController < ApplicationController
     @questions = LearningObject.includes(:answers,:concepts).all
   end
 
+  def delete_question_concept
+    puts params
+    question = LearningObject.find(params[:question_id])
+    Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
 end

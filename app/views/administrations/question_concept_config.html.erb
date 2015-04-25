@@ -7,7 +7,6 @@
 <hr class="nav-offset">
 
 <div class="admin wide">
-  <h3>Priradenie konceptov otázkam</h3>
   <table id="question-concept-table">
     <% @questions.each do |q| %>
         <tr>
@@ -25,7 +24,7 @@
             <td style="width: 50%;">
               <div class="question-concept-table-cell">
               <% q.concepts.each do |c| %>
-                  "<%= c.name %>",
+                  <%= render partial: 'concept', locals: {concept: c, question: q} %>
               <% end %>
               </div>
             </td>
@@ -37,8 +36,19 @@
 
 
 <script>
-  $('.question-concept-table-cell').click(function() {
+  $('td:first-child .question-concept-table-cell').click(function() {
      $(this).closest('tr').find('.question-concept-table-cell').toggleClass('show');
+  });
+
+  $('.concept-delete').click(function() {
+      $.ajax({
+          url: '/admin/delete_question_concept',
+          method: 'POST',
+          data: {
+              question_id: $(this).data('question-id'),
+              concept_id: $(this).data('concept-id')
+          }
+      });
   });
 
 </script>
