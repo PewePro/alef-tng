@@ -9,13 +9,24 @@
     border-bottom: 1px solid $gray;
   }
 
+  input[type="submit"] {
+    @include red-white;
+    border: none;
+  }
+
+  &.wide {
+    max-width: none;
+    box-sizing: border-box;
+  }
+}
+
+.admin table {
   th {
     padding: 0.25rem 1rem;
   }
 
-  input[type="submit"] {
-    @include red-white;
-    border: none;
+  tr:not(:first-child) {
+    border-top: 1px solid $gray;
   }
 }
 
@@ -38,7 +49,24 @@
   td:first-child {text-align: right; padding: 0 1rem;}
   td:nth-child(2n) {background-color: $porcelain;}
   input {display: inline-block;}
-  tr:not(:first-child) {border-top: 1px solid $gray;}
+}
+
+#question-concept-table {
+  tr:nth-child(2n) {background-color: $porcelain;}
+  .question-concept-table-cell {
+    height: 4.2rem;
+    min-height: 4.2rem;
+    overflow: hidden;
+
+    &.show {
+      height: auto;
+    }
+  }
+}
+
+.question-concept-table-answers {
+  @include small-font;
+  color: $gray;
 }
 
 .admin-nav-button {

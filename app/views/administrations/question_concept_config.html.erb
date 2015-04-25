@@ -1,0 +1,45 @@
+<nav>
+  <div class="admin-nav">
+    <h2>Administrácia konceptov otáziek</h2>
+    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="admin wide">
+  <h3>Priradenie konceptov otázkam</h3>
+  <table id="question-concept-table">
+    <% @questions.each do |q| %>
+        <tr>
+            <td>
+              <div class="question-concept-table-cell">
+                  <strong><%=q.lo_id %></strong>
+                  <%=q.question_text %>
+                  <span class="question-concept-table-answers">
+                  <% q.answers.each do |a| %>
+                      "<%= a.answer_text %>",
+                  <% end %>
+                </span>
+              </div>
+            </td>
+            <td style="width: 50%;">
+              <div class="question-concept-table-cell">
+              <% q.concepts.each do |c| %>
+                  "<%= c.name %>",
+              <% end %>
+              </div>
+            </td>
+        </tr>
+    <% end %>
+  </table>
+
+</div>
+
+
+<script>
+  $('.question-concept-table-cell').click(function() {
+     $(this).closest('tr').find('.question-concept-table-cell').toggleClass('show');
+  });
+
+</script>
+

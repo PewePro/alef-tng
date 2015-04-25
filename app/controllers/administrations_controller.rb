@@ -38,10 +38,8 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
-  def course_question_config
-    @course = Course.find(params[:course_id])
+  def question_concept_config
     @questions = LearningObject.includes(:answers,:concepts).all
-    puts @questions
   end
 
 end

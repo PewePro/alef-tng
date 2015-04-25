@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
-  get 'admin/course_question_config/:course_id' => 'administrations#course_question_config', as: 'course_question_config'
+  get 'admin/question_concept_config/' => 'administrations#question_concept_config', as: 'question_concept_config'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
