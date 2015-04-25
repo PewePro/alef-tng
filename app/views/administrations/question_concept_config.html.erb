@@ -12,6 +12,15 @@
         <tr>
             <td style="width: 40%;">
               <div class="question-concept-table-cell">
+                <i class="icon-<%=
+                case q.type
+                when "SingleChoiceQuestion"
+                'radio-checked'
+                when "MultiChoiceQuestion"
+                'checkbox-checked'
+                when "EvaluatorQuestion"
+                'sliders'
+                end %>"></i>
                   <strong><%= q.lo_id %></strong>
                   <%= q.question_text %>
                   <span class="question-concept-table-answers">
@@ -32,7 +41,7 @@
             </td>
             <td nowrap>
               <%= text_field_tag "a", nil, placeholder: 'Pridať koncept', class: 'concept-autocomplete', data: { question_id: q.id } %>
-              <%= button_tag '<i class="icon-edit"></i>'.html_safe, type: 'button', class: 'concept-add', data: { question_id: q.id } %>
+              <%= button_tag '<i class="icon-add"></i>'.html_safe, type: 'button', class: 'concept-add', data: { question_id: q.id } %>
             </td>
         </tr>
     <% end %>
