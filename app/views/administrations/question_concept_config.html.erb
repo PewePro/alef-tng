@@ -15,8 +15,12 @@
                   <strong><%=q.lo_id %></strong>
                   <%=q.question_text %>
                   <span class="question-concept-table-answers">
-                  <% q.answers.each do |a| %>
-                      "<%= a.answer_text %>",
+                  <% q.answers.each do |a|
+                    if a.is_correct %>
+                        <strong>"<%= a.answer_text %>",</strong>
+                    <% else %>
+                        "<%= a.answer_text %>",
+                    <% end %>
                   <% end %>
                 </span>
               </div>
@@ -33,6 +37,5 @@
         </tr>
     <% end %>
   </table>
-
 </div>
 

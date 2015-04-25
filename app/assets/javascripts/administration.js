@@ -26,21 +26,31 @@ var Admin = {
             $(this).toggleClass('show');
         });
 
-        $( ".concept-autocomplete" ).autocomplete({
+        $('.concept-autocomplete').autocomplete({
             source: gon.concepts
         });
 
         $('.concept-add').click(function() {
             var input = $('.concept-autocomplete[data-question-id='+$(this).data('question-id')+']');
+            Admin.addConcept(input);
+        });
 
-            $.ajax({
-                url: '/admin/add_question_concept',
-                method: 'POST',
-                data: {
-                    question_id: input.data('question-id'),
-                    concept_name: input.val()
-                }
-            });
+        $('.concept-autocomplete').keyup(function(e){
+            if (e.keyCode==13) {
+                Admin.addConcept($(this));
+            }
+        })
+
+    },
+
+    addConcept : function(input) {
+        $.ajax({
+            url: '/admin/add_question_concept',
+            method: 'POST',
+            data: {
+                question_id: input.data('question-id'),
+                concept_name: input.val()
+            }
         });
     },
 
