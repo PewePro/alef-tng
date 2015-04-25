@@ -25,6 +25,10 @@
     padding: 0.25rem 1rem;
   }
 
+  th.th-right {
+    text-align: right;
+  }
+
   tr:not(:first-child) {
     border-top: 1px solid $gray;
   }
@@ -92,11 +96,13 @@
 
 .concept {
   display: inline-block;
-  background-color: $porcelain;
+  background-color
+  : $porcelain;
   color: $dark;
   border: 1px solid $gray;
-  padding: 0 1rem;
-  @include border-radius(1rem);
+  padding: 0 0.5rem;
+  @include border-radius(3px);
+  @include small-font;
 
   &:hover {
     background-color: $white;

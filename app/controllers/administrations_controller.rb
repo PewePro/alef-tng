@@ -40,6 +40,7 @@ class AdministrationsController < ApplicationController
 
   def question_concept_config
     @questions = LearningObject.includes(:answers,:concepts).all
+    gon.concepts = Concept.all.pluck(:name)
   end
 
   def delete_question_concept

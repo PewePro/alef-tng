@@ -10,9 +10,9 @@
   <h3>Základné nastavenia</h3>
   <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
     <table>
-    <tr><th>Počet týždňov:</th><td><%= s.text_field :week_count %></td></tr>
-    <tr><th>Začiatok kurzu:</th><td><%= date_select :setup, :first_week_at %></td></tr>
-    <tr><th>Zobrazovať všetky týždne:   </th><td><%= s.check_box :show_all %></td></tr>
+    <tr><th class="th-right">Počet týždňov:</th><td><%= s.text_field :week_count %></td></tr>
+    <tr><th class="th-right">Začiatok kurzu:</th><td><%= date_select :setup, :first_week_at %></td></tr>
+    <tr><th class="th-right">Zobrazovať všetky týždne:   </th><td><%= s.check_box :show_all %></td></tr>
     </table>
     <%= s.submit "Uložiť" %>
   <% end %>
