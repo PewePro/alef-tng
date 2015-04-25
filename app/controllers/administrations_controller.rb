@@ -2,6 +2,7 @@ class AdministrationsController < ApplicationController
   authorize_resource :class => false
   def index
     @setups = Setup.all
+    @courses = Course.all
   end
 
   def setup_config
@@ -35,6 +36,12 @@ class AdministrationsController < ApplicationController
       c.weeks = w
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
+  end
+
+  def course_question_config
+    @course = Course.find(params[:course_id])
+    @questions = LearningObject.includes(:answers,:concepts).all
+    puts @questions
   end
 
 end

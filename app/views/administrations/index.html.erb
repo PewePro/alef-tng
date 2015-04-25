@@ -14,3 +14,12 @@
 <% end %>
   </ul>
 </div>
+
+<div class="admin">
+  <h3>Nastavenia kurzov</h3>
+  <ul>
+    <% @courses.each do |c| %>
+        <li><%= c.name %> - <%= link_to "Administrácia otáziek", course_question_config_path(c.id), class: "admin-link" %></li>
+    <% end %>
+  </ul>
+</div>
