@@ -44,9 +44,14 @@ class AdministrationsController < ApplicationController
   end
 
   def delete_question_concept
-    puts params
     question = LearningObject.find(params[:question_id])
     Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
+  def add_question_concept
+    @c = Concept.find_by_name(params[:concept_name])
+    @q = LearningObject.find(params[:question_id])
+    @q.concepts << @c
   end
 
 end

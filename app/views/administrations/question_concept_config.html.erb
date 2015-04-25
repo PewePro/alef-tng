@@ -21,7 +21,7 @@
                 </span>
               </div>
             </td>
-            <td>
+            <td class="concept-list" data-question-id="<%= q.id %>">
               <% q.concepts.each do |c| %>
                   <%= render partial: 'concept', locals: {concept: c, question: q} %>
               <% end %>
@@ -55,6 +55,21 @@
 
   $( ".concept-autocomplete" ).autocomplete({
       source: gon.concepts
+  });
+
+
+
+  $('.concept-add').click(function() {
+      var input = $('.concept-autocomplete[data-question-id='+$(this).data('question-id')+']');
+
+      $.ajax({
+          url: '/admin/add_question_concept',
+          method: 'POST',
+          data: {
+              question_id: input.data('question-id'),
+              concept_name: input.val()
+          }
+      });
   });
 
 </script>

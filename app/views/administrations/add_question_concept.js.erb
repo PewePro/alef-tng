@@ -1,0 +1,4 @@
+(function() {
+    var rendered = "<%= j render(:partial => 'concept', locals: {concept: @c, question: @q}) %>";
+    $('.concept-list[data-question-id=<%= @q.id %>]').append(rendered);
+})();
