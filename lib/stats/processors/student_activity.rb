@@ -19,7 +19,7 @@ module Stats
         setup.first_week_at.to_date + week.number * 7 - 7
       end
 
-      def self.process(setup, week)
+      def self.process(setup)
 
         # Testovacia verzia
         su = User.where(role: "teacher")

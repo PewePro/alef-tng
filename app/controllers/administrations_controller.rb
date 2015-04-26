@@ -39,9 +39,7 @@ class AdministrationsController < ApplicationController
 
   def download_statistics
     @setup = Setup.find(params[:_setup_id])
-    puts "SETUP_ID #{params[:_setup_id]}"
-    puts "WEEK_ID #{params[:_week_id]}"
-    filepath_full = @setup.compute_stats(params[:_week_id])
+    filepath_full = @setup.compute_stats()
     send_file filepath_full
   end
 
