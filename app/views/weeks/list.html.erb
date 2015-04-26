@@ -1,24 +1,23 @@
-<%= render 'shared/user_element' %>
 <div id="faux-background" class="mobile-content"></div>
-<nav class="without-icons">
+<nav class="without-icons not-zoomable">
+  <%= render 'shared/user_element' %>
   <div class="mobile-content">
     <h2><%= @setup.name %></h2>
+    <a class="user-element-cta"><i class="nav-right-icons icon-user"></i></a>
   </div>
 </nav>
-<hr class="nav-offset">
+<hr class="nav-offset not-zoomable">
 
 
 <div class="mobile-content main">
   <% @weeks.each do |w|
-    start_at = @setup.first_week_at.to_date + w.number * 7 - 7
-    end_at = start_at + 6
-    actual = (Date.today-start_at).to_i.between?(0,6)
+     if @setup.show_all || Date.today > w.start_at
   %>
       <a href="<%=
           url_for controller: 'weeks', action: 'show', week_number: w.number
-      %>" class="card <%= 'week-current' if actual %>">
-        <h3 class="card-header"><%= w.number %>. týždeň <%= '(aktuálny)' if actual %><date class="week-date"><%=
-            start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")
+      %>" class="card <%= 'week-current' if w.actual? %>">
+        <h3 class="card-header"><%= w.number %>. týždeň <%= '(aktuálny)' if w.actual? %><date class="week-date"><%=
+            w.start_at.strftime("%-d.%-m.")  %> - <%= w.end_at.strftime("%-d.%-m.%Y")
         %></date></h3>
         <% if w.question_count > 0 %>
             <div class="week-progressbar" data-number-all="<%= w.question_count %>" data-number-done="<%= w.question_count_done @user.id %>">
@@ -28,5 +27,6 @@
             Žiadne otázky
         <% end %>
       </a>
-  <% end %>
+  <% end
+  end %>
 </div>

@@ -50,3 +50,16 @@
   font-size: 0.875rem;
   line-height: 1.5rem;
 }
+
+@mixin big-font {
+  font-size: 1.2rem;
+}
+
+@mixin button-font {
+  @include bold;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-align: center;
+  font-variant: small-caps;
+}
+

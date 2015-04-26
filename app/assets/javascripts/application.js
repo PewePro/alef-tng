@@ -13,7 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery-ui/autocomplete
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
+//= require detect-zoom
 //= require_tree .

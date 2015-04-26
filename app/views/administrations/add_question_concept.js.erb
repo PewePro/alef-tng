@@ -1,0 +1,5 @@
+(function() {
+    var rendered = "<%= j render(:partial => 'concept', locals: {concept: @concept, question: @question}) %>";
+    $('.concept-list[data-question-id=<%= @question.id %>]').append(rendered);
+    Admin.setupConceptDelete();
+})();

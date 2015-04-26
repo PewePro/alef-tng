@@ -1,16 +1,19 @@
-<%= render 'shared/user_element' %>
 <div id="faux-background" class="mobile-content"></div>
   <%= render 'nav' %>
-<hr class="nav-offset">
-<div class="question-name">
+<hr class="nav-offset not-zoomable">
+<div class="question-name not-zoomable">
   <div class="mobile-content">
   <h2><%= @question.lo_id %></h2>
   </div>
 </div>
 <div class="mobile-content main">
   <%= render 'question_info' %>
-<div id="question-text">
+<div class="question-text">
     <%= @question.question_text %>
+
+    <% unless @question.image.nil? %>
+        <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => @question.id), class: 'question-image', alt: @question.lo_id+' Obrázok' %>
+    <% end %>
 </div>
   <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
       <input type="hidden" name="type" value="<%= @question.type %>">

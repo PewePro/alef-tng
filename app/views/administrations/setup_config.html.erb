@@ -17,8 +17,9 @@
   <h3>Základné nastavenia</h3>
   <%= form_for @setup, url: url_for(setup_attributes_path), html: {method: 'post'} do |s| %>
     <table>
-    <tr><th>Počet týždňov:</th><td><%= s.text_field :week_count %></td></tr>
-    <tr><th>Začiatok kurzu:</th><td><%= date_select :setup, :first_week_at %></td></tr>
+    <tr><th class="th-right">Počet týždňov:</th><td><%= s.text_field :week_count %></td></tr>
+    <tr><th class="th-right">Začiatok kurzu:</th><td><%= date_select :setup, :first_week_at %></td></tr>
+    <tr><th class="th-right">Zobrazovať všetky týždne:   </th><td><%= s.check_box :show_all %></td></tr>
     </table>
     <%= s.submit "Uložiť" %>
   <% end %>
@@ -26,7 +27,7 @@
 <div class="admin">
   <h3>Nastavenia konceptov</h3>
   <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
-  <table id="setup-relations-table">
+  <table id="week-concept-table">
     <tr>
       <th>Názov konceptu</th>
       <% @weeks.each do |w| %>
@@ -41,8 +42,8 @@
         <%= c.name %> (<%= c.question_count %>)
       </td>
       <% @weeks.each do |w| %>
-          <td>
-            <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)) %>
+          <td <%= if w.actual?; 'class="active"'.html_safe; end %>>
+            <%= check_box_tag "relations[#{c.id}][#{w.id}]", "1", (w.id.in? c.weeks.map(&:id)), class: "week-concept", 'data-week' => w.id %>
           </td>
       <% end %>
       </tr>
@@ -52,6 +53,14 @@
       <% @weeks.each do |w| %>
           <td>
             <%= w.question_count %>
+          </td>
+      <% end %>
+    </tr>
+    <tr>
+      <th>Nastaviť všetky</th>
+      <% @weeks.each do |w| %>
+          <td>
+            <%= check_box_tag "switch_all", nil, false, class: "switch-all", 'data-week' => w.id %>
           </td>
       <% end %>
     </tr>

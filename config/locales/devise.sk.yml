@@ -16,10 +16,10 @@ sk:
     failure:
       already_authenticated: Už ste prihlásený.
       inactive: Váš účet ešte nebol aktivovaný.
-      invalid: Nesprávny email alebo heslo.
+      invalid: Nesprávne prihlasovacie meno alebo heslo.
       invalid_token: Nesprávny overovací token.
       locked: Váš účet je zamknutý.
-      not_found_in_database: Nesprávny email alebo heslo.
+      not_found_in_database: Nesprávne prihlasovacie meno alebo heslo.
       timeout: Vaša session vypršala. Na pokračovanie sa prosím znovu prihláste.
       unauthenticated: Pred pokračovaním sa musíte zaregistrovať alebo prihlásiť.
       unconfirmed: Pred pokračovaním musíte potvrdiť svoj účet.
