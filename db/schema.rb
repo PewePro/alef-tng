@@ -135,4 +135,5 @@ ActiveRecord::Schema.define(version: 20150410183933) do
   add_foreign_key "user_to_lo_relations", "setups"
   add_foreign_key "user_to_lo_relations", "users"
   add_foreign_key "weeks", "setups"
+  add_foreign_key "feedbacks", "users"
 end

@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 
   has_many :setups_users
   has_many :user_to_lo_relations
+  has_many :feedbacks
   has_and_belongs_to_many :setups
 
   def self.guess_type(login)

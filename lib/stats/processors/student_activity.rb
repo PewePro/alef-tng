@@ -13,7 +13,8 @@ module Stats
                         "Počet doteraz správne zodpovedaných pokusov",
                         "Počet doteraz nesprávne zodpovedaných pokusov",
                         "Počet doteraz správne zodpovedaných otázok",
-                        "Počet kliknutí na odpoveď Neviem"]
+                        "Počet kliknutí na odpoveď Neviem",
+                        "Počet vložených poznámok"]
 
       def self.week_start(setup, week)
         setup.first_week_at.to_date + week.number * 7 - 7
@@ -50,7 +51,7 @@ module Stats
         credentials_splitters = [nil] * CREDENTIALS.length
         credentials_splitters[-1] = 1
 
-        stats_splitters = [nil, nil, nil, nil, nil, 1]
+        stats_splitters = [nil, nil, nil, nil, nil, nil, 1]
 
         weeks_splitters = (stats_splitters) * weeks.length
 
@@ -86,6 +87,9 @@ module Stats
         user_failed_lo_weeks = weeks.map do |w|
           UserFailedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (week_start(setup,w))..(week_start(setup,w) + 6)).group(:user_id).count(:id)
         end
+        user_feedback_weeks = weeks.map do |w|
+          Feedback.where(user_id: users, :created_at => (week_start(setup,w))..(week_start(setup,w) + 6)).group(:user_id).count(:id)
+        end
 
         table = []
 
@@ -99,11 +103,12 @@ module Stats
           sum_user_failed_lo = 0
           sum_user_solved_uniq_lo = 0
           sum_user_didnt_know_lo = 0
+          sum_user_feedback = 0
 
           [user_visited_lo_weeks, user_viewed_solution_lo_weeks, user_solved_lo_weeks,
-           user_failed_lo_weeks, user_solved_uniq_lo_weeks, user_didnt_know_lo_weeks].transpose.
+           user_failed_lo_weeks, user_solved_uniq_lo_weeks, user_didnt_know_lo_weeks, user_feedback_weeks].transpose.
           each do | user_visited_lo, user_viewed_solution_lo, user_solved_lo,
-                    user_failed_lo, user_solved_uniq_lo, user_didnt_know_lo |
+                    user_failed_lo, user_solved_uniq_lo, user_didnt_know_lo, user_feedback |
 
             uvlo = user_visited_lo[u.id]
             uvlo ||= 0
@@ -117,6 +122,8 @@ module Stats
             usulo ||= 0
             udklo = user_didnt_know_lo[u.id]
             udklo ||= 0
+            uf = user_feedback[u.id]
+            uf ||= 0
 
             row_rest << uvlo    # Počet zobrazených otázok
             row_rest << uvslo   # Počet zobrazených správnych odpovedí
@@ -124,6 +131,7 @@ module Stats
             row_rest << uflo    # Počet doteraz nesprávne zodpovedaných pokusov
             row_rest << usulo   # Počet doteraz správne zodpovedaných otázok
             row_rest << udklo   # Počet kliknutí na odpoveď Neviem
+            row_rest << uf      # Počet vložených poznámok
 
             sum_user_visited_lo += uvlo
             sum_user_viewed_solution_lo += uvslo
@@ -131,6 +139,7 @@ module Stats
             sum_user_failed_lo += uflo
             sum_user_solved_uniq_lo += usulo
             sum_user_didnt_know_lo += udklo
+            sum_user_feedback += uf
 
           end
 
@@ -140,6 +149,7 @@ module Stats
           row_start << sum_user_failed_lo
           row_start << sum_user_solved_uniq_lo
           row_start << sum_user_didnt_know_lo
+          row_start << sum_user_feedback
 
           table << (row_start + row_rest)
         end
