@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416132600) do
+ActiveRecord::Schema.define(version: 20150426215624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150416132600) do
     t.datetime "updated_at"
     t.string   "external_reference"
     t.binary   "image"
+    t.integer  "course_id"
   end
 
   create_table "setups", force: :cascade do |t|
@@ -115,6 +116,8 @@ ActiveRecord::Schema.define(version: 20150416132600) do
     t.string   "encrypted_password",  default: "",        null: false
     t.string   "type",                default: "",        null: false
     t.boolean  "show_solutions",      default: false
+    t.string   "email"
+    t.string   "ais_email"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -130,6 +133,7 @@ ActiveRecord::Schema.define(version: 20150416132600) do
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"

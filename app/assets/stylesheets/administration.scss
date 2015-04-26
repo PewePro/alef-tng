@@ -9,13 +9,28 @@
     border-bottom: 1px solid $gray;
   }
 
+  input[type="submit"] {
+    @include red-white;
+    border: none;
+  }
+
+  &.wide {
+    max-width: none;
+    box-sizing: border-box;
+  }
+}
+
+.admin table {
   th {
     padding: 0.25rem 1rem;
   }
 
-  input[type="submit"] {
-    @include red-white;
-    border: none;
+  th.th-right {
+    text-align: right;
+  }
+
+  tr:not(:first-child) {
+    border-top: 1px solid $gray;
   }
 
   .style_image {
@@ -31,18 +46,41 @@
 
 .admin input, .admin select {
   @include medium-font;
-  @include border-radius(0.5rem);
+  @include border-radius(0.25rem);
   margin: 1rem 0;
   border: 1px solid $gray;
   padding: 0.5rem 1rem;
 }
 
-#setup-relations-table {
+#week-concept-table {
   td:not(:first-child) {text-align: center;}
   td:first-child {text-align: right; padding: 0 1rem;}
   td:nth-child(2n) {background-color: $porcelain;}
   input {display: inline-block;}
   tr:not(:first-child) {border-top: 1px solid $gray;}
+}
+
+#question-concept-table {
+  tr:nth-child(2n) {background-color: $porcelain;}
+  .question-concept-table-cell {
+    height: 4.2rem;
+    min-height: 4.2rem;
+    overflow: hidden;
+    padding: 0.5rem 0.5rem;
+
+    &.show {
+      height: auto;
+    }
+  }
+
+  button:hover {
+    color: $red;
+  }
+}
+
+.question-concept-table-answers {
+  @include small-font;
+  color: $gray;
 }
 
 .admin-nav-button {
@@ -63,4 +101,33 @@
   &:hover {
     border-style: solid;
   }
+}
+
+.concept {
+  display: inline-block;
+  background-color
+  : $porcelain;
+  color: $dark;
+  border: 1px solid $gray;
+  padding: 0 0.5rem;
+  @include border-radius(3px);
+  @include small-font;
+  margin-top: 0.25rem;
+
+  &:hover {
+    background-color: $white;
+  }
+
+  .concept-delete {
+    display: inline-block;
+    padding: 0;
+  }
+}
+
+.concept-autocomplete {
+  display: inline-block;
+}
+
+.concept-add {
+  display: inline-block;
 }

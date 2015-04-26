@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :setups_users
   has_many :user_to_lo_relations
   has_and_belongs_to_many :setups
+  has_many :feedbacks
 
   def self.guess_type(login)
     # try to find the user in DB (LdapUser/LocalUser) otherwise use LDAP

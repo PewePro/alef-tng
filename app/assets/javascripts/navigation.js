@@ -1,37 +1,37 @@
 var Nav = {
 
     ueHeight : null, //user element height
-    nav : null,
     offset : null,
-
+    nav : null,
     lastZoom : null,
-    firstZoom : null,
 
     init : function() {
         Contact.init();
         Nav.initUserElement();
 
-        // nastavovanie spravania pri scrollovani
-        $(document).scrollTop(this.ueHeight);
-        Nav.autoScrollNav();
-        $(window).scroll(function() {
-            Nav.autoScrollNav();
-        });
-
         // nastavovanie spravania pri zoomovani
-        Nav.lastZoom = detectZoom.zoom();
-        Nav.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
+        this.lastZoom = detectZoom.zoom();
+        this.firstZoom = detectZoom.zoom() + 0.1; // mala odchylka, aby clovek nemusel odzoomovat nadoraz
         setInterval(this.checkZoom, 500);
     },
 
     initUserElement : function() {
-        // nastavovanie vysok a umiestneni rozlicnych elementov
-        this.nav = $('nav');
-        this.ueHeight = $('#user-element').outerHeight();
+        var ue = $('#user-element');
+        this.ueHeight = ue.outerHeight();
         this.offset = $('.nav-offset');
-        var navHeight = this.nav.outerHeight();
-        this.offset.css( "height", navHeight + this.ueHeight );
-        $('#faux-background').css( "top", this.ueHeight  );
+        ue.outerHeight(0);
+        $('.user-element-cta').click(function() {
+            var ue = $('#user-element');
+            console.log(ue.outerHeight());
+            console.log(Nav.ueHeight);
+            if(ue.outerHeight() == 0) {
+                ue.outerHeight(Nav.ueHeight);
+                Nav.offset.css( "height", '+='+Nav.ueHeight );
+            } else {
+                ue.outerHeight(0);
+                Nav.offset.css( "height", '-='+Nav.ueHeight );
+            }
+        });
     },
 
     checkZoom : function() {
@@ -46,13 +46,11 @@ var Nav = {
     },
 
     showNav : function () {
-        this.isScrolling = false;
         $('.not-zoomable').css('opacity',1);
         this.offset.toggleClass('hidden');
     },
 
     hideNav : function() {
-        this.isScrolling = true;
         $('.not-zoomable').css('opacity',0);
         this.offset.toggleClass('hidden');
     },
@@ -69,4 +67,5 @@ var Nav = {
             this.nav.css('top',0);
         }
     }
+
 };
