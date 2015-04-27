@@ -1,4 +1,4 @@
-class RecommendationSystem
+class HybridRecommender < Recommender
 
   def self.get_list (user_id, week_id)
 
@@ -17,7 +17,7 @@ class RecommendationSystem
     end
 
     # Necha prebehnut vsetky odporucace a ich vysledky zratava dokopy
-    unless config.nil?
+    unless config.nil? or config.recommenders_options.nil?
       config.recommenders_options.each do |r|
         r_class = Object.const_get "#{r.recommender.name.capitalize}Recommender"
         result = r_class.get_list(user_id,week_id)
@@ -28,11 +28,7 @@ class RecommendationSystem
     end
 
     # Vrati vysledny list
-    list.sort
-  end
-
-  def self.get_best (user_id, week_id)
-    self.get_list(user_id, week_id).first
+    list.sort_by { |_, value| value }
   end
 
 end
