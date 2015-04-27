@@ -1,17 +1,48 @@
 module RecommenderSystem
   class Recommender
 
-    @@los = Hash.new
-    def self.learning_objects (week_id)
-      if @@los[week_id].nil?
-        @@los[week_id] = Week.find(week_id).learning_objects.uniq
-      end
-
-      @@los[week_id]
+    def self.setup(user_id, week_id)
+      @@user_id = user_id
+      @@week_id = week_id
+      @@los = Hash.new
+      @@rels = Hash.new
     end
 
-    def self.get_list (user_id, week_id)
-        los = self.learning_objects(week_id)
+    def self.learning_objects
+      if @@los.empty?
+        @@los = Week.find(@@week_id).learning_objects.uniq
+      end
+      @@los
+    end
+
+    def learning_objects
+      self.class.learning_objects
+    end
+
+    def self.relations
+      if @@rels.empty?
+        @@rels = UserToLoRelation.where('user_id = (?) AND learning_object_id IN (?)',
+                                       @@user_id,
+                                       self.learning_objects.map(&:id)
+        )
+      end
+      @@rels
+    end
+
+    def relations
+      self.class.relations
+    end
+
+    def user_id
+      @@user_id
+    end
+
+    def week_id
+      @@week_id
+    end
+
+    def get_list
+        los = self.learning_objects
         list = Hash.new
         los.each do |lo|
           list[lo.id] = 0
@@ -20,8 +51,8 @@ module RecommenderSystem
         list
     end
 
-    def self.get_best (user_id, week_id)
-      self.get_list(user_id, week_id).first
+    def get_best
+      self.get_list.first
     end
 
   end

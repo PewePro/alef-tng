@@ -1,10 +1,10 @@
 module RecommenderSystem
   class HybridRecommender < RecommenderSystem::Recommender
 
-  def self.get_list (user_id, week_id)
+  def get_list
 
     # Najde prislusnu konfiguraciu odporucania
-    linker = RecommendationLinker.find_by(user_id: user_id, week_id: week_id)
+    linker = RecommendationLinker.find_by(user_id: self.user_id, week_id: self.week_id)
     if linker.nil?
       config = RecommendationConfiguration.find_by_default(true)
     else
@@ -13,15 +13,15 @@ module RecommenderSystem
 
     # Vytvori list, do ktoreho sa budu ukladat vysledky odporucani
     list = Hash.new
-    self.learning_objects(week_id).ids.uniq.each do |id|
+    self.learning_objects.map(&:id).uniq.each do |id|
       list[id] = 0
     end
 
     # Necha prebehnut vsetky odporucace a ich vysledky zratava dokopy
     unless config.nil? or config.recommenders_options.nil?
-      config.recommenders_options.each do |r|
-        r_class = Object.const_get "#{r.recommender.name.capitalize}Recommender"
-        result = r_class.get_list(user_id,week_id)
+      config.recommenders_options.includes(:recommender).each do |r|
+        r_class = Object.const_get "RecommenderSystem::#{r.recommender.name.capitalize}Recommender"
+        result = r_class.new.get_list
         result.each do |id, value|
           list[id] += value * r.weight
         end

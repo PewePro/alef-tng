@@ -1,8 +1,9 @@
 module RecommenderSystem
 class AlphabeticalRecommender < RecommenderSystem::Recommender
-  def self.get_list (user_id, week_id)
+  def get_list
 
-    los = self.learning_objects(week_id).sort_by {|x| x.lo_id}
+    los = self.learning_objects.sort_by {|x| x.lo_id}
+
     list = Hash.new
     i = 0
     los.each do |lo|

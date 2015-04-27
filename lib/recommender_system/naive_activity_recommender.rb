@@ -2,18 +2,15 @@
 module RecommenderSystem
 class NaiveActivityRecommender < RecommenderSystem::Recommender
 
-  def self.get_list (user_id, week_id)
+  def get_list
 
     # najdi vsekty interakcie pouzivatela s otazkami z daneho tyzdna
-    los = self.learning_objects(week_id)
-    relations = UserToLoRelation.where('user_id = (?) AND learning_object_id IN (?)', user_id, los.map(&:id))
-
     list = Hash.new
-    los.each do |lo|
+    self.learning_objects.each do |lo|
       list[lo.id] = 1
     end
 
-    relations.each do |rel|
+    self.relations.each do |rel|
       value = self.evaluate_relation(rel)
       if list[rel.learning_object_id] > value
         list[rel.learning_object_id] = value
@@ -23,7 +20,7 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
     list
   end
 
-  def self.evaluate_relation (relation)
+  def evaluate_relation (relation)
     case relation.class.name
       when 'UserVisitedLoRelation'
         0.75
