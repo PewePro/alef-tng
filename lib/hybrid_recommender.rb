@@ -1,4 +1,4 @@
-class HybridRecommender < Recommender
+class HybridRecommender < AbstractRecommender
 
   def self.get_list (user_id, week_id)
 
@@ -12,7 +12,7 @@ class HybridRecommender < Recommender
 
     # Vytvori list, do ktoreho sa budu ukladat vysledky odporucani
     list = Hash.new
-    Week.find(week_id).learning_objects.ids.uniq.each do |id|
+    self.learning_objects(week_id).ids.uniq.each do |id|
       list[id] = 0
     end
 
