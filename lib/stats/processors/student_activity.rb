@@ -39,15 +39,15 @@ module Stats
 
         # TODO
         # Testovacia verzia
-        #su = User.where(role: "teacher")
-        #su_map = su.map(&:id)
-        #users = User.where(id: su_map)
+        su = User.all
+        su_map = su.map(&:id)
+        users = User.where(id: su_map)
 
         # Realna verzia
-        setup = Setup.find_by_id(setup.id)
-        su = setup.users.all
-        s_map = su.map(&:id)
-        users = User.where(id: s_map)
+        #setup = Setup.find_by_id(setup.id)
+        #su = setup.users.all
+        #s_map = su.map(&:id)
+        #users = User.where(id: s_map)
 
         # ------------------------------------------------------------------
 
@@ -59,10 +59,10 @@ module Stats
 
         header = []
         header << [""] * CREDENTIALS.length +
+                  ["SEMESTER"] * METRICS_HEADER.length +
                   weeks.map { |x|
                   ["#{week_start(setup,x).strftime("%d.%m.")}-#{(week_start(setup,x) + 6).strftime("%d.%m. %H:%M")}"] * METRICS_HEADER.length
-                  }.flatten +
-                  ["SEMESTER"] * METRICS_HEADER.length
+                  }.flatten
 
         header <<  CREDENTIALS + METRICS_HEADER * (weeks.length + 1)
 
@@ -173,14 +173,14 @@ module Stats
 
           end
 
-          row_rest << sum_user_visited_lo
-          row_rest << sum_user_viewed_solution_lo
-          row_rest << sum_user_rate_eval_lo
-          row_rest << sum_user_solved_uniq_lo
-          row_rest << sum_user_solved_lo
-          row_rest << sum_user_failed_lo
-          row_rest << sum_user_didnt_know_lo
-          row_rest << sum_user_feedback
+          row_start << sum_user_visited_lo
+          row_start << sum_user_viewed_solution_lo
+          row_start << sum_user_rate_eval_lo
+          row_start << sum_user_solved_uniq_lo
+          row_start << sum_user_solved_lo
+          row_start << sum_user_failed_lo
+          row_start << sum_user_didnt_know_lo
+          row_start << sum_user_feedback
 
           table << (row_start + row_rest)
         end
