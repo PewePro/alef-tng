@@ -38,21 +38,26 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
-  def setup_add_concept
+  def concept_config
+    @course = Course.find(params[:course_id])
+    @concepts = Concept.where(:course_id => params[:course_id])
+  end
+
+  def delete_concept
+    puts "DELETE CONCEPT: #{params[:concept_id]}"
+    concept = Concept.find_by_id(params[:concept_id])
+    concept.destroy
+    redirect_to setup_config_path, :notice => "Koncept odstránený"
+  end
+
+  def add_concept
     #puts "NAME: #{params[:concept_name]} ; PSEUDO: #{params[:pseudo_concept].to_s}"
     @setup = Setup.find(params[:setup_id])
     Concept.create!(name: params[:concept_name], pseudo: params[:pseudo_concept], course_id: @setup.course_id)
     redirect_to setup_config_path, :notice => "Koncept uložený"
   end
 
-  def setup_delete_concept
-    puts "CONCEPT: #{params[:concept_id]}"
-    concept = Concept.find_by_id(params[:concept_id])
-    concept.destroy
-    redirect_to setup_config_path, :notice => "Koncept odstránený"
-  end
-
-  def setup_edit_concept
+  def edit_concept
     puts "EDIT CONCEPT"
     redirect_to setup_config_path, :notice => "Koncept upravený"
   end

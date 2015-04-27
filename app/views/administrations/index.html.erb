@@ -20,6 +20,7 @@
   <ul>
     <% @courses.each do |c| %>
         <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link" %></li>
+        <li><%= link_to c.name + " - Správa konceptov", concept_config_path(c.id), class: "admin-link" %></li>
     <% end %>
   </ul>
 </div>

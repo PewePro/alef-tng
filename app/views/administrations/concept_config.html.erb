@@ -1,0 +1,29 @@
+<nav>
+  <div class="admin-nav">
+    <h2><%= @course.name %></h2>
+    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="admin wide">
+  <table id="question-concept-table">
+    <% @concepts.each do |c| %>
+      <tr>
+        <td>
+          <div class="question-concept-table-cell">
+            <%= c.name %>
+          </div>
+        </td>
+        <td>
+          <%#= text_field_tag "a", nil, placeholder: 'Nový názov konceptu', class: 'concept-autocomplete', data: { concept_id: c.id } %>
+          <%#= button_tag '<i class="icon-add"></i>'.html_safe, type: 'button', class: 'concept-add', data: { concept_id: c.id } %>
+        </td>
+        <td>
+          <%#= button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button', class: 'delete-concept', data: { concept_id: c.id } %>
+          <%#= link_to(image_tag("trash.png", class: "style_image", size: "20x20", alt: "Delete concept"), url_for(delete_concept_path(:concept_id => c.id)))%>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
