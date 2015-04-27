@@ -17,6 +17,7 @@ module Stats
             (header, table, splitter_columns, merge_cells) = sprocessor.process(setup)
 
             add_data(worksheet, splitter_styles, header, table, splitter_columns, merge_cells)
+            freeze_split(worksheet, sprocessor.sheetsplit)
 
           end
         end
@@ -26,6 +27,19 @@ module Stats
     end
 
     private
+
+    # freezes 'worksheet' on 'where' (e.g. "D2")
+    def self.freeze_split(worksheet, where)
+      return unless where
+
+      worksheet.sheet_view.pane do |pane|
+        pane.top_left_cell = where
+        pane.state = :frozen_split
+        pane.x_split = where[/[A-Z]+/][0].ord - 'A'.ord
+        pane.y_split = where[/[0-9]+/].to_i - 1
+        pane.active_pane = :bottom_right
+      end
+    end
 
     def self.add_splitter_styles(workbook)
       right_splitters = []
