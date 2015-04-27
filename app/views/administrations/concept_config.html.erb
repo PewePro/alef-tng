@@ -8,6 +8,16 @@
 
 <div class="admin wide">
   <table id="question-concept-table">
+    <tr>
+      <td>
+        <%= form_tag url_for(add_concept_path), :method => :post do %>
+            <%= text_field_tag :add_concept_name, nil, placeholder: 'Názov konceptu' %>
+            <%= radio_button_tag(:pseudo_concept, true) %> <%= label_tag "skutočný koncept" %>
+            <%= radio_button_tag(:pseudo_concept, false) %> <%= label_tag "pseudo koncept" %>
+            <%= submit_tag "Pridaj" %>
+        <% end %>
+      </td>
+    </tr>
     <% @concepts.each do |c| %>
       <tr>
         <td>
@@ -16,12 +26,24 @@
           </div>
         </td>
         <td>
+          <div class="question-concept-table-cell">
+            <%= c.pseudo.to_s %>
+          </div>
+        </td>
+        <td>
           <%#= text_field_tag "a", nil, placeholder: 'Nový názov konceptu', class: 'concept-autocomplete', data: { concept_id: c.id } %>
           <%#= button_tag '<i class="icon-add"></i>'.html_safe, type: 'button', class: 'concept-add', data: { concept_id: c.id } %>
         </td>
         <td>
-          <%#= button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button', class: 'delete-concept', data: { concept_id: c.id } %>
-          <%#= link_to(image_tag("trash.png", class: "style_image", size: "20x20", alt: "Delete concept"), url_for(delete_concept_path(:concept_id => c.id)))%>
+          <%= link_to((button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button'), url_for(delete_concept_path(:concept_id => c.id)), :method => :post)%>
+        </td>
+        <td>
+          <%= form_tag url_for(edit_concept_path(:concept_id => c.id)), :method => :post do %>
+            <%= text_field_tag :edit_concept_name, nil, placeholder: 'Nový názov konceptu' %>
+              <%= radio_button_tag(:pseudo_concept, true) %> <%= label_tag "skutočný koncept" %>
+              <%= radio_button_tag(:pseudo_concept, false) %> <%= label_tag "pseudo koncept" %>
+            <%= submit_tag "Uprav" %>
+          <% end %>
         </td>
       </tr>
     <% end %>

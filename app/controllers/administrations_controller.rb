@@ -47,19 +47,19 @@ class AdministrationsController < ApplicationController
     puts "DELETE CONCEPT: #{params[:concept_id]}"
     concept = Concept.find_by_id(params[:concept_id])
     concept.destroy
-    redirect_to setup_config_path, :notice => "Koncept odstránený"
+    redirect_to concept_config_path, :notice => "Koncept odstránený"
   end
 
   def add_concept
-    #puts "NAME: #{params[:concept_name]} ; PSEUDO: #{params[:pseudo_concept].to_s}"
-    @setup = Setup.find(params[:setup_id])
-    Concept.create!(name: params[:concept_name], pseudo: params[:pseudo_concept], course_id: @setup.course_id)
-    redirect_to setup_config_path, :notice => "Koncept uložený"
+    puts "ADD COURSE ID: #{params[:course_id]} ; CONCEPT NAME: #{params[:add_concept_name]} ; CONCEPT PSEUDO: #{params[:pseudo_concept].to_s}"
+    Concept.create!(name: params[:add_concept_name], pseudo: params[:pseudo_concept], course_id: params[:course_id])
+    redirect_to concept_config_path, :notice => "Koncept uložený"
   end
 
   def edit_concept
-    puts "EDIT CONCEPT"
-    redirect_to setup_config_path, :notice => "Koncept upravený"
+    puts "EDIT CONCEPT ID: #{params[:concept_id]} ; CONCEPT NAME: #{params[:edit_concept_name]} ; CONCEPT PSEUDO: #{params[:pseudo_concept].to_s}"
+    Concept.find_by_id(params[:concept_id]).update(name: params[:edit_concept_name], pseudo: params[:pseudo_concept])
+    redirect_to concept_config_path, :notice => "Koncept upravený"
   end
 
   def question_concept_config
