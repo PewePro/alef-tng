@@ -1,6 +1,6 @@
 # Tento odporucac sa snazi pouzivatelovi ponuknut otazky, ktore este nevidel alebo neriesil
-
-class NaiveActivityRecommender < AbstractRecommender
+module RecommenderSystem
+class NaiveActivityRecommender < RecommenderSystem::Recommender
 
   def self.get_list (user_id, week_id)
 
@@ -36,4 +36,5 @@ class NaiveActivityRecommender < AbstractRecommender
     end
   end
 
+end
 end

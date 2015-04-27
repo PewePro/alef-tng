@@ -1,4 +1,5 @@
-class AlphabeticalRecommender < AbstractRecommender
+module RecommenderSystem
+class AlphabeticalRecommender < RecommenderSystem::Recommender
   def self.get_list (user_id, week_id)
 
     los = self.learning_objects(week_id).sort_by {|x| x.lo_id}
@@ -11,4 +12,5 @@ class AlphabeticalRecommender < AbstractRecommender
 
     list
   end
+end
 end

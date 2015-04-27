@@ -1,4 +1,5 @@
-class HybridRecommender < AbstractRecommender
+module RecommenderSystem
+  class HybridRecommender < RecommenderSystem::Recommender
 
   def self.get_list (user_id, week_id)
 
@@ -31,4 +32,5 @@ class HybridRecommender < AbstractRecommender
     list.sort_by { |_, value| value }
   end
 
+  end
 end
