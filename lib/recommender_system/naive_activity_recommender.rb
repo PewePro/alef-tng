@@ -10,6 +10,7 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
       list[lo.id] = 1
     end
 
+    # pre kazdu otazku najdi interakciu s najnizsim skore
     self.relations.each do |rel|
       value = self.evaluate_relation(rel)
       if list[rel.learning_object_id] > value
