@@ -1,0 +1,26 @@
+<nav>
+  <div class="admin-nav">
+    <h2><%= @question.id %> : <%= @question.lo_id %></h2>
+    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="admin wide">
+  <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+      <%= label_tag "Zadaj nový názov otázky:" %>
+      <%= text_field_tag :edit_question_name, nil, placeholder: @question.lo_id %>
+      <%= label_tag "Zadaj nový text otázky:" %>
+      <%= text_field_tag :edit_question_text, nil, placeholder: @question.question_text %>
+      <% @question.answers.each do |a|%>
+        <%if a.is_correct %>
+              <%= label_tag "Zadaj nový text odpovede #{a.id}: (Správna)" %>
+              <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: a.answer_text %>
+          <% else %>
+              <%= label_tag "Zadaj nový text odpovede #{a.id}: (Nesprávna)" %>
+              <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: a.answer_text %>
+          <% end %>
+      <% end %>
+      <%= submit_tag "Potvrď" %>
+  <% end %>
+</div>
