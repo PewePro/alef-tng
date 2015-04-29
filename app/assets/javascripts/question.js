@@ -127,11 +127,27 @@ var Question = {
 
     initTimeLog : function() {
 
-        TimeMe.setIdleDurationInSeconds(30);
-        TimeMe.initialize();
-        bindIfNotBounded(document,'page:before-unload',logTime);
-        bindIfNotBounded(window,'beforeunload',logTime);
 
+        TimeMe.initialize();
+        TimeMe.setCurrentPageName('alef');
+        TimeMe.setIdleDurationInSeconds(30);
+
+        bindIfNotBounded(document,'page:before-unload',Question.logTime);
+        bindIfNotBounded(window,'beforeunload',Question.logTime);
+
+    },
+
+    logTime : function() {
+        console.log(TimeMe.getTimeOnCurrentPageInSeconds('alef'));
+        TimeMe.resetRecordedPageTime('alef');
+/*        $.ajax({
+            method: 'post',
+            url: '/log_time',
+            data: {
+                time: TimeMe.getTimeOnCurrentPageInSeconds(),
+                id: gon.userVisitedLoRelationId
+            }
+        });*/
     },
 
     setMessage : function(message) {
@@ -140,11 +156,3 @@ var Question = {
 
     }
 };
-
-function logTime(event) {
-
-    $.ajax({
-        url: '/logMe',
-        data: {time: TimeMe.getTimeOnCurrentPageInSeconds()}
-    });
-}

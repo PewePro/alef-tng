@@ -21,7 +21,6 @@ var ready = (function () {
         Question.setupForm();
         Question.initTimeLog();
 
-
     }
 
     if ($('#body-weeks-list').length) {
