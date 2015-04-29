@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425214010) do
+ActiveRecord::Schema.define(version: 20150429233259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,13 +49,14 @@ ActiveRecord::Schema.define(version: 20150425214010) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.text     "message",    null: false
+    t.text     "message",            null: false
     t.integer  "user_id"
     t.text     "url"
     t.text     "accept"
     t.text     "user_agent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "learning_object_id"
   end
 
   create_table "learning_objects", force: :cascade do |t|
@@ -67,6 +68,27 @@ ActiveRecord::Schema.define(version: 20150425214010) do
     t.string   "external_reference"
     t.binary   "image"
     t.integer  "course_id"
+  end
+
+  create_table "recommendation_configurations", force: :cascade do |t|
+    t.string  "name",                    null: false
+    t.boolean "default", default: false
+  end
+
+  create_table "recommendation_linkers", force: :cascade do |t|
+    t.integer "user_id",                         null: false
+    t.integer "week_id",                         null: false
+    t.integer "recommendation_configuration_id", null: false
+  end
+
+  create_table "recommenders", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
+  create_table "recommenders_options", force: :cascade do |t|
+    t.integer "recommendation_configuration_id", null: false
+    t.integer "recommender_id",                  null: false
+    t.integer "weight",                          null: false
   end
 
   create_table "setups", force: :cascade do |t|
