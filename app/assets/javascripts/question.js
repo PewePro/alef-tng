@@ -125,9 +125,26 @@ var Question = {
         this.setMessage("bola zobrazená správna odpoveď");
     },
 
+    initTimeLog : function() {
+
+        TimeMe.setIdleDurationInSeconds(30);
+        TimeMe.initialize();
+        bindIfNotBounded(document,'page:before-unload',logTime);
+        bindIfNotBounded(window,'beforeunload',logTime);
+
+    },
+
     setMessage : function(message) {
 
         $('#question-evaluation-message').html(message).show();
 
     }
 };
+
+function logTime(event) {
+
+    $.ajax({
+        url: '/logMe',
+        data: {time: TimeMe.getTimeOnCurrentPageInSeconds()}
+    });
+}

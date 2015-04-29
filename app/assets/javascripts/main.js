@@ -15,9 +15,13 @@ var ready = (function () {
     }
 
     if ($('#body-questions-show').length) {
+
         Nav.init();
         Slider.setupEvaluatorSlider();
         Question.setupForm();
+        Question.initTimeLog();
+
+
     }
 
     if ($('#body-weeks-list').length) {
