@@ -127,10 +127,10 @@ var Question = {
 
     initTimeLog : function() {
 
-
-        TimeMe.initialize();
-        TimeMe.setCurrentPageName('alef');
+        TimeMe.startStopTimes = {};
+        TimeMe.setCurrentPageName();
         TimeMe.setIdleDurationInSeconds(30);
+        TimeMe.initialize();
 
         bindIfNotBounded(document,'page:before-unload',Question.logTime);
         bindIfNotBounded(window,'beforeunload',Question.logTime);
@@ -138,16 +138,14 @@ var Question = {
     },
 
     logTime : function() {
-        console.log(TimeMe.getTimeOnCurrentPageInSeconds('alef'));
-        TimeMe.resetRecordedPageTime('alef');
-/*        $.ajax({
+        $.ajax({
             method: 'post',
             url: '/log_time',
             data: {
                 time: TimeMe.getTimeOnCurrentPageInSeconds(),
                 id: gon.userVisitedLoRelationId
             }
-        });*/
+        });
     },
 
     setMessage : function(message) {

@@ -106,7 +106,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		},
 				
 		resetRecordedPageTime: function(pageName) {
-			TimeMe.startStopTimes[pageName] = [];
+ 			TimeMe.startStopTimes[pageName] = [];
 		},
 		
 		resetAllRecordedPageTimes: function() {
