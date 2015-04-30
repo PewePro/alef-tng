@@ -8,8 +8,8 @@ module Stats
       sheet_split "D3"
 
       CREDENTIALS = ["AISID", "Login", "Priezvisko", "Meno", ]
-      METRICS_HEADER = ["Návštevy (uč.)",       #"Počet zobrazených otázok",
-                        "Návštevy (test.)",     #"Počet zobrazených správnych odpovedí",
+      METRICS_HEADER = ["Návštevy (uč.)",       #"Počet zobrazených správnych odpovedí",
+                        "Návštevy (test.)",     #"Počet zobrazených otázok",
                         "Evaluator",            #"Počet hodnotení otázok type Evaluation",
                         "Správne (unikátne)",   #"Počet doteraz správne zodpovedaných otázok",
                         "Správne",              #"Počet doteraz správne zodpovedaných pokusov",
@@ -18,30 +18,11 @@ module Stats
                         "Pozn."                 #"Počet vložených poznámok"
                        ]
 
-      def self.week_start(setup, week)
-        setup.first_week_at.to_date + week.number * 7 - 7
-      end
-
-      def self.get_weeks(setup)
-        right_weeks = []
-        all_weeks = setup.weeks.order(:number).reverse_order
-        all_weeks.each do |aw|
-          #puts "WEEK (aw): #{aw.id} , #{aw.number} WEEK_END: #{(week_start(setup,aw)+6)} TIME_NOW: #{Time.now.to_date}"
-          if (week_start(setup,aw)) <= Time.now.to_date
-            #puts "WEEK_ID: #{aw.id}"
-            right_weeks << aw
-          end
-        end
-        return right_weeks
-      end
-
       def self.process(setup)
 
         # TODO
         # Testovacia verzia
-        su = User.all
-        su_map = su.map(&:id)
-        users = User.where(id: su_map)
+        users = User.all
 
         # Realna verzia
         #setup = Setup.find_by_id(setup.id)
@@ -51,8 +32,7 @@ module Stats
 
         # ------------------------------------------------------------------
 
-        weeks = get_weeks(setup)
-        #weeks.map {|w2| puts "W2: #{w2.id} , #{w2.number}"}
+        weeks = setup.get_actual_weeks
 
         choiceID = LearningObject.select(:id).where.not(type: "EvaluatorQuestion").all
         evalID = LearningObject.select(:id).where(type: "EvaluatorQuestion").all
@@ -61,7 +41,7 @@ module Stats
         header << [""] * CREDENTIALS.length +
                   ["SEMESTER"] * METRICS_HEADER.length +
                   weeks.map { |x|
-                  ["#{week_start(setup,x).strftime("%d.%m.")}-#{(week_start(setup,x) + 6).strftime("%d.%m. %H:%M")}"] * METRICS_HEADER.length
+                  ["#{(x.start_at).strftime("%d.%m.")}-#{((x.start_at) + 6).strftime("%d.%m. %H:%M")}"] * METRICS_HEADER.length
                   }.flatten
 
         header <<  CREDENTIALS + METRICS_HEADER * (weeks.length + 1)
@@ -90,28 +70,28 @@ module Stats
         # ------------------------------------------------------------------
 
         user_visited_lo_weeks = weeks.map do |w|
-          UserVisitedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserVisitedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_viewed_solution_lo_weeks = weeks.map do |w|
-          UserViewedSolutionLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserViewedSolutionLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_rate_eval_lo_weeks = weeks.map do |w|
-          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: evalID, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: evalID, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_solved_uniq_lo_weeks = weeks.map do |w|
-          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count('distinct learning_object_id')
+          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count('distinct learning_object_id')
         end
         user_solved_lo_weeks = weeks.map do |w|
-          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_failed_lo_weeks = weeks.map do |w|
-          UserFailedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserFailedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: choiceID, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_didnt_know_lo_weeks = weeks.map do |w|
-          UserDidntKnowLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          UserDidntKnowLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_feedback_weeks = weeks.map do |w|
-          Feedback.where(user_id: users, :created_at => (week_start(setup,w))..(week_start(setup,w) + 7)).group(:user_id).count(:id)
+          Feedback.where(user_id: users, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
 
         table = []

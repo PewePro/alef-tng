@@ -33,4 +33,10 @@ class Setup < ActiveRecord::Base
 
     return filepath_full
   end
+
+  def get_actual_weeks()
+    all_weeks = self.weeks.order(:number).reverse_order
+    right_weeks = all_weeks.select { |aw| (aw.start_at <= Time.now.to_date)}
+    return right_weeks
+  end
 end
