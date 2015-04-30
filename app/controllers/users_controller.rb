@@ -19,9 +19,6 @@ class UsersController < ApplicationController
 
     path = Rails.application.routes.recognize_path request.env['HTTP_REFERER']
 
-    puts path
-    puts params[:id].to_i
-
     if path[:controller] == "questions" and path[:action] == "show"
       feedback.update learning_object_id: path[:id].to_i
     end
