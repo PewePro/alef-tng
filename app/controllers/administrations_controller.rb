@@ -44,21 +44,22 @@ class AdministrationsController < ApplicationController
   end
 
   def delete_concept
-    puts "DELETE CONCEPT: #{params[:concept_id]}"
     concept = Concept.find_by_id(params[:concept_id])
     concept.destroy
     redirect_to concept_config_path, :notice => "Koncept odstránený"
   end
 
   def add_concept
-    puts "ADD COURSE ID: #{params[:course_id]} ; CONCEPT NAME: #{params[:add_concept_name]} ; CONCEPT PSEUDO: #{params[:pseudo_concept].to_s}"
-    Concept.create!(name: params[:add_concept_name], pseudo: params[:pseudo_concept], course_id: params[:course_id])
-    redirect_to concept_config_path, :notice => "Koncept uložený"
+    pseudo = false
+    pseudo = true if params[:pseudo_concept]
+    Concept.create!(name: params[:add_concept_name], pseudo: pseudo, course_id: params[:course_id])
+    redirect_to concept_config_path, :notice => "Koncept pridaný"
   end
 
   def edit_concept
-    puts "EDIT CONCEPT ID: #{params[:concept_id]} ; CONCEPT NAME: #{params[:edit_concept_name]} ; CONCEPT PSEUDO: #{params[:pseudo_concept].to_s}"
-    Concept.find_by_id(params[:concept_id]).update(name: params[:edit_concept_name], pseudo: params[:pseudo_concept])
+    pseudo = false
+    pseudo = true if params[:pseudo_concept]
+    Concept.find_by_id(params[:concept_id]).update(name: params[:edit_concept_name], pseudo: pseudo)
     redirect_to concept_config_path, :notice => "Koncept upravený"
   end
 
