@@ -18,6 +18,17 @@
     max-width: none;
     box-sizing: border-box;
   }
+
+  .correct_ans {
+    margin-top: 0px;
+    padding-top: 0rem;
+    th {
+      font-weight: normal;
+      padding-right: 1rem;
+      padding-left: 0rem;
+    }
+  }
+
 }
 
 .admin table {

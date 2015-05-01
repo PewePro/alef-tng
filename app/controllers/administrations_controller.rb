@@ -47,12 +47,13 @@ class AdministrationsController < ApplicationController
   end
 
   def edit_question
-    puts "QUESTION_NAME: #{params[:edit_question_name]} ; QUESTION_TEXT: #{params[:edit_question_text]}"
-    LearningObject.find_by_id(params[:question_id]).update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
-    LearningObject.find_by_id(params[:question_id]).update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
-    LearningObject.find_by_id(params[:question_id]).answers.each do |a|
-      puts "ANSWER ID #{a.id}: #{params["edit_answer_text_#{a.id}"]}" if params["edit_answer_text_#{a.id}"] != ""
-      a.update(:answer_text => params["edit_answer_text_#{a.id}"]) if params["edit_answer_text_#{a.id}"] != ""
+    lo = LearningObject.find_by_id(params[:question_id])
+    lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
+    lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
+    lo.answers.each do |a|
+      is_correct = false
+      is_correct = true if params["correct_answer_#{a.id}"]
+      a.update(:answer_text => params["edit_answer_text_#{a.id}"], :is_correct => is_correct) if params["edit_answer_text_#{a.id}"] != ""
     end
 
     redirect_to question_config_path, :notice => "Otázka bola upravená"

@@ -6,20 +6,42 @@
 </nav>
 <hr class="nav-offset">
 
-<div class="admin wide">
+<div class="admin">
   <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+
+      <h3>Úprava otázky</h3> <br/>
+
       <%= label_tag "Zadaj nový názov otázky:" %>
-      <%= text_field_tag :edit_question_name, nil, placeholder: @question.lo_id %>
+      <span class="question-concept-table-answers">
+          Pôvodný názov: "<%= @question.lo_id %>"
+      </span>
+      <%= text_field_tag :edit_question_name, nil, placeholder: "Nový názov otázky" %>
+      <hr/>
       <%= label_tag "Zadaj nový text otázky:" %>
-      <%= text_field_tag :edit_question_text, nil, placeholder: @question.question_text %>
+      <span class="question-concept-table-answers">
+          Pôvodný text: "<%= @question.question_text %>"
+      </span>
+      <%= text_field_tag :edit_question_text, nil, placeholder: "Nový text otázky" %>
+
+      <h3>Úprava odpovedí</h3> <br/>
+
       <% @question.answers.each do |a|%>
-        <%if a.is_correct %>
-              <%= label_tag "Zadaj nový text odpovede #{a.id}: (Správna)" %>
-              <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: a.answer_text %>
+          <%= label_tag "Zadaj nový text odpovede (#{a.id}):" %>
+          <% if a.is_correct %>
+              <span class="question-concept-table-answers">
+                Pôvodná odpoveď: <strong>"<%= a.answer_text %>"</strong>
+              </span>
           <% else %>
-              <%= label_tag "Zadaj nový text odpovede #{a.id}: (Nesprávna)" %>
-              <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: a.answer_text %>
+              <span class="question-concept-table-answers">
+                Pôvodná odpoveď: "<%= a.answer_text %>"
+              </span>
           <% end %>
+          <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: "Nová odpoveď" %>
+          <%#= label_tag :correct_ans, "Správna odpoveď:", :style => "float: left; padding-right: 1rem;" %> <%#= check_box_tag "correct_answer_#{a.id}", :style => "float: right;" %>
+          <% if a.learning_object.type != "EvaluatorQuestion" %>
+          <table class="correct_ans"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag "correct_answer_#{a.id}" %></td> </tr></table>
+          <% end %>
+          <hr/>
       <% end %>
       <%= submit_tag "Potvrď" %>
   <% end %>
