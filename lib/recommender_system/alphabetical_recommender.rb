@@ -2,6 +2,8 @@ module RecommenderSystem
 class AlphabeticalRecommender < RecommenderSystem::Recommender
   def get_list
 
+    # Toto nefunguje dobre s diakritikou
+    # Cely tento recommender je vsak len na testovanie, takze nemusi fungovat na 100%
     los = self.learning_objects.sort_by {|x| x.lo_id}
 
     list = Hash.new

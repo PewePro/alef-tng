@@ -29,7 +29,7 @@ module RecommenderSystem
     end
 
     # Vrati vysledny list
-    list.sort_by { |_, value| value }
+    list.sort_by { |_, value| -value }
   end
 
   end
