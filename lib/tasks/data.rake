@@ -147,7 +147,9 @@ namespace :alef do
         # import only tagged questions
         next unless zero_version == 'y'
 
-        lo = LearningObject.find_or_create_by(external_reference: external_reference)
+        lo = LearningObject.find_or_create_by(external_reference: external_reference) do |lo|
+          lo.course = Course.first
+        end
         lo.update( type: question_type, lo_id: question_name, question_text: question_text )
 
         # TODO import answers when updating existing LO, not only upon first creation
@@ -192,7 +194,9 @@ namespace :alef do
         # import only tagged questions
         next unless zero_version == 'y'
 
-        lo = LearningObject.find_or_create_by(external_reference: external_reference)
+        lo = LearningObject.find_or_create_by(external_reference: external_reference) do |lo|
+          lo.course = Course.first
+        end
         lo.update(type: question_type, lo_id: question_name, question_text: question_text)
 
         Answer.find_or_create_by(learning_object_id: lo.id).update(answer_text: answer_text)
