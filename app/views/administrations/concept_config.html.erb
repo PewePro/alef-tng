@@ -1,0 +1,60 @@
+<nav>
+  <div class="admin-nav">
+    <h2><%= @course.name %></h2>
+    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="admin wide">
+  <table id="concept-table">
+    <tr>
+      <td></td><td></td><th style="vertical-align: middle">Pridaj koncept:</th>
+      <td>
+        <%= form_tag url_for(add_concept_path), :method => 'post' do %>
+            <table>
+              <td><%= text_field_tag :add_concept_name, nil, placeholder: "Názov konceptu" %></td>
+              <th>Pseudo koncept:</th><td><%= check_box_tag :pseudo_concept %></td>
+              <td class="concept-button"><%= submit_tag "Pridaj" %></td>
+            </table>
+        <% end %>
+      </td>
+    </tr>
+    <tr class="bold_text_row">
+      <td class="concept-header">Názov konceptu</td>
+      <td class="concept-header">Typ konceptu</td>
+      <td class="concept-header">Odstráň koncept</td>
+      <td class="concept-header">Editácia konceptu</td>
+    </tr>
+    <% @concepts.each do |c| %>
+      <tr>
+        <td>
+          <div class="concept-table-cell">
+            <%= c.name %>
+          </div>
+        </td>
+        <td>
+          <div class="concept-table-cell">
+            <% if c.pseudo %>
+              Pseudo koncept
+            <% else %>
+              Skutočný koncept
+            <% end %>
+          </div>
+        </td>
+        <td style="align-content: center">
+          <%= link_to((button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button', class: 'delete_concept_button'), url_for(delete_concept_path(:concept_id => c.id)), :method => :post)%>
+        </td>
+        <td>
+            <%= form_tag url_for(edit_concept_path(:concept_id => c.id)), :method => 'post' do %>
+              <table>
+                <td> <%= text_field_tag :edit_concept_name, nil, placeholder: "Nový názov konceptu" %></td>
+                <th>Pseudo koncept:</th><td><%= check_box_tag :pseudo_concept %></td>
+                <td class="concept-button"><%= submit_tag "Uprav" %></td>
+              </table>
+            <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

@@ -38,6 +38,31 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
+  def concept_config
+    @course = Course.find(params[:course_id])
+    @concepts = Concept.where(:course_id => params[:course_id])
+  end
+
+  def delete_concept
+    concept = Concept.find_by_id(params[:concept_id])
+    concept.destroy
+    redirect_to concept_config_path, :notice => "Koncept odstránený"
+  end
+
+  def add_concept
+    pseudo = false
+    pseudo = true if params[:pseudo_concept]
+    Concept.create!(name: params[:add_concept_name], pseudo: pseudo, course_id: params[:course_id])
+    redirect_to concept_config_path, :notice => "Koncept pridaný"
+  end
+
+  def edit_concept
+    pseudo = false
+    pseudo = true if params[:pseudo_concept]
+    Concept.find_by_id(params[:concept_id]).update(name: params[:edit_concept_name], pseudo: pseudo)
+    redirect_to concept_config_path, :notice => "Koncept upravený"
+  end
+
   def question_concept_config
     @course = Course.find(params[:course_id])
     @questions = @course.learning_objects.includes(:answers,:concepts).all
