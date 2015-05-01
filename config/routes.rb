@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     # Vypis otazok z daneho tyzdna, napr. /PSI/3
   get 'w/:week_number' => 'weeks#show'
 
+  # Vrati dalsiu otazku podla odporucaca
+  get 'w/:week_number/next' => 'questions#next'
+
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/:week_number/:id' => 'questions#show'
   get 'w/:week_number/:id/image' => 'questions#show_image'
