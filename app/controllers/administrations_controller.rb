@@ -38,6 +38,13 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
+
+  def download_statistics
+    @setup = Setup.find(params[:_setup_id])
+    filepath_full = @setup.compute_stats()
+    send_file filepath_full
+  end
+
   def question_concept_config
     @course = Course.find(params[:course_id])
     @questions = @course.learning_objects.includes(:answers,:concepts).all
