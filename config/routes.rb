@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'w/:week_number/:id' => 'questions#show'
   get 'w/:week_number/:id/image' => 'questions#show_image'
 
+  # Loguje cas straveny na otazke
+  post 'log_time' => 'questions#log_time'
+
   # Opravi otazku a vrati spravnu odpoved
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
 
@@ -27,6 +30,8 @@ Rails.application.routes.draw do
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'
 
   post 'feedback' => 'users#send_feedback', as: 'feedback'
+
+
 
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
