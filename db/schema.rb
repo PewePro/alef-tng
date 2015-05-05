@@ -134,6 +134,8 @@ ActiveRecord::Schema.define(version: 20150429233259) do
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "feedbacks", "learning_objects"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"

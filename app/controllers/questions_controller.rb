@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
     user_id = @user.id
 
     @question = LearningObject.find(params[:id])
-    @question.seen_by_user(user_id)
+    rel = @question.seen_by_user(user_id)
+    gon.userVisitedLoRelationId = rel.id
     @next_question = @question.next(params[:week_number])
     @previous_question = @question.previous(params[:week_number])
 
@@ -54,5 +55,13 @@ class QuestionsController < ApplicationController
   def show_image
     lo = LearningObject.find(params[:id])
     send_data lo.image, :type => 'image/png', :disposition => 'inline'
+  end
+
+  def log_time
+    rel = UserVisitedLoRelation.find(params[:id])
+    if not rel.nil? and rel.user_id == current_user.id
+      rel.update interaction: params[:time]
+    end
+    render nothing: true
   end
 end
