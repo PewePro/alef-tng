@@ -70,27 +70,6 @@ ActiveRecord::Schema.define(version: 20150429233259) do
     t.integer  "course_id"
   end
 
-  create_table "recommendation_configurations", force: :cascade do |t|
-    t.string  "name",                    null: false
-    t.boolean "default", default: false
-  end
-
-  create_table "recommendation_linkers", force: :cascade do |t|
-    t.integer "user_id",                         null: false
-    t.integer "week_id",                         null: false
-    t.integer "recommendation_configuration_id", null: false
-  end
-
-  create_table "recommenders", force: :cascade do |t|
-    t.string "name", null: false
-  end
-
-  create_table "recommenders_options", force: :cascade do |t|
-    t.integer "recommendation_configuration_id", null: false
-    t.integer "recommender_id",                  null: false
-    t.integer "weight",                          null: false
-  end
-
   create_table "setups", force: :cascade do |t|
     t.string   "name"
     t.datetime "first_week_at"
