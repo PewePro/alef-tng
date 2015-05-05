@@ -69,11 +69,11 @@ module Stats
 
         # ------------------------------------------------------------------
 
-        user_visited_lo_weeks = weeks.map do |w|
-          UserVisitedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
-        end
         user_viewed_solution_lo_weeks = weeks.map do |w|
           UserViewedSolutionLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
+        end
+        user_visited_lo_weeks = weeks.map do |w|
+          UserVisitedLoRelation.where(user_id: users, setup_id: setup.id, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
         end
         user_rate_eval_lo_weeks = weeks.map do |w|
           UserSolvedLoRelation.where(user_id: users, setup_id: setup.id, learning_object_id: evalID, :created_at => (w.start_at)..((w.start_at) + 7)).group(:user_id).count(:id)
@@ -100,8 +100,8 @@ module Stats
           row_start = [u.aisid, u.login, u.last_name, u.first_name]
           row_rest = []
 
-          sum_user_visited_lo = 0
           sum_user_viewed_solution_lo = 0
+          sum_user_visited_lo = 0
           sum_user_rate_eval_lo = 0
           sum_user_solved_uniq_lo = 0
           sum_user_solved_lo = 0
@@ -109,17 +109,17 @@ module Stats
           sum_user_didnt_know_lo = 0
           sum_user_feedback = 0
 
-          [user_visited_lo_weeks, user_viewed_solution_lo_weeks, user_rate_eval_lo_weeks,
+          [user_viewed_solution_lo_weeks, user_visited_lo_weeks, user_rate_eval_lo_weeks,
            user_solved_uniq_lo_weeks, user_solved_lo_weeks, user_failed_lo_weeks,
            user_didnt_know_lo_weeks, user_feedback_weeks].transpose.
-          each do | user_visited_lo, user_viewed_solution_lo, user_rate_eval_lo,
+          each do | user_viewed_solution_lo, user_visited_lo, user_rate_eval_lo,
                     user_solved_uniq_lo, user_solved_lo, user_failed_lo,
                     user_didnt_know_lo, user_feedback |
 
-            uvlo = user_visited_lo[u.id]
-            uvlo ||= 0
             uvslo = user_viewed_solution_lo[u.id]
             uvslo ||= 0
+            uvlo = user_visited_lo[u.id]
+            uvlo ||= 0
             urelo = user_rate_eval_lo[u.id]
             urelo ||= 0
             usulo = user_solved_uniq_lo[u.id]
@@ -133,8 +133,8 @@ module Stats
             uf = user_feedback[u.id]
             uf ||= 0
 
-            row_rest << uvlo    # Počet zobrazených otázok
             row_rest << uvslo   # Počet zobrazených správnych odpovedí
+            row_rest << uvlo    # Počet zobrazených otázok
             row_rest << urelo   # Počet hodnotení otázok typu Evaluation
             row_rest << usulo   # Počet doteraz správne zodpovedaných otázok
             row_rest << uslo    # Počet doteraz správne zodpovedaných pokusov
@@ -142,8 +142,8 @@ module Stats
             row_rest << udklo   # Počet kliknutí na odpoveď Neviem
             row_rest << uf      # Počet vložených poznámok
 
-            sum_user_visited_lo += uvlo
             sum_user_viewed_solution_lo += uvslo
+            sum_user_visited_lo += uvlo
             sum_user_rate_eval_lo += urelo
             sum_user_solved_uniq_lo += usulo
             sum_user_solved_lo += uslo
@@ -153,8 +153,8 @@ module Stats
 
           end
 
-          row_start << sum_user_visited_lo
           row_start << sum_user_viewed_solution_lo
+          row_start << sum_user_visited_lo
           row_start << sum_user_rate_eval_lo
           row_start << sum_user_solved_uniq_lo
           row_start << sum_user_solved_lo
