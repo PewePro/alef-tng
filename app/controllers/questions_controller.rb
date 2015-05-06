@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 
     lo_class = Object.const_get params[:type]
     lo = lo_class.find(params[:id])
-    @solution = lo.get_solution
+    @solution = lo.get_solution current_user.id
 
     @user = current_user
     user_id = @user.id

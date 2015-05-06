@@ -1,6 +1,6 @@
 class MultiChoiceQuestion < LearningObject
 
-  def get_solution
+  def get_solution (user_id)
     self.answers.where(is_correct: true).ids
   end
 
