@@ -22,7 +22,7 @@ module Stats
 
         # TODO
         # Testovacia verzia
-        users = User.all
+        users = User.order(:last_name, :first_name).all
 
         # Realna verzia
         #setup = Setup.find_by_id(setup.id)
