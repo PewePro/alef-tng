@@ -10,7 +10,7 @@ module RecommenderSystem
 
     def self.learning_objects
       if @@los.empty?
-        @@los = Week.find(@@week_id).learning_objects.uniq
+        @@los = Week.find(@@week_id).learning_objects.includes(:concepts).uniq
       end
       @@los
     end
