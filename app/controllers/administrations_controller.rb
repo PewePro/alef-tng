@@ -58,8 +58,13 @@ class AdministrationsController < ApplicationController
       a.update(:answer_text => params["edit_answer_text_#{a.id}"]) if params["edit_answer_text_#{a.id}"] != ""
     end
 
-    #redirect_to session.delete(:my_previous_url), :notice => "Otázka bola upravená"
     redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+  end
+
+  def download_statistics
+    @setup = Setup.find(params[:_setup_id])
+    filepath_full = @setup.compute_stats()
+    send_file filepath_full
   end
 
   def question_concept_config

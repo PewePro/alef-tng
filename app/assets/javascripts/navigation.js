@@ -22,8 +22,6 @@ var Nav = {
         ue.outerHeight(0);
         $('.user-element-cta').click(function() {
             var ue = $('#user-element');
-            console.log(ue.outerHeight());
-            console.log(Nav.ueHeight);
             if(ue.outerHeight() == 0) {
                 ue.outerHeight(Nav.ueHeight);
                 Nav.offset.css( "height", '+='+Nav.ueHeight );

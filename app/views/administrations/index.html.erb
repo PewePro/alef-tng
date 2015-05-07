@@ -9,9 +9,9 @@
 <div class="admin">
   <h3>Nastavenia setupov</h3>
   <ul>
-<% @setups.each do |s| %>
+  <% @setups.each do |s| %>
     <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link" %></li>
-<% end %>
+  <% end %>
   </ul>
 </div>
 

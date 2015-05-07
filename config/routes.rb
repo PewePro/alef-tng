@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'w/:week_number/:id' => 'questions#show'
   get 'w/:week_number/:id/image' => 'questions#show_image'
 
+  # Loguje cas straveny na otazke
+  post 'log_time' => 'questions#log_time'
+
   # Opravi otazku a vrati spravnu odpoved
   post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
 
@@ -28,10 +31,13 @@ Rails.application.routes.draw do
 
   post 'feedback' => 'users#send_feedback', as: 'feedback'
 
+
+
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
 
   get 'admin/setup_config/:setup_id' => 'administrations#setup_config', as: 'setup_config'
+  get 'admin/setup_config/:setup_id/download_statistics' => 'administrations#download_statistics', as: 'download_statistics'
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 

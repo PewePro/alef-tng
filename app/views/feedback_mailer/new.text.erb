@@ -10,6 +10,17 @@ Sprava:
 <%= @feedback.message %>
 
 -------------------------------------
+<% unless @learning_object.nil? %>
+
+Otazka:
+<%= @learning_object.question_text %>
+<% @learning_object.answers.each do |a| %>
+ - <% if a.is_correct %>(Spravna odpoved) <% end %><%= a.answer_text %>
+
+<% end %>
+
+-------------------------------------
+<% end %>
 
 Url:
 <%= @feedback.url %>
