@@ -31,15 +31,17 @@
               <span class="question-concept-table-answers">
                 Pôvodná odpoveď: <strong>"<%= a.answer_text %>"</strong>
               </span>
+              <% checked = true %>
           <% else %>
               <span class="question-concept-table-answers">
                 Pôvodná odpoveď: "<%= a.answer_text %>"
               </span>
+              <% checked = false %>
           <% end %>
           <%= text_field_tag "edit_answer_text_#{a.id}", nil, placeholder: "Nová odpoveď" %>
           <%#= label_tag :correct_ans, "Správna odpoveď:", :style => "float: left; padding-right: 1rem;" %> <%#= check_box_tag "correct_answer_#{a.id}", :style => "float: right;" %>
           <% if a.learning_object.type != "EvaluatorQuestion" %>
-          <table class="correct_ans"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag "correct_answer_#{a.id}" %></td> </tr></table>
+              <table class="correct_ans"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag "correct_answer_#{a.id}", 1, checked %></td> </tr></table>
           <% end %>
           <hr/>
       <% end %>
