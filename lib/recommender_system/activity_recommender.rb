@@ -19,12 +19,43 @@ module RecommenderSystem
     end
 
     def get_model
-      # vytvor model pouzivatela ako postupnost relations
+      # zober vsetky aktivity za poslednych 24h
+      # odpal ak je tam niekde hodinova medzera
+      # odpal tie nadbytocne
+      # vrat zoznam
     end
 
     def get_probability (learning_object, relation)
-      # pozri do tabulky na aktualnu hodnotu
+      activity_rate = ActivityRecommenderRecord.where(
+          learning_object_id: learning_object.id,
+          relation_learning_object_id: relation.learning_object_id,
+          relation_type: relation.type
+      ).select('positive / (positive + negative)')
+
+      success_rate = learning_object.right_answers.to_f / (learning_object.right_answers + learning_object.wrong_answers)
+
+      activity_rate - success_rate
     end
+
+    def update_table
+      # zober vsetky relacie, ktore este neboli spracovane
+      # vytvor z nich modely
+      # z modelov obnov tabulku
+    end
+
+    # tabulka
+    # lo_id
+    # akt_lo_id
+    # akt_lo_type
+    # right
+    # wrong
+
+    # vytvorit tabulku uspesnosti, pouzivat aj pri dalsom recommenderi
+    # tam dat right a wrong
+
+    # tieto tabulky updatovat pri kazdej novej relation alebo hromadne?
+    # treba vytvorit aj skript pre vytvorenie tychto tabuliek nanovo?
+
 
   end
 end
