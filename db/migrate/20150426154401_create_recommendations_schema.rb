@@ -20,5 +20,14 @@ class CreateRecommendationsSchema < ActiveRecord::Migration
       t.integer :recommender_id, null: false
       t.integer :weight, null: false
     end
+
+    add_foreign_key :recommendation_linkers, :weeks
+    add_foreign_key :recommendation_linkers, :users
+    add_foreign_key :recommendation_linkers, :recommendation_configurations
+
+    add_foreign_key :recommenders_options, :recommendation_configurations
+    add_foreign_key :recommenders_options, :recommenders
+
+
   end
 end

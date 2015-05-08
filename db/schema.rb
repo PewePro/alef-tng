@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508104933) do
+ActiveRecord::Schema.define(version: 20150508132143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activity_recommender_records", force: :cascade do |t|
+    t.integer "learning_object_id",                      null: false
+    t.integer "relation_learning_object_id",             null: false
+    t.string  "relation_type",                           null: false
+    t.integer "right_answers",               default: 0, null: false
+    t.integer "wrong_answers",               default: 0, null: false
+  end
 
   create_table "answers", force: :cascade do |t|
     t.integer  "learning_object_id", null: false
@@ -67,8 +75,8 @@ ActiveRecord::Schema.define(version: 20150508104933) do
     t.string   "external_reference"
     t.binary   "image"
     t.integer  "course_id"
-    t.integer  "right_answers", default: 0
-    t.integer  "wrong_answers", default: 0
+    t.integer  "right_answers",      default: 0
+    t.integer  "wrong_answers",      default: 0
   end
 
   create_table "recommendation_configurations", force: :cascade do |t|
@@ -112,13 +120,14 @@ ActiveRecord::Schema.define(version: 20150508104933) do
   end
 
   create_table "user_to_lo_relations", force: :cascade do |t|
-    t.integer  "user_id",            null: false
-    t.integer  "learning_object_id", null: false
-    t.integer  "setup_id",           null: false
+    t.integer  "user_id",                                    null: false
+    t.integer  "learning_object_id",                         null: false
+    t.integer  "setup_id",                                   null: false
     t.string   "type"
     t.string   "interaction"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "activity_recommender_check", default: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -150,6 +159,7 @@ ActiveRecord::Schema.define(version: 20150508104933) do
     t.integer "number"
   end
 
+  add_foreign_key "activity_recommender_records", "learning_objects"
   add_foreign_key "answers", "learning_objects"
   add_foreign_key "concepts", "courses"
   add_foreign_key "concepts_learning_objects", "concepts"
