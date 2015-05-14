@@ -11,17 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508132143) do
+ActiveRecord::Schema.define(version: 20150514180154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activity_recommender_records", force: :cascade do |t|
-    t.integer "learning_object_id",                      null: false
-    t.integer "relation_learning_object_id",             null: false
-    t.string  "relation_type",                           null: false
-    t.integer "right_answers",               default: 0, null: false
-    t.integer "wrong_answers",               default: 0, null: false
+    t.integer "learning_object_id",                          null: false
+    t.integer "relation_learning_object_id",                 null: false
+    t.string  "relation_type",                               null: false
+    t.integer "right_answers",               default: 0,     null: false
+    t.integer "wrong_answers",               default: 0,     null: false
+    t.boolean "processed",                   default: false
   end
 
   create_table "answers", force: :cascade do |t|
