@@ -84,8 +84,8 @@ module RecommenderSystem
     end
 
 
-    def update_table
-      # toto rob kazdu hodinu
+    # Opakuje sa o stvrtej rano, vid. config/schedule.rb
+    def self.update_table
 
       # zober vsetky relacie, ktore este neboli spracovane
       # vytvor z nich modely
