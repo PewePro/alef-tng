@@ -32,25 +32,30 @@ module RecommenderSystem
       end while (not recent_activity.empty?) and
                 model.last.created_at - 1.hour < recent_activity.last.created_at
 
+      puts model
+
       # Odstrani nadbytocne relacie Visited
-      (0..(model.count - 2)).reverse_each do |i|
+      (1..(model.count - 1)).reverse_each do |i|
         if  model[i].type == 'UserVisitedLoRelation' and
-            (model[i+1].type == 'UserSolvedLoRelation' or model[i+1].type == 'UserFailedLoRelation' or model[i+1].type == 'UserDidntKnowLoRelation') and
-            model[i].learning_object_id == model[i+1].learning_object_id
+            (model[i-1].type == 'UserSolvedLoRelation' or model[i-1].type == 'UserFailedLoRelation' or model[i-1].type == 'UserDidntKnowLoRelation') and
+            model[i].learning_object_id == model[i-1].learning_object_id
 
           model.delete_at i
         end
       end
 
        # Odstrani nadbytocne relacie Solved
-      (1..(model.count-1)).reverse_each do |i|
+      (0..(model.count - 2)).reverse_each do |i|
         if  model[i].type == 'UserSolvedLoRelation' and
-            (model[i-1].type == 'UserViewedSolutionLoRelation' or model[i-1].type == 'UserFailedLoRelation' or model[i-1].type == 'UserDidntKnowLoRelation') and
-            model[i].learning_object_id == model[i-1].learning_object_id
+            (model[i+1].type == 'UserViewedSolutionLoRelation' or model[i+1].type == 'UserFailedLoRelation' or model[i+1].type == 'UserDidntKnowLoRelation') and
+            model[i].learning_object_id == model[i+1].learning_object_id
 
           model.delete_at i
         end
       end
+
+      puts "OINK"
+      puts model
 
       model
     end
@@ -86,6 +91,7 @@ module RecommenderSystem
 
     # Opakuje sa o stvrtej rano, vid. config/schedule.rb
     def self.update_table
+
 
       # zober vsetky relacie, ktore este neboli spracovane
       # vytvor z nich modely
