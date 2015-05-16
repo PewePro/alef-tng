@@ -11,18 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150516183618) do
+ActiveRecord::Schema.define(version: 20150508132143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activity_recommender_records", force: :cascade do |t|
-    t.integer "learning_object_id",                          null: false
-    t.integer "relation_learning_object_id",                 null: false
-    t.string  "relation_type",                               null: false
-    t.integer "right_answers",               default: 0,     null: false
-    t.integer "wrong_answers",               default: 0,     null: false
+    t.integer "learning_object_id",                      null: false
+    t.integer "relation_learning_object_id",             null: false
+    t.string  "relation_type",                           null: false
+    t.integer "right_answers",               default: 0, null: false
+    t.integer "wrong_answers",               default: 0, null: false
   end
+
+  add_index "activity_recommender_records", ["learning_object_id", "relation_learning_object_id", "relation_type"], name: "activity_recommender_table_index", using: :btree
 
   create_table "answers", force: :cascade do |t|
     t.integer  "learning_object_id", null: false
@@ -166,6 +168,11 @@ ActiveRecord::Schema.define(version: 20150516183618) do
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "recommendation_linkers", "recommendation_configurations"
+  add_foreign_key "recommendation_linkers", "users"
+  add_foreign_key "recommendation_linkers", "weeks"
+  add_foreign_key "recommenders_options", "recommendation_configurations"
+  add_foreign_key "recommenders_options", "recommenders"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"

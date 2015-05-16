@@ -93,14 +93,14 @@ module RecommenderSystem
     # Opakuje sa o stvrtej rano, vid. config/schedule.rb
     def self.update_table
 
-      relations = UserToLoRelation.where(processed: false).order(:user_id)
+      relations = UserToLoRelation.where(activity_recommender_check: false).order(:user_id, :created_at)
 
       breakpoints = [0]
 
-      relations.each_with_index do |value, index|
+      relations.each_with_index do |_, index|
         if index > 0
           if relations[index].user_id != relations[index-1].user_id or
-              relations[index].created_at < relations[index-1].created_at - 1.hour
+              relations[index-1].created_at < relations[index].created_at - 1.hour
 
             breakpoints << index
 
@@ -108,24 +108,33 @@ module RecommenderSystem
         end
       end
 
-      (1..breakpoints.count).each do |i|
-        models << relations[breakpoints[i-1]..breakpoints[i]]
+      breakpoints << relations.count
+
+      models = Array.new
+
+      (1..(breakpoints.count - 1)).each do |i|
+        models << relations[breakpoints[i-1]..(breakpoints[i]-1)]
       end
 
       models.each do |model|
         process_model model
       end
 
+      models[-1].each do |x|
+        puts x.created_at
+      end
+
     end
 
 
-    def process_model
+    def self.process_model model
 
-      puts "MODEL"
-      puts model.inspect
-      # oznac
-      # odstran nadbytocne
+      UserToLoRelation.where('id IN (?)', model.map(&:id)).update_all(activity_recommender_check: true)
+
+      final_model = remove_redundant_relations model
+
       # pre vsetky dvojice relacia/otazka obnov tabulku
+
     end
 
 

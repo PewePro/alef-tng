@@ -8,7 +8,7 @@ class CreateActivityRecommenderRecords < ActiveRecord::Migration
       t.integer :wrong_answers, null: false, default: 0
     end
 
-    add_index :activity_recommender_records, [:learning_object_id, :relation_learning_object_id, :relation_type]
+    add_index :activity_recommender_records, [:learning_object_id, :relation_learning_object_id, :relation_type], name: 'activity_recommender_table_index'
 
     add_foreign_key :activity_recommender_records, :learning_objects
 
