@@ -32,8 +32,12 @@ module RecommenderSystem
       end while (not recent_activity.empty?) and
                 model.last.created_at - 1.hour < recent_activity.last.created_at
 
-      puts model
+      final_model = remove_redundant_relations model
 
+      final_model
+    end
+
+    def remove_redundant_relations model
       # Odstrani nadbytocne relacie Visited
       (1..(model.count - 1)).reverse_each do |i|
         if  model[i].type == 'UserVisitedLoRelation' and
@@ -44,7 +48,7 @@ module RecommenderSystem
         end
       end
 
-       # Odstrani nadbytocne relacie Solved
+      # Odstrani nadbytocne relacie Solved
       (0..(model.count - 2)).reverse_each do |i|
         if  model[i].type == 'UserSolvedLoRelation' and
             (model[i+1].type == 'UserViewedSolutionLoRelation' or model[i+1].type == 'UserFailedLoRelation' or model[i+1].type == 'UserDidntKnowLoRelation') and
@@ -53,9 +57,6 @@ module RecommenderSystem
           model.delete_at i
         end
       end
-
-      puts "OINK"
-      puts model
 
       model
     end
@@ -92,10 +93,39 @@ module RecommenderSystem
     # Opakuje sa o stvrtej rano, vid. config/schedule.rb
     def self.update_table
 
+      relations = UserToLoRelation.where(processed: false).order(:user_id)
 
-      # zober vsetky relacie, ktore este neboli spracovane
-      # vytvor z nich modely
-      # z modelov obnov tabulku
+      breakpoints = [0]
+
+      relations.each_with_index do |value, index|
+        if index > 0
+          if relations[index].user_id != relations[index-1].user_id or
+              relations[index].created_at < relations[index-1].created_at - 1.hour
+
+            breakpoints << index
+
+          end
+        end
+      end
+
+      (1..breakpoints.count).each do |i|
+        models << relations[breakpoints[i-1]..breakpoints[i]]
+      end
+
+      models.each do |model|
+        process_model model
+      end
+
+    end
+
+
+    def process_model
+
+      puts "MODEL"
+      puts model.inspect
+      # oznac
+      # odstran nadbytocne
+      # pre vsetky dvojice relacia/otazka obnov tabulku
     end
 
 

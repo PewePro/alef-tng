@@ -1,6 +1,6 @@
 
 
-every :day, :at => '4:00am' do
+every :day, :at => '5:00am' do
   runner "RecommenderSystem::ActivityRecommender.update_table"
 end
 
