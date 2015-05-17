@@ -21,38 +21,38 @@ module RecommenderSystem
 
 
     def get_model
-      recent_activity = UserToLoRelation.where('user_id = (?) AND created_at > (?)', self.user_id, Date.today - 1.day).to_a
+      recent_activity = UserToLoRelation.where('user_id = (?) AND created_at > (?)', self.user_id, Date.today - 1.day).order(:created_at).to_a
 
       return [] if recent_activity.empty? or recent_activity.last.created_at < Date.today - 1.hour
 
       # Zoberie poslednu aktivitu pouzivatela z dnesneho dna a odstrihne vsetky relacie, ktore od zvysku oddeluje aspon hodinova pauza
       model = Array.new
       begin
-        model << recent_activity.pop
+        model = recent_activity.pop + model
       end while (not recent_activity.empty?) and
-                model.last.created_at - 1.hour < recent_activity.last.created_at
+                model.first.created_at - 1.hour < recent_activity.last.created_at
 
-      final_model = remove_redundant_relations model
+      final_model = self.class.remove_redundant_relations model
 
       final_model
     end
 
-    def remove_redundant_relations model
+    def self.remove_redundant_relations model
       # Odstrani nadbytocne relacie Visited
       (1..(model.count - 1)).reverse_each do |i|
-        if  model[i].type == 'UserVisitedLoRelation' and
-            (model[i-1].type == 'UserSolvedLoRelation' or model[i-1].type == 'UserFailedLoRelation' or model[i-1].type == 'UserDidntKnowLoRelation') and
-            model[i].learning_object_id == model[i-1].learning_object_id
+        if  model[i-1].type == 'UserVisitedLoRelation' and
+            (model[i].type == 'UserSolvedLoRelation' or model[i].type == 'UserFailedLoRelation' or model[i].type == 'UserDidntKnowLoRelation') and
+            model[i-1].learning_object_id == model[i].learning_object_id
 
-          model.delete_at i
+          model.delete_at (i-1)
         end
       end
 
       # Odstrani nadbytocne relacie Solved
-      (0..(model.count - 2)).reverse_each do |i|
+      (1..(model.count - 1)).reverse_each do |i|
         if  model[i].type == 'UserSolvedLoRelation' and
-            (model[i+1].type == 'UserViewedSolutionLoRelation' or model[i+1].type == 'UserFailedLoRelation' or model[i+1].type == 'UserDidntKnowLoRelation') and
-            model[i].learning_object_id == model[i+1].learning_object_id
+            (model[i-1].type == 'UserViewedSolutionLoRelation' or model[i-1].type == 'UserFailedLoRelation' or model[i-1].type == 'UserDidntKnowLoRelation') and
+            model[i].learning_object_id == model[i-1].learning_object_id
 
           model.delete_at i
         end
@@ -96,7 +96,6 @@ module RecommenderSystem
       relations = UserToLoRelation.where(activity_recommender_check: false).order(:user_id, :created_at)
 
       breakpoints = [0]
-
       relations.each_with_index do |_, index|
         if index > 0
           if relations[index].user_id != relations[index-1].user_id or
@@ -107,7 +106,6 @@ module RecommenderSystem
           end
         end
       end
-
       breakpoints << relations.count
 
       models = Array.new
@@ -120,20 +118,34 @@ module RecommenderSystem
         process_model model
       end
 
-      models[-1].each do |x|
-        puts x.created_at
-      end
-
     end
 
 
     def self.process_model model
 
-      UserToLoRelation.where('id IN (?)', model.map(&:id)).update_all(activity_recommender_check: true)
-
       final_model = remove_redundant_relations model
 
-      # pre vsetky dvojice relacia/otazka obnov tabulku
+      final_model.each_with_index do |rel, index|
+        if index > 0
+
+          operation = :none
+          if rel.type == 'UserSolvedLoRelation'
+            operation = :right
+          end
+          if rel.type == 'UserFailedLoRelation' or rel.type == 'UserDidntKnowLoRelation'
+            operation = :wrong
+          end
+
+          unless operation == :none
+            final_model[0..(index-1)].each do |rel_before|
+              ActivityRecommenderRecord.process_record rel.learning_object_id, operation, rel_before
+            end
+          end
+
+        end
+      end
+
+      UserToLoRelation.where('id IN (?)', model.map(&:id)).update_all(activity_recommender_check: true)
 
     end
 
