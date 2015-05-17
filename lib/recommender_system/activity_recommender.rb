@@ -28,7 +28,7 @@ module RecommenderSystem
       # Zoberie poslednu aktivitu pouzivatela z dnesneho dna a odstrihne vsetky relacie, ktore od zvysku oddeluje aspon hodinova pauza
       model = Array.new
       begin
-        model = recent_activity.pop + model
+        model = [recent_activity.pop] + model
       end while (not recent_activity.empty?) and
                 model.first.created_at - 1.hour < recent_activity.last.created_at
 
