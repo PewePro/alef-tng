@@ -18,9 +18,17 @@
 <div class="admin">
   <h3>Nastavenia kurzov</h3>
   <ul>
-    <li><%= link_to "Správa obsahu otázok", question_config_path, class: "admin-link" %></li>
     <% @courses.each do |c| %>
         <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link" %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="admin">
+  <h3>Správa obsahu otázok</h3>
+  <ul>
+    <% @courses.each do |c| %>
+        <li><%= link_to c.name, question_config_path(c.id), class: "admin-link" %></li>
     <% end %>
   </ul>
 </div>

@@ -40,7 +40,8 @@ class AdministrationsController < ApplicationController
   end
 
   def question_config
-    @questions = LearningObject.all
+    @course = Course.find(params[:course_id])
+    @questions = @course.learning_objects
   end
 
   def edit_question_config
@@ -59,6 +60,20 @@ class AdministrationsController < ApplicationController
     end
 
     redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+  end
+
+  def delete_answer
+    answer = Answer.find_by_id(params[:answer_id])
+    answer.destroy
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
+  end
+
+  def add_answer
+    correct_ans = false
+    correct_ans = true if params[:correct_answer]
+    puts "ANSWER_TEXT: #{params[:add_answer_text]} | LEARNING_OBJECT_ID: #{params[:question_id]} | IS_CORRECT: #{correct_ans}"
+    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct_ans)
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
   end
 
   def download_statistics

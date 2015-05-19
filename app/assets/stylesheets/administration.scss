@@ -9,6 +9,10 @@
     border-bottom: 1px solid $gray;
   }
 
+  .question_text_field {
+    width: 95%;
+  }
+
   input[type="submit"] {
     @include red-white;
     border: none;
@@ -19,7 +23,7 @@
     box-sizing: border-box;
   }
 
-  .correct_ans {
+  .edit_question_table {
     margin-top: 0px;
     padding-top: 0rem;
     th {
