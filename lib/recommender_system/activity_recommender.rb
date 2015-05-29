@@ -16,7 +16,7 @@ module RecommenderSystem
         list[lo.id] = list[lo.id].to_f / relations.count unless relations.count == 0
       end
 
-      list
+      normalize list
     end
 
 

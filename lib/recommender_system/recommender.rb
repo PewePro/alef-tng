@@ -55,5 +55,15 @@ module RecommenderSystem
       self.get_list.first
     end
 
+    def normalize list
+
+      max = list.values.max
+
+      list.each do |key,val|
+        list[key] = val.to_f / max
+      end
+
+    end
+
   end
 end

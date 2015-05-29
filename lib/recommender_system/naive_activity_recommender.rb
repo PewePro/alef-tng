@@ -18,7 +18,7 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
       end
     end
 
-    list
+    normalize list
   end
 
   def evaluate_relation (relation)

@@ -34,13 +34,12 @@ module RecommenderSystem
         list[lo.id] = 0
         lo.concepts.each do |c|
           unless concepts[c.id].nil?
-            list[lo.id] += concepts[c.id].to_f / @@history
+            list[lo.id] += concepts[c.id].to_f
           end
         end
       end
 
-
-      list
+      normalize list
     end
 
 
