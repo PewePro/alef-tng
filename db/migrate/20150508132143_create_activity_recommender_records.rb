@@ -14,7 +14,5 @@ class CreateActivityRecommenderRecords < ActiveRecord::Migration
 
     add_column :user_to_lo_relations, :activity_recommender_check, :boolean, default: false
 
-    RecommenderSystem::ActivityRecommender.update_table
-
   end
 end
