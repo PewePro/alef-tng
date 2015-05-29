@@ -34,7 +34,7 @@ module RecommenderSystem
 
       final_model = self.class.remove_redundant_relations model
 
-      final_model
+      final_model.last 20
     end
 
     def self.remove_redundant_relations model

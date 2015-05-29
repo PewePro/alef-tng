@@ -39,8 +39,8 @@ namespace :alef do
 
 
       # Nastavi ich vahu pre jednotlive odporucania
-      RecommendersOption.create(recommendation_configuration_id: confDefault.id, recommender_id: naiveActivityRec.id, weight: 10)
-      RecommendersOption.create(recommendation_configuration_id: confDefault.id, recommender_id: naiveConceptRec.id, weight: 5)
+      RecommendersOption.create(recommendation_configuration_id: confDefault.id, recommender_id: naiveActivityRec.id, weight: 8)
+      RecommendersOption.create(recommendation_configuration_id: confDefault.id, recommender_id: naiveConceptRec.id, weight: 3)
 
       RecommendersOption.create(recommendation_configuration_id: confAlter.id, recommender_id: naiveActivityRec.id, weight: 8)
       RecommendersOption.create(recommendation_configuration_id: confAlter.id, recommender_id: naiveConceptRec.id, weight: 3)
