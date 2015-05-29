@@ -134,7 +134,7 @@ namespace :alef do
     # Obtiaznost (impossible/tazke/stredne/lahke/trivialne), XML
     # ,                                                      questions/psi-op-q-006pl.xml
     def import_choice_questions(file, pictures_dir)
-      CSV.read(file, :headers => false).each do |row|
+      CSV.read(file, :headers => true).each do |row|
         external_reference = row[0]
         picture = row[1]
         question_name = row[2] || ''
@@ -145,7 +145,8 @@ namespace :alef do
         answers = row[11]
 
         # import only tagged questions
-        next unless zero_version == 'y'
+        # next unless zero_version == 'y'
+        next if question_type == 'Complement'
 
         lo = LearningObject.find_or_create_by(external_reference: external_reference) do |lo|
           lo.course = Course.first
@@ -168,31 +169,31 @@ namespace :alef do
     end
 
     # CSV structure:
-    # 0           1           2                 3           4                  5
-    # ID Otazka,  ID odpoved, Do nultej verzie, Vybrať (Y), Nazvova kategoria, Nazov (specificky),
-    # 1072799564, 10,         y,                Y,          diagram,           Určovanie typu diagramu,
-    # 6                                          7
+    # 0           1           2           3                 4           5                  6
+    # ID Otazka,  ID odpoved, ID_Sypanie, Do nultej verzie, Vybrať (Y), Nazvova kategoria, Nazov (specificky),
+    # 1072799564, 10,         836,        y,                Y,          diagram,           Určovanie typu diagramu,
+    # 7                                          8
     # Koncepty,                                  Obtiaznost (impossible/tazke/stredne/lahke/trivialne),
     # "UML,štruktúrny diagram,diagram objektov", lahke,
-    # 8               9
+    # 9               10
     # Otazka,         Image url,
     # Aký diagram..., http://alef.fiit.stuba.sk/learning_objects/resources/pic-psi-sg-q-0.png,
-    # 10
+    # 11
     # Odpoved,
     # Object diagram (Objektovy diagram) Patri do UML.
     def import_qalo_questions(file, pictures_dir)
-      CSV.read(file, :headers => false).each do |row|
+      CSV.read(file, :headers => true).each do |row|
         external_reference = "#{row[0]}:#{row[1]}"
-        zero_version = row[2]
-        question_name = row[5] || ''
-        concept_names = row[6]
-        question_text = convert_format(row[8])
-        picture = row[9]
-        answer_text = convert_format(row[10], true)
+        zero_version = row[4]   # using new selector
+        question_name = row[6] || ''
+        concept_names = row[7]
+        question_text = convert_format(row[9])
+        picture = row[10]
+        answer_text = convert_format(row[11], true)
         question_type = 'EvaluatorQuestion'
 
         # import only tagged questions
-        next unless zero_version == 'y'
+        next unless zero_version.andand.upcase == 'Y'
 
         lo = LearningObject.find_or_create_by(external_reference: external_reference) do |lo|
           lo.course = Course.first
