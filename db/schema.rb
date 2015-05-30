@@ -16,6 +16,16 @@ ActiveRecord::Schema.define(version: 20150529234716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "activity_recommender_records", force: :cascade do |t|
+    t.integer "learning_object_id",                      null: false
+    t.integer "relation_learning_object_id",             null: false
+    t.string  "relation_type",                           null: false
+    t.integer "right_answers",               default: 0, null: false
+    t.integer "wrong_answers",               default: 0, null: false
+  end
+
+  add_index "activity_recommender_records", ["learning_object_id", "relation_learning_object_id", "relation_type"], name: "activity_recommender_table_index", using: :btree
+
   create_table "answers", force: :cascade do |t|
     t.integer  "learning_object_id", null: false
     t.text     "answer_text"
@@ -68,6 +78,29 @@ ActiveRecord::Schema.define(version: 20150529234716) do
     t.string   "external_reference"
     t.binary   "image"
     t.integer  "course_id"
+    t.integer  "right_answers",      default: 0
+    t.integer  "wrong_answers",      default: 0
+  end
+
+  create_table "recommendation_configurations", force: :cascade do |t|
+    t.string  "name",                    null: false
+    t.boolean "default", default: false
+  end
+
+  create_table "recommendation_linkers", force: :cascade do |t|
+    t.integer "user_id",                         null: false
+    t.integer "week_id",                         null: false
+    t.integer "recommendation_configuration_id", null: false
+  end
+
+  create_table "recommenders", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
+  create_table "recommenders_options", force: :cascade do |t|
+    t.integer "recommendation_configuration_id", null: false
+    t.integer "recommender_id",                  null: false
+    t.integer "weight",                          null: false
   end
 
   create_table "setups", force: :cascade do |t|
@@ -90,13 +123,14 @@ ActiveRecord::Schema.define(version: 20150529234716) do
   end
 
   create_table "user_to_lo_relations", force: :cascade do |t|
-    t.integer  "user_id",            null: false
-    t.integer  "learning_object_id", null: false
-    t.integer  "setup_id",           null: false
+    t.integer  "user_id",                                    null: false
+    t.integer  "learning_object_id",                         null: false
+    t.integer  "setup_id",                                   null: false
     t.string   "type"
     t.string   "interaction"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "activity_recommender_check", default: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -129,6 +163,7 @@ ActiveRecord::Schema.define(version: 20150529234716) do
     t.integer "number"
   end
 
+  add_foreign_key "activity_recommender_records", "learning_objects"
   add_foreign_key "answers", "learning_objects"
   add_foreign_key "concepts", "courses"
   add_foreign_key "concepts_learning_objects", "concepts"
@@ -137,6 +172,11 @@ ActiveRecord::Schema.define(version: 20150529234716) do
   add_foreign_key "concepts_weeks", "weeks"
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
+  add_foreign_key "recommendation_linkers", "recommendation_configurations"
+  add_foreign_key "recommendation_linkers", "users"
+  add_foreign_key "recommendation_linkers", "weeks"
+  add_foreign_key "recommenders_options", "recommendation_configurations"
+  add_foreign_key "recommenders_options", "recommenders"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"

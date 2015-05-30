@@ -1,6 +1,7 @@
 class LearningObject < ActiveRecord::Base
   has_many :answers
   has_many :user_to_lo_relations
+  has_many :feedbacks
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
 

@@ -63,3 +63,19 @@
 .question-button:hover {
   color: $dark;
 }
+
+.question-feedback {
+  margin: 0 1rem;
+  padding: 1rem 0;
+}
+
+.question-feedback-name {
+  text-transform: lowercase;
+  font-variant: small-caps;
+  @include bold;
+}
+
+.question-feedback-message {
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
