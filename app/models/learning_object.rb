@@ -25,10 +25,16 @@ class LearningObject < ActiveRecord::Base
   end
 
   def seen? user_id
-    UserVisitedLoRelation.where(learning_object_id: self.id, user_id: user_id).count
+    self.user_to_lo_relations.select do |rel|
+      rel.user_id == user_id and
+      rel.is_a? UserVisitedLoRelation
+    end.count
   end
 
   def done? user_id
-    UserSolvedLoRelation.where(learning_object_id: self.id, user_id: user_id).count
+    self.user_to_lo_relations.select do |rel|
+      rel.user_id == user_id and
+          rel.is_a? UserSolvedLoRelation
+    end.count
   end
 end
