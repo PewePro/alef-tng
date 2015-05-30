@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425214010) do
+ActiveRecord::Schema.define(version: 20150529234716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,9 +123,9 @@ ActiveRecord::Schema.define(version: 20150425214010) do
   end
 
   create_table "user_to_lo_relations", force: :cascade do |t|
-    t.integer  "user_id",            null: false
-    t.integer  "learning_object_id", null: false
-    t.integer  "setup_id",           null: false
+    t.integer  "user_id",                                    null: false
+    t.integer  "learning_object_id",                         null: false
+    t.integer  "setup_id",                                   null: false
     t.string   "type"
     t.string   "interaction"
     t.datetime "created_at"
@@ -170,13 +170,13 @@ ActiveRecord::Schema.define(version: 20150425214010) do
   add_foreign_key "concepts_learning_objects", "learning_objects"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "feedbacks", "learning_objects"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "users"
   add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommenders_options", "recommendation_configurations"
   add_foreign_key "recommenders_options", "recommenders"
-  add_foreign_key "feedbacks", "learning_objects"
-  add_foreign_key "feedbacks", "users"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
