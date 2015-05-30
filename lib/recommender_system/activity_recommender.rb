@@ -7,9 +7,6 @@ module RecommenderSystem
 
       list = Hash.new
 
-      puts relations.count
-      puts self.learning_objects.count
-
       product = self.learning_objects.product(relations)
       product.map! do |p| "(#{p[0].id}, #{p[1].learning_object_id}, \'#{p[1].type}\')" end
       product = product.join(',')
@@ -47,7 +44,7 @@ module RecommenderSystem
 
       final_model = self.class.remove_redundant_relations model
 
-      final_model.last 20
+      final_model.last 10
     end
 
     def self.remove_redundant_relations model
