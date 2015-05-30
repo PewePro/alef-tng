@@ -13,7 +13,6 @@ namespace :alef do
         u = LdapUser.find_or_create_by(login: login) do |u|
           u.aisid = aisid
         end
-        puts u.inspect
         u.group = group
         u.save!
       end
