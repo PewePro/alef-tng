@@ -5,7 +5,14 @@ class WeeksController < ApplicationController
     @next_week = @week.next
     @previous_week = @week.previous
 
-    @learning_objects = @week.learning_objects.distinct
+    RecommenderSystem::Recommender.setup(current_user.id,@week.id)
+    recommendations = RecommenderSystem::HybridRecommender.new.get_list
+    learning_objects = @week.learning_objects.distinct
+    @sorted_los = Array.new
+
+    recommendations.each do |key, value|
+      @sorted_los << learning_objects.select {|l| l.id == key}[0]
+    end
 
     @user = current_user
   end

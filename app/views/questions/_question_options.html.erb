@@ -10,7 +10,7 @@
       <div class="question-options-message" id="question-evaluation-next">toto bola<br>posledná otázka!</div>
   <% else %>
       <a href="<%=
-          url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
+          url_for :controller => 'questions', :action => 'next'
       %>" class="question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
   <% end %>
 </div>

@@ -1,18 +1,11 @@
 <nav class="question-nav not-zoomable">
   <%= render 'shared/user_element' %>
   <div class="mobile-content">
-    <% if @previous_question == nil %>
-        <i class="icon-left disabled"></i>
-    <% else %>
-        <a href="<%=
-            url_for :controller => 'questions', :action => 'show', :id => @previous_question.url_name
-        %>"><i class="icon-left"></i></a>
-    <% end %>
     <% if @next_question == nil %>
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=
-            url_for :controller => 'questions', :action => 'show', :id => @next_question.url_name
+            url_for :controller => 'questions', :action => 'next'
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <a href="<%= url_for controller: 'weeks', action: 'show' %>">
