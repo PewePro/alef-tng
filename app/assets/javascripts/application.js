@@ -18,4 +18,6 @@
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
 //= require detect-zoom
+//= require ifvisible
+//= require time-me
 //= require_tree .

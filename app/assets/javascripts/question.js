@@ -125,6 +125,29 @@ var Question = {
         this.setMessage("bola zobrazená správna odpoveď");
     },
 
+    initTimeLog : function() {
+
+        TimeMe.startStopTimes = {};
+        TimeMe.setCurrentPageName();
+        TimeMe.setIdleDurationInSeconds(30);
+        TimeMe.initialize();
+
+        bindIfNotBounded(document,'page:before-unload',Question.logTime);
+        bindIfNotBounded(window,'beforeunload',Question.logTime);
+
+    },
+
+    logTime : function() {
+        $.ajax({
+            method: 'post',
+            url: '/log_time',
+            data: {
+                time: TimeMe.getTimeOnCurrentPageInSeconds(),
+                id: gon.userVisitedLoRelationId
+            }
+        });
+    },
+
     setMessage : function(message) {
 
         $('#question-evaluation-message').html(message).show();

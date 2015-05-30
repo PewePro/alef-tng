@@ -45,8 +45,12 @@ gem 'devise_ldap_authenticatable'
 # User permission management
 gem 'cancan'
 
+# questions import
 gem 'nokogiri'
 gem 'pandoc-ruby', '~> 1.0.0'
+
+# student activity statistics
+gem 'axlsx'
 
 # for nice nil safeguarding
 gem 'andand'

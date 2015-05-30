@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508132143) do
+ActiveRecord::Schema.define(version: 20150425214010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,13 +59,14 @@ ActiveRecord::Schema.define(version: 20150508132143) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.text     "message",    null: false
+    t.text     "message",            null: false
     t.integer  "user_id"
     t.text     "url"
     t.text     "accept"
     t.text     "user_agent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "learning_object_id"
   end
 
   create_table "learning_objects", force: :cascade do |t|
@@ -122,9 +123,9 @@ ActiveRecord::Schema.define(version: 20150508132143) do
   end
 
   create_table "user_to_lo_relations", force: :cascade do |t|
-    t.integer  "user_id",                                    null: false
-    t.integer  "learning_object_id",                         null: false
-    t.integer  "setup_id",                                   null: false
+    t.integer  "user_id",            null: false
+    t.integer  "learning_object_id", null: false
+    t.integer  "setup_id",           null: false
     t.string   "type"
     t.string   "interaction"
     t.datetime "created_at"
@@ -152,6 +153,7 @@ ActiveRecord::Schema.define(version: 20150508132143) do
     t.boolean  "show_solutions",      default: false
     t.string   "email"
     t.string   "ais_email"
+    t.string   "group",               default: "X"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -173,6 +175,8 @@ ActiveRecord::Schema.define(version: 20150508132143) do
   add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommenders_options", "recommendation_configurations"
   add_foreign_key "recommenders_options", "recommenders"
+  add_foreign_key "feedbacks", "learning_objects"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
