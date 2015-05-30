@@ -7,6 +7,19 @@ module RecommenderSystem
 
       list = Hash.new
 
+      puts relations.count
+      puts self.learning_objects.count
+
+      product = self.learning_objects.product(relations)
+      product.map! do |p| "(#{p[0].id}, #{p[1].learning_object_id}, \'#{p[1].type}\')" end
+      product = product.join(',')
+
+
+
+      @activity = ActivityRecommenderRecord.where(
+          "(learning_object_id, relation_learning_object_id, relation_type) IN (#{product})"
+      )
+
       # Pre kazdu otazku z tyzdna vyrata priemernu pravdepodobnost vzhladom na otazky z modelu aktivity
       self.learning_objects.each do |lo|
         list[lo.id] = 0
@@ -63,15 +76,13 @@ module RecommenderSystem
 
 
     def get_probability (learning_object, relation)
-      # TODO: iba jeden pristup do tejto tabulky, urobit to raz a uz len vytahovat vysledky
+      record = @activity.find do |a|
+        a.learning_object_id == learning_object.id and
+        a.relation_learning_object_id == relation.learning_object_id and
+        a.relation_type == relation.type
+      end
 
-      activity = ActivityRecommenderRecord.where(
-          learning_object_id: learning_object.id,
-          relation_learning_object_id: relation.learning_object_id,
-          relation_type: relation.type
-      ).take
-
-      activity_rate = get_success_rate activity
+      activity_rate = get_success_rate record
       success_rate = get_success_rate learning_object
 
       activity_rate - success_rate
