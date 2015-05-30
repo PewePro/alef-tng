@@ -18,6 +18,8 @@ class QuestionsController < ApplicationController
       gon.show_solutions = TRUE
       gon.solution = solution
     end
+
+    @feedbacks = @question.feedbacks.includes(:user)
   end
 
   def evaluate
