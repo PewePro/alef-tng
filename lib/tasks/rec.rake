@@ -23,6 +23,7 @@ namespace :alef do
       conf_alter = RecommendationConfiguration.create(name: 'alternative')
 
       # Spoji pouzivatelov s konkretnym nastavenim pre dany tyzden
+=begin
       weeks = Setup.take.weeks
       User.all.each do |u|
         if u.id % 2 == 1
@@ -31,6 +32,7 @@ namespace :alef do
           end
         end
       end
+=end
 
       # Najde zelane opdorucace
       activity_rec = Recommender.where(name: 'Activity').take
@@ -39,10 +41,10 @@ namespace :alef do
 
 
       # Nastavi ich vahu pre jednotlive odporucania
-      RecommendersOption.create(recommendation_configuration_id: conf_default.id, recommender_id: naive_activity_rec.id, weight: 8)
+      RecommendersOption.create(recommendation_configuration_id: conf_default.id, recommender_id: naive_activity_rec.id, weight: 10)
       RecommendersOption.create(recommendation_configuration_id: conf_default.id, recommender_id: naive_concept_rec.id, weight: 3)
 
-      RecommendersOption.create(recommendation_configuration_id: conf_alter.id, recommender_id: naive_activity_rec.id, weight: 8)
+      RecommendersOption.create(recommendation_configuration_id: conf_alter.id, recommender_id: naive_activity_rec.id, weight: 10)
       RecommendersOption.create(recommendation_configuration_id: conf_alter.id, recommender_id: naive_concept_rec.id, weight: 3)
       RecommendersOption.create(recommendation_configuration_id: conf_alter.id, recommender_id: activity_rec.id, weight: 3)
 
