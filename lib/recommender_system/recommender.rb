@@ -59,9 +59,13 @@ module RecommenderSystem
 
       max = list.values.max
 
-      list.each do |key,val|
-        list[key] = val.to_f / max
+      unless max == 0
+        list.each do |key,val|
+          list[key] = val.to_f / max
+        end
       end
+
+      list
 
     end
 
