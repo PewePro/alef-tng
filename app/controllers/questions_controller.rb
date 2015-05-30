@@ -14,7 +14,7 @@ class QuestionsController < ApplicationController
 
     if @user.show_solutions
       UserViewedSolutionLoRelation.create(user_id: user_id, learning_object_id: params[:id], setup_id: 1, )
-      solution = @question.get_solution
+      solution = @question.get_solution(current_user.id)
       gon.show_solutions = TRUE
       gon.solution = solution
     end
@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 
     lo_class = Object.const_get params[:type]
     lo = lo_class.find(params[:id])
-    @solution = lo.get_solution current_user.id
+    @solution = lo.get_solution(current_user.id)
 
     @user = current_user
     user_id = @user.id
