@@ -7,6 +7,7 @@ class WeeksController < ApplicationController
 
     RecommenderSystem::Recommender.setup(current_user.id,@week.id)
     recommendations = RecommenderSystem::HybridRecommender.new.get_list
+
     learning_objects = @week.learning_objects.includes(:user_to_lo_relations).distinct
     @sorted_los = Array.new
 
