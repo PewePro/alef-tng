@@ -26,3 +26,8 @@ body {
   opacity: 1;
   transition: opacity 250ms ease;
 }
+
+hr {
+  display: block; height: 1px;
+  border: 0; border-top: 1px solid $gray;
+}
