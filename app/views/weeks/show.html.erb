@@ -5,7 +5,6 @@
 <%= render 'week_info'%>
 
 <div class="mobile-content main">
-
   <% @sorted_los.each do |lo| %>
       <a href="<%=
           url_for :controller => 'questions', :action => 'show', :id => lo.url_name
