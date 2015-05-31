@@ -15,7 +15,25 @@
             <%= lo.question_text %>
           </p>
         </div>
-        <%= render :partial => 'question_icons', :locals => { lo: lo } %>
+        <div class="card-info">
+          <%
+             result = @results.find {|r| r["result_id"] == lo.id.to_s}
+             unless result.nil?
+               views = result['visited']
+               done = result['solved']
+             end
+             unless views.nil?
+          %>
+              <i class="icon-seen"></i> Videné (<%= views %>x)
+          <% else %>
+              <i class="icon-new"></i> Nové
+          <%
+             end
+             unless done.nil?
+          %>
+              <i class="icon-done"></i> Vyriešené (<%= done %>x)
+          <% end %>
+        </div>
       </a>
   <% end %>
 </div>

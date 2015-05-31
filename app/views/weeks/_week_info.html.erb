@@ -4,7 +4,7 @@
 %>
 <div class="nav-info mobile-content">
   <%= start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")  %>
-  <div class="week-progressbar" data-number-all="<%= @sorted_los.count %>" data-number-done="<%= @sorted_los.select {|lo| (lo.done? current_user.id) > 0 }.count %>">
+  <div class="week-progressbar" data-number-all="<%= @sorted_los.count %>" data-number-done="<%= @results.select {|r| not r['solved'].nil? }.count %>">
     <div class="progressbar-caption"></div>
   </div>
   <div id="week-toggle" class="toggle">

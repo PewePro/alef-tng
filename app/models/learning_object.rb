@@ -25,17 +25,4 @@ class LearningObject < ActiveRecord::Base
     self.concepts << concept unless self.concepts.include?(concept)
   end
 
-  def seen? user_id
-    self.user_to_lo_relations.select do |rel|
-      rel.user_id == user_id and
-          rel.is_a? UserVisitedLoRelation
-    end.count
-  end
-
-  def done? user_id
-    self.user_to_lo_relations.select do |rel|
-      rel.user_id == user_id and
-          rel.is_a? UserSolvedLoRelation
-    end.count
-  end
 end
