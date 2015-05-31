@@ -1,7 +1,7 @@
 <%= form_tag feedback_path, method: 'post', remote: true do %>
     <div id="contact">
       <div id="contact-text">
-      Napíšte spätnú väzbu pre tím Alef<br>
+      Napíšte komentár<br>
       URL <%= request.original_url %>
       </div>
       <%= text_area_tag :message, '', id: 'contact-textarea' %>
