@@ -37,6 +37,12 @@ var Question = {
         $('#question-options-show').hide();
     },
 
+    setupFeedback : function() {
+        $('#question-options-evaluate').show();
+        $('.question-feedback-message').show();
+        $('#question-feedback-warning').hide();
+    },
+
     evaluateAnswers : function(solution) {
 
         if (this.isEvaluator()) {
@@ -45,7 +51,8 @@ var Question = {
         if (this.isSingleChoice() || this.isMultiChoice()) {
             this.evaluateChoiceQuestion(solution);
         }
-        $('#question-options-evaluate').show();
+
+        this.setupFeedback();
     },
 
     evaluateEvaluatorQuestion : function(solution) {
@@ -93,7 +100,7 @@ var Question = {
             this.showChoiceSolution(solution);
         }
 
-        $('#question-options-evaluate').show();
+        this.setupFeedback();
     },
 
     showEvaluatorSolution : function(solution) {
