@@ -29,18 +29,20 @@
       </div>
     <%= render 'question_options' %>
   </form>
-  <% unless @feedbacks.empty? %>
-      <hr>
-      <div class="question-feedback">
+      <div id="question-feedback">
       <h3>Komentáre</h3>
+      <% unless @feedbacks.empty? %>
       <% @feedbacks.each do |f| %>
             <div class="question-feedback-message">
                 <div class="question-feedback-name"><%= f.user.first_name %> <%= f.user.last_name %></div>
                 <%= f.message %>
             </div>
+            <div id="question-feedback-warning">Komentáre Vám budú zobrazené, až keď odpoviete na otázku.</div>
+      <% end %>
+      <% else %>
+            Táto otázka ešte nemá komentár.
       <% end %>
       </div>
-  <% end %>
 </div>
 
 
