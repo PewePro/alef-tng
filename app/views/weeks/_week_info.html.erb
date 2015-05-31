@@ -1,5 +1,5 @@
 <%
-    start_at = @setup.first_week_at.to_date + @week.number * 7
+    start_at = @setup.first_week_at.to_date + (@week.number-1) * 7
     end_at = start_at + 6
 %>
 <div class="nav-info mobile-content">
