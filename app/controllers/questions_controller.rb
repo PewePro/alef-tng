@@ -60,9 +60,11 @@ class QuestionsController < ApplicationController
   end
 
   def log_time
-    rel = UserVisitedLoRelation.find(params[:id])
-    if not rel.nil? and rel.user_id == current_user.id
-      rel.update interaction: params[:time]
+    unless params[:id].nil?
+      rel = UserVisitedLoRelation.find(params[:id])
+      if not rel.nil? and rel.user_id == current_user.id
+        rel.update interaction: params[:time]
+      end
     end
     render nothing: true
   end
