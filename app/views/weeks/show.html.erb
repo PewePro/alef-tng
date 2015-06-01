@@ -29,7 +29,7 @@
               <i class="icon-new"></i> Nové
           <%
              end
-             unless done.nil?
+             unless done.nil? or done.to_i.zero?
           %>
               <i class="icon-done"></i> Vyriešené (<%= done %>x)
           <% end %>
