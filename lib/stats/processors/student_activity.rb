@@ -120,6 +120,7 @@ module Stats
             uvslo ||= 0
             uvlo = user_visited_lo[u.id]
             uvlo ||= 0
+            uvlo -= uvslo   # do not count 'learning visits' (viewed solution) into 'testing visits'
             urelo = user_rate_eval_lo[u.id]
             urelo ||= 0
             usulo = user_solved_uniq_lo[u.id]

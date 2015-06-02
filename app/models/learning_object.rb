@@ -1,6 +1,7 @@
 class LearningObject < ActiveRecord::Base
   has_many :answers
   has_many :user_to_lo_relations
+  has_many :feedbacks
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
 
@@ -25,16 +26,10 @@ class LearningObject < ActiveRecord::Base
   end
 
   def seen? user_id
-    self.user_to_lo_relations.select do |rel|
-      rel.user_id == user_id and
-      rel.is_a? UserVisitedLoRelation
-    end.count
+    UserVisitedLoRelation.where(learning_object_id: self.id, user_id: user_id).count
   end
 
   def done? user_id
-    self.user_to_lo_relations.select do |rel|
-      rel.user_id == user_id and
-          rel.is_a? UserSolvedLoRelation
-    end.count
+    UserSolvedLoRelation.where(learning_object_id: self.id, user_id: user_id).count
   end
 end

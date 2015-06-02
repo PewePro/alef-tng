@@ -1,10 +1,10 @@
 <%
-    start_at = @setup.first_week_at.to_date + @week.number * 7
+    start_at = @setup.first_week_at.to_date + (@week.number-1) * 7
     end_at = start_at + 6
 %>
 <div class="nav-info mobile-content">
   <%= start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")  %>
-  <div class="week-progressbar" data-number-all="<%= @week.question_count %>" data-number-done="<%= @week.question_count_done current_user.id %>">
+  <div class="week-progressbar" data-number-all="<%= @sorted_los.count %>" data-number-done="<%= @results.select {|r| not (r['solved'].nil? or r['solved'].to_i.zero?) }.count %>">
     <div class="progressbar-caption"></div>
   </div>
   <div id="week-toggle" class="toggle">

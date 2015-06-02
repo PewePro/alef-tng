@@ -13,6 +13,8 @@ server 'aleftng.fiit.stuba.sk', user: 'aleftng', roles: %w{web app db}
 set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 

@@ -43,31 +43,10 @@ h4,
 h5,
 h6 {
   /* Change heading typefaces here */
-  margin-top: 1.5rem;
-  margin-bottom: 0;
+  margin: 0;
   line-height: 1.5rem;
   @include bold;
-}
-h1 {
-  font-size: 4.242rem;
-  line-height: 4.5rem
-}
-h2 {
-  font-size: 2.828rem;
-  line-height: 3rem;
-  margin-top: 3rem;
-}
-h3 {
-  font-size: 1.414rem;
-}
-h4 {
-  font-size: 0.707rem;
-}
-h5 {
-  font-size: 0.4713333333333333rem;
-}
-h6 {
-  font-size: 0.3535rem;
+  font-size: 1rem;
 }
 /* Tables */
 table {
