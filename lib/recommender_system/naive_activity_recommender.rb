@@ -19,7 +19,7 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
     end
 
     self.relations.last(20).map(&:id).uniq do |id|
-      list[id] -= 0.199
+      list[id] -= 0.2
     end
 
     normalize list
