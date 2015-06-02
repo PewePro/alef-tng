@@ -18,19 +18,23 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
       end
     end
 
+    self.relations.last(20).map(&:id).uniq do |id|
+      list[id] -= 0.2
+    end
+
     normalize list
   end
 
   def evaluate_relation (relation)
     case relation.class.name
       when 'UserVisitedLoRelation'
-        0.75
+        0.8
       when 'UserViewedSolutionLoRelation'
-        0.5
+        0.6
       when 'UserDidntKnowLoRelation', 'UserFailedLoRelation'
-        0.25
+        0.4
       else
-        0
+        0.2
     end
   end
 

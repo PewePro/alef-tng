@@ -24,7 +24,7 @@ module RecommenderSystem
         @@rels = UserToLoRelation.where('user_id = (?) AND learning_object_id IN (?)',
                                        @@user_id,
                                        self.learning_objects.map(&:id)
-        )
+        ).order(:created_at)
       end
       @@rels
     end

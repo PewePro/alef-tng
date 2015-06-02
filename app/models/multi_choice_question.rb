@@ -7,7 +7,7 @@ class MultiChoiceQuestion < LearningObject
   def right_answer?(answer, solution)
 
     if answer == nil
-      return solution == nil
+      return solution.empty?
     end
 
     answer = answer.values.map { |n| n.to_i }
