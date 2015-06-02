@@ -18,7 +18,7 @@ class NaiveActivityRecommender < RecommenderSystem::Recommender
       end
     end
 
-    self.relations.last(20).map(&:id).uniq do |id|
+    self.relations.last(20).map(&:learning_object_id).uniq do |id|
       list[id] -= 0.2
     end
 
