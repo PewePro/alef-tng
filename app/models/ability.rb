@@ -8,7 +8,7 @@ class Ability
     end
 
     if user.teacher?
-      can :manage, :administration
+      cannot :manage, :administration
     end
 
     if user.student?
