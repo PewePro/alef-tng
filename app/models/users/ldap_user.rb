@@ -15,7 +15,7 @@ class LdapUser < User
     self.last_name = entry[:sn]
     self.first_name = entry[:givenname] # 'givenName' before symbol lowercasing
     self.aisid = entry[:uisid]          # 'uisID' before symbol lowercasing
-    unless self.role == ROLES[:ADMINISTRATOR]
+    unless self.administrator?
       self.role = ( entry[:host].include?('fiit-zam') ? ROLES[:TEACHER] : ROLES[:STUDENT] )
     end
 
