@@ -81,7 +81,7 @@ group :development, :test do
   gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails'
+  gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-passenger'
 
   gem 'factory_girl_rails'
