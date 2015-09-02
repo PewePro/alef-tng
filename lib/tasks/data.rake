@@ -9,7 +9,7 @@ namespace :alef do
     # import questions from ALEF docbook environment
     # run:
     #   rake alef:data:import_xml['xml_dir']
-    task :import_xml, [:directory] => :environment do |t, args|
+    task :import_xml, [:directory]  => :environment do |t, args|
       directory = args.directory + "/**"
 
       files = Dir.glob(directory)
@@ -90,6 +90,24 @@ namespace :alef do
       is_answer ? source_string.gsub(/<correct>|<\/correct>/,'') : source_string
     end
 
+    def import_difficulty(difficulty_string, learning_object)
+      difficulty_levels = {
+          'trivialne' => LearningObject::DIFFICULTY[:TRIVIAL],
+          'lahke' => LearningObject::DIFFICULTY[:EASY],
+          'stredne' => LearningObject::DIFFICULTY[:MEDIUM],
+          'tazke' => LearningObject::DIFFICULTY[:HARD],
+          'impossible' => LearningObject::DIFFICULTY[:IMPOSSIBLE]
+      }
+
+      difficulty = difficulty_levels[difficulty_string.strip]
+      unless difficulty
+        puts "WARNING: '#{learning_object.external_reference}' - '#{learning_object.lo_id}' has unrecognized difficulty string: '#{difficulty_string.inspect}'"
+        difficulty = LearningObject::DIFFICULTY[:UNKNOWN]
+      end
+
+      learning_object.update(difficulty: difficulty)
+    end
+
     def import_concepts(concepts_string,learning_object)
       if concepts_string.nil? || concepts_string.empty?
         puts "WARNING: '#{learning_object.external_reference}' - '#{learning_object.lo_id}' has no concepts"
@@ -143,6 +161,7 @@ namespace :alef do
         concept_names = row[6]
         question_type = IMPORTED_QUESTION_TYPES[row[9]]
         answers = row[11]
+        difficulty_text = row[12]
 
         # import only tagged questions
         # next unless zero_version == 'y'
@@ -163,6 +182,7 @@ namespace :alef do
           end
         end
 
+        import_difficulty(difficulty_text, lo)
         import_concepts(concept_names, lo)
         import_pictures(picture, pictures_dir, lo) if picture
       end
@@ -187,6 +207,7 @@ namespace :alef do
         zero_version = row[4]   # using new selector
         question_name = row[6] || ''
         concept_names = row[7]
+        difficulty_text = row[8]
         question_text = convert_format(row[9])
         picture = row[10]
         answer_text = convert_format(row[11], true)
@@ -202,6 +223,7 @@ namespace :alef do
 
         Answer.find_or_create_by(learning_object_id: lo.id).update(answer_text: answer_text)
 
+        import_difficulty(difficulty_text, lo)
         import_concepts(concept_names, lo)
         import_pictures(picture, pictures_dir, lo) if picture
       end

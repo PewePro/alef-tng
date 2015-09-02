@@ -5,6 +5,21 @@ class LearningObject < ActiveRecord::Base
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
 
+  DIFFICULTY = {
+    TRIVIAL: :trivial,       # I'm too young to die
+    EASY: :easy,             # Hey, not too rough
+    MEDIUM: :medium,         # Hurt me plenty
+    HARD: :hard,             # Ultra-Violence
+    IMPOSSIBLE: :impossible, # Nightmare!
+    UNKNOWN: :unknown_difficulty
+  }
+
+  # Generuje metody User.rola? zo zoznamu roli
+  LearningObject::DIFFICULTY.values.each do |diff|
+    define_method("#{diff}?") do
+      self.difficulty == "#{diff}"
+    end
+  end
   def next(week_number)
     Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
   end
