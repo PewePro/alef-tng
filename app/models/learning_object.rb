@@ -14,7 +14,7 @@ class LearningObject < ActiveRecord::Base
     UNKNOWN: :unknown_difficulty
   }
 
-  # Generuje metody User.rola? zo zoznamu roli
+  # generuje metody z hashu DIFFICULTY, napr. 'learning_object.trivial?'
   LearningObject::DIFFICULTY.values.each do |diff|
     define_method("#{diff}?") do
       self.difficulty == "#{diff}"
