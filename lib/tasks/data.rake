@@ -99,7 +99,7 @@ namespace :alef do
           'impossible' => LearningObject::DIFFICULTY[:IMPOSSIBLE]
       }
 
-      difficulty = difficulty_levels[difficulty_string.strip]
+      difficulty = difficulty_levels[difficulty_string.andand.strip]
       unless difficulty
         puts "WARNING: '#{learning_object.external_reference}' - '#{learning_object.lo_id}' has unrecognized difficulty string: '#{difficulty_string.inspect}'"
         difficulty = LearningObject::DIFFICULTY[:UNKNOWN]
