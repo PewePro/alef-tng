@@ -14,8 +14,10 @@ class UserToLoRelation < ActiveRecord::Base
   def self.get_results(user_id,week_id)
     sql = '
       SELECT los.id as result_id,
-      sum(case when rels.type = \'UserVisitedLoRelation\' then 1 else 0 end) as visited,
-      sum(case when rels.type = \'UserSolvedLoRelation\' then 1 else 0 end) as solved
+        sum(case when rels.type = \'UserVisitedLoRelation\' then 1 else 0 end) as visited,
+      sum(case when rels.type = \'UserSolvedLoRelation\' then 1 else 0 end) as solved,
+      sum(case when rels.type = \'UserDidntKnowLoRelation\' then 1 else 0 end) as donotnow,
+      sum(case when rels.type = \'UserFailedLoRelation\' then 1 else 0 end) as failed
       FROM
       (
         SELECT learning_objects.*
@@ -32,4 +34,5 @@ class UserToLoRelation < ActiveRecord::Base
     '
     ActiveRecord::Base.connection.execute(sql)
   end
+
 end

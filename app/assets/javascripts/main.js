@@ -14,6 +14,12 @@ var ready = (function () {
         Progressbar.setupProgressbars();
     }
 
+    if ($('#body-rooms-show').length) {
+        Toggle.initWeekToggle();
+        Nav.init();
+        Progressbar.setupProgressbars();
+    }
+
     if ($('#body-questions-show').length) {
 
         Nav.init();

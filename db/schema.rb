@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902175030) do
+ActiveRecord::Schema.define(version: 20151018132820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,19 @@ ActiveRecord::Schema.define(version: 20150902175030) do
     t.integer "weight",                          null: false
   end
 
+  create_table "rooms", force: :cascade do |t|
+    t.integer "week_id"
+    t.string  "name"
+    t.string  "difficulty", default: "unknown_difficulty"
+    t.string  "state",      default: "uzamknuta"
+  end
+
+  create_table "rooms_learning_objects", force: :cascade do |t|
+    t.integer "room_id"
+    t.integer "learning_object_id"
+    t.string  "difficulty"
+  end
+
   create_table "setups", force: :cascade do |t|
     t.string   "name"
     t.datetime "first_week_at"
@@ -178,6 +191,9 @@ ActiveRecord::Schema.define(version: 20150902175030) do
   add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommenders_options", "recommendation_configurations"
   add_foreign_key "recommenders_options", "recommenders"
+  add_foreign_key "rooms", "weeks"
+  add_foreign_key "rooms_learning_objects", "learning_objects"
+  add_foreign_key "rooms_learning_objects", "rooms"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"

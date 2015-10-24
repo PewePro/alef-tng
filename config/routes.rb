@@ -19,9 +19,12 @@ Rails.application.routes.draw do
   # Vrati dalsiu otazku podla odporucaca
   get 'w/:week_number/next' => 'questions#next'
 
+  #Vypis miestnosti z daneho tyzdna
+  get 'w/:week_number/:room_number' => 'rooms#show'
+
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
-  get 'w/:week_number/:id' => 'questions#show'
-  get 'w/:week_number/:id/image' => 'questions#show_image'
+  get 'w/:week_number/:room_number/:id' => 'questions#show'
+  get 'w/:week_number/:room_number/:id/image' => 'questions#show_image'
 
   # Loguje cas straveny na otazke
   post 'log_time' => 'questions#log_time'

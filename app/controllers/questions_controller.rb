@@ -24,6 +24,11 @@ class QuestionsController < ApplicationController
 
   def evaluate
 
+    weight_solved = 5
+    weight_failed = 2
+    weight_dont_now = 1
+
+
     unless ["SingleChoiceQuestion","MultiChoiceQuestion","EvaluatorQuestion"].include? params[:type]
       # Kontrola ci zasielany type je z triedy LO
       render nothing: true
@@ -32,8 +37,23 @@ class QuestionsController < ApplicationController
 
     lo_class = Object.const_get params[:type]
     lo = lo_class.find(params[:id])
-    @solution = lo.get_solution(current_user.id)
 
+    @setup = Setup.take
+    @week = @setup.weeks.find_by_number(params[:week_number])
+
+    @results = UserToLoRelation.get_results(current_user.id,@week.id)
+    result = @results.find {|r| r["result_id"] == lo.id.to_s}
+    unless result.nil?
+      solved = result['solved']
+      failed = result['failed']
+      donotnow = result['donotnow']
+    end
+    p "solved " + solved.to_s
+    p "failed " + failed.to_s
+    p "donotnow "  + donotnow.to_s
+
+
+    @solution = lo.get_solution(current_user.id)
     @user = current_user
     user_id = @user.id
     setup_id = 1
@@ -50,7 +70,22 @@ class QuestionsController < ApplicationController
     rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
     rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result
 
+    score = 0
+
+    if solved==0 && failed==0 && donotnow==0
+      if rel.type == 'UserDidntKnowLoRelation'
+        score = weight_dont_now
+      elsif rel.type == 'UserSolvedLoRelation'
+        score = weight_solved
+      elsif rel.type == 'UserFailedLoRelation'
+        score = weight_failed
+      end
+    end
+
     lo.user_to_lo_relations << rel
+
+
+
 
   end
 
