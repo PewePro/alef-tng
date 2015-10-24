@@ -1,0 +1,27 @@
+<nav class="not-zoomable">
+  <%= render 'shared/user_element' %>
+  <div class="mobile-content">
+    <% if @previous_room == nil %>
+        <i class="icon-left disabled"></i>
+    <% else %>
+        <a href="<%=
+            url_for controller: 'rooms', action: 'show', room_number:  @previous_room.id, week_number: @week.id
+
+        %>"><i class="icon-left"></i></a>
+    <% end %>
+    <% if @next_room == nil %>
+        <i class="nav-right-icons icon-right disabled"></i>
+    <% else %>
+        <a href="<%=
+            url_for controller: 'rooms', action: 'show', room_number:  @next_room.id, week_number: @week.id
+        %>"><i class="nav-right-icons icon-right"></i></a>
+    <% end %>
+    <a href="<%=
+        url_for :controller => 'weeks', :action => 'show'
+    %>"><i class="nav-right-icons icon-level-up"></i></a>
+    <a class="user-element-cta"><i class="nav-right-icons icon-user"></i></a>
+    <h2><%=@room.name%></h2>
+  </div>
+</nav>
+
+

@@ -1,0 +1,39 @@
+<div id="faux-background" class="mobile-content"></div>
+<%= render 'nav' %>
+<hr class="nav-offset not-zoomable">
+
+
+
+<div class="mobile-content main">
+  <% @learning_objects.each do |lo| %>
+      <a href="<%=
+          url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => @week.id, :room_number => @room.id
+      %>" class="card">
+        <div class="question-card-content">
+          <h3 class="card-header"><%= lo.lo_id %></h3>
+          <p class="card-text">
+            <%= lo.question_text %>
+          </p>
+        </div>
+        <div class="card-info">
+          <%
+             result = @results.find {|r| r["result_id"] == lo.id.to_s}
+             unless result.nil?
+               views = result['visited']
+               done = result['solved']
+             end
+             unless views.nil?
+          %>
+              <i class="icon-seen"></i> Videné (<%= views %>x)
+          <% else %>
+              <i class="icon-new"></i> Nové
+          <%
+             end
+             unless done.nil? or done.to_i.zero?
+          %>
+              <i class="icon-done"></i> Vyriešené (<%= done %>x)
+          <% end %>
+        </div>
+      </a>
+  <% end %>
+</div>
