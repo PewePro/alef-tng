@@ -6,8 +6,10 @@ class QuestionsController < ApplicationController
     @question = LearningObject.find(params[:id])
     rel = @question.seen_by_user(user_id)
     gon.userVisitedLoRelationId = rel.id
-    @next_question = @question.next(params[:week_number])
-    @previous_question = @question.previous(params[:week_number])
+    @next_question = @question.next(params[:room_number])
+    @previous_question = @question.previous(params[:room_number])
+    @room_number = params[:room_number]
+    @week_number= params[:week_number]
 
     @answers = @question.answers
     @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: user_id).group('type').count
@@ -41,7 +43,13 @@ class QuestionsController < ApplicationController
     @setup = Setup.take
     @week = @setup.weeks.find_by_number(params[:week_number])
 
-    @results = UserToLoRelation.get_results(current_user.id,@week.id)
+    room = Room.find(params[:room_number])
+    p "cislo aaa"
+    p params[:room_number]
+    p room.number_of_try
+
+
+    @results = UserToLoRelation.get_results_room(current_user.id,@week.id,params[:room_number], room.number_of_try)
     result = @results.find {|r| r["result_id"] == lo.id.to_s}
     unless result.nil?
       solved = result['solved']
@@ -58,7 +66,9 @@ class QuestionsController < ApplicationController
     user_id = @user.id
     setup_id = 1
 
-    rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id)
+    room = Room.find(params[:room_number])
+
+    rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id, room_id: params[:room_number], number_of_try: room.number_of_try)
 
     if params[:commit] == 'send_answer'
       result = lo.right_answer? params[:answer], @solution
@@ -72,7 +82,7 @@ class QuestionsController < ApplicationController
 
     score = 0
 
-    if solved==0 && failed==0 && donotnow==0
+    if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
       if rel.type == 'UserDidntKnowLoRelation'
         score = weight_dont_now
       elsif rel.type == 'UserSolvedLoRelation'
@@ -81,6 +91,11 @@ class QuestionsController < ApplicationController
         score = weight_failed
       end
     end
+
+    p "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    p score
+
+    room.update_attribute(:score, (room.score + score).to_d)
 
     lo.user_to_lo_relations << rel
 
@@ -105,11 +120,31 @@ class QuestionsController < ApplicationController
   end
 
   def next
-    setup = Setup.take
-    week = setup.weeks.find_by_number(params[:week_number])
-    RecommenderSystem::Recommender.setup(current_user.id,week.id)
-    best = RecommenderSystem::HybridRecommender.new.get_best
-    los = LearningObject.find(best[0])
-    redirect_to action: "show", id: los.url_name
+   # setup = Setup.take
+   # week = setup.weeks.find_by_number(params[:week_number])
+   # RecommenderSystem::Recommender.setup(current_user.id,week.id)
+   # best = RecommenderSystem::HybridRecommender.new.get_best
+   # los = LearningObject.find(best[0])
+
+    @room = Room.find_by_id(params[:room_number])
+
+    id_array = []
+    @results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
+    p "sssssssssooooooooooooooooooooooooooooooooooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+    @results.each do |r|
+      id_array.push(r['learning_object_id'].to_i)
+      p r
+    end
+
+    if (id_array.empty?)
+      p "p praaaaaaaaaaaaaaaaaazzzzzzzzzzzzzzzzdne"
+      lo = @room.learning_objects.all.distinct
+      lo.each do |l|
+        id_array.push(l.id)
+      end
+    end
+
+    los = @room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
+    redirect_to action: "show", id: los.url_name, week_number: params[:week_number]
   end
 end

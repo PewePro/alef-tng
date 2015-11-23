@@ -20,7 +20,7 @@
         url_for :controller => 'weeks', :action => 'show'
     %>"><i class="nav-right-icons icon-level-up"></i></a>
     <a class="user-element-cta"><i class="nav-right-icons icon-user"></i></a>
-    <h2><%=@room.name%></h2>
+    <h2><%=@room.name%><%= "(otvor)" if @room.state == "do_not_use" %></h2>
   </div>
 </nav>
 

@@ -1,7 +1,9 @@
 
 class Room < ActiveRecord::Base
   belongs_to :week
+  belongs_to :user
   has_many :rooms_learning_objects
+  has_many :user_to_lo_relation
   has_many :learning_objects, through: :rooms_learning_objects
 
   def question_count

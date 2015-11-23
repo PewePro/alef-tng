@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get 'w/:week_number' => 'weeks#show'
 
   # Vrati dalsiu otazku podla odporucaca
-  get 'w/:week_number/next' => 'questions#next'
+  get 'w/:week_number/:room_number/:lo_id/next' => 'questions#next'
 
   #Vypis miestnosti z daneho tyzdna
   get 'w/:week_number/:room_number' => 'rooms#show'
@@ -30,7 +30,13 @@ Rails.application.routes.draw do
   post 'log_time' => 'questions#log_time'
 
   # Opravi otazku a vrati spravnu odpoved
-  post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
+  post 'w/:week_number/:room_number/:id/evaluate_answers' => 'questions#evaluate'
+
+  # Vyhodnoti pracu v danje miestnosti
+  post 'w/:week_number/:room_number/eval' => 'rooms#eval'
+  get 'w/:week_number/:room_number/:id/eval' => 'rooms#eval'
+
+  get 'w/:week_number/:room_number/:id/new' => 'rooms#new'
 
   # Prepina zobrazovenie odpovedi ku otazkam
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'

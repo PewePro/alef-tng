@@ -5,7 +5,7 @@
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=
-            url_for :controller => 'questions', :action => 'next'
+            url_for :controller => 'questions', :action => 'next', :week_number => @week_number, :room_number => @room_number, :lo_id => @question.id
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <a href="<%= url_for controller: 'weeks', action: 'show' %>">
