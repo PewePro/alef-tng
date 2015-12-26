@@ -1,0 +1,22 @@
+
+<div class="nav-info mobile-content">
+
+  <% if @room.state.to_s != "used" %>
+      <%if (@room.score < @room.score_limit)%>
+        <%= "Na otvorenie novej miestnosti je potrebné dosiahnuť 100%"%>
+      <%else%>
+        <%= "Tento pokus je úspešný"%>
+      <%end%>
+  <%else%>
+      <%= "Túto miestnosť ste už na otvorenie použili" %>
+  <%end%>
+  <% if (@room.score<= @room.score_limit)%>
+  <div class="week-progressbar" data-number-all="<%= @room.score_limit.to_i %>" data-number-done="<%= @room.score.to_i %>">
+    <div class="progressbar-caption"></div>
+  </div>
+  <%else%>
+      <div class="week-progressbar" data-number-all="<%= @room.score_limit.to_i %>" data-number-done="<%= @room.score_limit.to_i %>">
+        <div class="progressbar-caption"></div>
+      </div>
+  <%end%>
+</div>

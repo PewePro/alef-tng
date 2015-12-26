@@ -32,6 +32,7 @@ var ready = (function () {
         Slider.setupEvaluatorSlider();
         Question.setupForm();
         Question.initTimeLog();
+        Progressbar.setupProgressbars();
 
     }
 

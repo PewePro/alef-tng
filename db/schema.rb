@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151122153619) do
+ActiveRecord::Schema.define(version: 20151226105657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20151122153619) do
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
+    t.string   "importance",         default: "UNKNOWN"
   end
 
   create_table "recommendation_configurations", force: :cascade do |t|
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(version: 20151122153619) do
     t.string  "difficulty",    default: "unknown_difficulty"
     t.integer "number_of_try"
     t.float   "score",         default: 0.0
+    t.float   "score_limit",   default: 0.0
   end
 
   create_table "rooms_learning_objects", force: :cascade do |t|
@@ -181,6 +183,7 @@ ActiveRecord::Schema.define(version: 20151122153619) do
     t.string   "email"
     t.string   "ais_email"
     t.string   "group",               default: "X"
+    t.float    "proficiency",         default: 0.5
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree

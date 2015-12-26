@@ -5,16 +5,13 @@ class WeeksController < ApplicationController
     @next_week = @week.next
     @previous_week = @week.previous
     @week_number = params[:week_number]
-   # learning_objects = @week.learning_objects.all.distinct
-   # @results = UserToLoRelation.get_results(current_user.id,@week.id)
-    p "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-    if (@week.rooms.count == 0)
-      p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      p @week.id
-      p current_user.id
+
+    if (@week.rooms.where(user_id: current_user.id ).count == 0)
       Levels::RoomsCreation.create(@week.id, current_user.id)
     end
-    @rooms = @week.rooms
+
+    @rooms = @week.rooms.where("user_id = ?", current_user.id).order(state: :asc, id: :asc)
+
     @used = @rooms.where(state: "used").all.count
 
     if (@week.learning_objects.count % 10 == 0)

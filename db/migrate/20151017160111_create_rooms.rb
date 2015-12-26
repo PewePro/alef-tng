@@ -10,6 +10,7 @@ class CreateRooms < ActiveRecord::Migration
       t.string :difficulty, :default => LearningObject::DIFFICULTY[:UNKNOWN]
       t.integer :number_of_try
       t.float :score, default: 0.to_f
+      t.float :score_limit, default: 0.to_f
     end
 
     add_foreign_key :rooms, :weeks

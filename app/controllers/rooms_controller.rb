@@ -35,32 +35,35 @@ class RoomsController < ApplicationController
     learning_objects = @room.learning_objects.all.distinct
 
     weight_comment = 3
-    number_of_rooms = 6
-    weight_solved = 5
 
-    @value = number_of_rooms * weight_solved
+    @value = @room.score_limit
 
-    score1 = 0
+    if @room.state.to_s != "used"
+      score1 = 0
 
-    learning_objects.each do |l|
-      feedbacks = l.feedbacks
-      feedbacks.each do |f|
-        if f.user_id == current_user.id
-          score1 = score1.to_f + weight_comment
+      learning_objects.each do |l|
+        feedbacks = l.feedbacks
+        feedbacks.each do |f|
+          if f.user_id == current_user.id
+            score1 = score1.to_f + weight_comment
+          end
         end
       end
-    end
 
-    @score = (@room.score + score1).to_d
+      @score = (@room.score + score1).to_d
 
-    if (@room.score + score1 >= @value)
-      @room.update_attribute(:score, (@room.score + score1).to_d)
+      if (@room.score + score1 >= @value)
+        @room.update_attribute(:score, (@room.score + score1).to_d)
+      else
+        @room.update_attribute(:score, 0.to_d)
+      end
+
+      @room.update_attribute(:defined, FALSE)
+      @room.update_attribute(:number_of_try, (@room.number_of_try + 1) )
     else
-      @room.update_attribute(:score, 0.to_d)
+      @score = @room.score
     end
 
-    @room.update_attribute(:defined, FALSE)
-    @room.update_attribute(:number_of_try, (@room.number_of_try + 1) )
     @next_room = nil
     @privious_room = nil
   end

@@ -11,6 +11,8 @@ class QuestionsController < ApplicationController
     @room_number = params[:room_number]
     @week_number= params[:week_number]
 
+    @room = Room.find(params[:room_number])
+
     @answers = @question.answers
     @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: user_id).group('type').count
 
@@ -24,30 +26,18 @@ class QuestionsController < ApplicationController
     @feedbacks = @question.feedbacks.includes(:user)
   end
 
-  def evaluate
-
+  def eval_question
     weight_solved = 5
     weight_failed = 2
     weight_dont_now = 1
-
-
-    unless ["SingleChoiceQuestion","MultiChoiceQuestion","EvaluatorQuestion"].include? params[:type]
-      # Kontrola ci zasielany type je z triedy LO
-      render nothing: true
-      return false
-    end
-
-    lo_class = Object.const_get params[:type]
-    lo = lo_class.find(params[:id])
 
     @setup = Setup.take
     @week = @setup.weeks.find_by_number(params[:week_number])
 
     room = Room.find(params[:room_number])
-    p "cislo aaa"
-    p params[:room_number]
-    p room.number_of_try
 
+    lo_class = Object.const_get params[:type]
+    lo = lo_class.find(params[:id])
 
     @results = UserToLoRelation.get_results_room(current_user.id,@week.id,params[:room_number], room.number_of_try)
     result = @results.find {|r| r["result_id"] == lo.id.to_s}
@@ -60,6 +50,41 @@ class QuestionsController < ApplicationController
     p "failed " + failed.to_s
     p "donotnow "  + donotnow.to_s
 
+    room = Room.find(params[:room_number])
+
+    if params[:commit] == 'send_answer'
+      result = lo.right_answer? params[:answer], @solution
+    end
+
+    score = 0
+
+    if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
+      if params[:commit] == 'dont_know'
+        score = weight_dont_now
+      elsif params[:commit] == 'send_answer' and result
+        score = weight_solved
+      elsif params[:commit] == 'send_answer' and not result
+        score = weight_failed
+      end
+    end
+
+    p "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    p score
+
+    room.update_attribute(:score, (room.score + score).to_d)
+
+  end
+
+  def evaluate
+
+    unless ["SingleChoiceQuestion","MultiChoiceQuestion","EvaluatorQuestion"].include? params[:type]
+      # Kontrola ci zasielany type je z triedy LO
+      render nothing: true
+      return false
+    end
+
+    lo_class = Object.const_get params[:type]
+    lo = lo_class.find(params[:id])
 
     @solution = lo.get_solution(current_user.id)
     @user = current_user
@@ -80,26 +105,11 @@ class QuestionsController < ApplicationController
     rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
     rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result
 
-    score = 0
-
-    if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
-      if rel.type == 'UserDidntKnowLoRelation'
-        score = weight_dont_now
-      elsif rel.type == 'UserSolvedLoRelation'
-        score = weight_solved
-      elsif rel.type == 'UserFailedLoRelation'
-        score = weight_failed
-      end
+    if room.state.to_s != "used"
+      eval_question
     end
 
-    p "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    p score
-
-    room.update_attribute(:score, (room.score + score).to_d)
-
     lo.user_to_lo_relations << rel
-
-
 
 
   end

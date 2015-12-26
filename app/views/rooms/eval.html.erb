@@ -10,27 +10,27 @@
     <div class="question-options-message"  id="question-evaluation-message"></div>
     <% if @score >= @value %>
         <% if @room.state == "do_not_use" %>
-            <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Mozete otvorit dlasiu miestnost!</div>
+            <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Môžete otvoriť ďalšiu miestnosť!</div>
             <br><a href="<%=
                 url_for :controller => 'rooms', :action => 'new'
-            %>" class="question-button question-button-red" id="question-evaluation-next">Otvor novu miestnost</a>
+            %>" class="question-button question-button-red" id="question-evaluation-next">Otvor novú miestnosť</a>
         <% else %>
-            <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Bohuzial, tuto miestnost ste uz na otvorenie vyuzili!</div>
+            <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Bohuziaľ, túto miestnosť ste už na otvorenie využili!</div>
             <a href="<%=
                 url_for :controller => 'rooms', :action => 'show'
-            %>" class="question-button" id="question-error-button">Miestnost na otvorenie</a>
+            %>" class="question-button" id="question-error-button">Miestnosť na otvorenie</a>
 
         <% end %>
     <% else %>
-        <div class="question-options-message" id="question-evaluation-next"><br><br>Je nam to luto<br><br>Bohuzial, ste nedosiahli potrebne skore na otvorenie dalsej urovne!
-        <br><br> Vase skore: <%= @score.to_i.to_s%><br> Potrebne skore: <%= @value.to_s%>
+        <div class="question-options-message" id="question-evaluation-next"><br><br>Je nám to ľúto<br><br>Bohužial, ste nedosiahli potrebné skóre na otvorenie dalšej miestnosti!
+        <br><br> Vaše skóre: <%= @score.to_i.to_s%><br> Potrebné skóre: <%= @value.to_s%>
         </div>
 
     <% end %>
   </div>
   <a href="<%=
       url_for :controller => 'rooms', :action => 'show'
-  %>" class="question-button" id="question-error-button" >Skusit znovu</a>
+  %>" class="question-button" id="question-error-button" >Skúsiť znovu</a>
 
 
 </div>

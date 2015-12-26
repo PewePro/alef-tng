@@ -10,18 +10,35 @@
   <% @rooms.each do |r|
 
   %>
-          <a href="<%=
-              url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week_number
-          %>" class="card ">
-            <h3 class="card-header"><%= r.name %><%= '(OTVOR NOVU MIESTNOST)' if r.state == "do_not_use" %></h3>
-            <% if r.question_count > 0 %>
-                <div class="week-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done @user.id %>">
-                  <div class="progressbar-caption"></div>
-                </div>
-            <% else %>
-                Žiadne otázky
-            <% end %>
-          </a>
+      <% if r.state == "do_not_use" %>
+              <a href="<%=
+                  url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week_number
+              %>" class="card_open ">
+                <h3 class="card-header"><%= r.name %><%= ' (otvor novú miestnosť)' if r.state == "do_not_use" %></h3>
+                <%= r.decsription.to_s %>
+                <% if r.question_count > 0 %>
+                    <div class="week-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done @user.id %>">
+                      <div class="progressbar-caption"></div>
+                    </div>
+                <% else %>
+                    Žiadne otázky
+                <% end %>
+              </a>
+      <% else %>
+            <a href="<%=
+                url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week_number
+            %>" class="card ">
+              <h3 class="card-header"><%= r.name %><%= ' (otvor novú miestnosť)' if r.state == "do_not_use" %></h3>
+              <%= r.decsription.to_s %>
+              <% if r.question_count > 0 %>
+                  <div class="week-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done @user.id %>">
+                    <div class="progressbar-caption"></div>
+                  </div>
+              <% else %>
+                  Žiadne otázky
+              <% end %>
+            </a>
+      <% end %>
       <% end
     %>
 </div>
