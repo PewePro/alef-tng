@@ -56,15 +56,76 @@ class QuestionsController < ApplicationController
       result = lo.right_answer? params[:answer], @solution
     end
 
-    score = 0
+    difficulty = lo.difficulty.to_s
+    dif_value = 0.0
+    importance = lo.importance.to_s
+    imp_value = 0.0
+
+    if difficulty.to_s == "easy"
+      dif_value = 1
+    elsif difficulty.to_s == "trivial"
+      dif_value = 2
+    elsif difficulty.to_s == "medium"
+      dif_value = 3
+    elsif difficulty.to_s == "hard"
+      dif_value = 4
+    elsif difficulty.to_s == "very hard"
+      dif_value = 5
+    else
+      dif_value = 3
+    end
+
+    if importance.to_s == "1"
+      imp_value = 1
+    elsif importance.to_s == "2"
+      imp_value = 2
+    elsif importance.to_s == "3"
+      imp_value = 3
+    else
+      imp_value = 2
+    end
+
+    dif_value = dif_value.to_f / 3
+    imp_value = imp_value.to_f / 2
+
+    dif_compute = 0.0
+    results = Levels::Preproces.preproces_data(@setup)
+    all = 0
+    do_not_know_value = 0
+    results.each do |r|
+      if r[0][1].to_i == lo.id
+        all +=1
+        if r[1].to_i == 0
+          do_not_know_value +=1
+        end
+      end
+    end
+
+    if all!= 0
+      dif_compute = do_not_know_value.to_f / all.to_f
+      dif_compute = dif_compute * 5 / 3
+      dif_result = (dif_value + dif_compute) / 2.0
+    else
+      dif_result = dif_value
+    end
+
+    score = 0.0
+    p "dif_value " + dif_value.to_s
+    p "imp_value " + imp_value.to_s
+    p "dif_compute " + dif_compute.to_s
 
     if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
+      p params[:commit]
+      p result
       if params[:commit] == 'dont_know'
-        score = weight_dont_now
-      elsif params[:commit] == 'send_answer' and result
-        score = weight_solved
-      elsif params[:commit] == 'send_answer' and not result
-        score = weight_failed
+        p "do_not_know"
+        score = weight_dont_now * imp_value *dif_result
+      elsif (params[:commit] == 'send_answer' and result)
+        p "solved"
+        score = weight_solved * imp_value * dif_result
+      elsif (params[:commit] == 'send_answer' and not result)
+        p "failed"
+        score = weight_failed * imp_value * dif_result
       end
     end
 
@@ -140,14 +201,11 @@ class QuestionsController < ApplicationController
 
     id_array = []
     @results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
-    p "sssssssssooooooooooooooooooooooooooooooooooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
     @results.each do |r|
       id_array.push(r['learning_object_id'].to_i)
-      p r
     end
 
     if (id_array.empty?)
-      p "p praaaaaaaaaaaaaaaaaazzzzzzzzzzzzzzzzdne"
       lo = @room.learning_objects.all.distinct
       lo.each do |l|
         id_array.push(l.id)

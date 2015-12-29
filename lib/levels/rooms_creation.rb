@@ -54,7 +54,7 @@ module Levels
         elsif dif.to_s == "hard"
           dif_value = 4
         elsif dif.to_s == "very hard"
-          def_value = 5
+          dif_value = 5
         else
           dif_value = 3
         end
