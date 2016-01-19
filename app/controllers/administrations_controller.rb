@@ -1,4 +1,5 @@
 class AdministrationsController < ApplicationController
+
   authorize_resource :class => false
   def index
     @setups = Setup.all
@@ -38,6 +39,42 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
+  def question_config
+    @course = Course.find(params[:course_id])
+    @questions = @course.learning_objects
+  end
+
+  def edit_question_config
+    @question = LearningObject.find_by_id(params[:question_id])
+  end
+
+  def edit_question
+    lo = LearningObject.find_by_id(params[:question_id])
+    lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
+    lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
+    lo.answers.each do |a|
+      is_correct = false
+      is_correct = true if params["correct_answer_#{a.id}"]
+      a.update(:is_correct => is_correct)
+      a.update(:answer_text => params["edit_answer_text_#{a.id}"]) if params["edit_answer_text_#{a.id}"] != ""
+    end
+
+    redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+  end
+
+  def delete_answer
+    answer = Answer.find_by_id(params[:answer_id])
+    answer.destroy
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
+  end
+
+  def add_answer
+    correct_ans = false
+    correct_ans = true if params[:correct_answer]
+    puts "ANSWER_TEXT: #{params[:add_answer_text]} | LEARNING_OBJECT_ID: #{params[:question_id]} | IS_CORRECT: #{correct_ans}"
+    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct_ans)
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
+  end
 
   def download_statistics
     @setup = Setup.find(params[:_setup_id])

@@ -44,6 +44,12 @@ Rails.application.routes.draw do
   post 'admin/setup_config/:setup_id/setup_attributes' => 'administrations#setup_config_attributes', as: 'setup_attributes'
   post 'admin/setup_config/:setup_id/setup_relations' => 'administrations#setup_config_relations', as: 'setup_relations'
 
+  get 'admin/question_config/:course_id' => 'administrations#question_config', as: 'question_config'
+  get 'admin/question_config/:question_id/edit_question_config' => 'administrations#edit_question_config', as: 'edit_question_config'
+  post 'admin/question_config/:question_id/edit_question' => 'administrations#edit_question', as: 'edit_question'
+  post 'admin/question_config/:question_id/delete_answer' => 'administrations#delete_answer', as: 'delete_answer'
+  post 'admin/question_config/:question_id/add_answer' => 'administrations#add_answer', as: 'add_answer'
+
   get 'admin/question_concept_config/:course_id' => 'administrations#question_concept_config', as: 'question_concept_config'
   post 'admin/question_concept_config/:course_id/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
   post 'admin/question_concept_config/:course_id/add_question_concept' => 'administrations#add_question_concept', as: 'add_question_concept'

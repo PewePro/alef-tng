@@ -9,6 +9,10 @@
     border-bottom: 1px solid $gray;
   }
 
+  .question_text_field {
+    width: 95%;
+  }
+
   input[type="submit"] {
     @include red-white;
     border: none;
@@ -18,6 +22,17 @@
     max-width: none;
     box-sizing: border-box;
   }
+
+  .edit_question_table {
+    margin-top: 0px;
+    padding-top: 0rem;
+    th {
+      font-weight: normal;
+      padding-right: 1rem;
+      padding-left: 0rem;
+    }
+  }
+
 }
 
 .admin table {
