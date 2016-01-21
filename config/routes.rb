@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   post 'feedback' => 'users#send_feedback', as: 'feedback'
 
-
+  get 'ping' => 'application#ping'
 
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
