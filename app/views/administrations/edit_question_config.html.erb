@@ -6,9 +6,9 @@
 </nav>
 <hr class="nav-offset">
 
-<div class="admin">
-
   <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+
+    <div class="admin">
 
       <h3>Úprava otázky</h3> <br/>
 
@@ -18,30 +18,45 @@
       <%= label_tag "Zadaj nový text otázky:" %>
       <%= text_field_tag :edit_question_text, nil, class: "question_text_field", placeholder: @question.question_text %>
 
-      <h3>Úprava odpovedí</h3> <br/>
+      <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+      <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
 
-      <% @question.answers.each do |a|%>
-          <%= label_tag "Zadaj nový text odpovede (#{a.id}):" %>
-          <% if a.is_correct %>
-              <% checked = true %>
-          <% else %>
-              <% checked = false %>
-          <% end %>
-          <%= text_field_tag "edit_answer_text_#{a.id}", nil, class: "question_text_field", placeholder: a.answer_text %>
-          <% if a.learning_object.type != "EvaluatorQuestion" %>
-              <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag "correct_answer_#{a.id}", 1, checked %></td> </tr></table>
-          <% end %>
-          <table class="edit_question_table">
-            <tr>
-              <td><%= "Odstráň odpoveď (#{a.id}):" %></td>
-              <td><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
-            </tr>
-          </table>
-          <hr/>
-      <% end %>
-      <%= submit_tag "Potvrď" %>
+    </div>
+
+    <div class="admin">
+
+      <h3>Úprava odpovedí</h3>
+
+      <table class="answers-table">
+        <thead>
+          <tr>
+            <th class="answers-table-id">ID</th>
+            <th>Text odpovede</th>
+            <th class="answers-table-icon">Správnosť</th>
+            <th class="answers-table-icon">Možnosti</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @question.answers.order('answers.id').each do |a|%>
+          <tr>
+            <td class="answers-table-id"><%= a.id %></td>
+            <td>
+              <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+              <div class="original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
+            </td>
+            <td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) unless a.learning_object.type == "EvaluatorQuestion" %></td>
+            <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+      <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+      <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+
+    </div>
+
   <% end %>
-</div>
 
 <div class="admin">
   <%= form_tag url_for(add_answer_path(:question_id => @question.id)), :method => 'post' do %>

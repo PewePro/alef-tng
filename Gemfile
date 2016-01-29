@@ -31,7 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 # Use Airbrake for exception tracking
-gem 'airbrake'
+gem 'airbrake', '~> 4.1'
 
 gem 'execjs'
 gem 'therubyracer'

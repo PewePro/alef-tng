@@ -62,6 +62,19 @@ class AdministrationsController < ApplicationController
     redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
   end
 
+  # Ulozi zmeny v odpovediach na otazky.
+  def edit_answers
+    lo = LearningObject.find_by_id(params[:question_id])
+    lo.answers.each do |a|
+      a.update(
+          is_correct: params["correct_answer_#{a.id}"],
+          answer_text: params["edit_answer_text_#{a.id}"]
+      )
+    end
+
+    redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+  end
+
   def delete_answer
     answer = Answer.find_by_id(params[:answer_id])
     answer.destroy

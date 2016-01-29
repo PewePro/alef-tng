@@ -65,6 +65,21 @@ var Admin = {
                 }
             });
         });
-    }
+    },
 
+    // Sleduje input a caka na to, kym sa zmeni jeho hodnota. Akonahle sa zmeni, zobrazi sa povodna hodnota.
+    checkAnwserAny: function(input, defaultValue) {
+
+        var originalAnswer = $(input).next('.original-answer');
+
+        if ($(input).val() != defaultValue) {
+            $(input).addClass('question-answer-with-original');
+            originalAnswer.slideDown(200);
+        }
+        else {
+            $(input).removeClass('question-answer-with-original');
+            originalAnswer.slideUp(200);
+        }
+
+    }
 };

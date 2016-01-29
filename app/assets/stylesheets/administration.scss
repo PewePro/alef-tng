@@ -154,3 +154,58 @@
 .concept-add {
   display: inline-block;
 }
+
+.admin {
+  button.btn, input.btn {
+    display: inline-block;
+  }
+
+  button.btn {
+    font-size: 0.875rem;
+  }
+}
+
+.answers-table {
+  width: 100%;
+
+  .answers-table-id {
+    width: 30px;
+    text-align: center;
+  }
+
+  .answers-table-icon {
+    width: 80px;
+    text-align: center;
+
+    button {
+      display: inline;
+    }
+  }
+
+  .question-answer {
+    width: 90%;
+    &.question-answer-with-original {
+      margin-bottom: 0;
+    }
+  }
+
+  input[type="checkbox"] {
+    padding: 0;
+    display: inline;
+  }
+
+  .original-answer {
+    font-size: 0.85em;
+    letter-spacing: normal;
+    display: none;
+
+    a {
+      color: $red;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+}
