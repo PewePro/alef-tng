@@ -41,7 +41,7 @@ class AdministrationsController < ApplicationController
 
   def question_config
     @course = Course.find(params[:course_id])
-    @questions = @course.learning_objects
+    @questions = @course.learning_objects.eager_load(:answers)
   end
 
   def edit_question_config

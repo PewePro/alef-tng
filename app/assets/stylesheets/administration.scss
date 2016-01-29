@@ -1,9 +1,13 @@
 .admin {
-  width: 100%;
   max-width: 960px;
   @include white-dark;
   margin: 2rem auto;
   padding: 1rem;
+
+  @media screen and (max-width: 480px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   h3 {
     border-bottom: 1px solid $gray;
@@ -73,11 +77,13 @@
 
 #question-concept-table {
   tr:nth-child(2n) {background-color: $porcelain;}
+
   .question-concept-table-cell {
-    height: 4.2rem;
+    //height: 4.2rem;
     min-height: 4.2rem;
     overflow: hidden;
-    padding: 0.5rem 0.5rem;
+    padding: 0.9rem 0.5rem;
+    line-height: 120%;
 
     &.show {
       height: auto;
@@ -86,6 +92,12 @@
 
   button:hover {
     color: $red;
+  }
+
+  .question-title {
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.5rem;
   }
 }
 
