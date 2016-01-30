@@ -11,14 +11,14 @@
   <div class="tabs">
 
     <ul id="editor-tabs" class="tablist" role="tablist">
-      <li><a href="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
+      <li class="active"><a href="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
       <li><a href="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
-      <li class="active"><a href="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
+      <li><a href="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
     </ul>
 
-    <div id="editor-tabs-content" class="tab-content">
+    <div id="editor-tabs-content" class="tab-content is-first">
 
-      <div role="tabpanel" class="tab-pane" id="question-settings">
+      <div role="tabpanel" class="tab-pane active" id="question-settings">
 
         <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
 
@@ -26,11 +26,13 @@
 
               <h3>Úprava otázky</h3> <br/>
 
-              <%= label_tag "Zadaj nový názov otázky:" %>
-              <%= text_field_tag :edit_question_name, nil, class: "question_text_field", placeholder: @question.lo_id %>
+              <%= label_tag "Názov otázky:" %>
+              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field", onkeyup: "Admin.checkAnwserAny(this, '#{@question.lo_id}');" %>
+              <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.lo_id %> (<a href="#" onclick="$('#edit_question_name').val('<%= @question.lo_id %>').trigger('keyup');return false">obnoviť</a>)</div>
               <hr/>
-              <%= label_tag "Zadaj nový text otázky:" %>
-              <%= text_field_tag :edit_question_text, nil, class: "question_text_field", placeholder: @question.question_text %>
+              <%= label_tag "Text otázky:" %>
+              <%= text_field_tag :edit_question_text, @question.question_text, class: "question_text_field", onkeyup: "Admin.checkAnwserAny(this, '#{@question.question_text}');" %>
+              <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.question_text %> (<a href="#" onclick="$('#edit_question_text').val('<%= @question.question_text %>').trigger('keyup');return false">obnoviť</a>)</div>
 
               <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
               <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
@@ -54,7 +56,7 @@
                 <tr>
                   <th class="answers-table-id">ID</th>
                   <th>Text odpovede</th>
-                  <th class="answers-table-icon">Správnosť</th>
+                  <% unless @question.type == "EvaluatorQuestion" %><th class="answers-table-icon">Správnosť</th><% end %>
                   <th></th>
                 </tr>
                 </thead>
@@ -63,10 +65,14 @@
                     <tr>
                       <td class="answers-table-id"><%= a.id %></td>
                       <td>
-                        <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
-                        <div class="original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
+                        <% if a.learning_object.type == "EvaluatorQuestion" %>
+                            <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                        <% else %>
+                            <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                        <% end %>
+                        <div class="original-input-text original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
                       </td>
-                      <td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) unless a.learning_object.type == "EvaluatorQuestion" %></td>
+                      <% unless a.learning_object.type == "EvaluatorQuestion" %><td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) %></td><% end %>
                       <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
                     </tr>
                 <% end %>
@@ -77,7 +83,6 @@
               <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
 
             </div>
-
 
             <div class="admin">
               <%= form_tag url_for(add_answer_path(:question_id => @question.id)), :method => 'post' do %>
@@ -93,20 +98,22 @@
 
       </div>
 
-      <div role="tabpanel" class="tab-pane active" id="feedbacks">
+      <div role="tabpanel" class="tab-pane" id="feedbacks">
 
         <div class="admin">
 
-          <ul class="simple-list">
-
-            <% @feedbacks.each do |feedback| %>
-            <li class="list-item">
-              <div class="content"><%= feedback.message %></div>
-              <div class="meta"><%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>&nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
-            </li>
-            <% end %>
-
-          </ul>
+          <% if @feedbacks.size > 0 %>
+            <ul class="simple-list">
+              <% @feedbacks.each do |feedback| %>
+                  <li class="list-item">
+                    <div class="content"><%= feedback.message %></div>
+                    <div class="meta"><%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>&nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
+                  </li>
+              <% end %>
+            </ul>
+          <% else %>
+            Ľutujeme, ale študenti ešte nezaslali pre túto otázku žiadnu spätnú väzbu.
+          <% end %>
 
         </div>
 
@@ -117,3 +124,20 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    var tabs = $('#editor-tabs').find('a');
+    var firstTab = tabs.first();
+    tabs.click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+      if ($(this).attr('id') == firstTab.attr('id')) {
+        $('#editor-tabs-content').addClass('is-first');
+      }
+      else {
+        $('#editor-tabs-content').removeClass('is-first');
+      }
+    })
+  });
+</script>

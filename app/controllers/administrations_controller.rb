@@ -50,15 +50,11 @@ class AdministrationsController < ApplicationController
   end
 
   def edit_question
-    lo = LearningObject.find_by_id(params[:question_id])
-    lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
-    lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
-    lo.answers.each do |a|
-      is_correct = false
-      is_correct = true if params["correct_answer_#{a.id}"]
-      a.update(:is_correct => is_correct)
-      a.update(:answer_text => params["edit_answer_text_#{a.id}"]) if params["edit_answer_text_#{a.id}"] != ""
-    end
+    #lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
+    #lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
+    LearningObject.find_by_id(params[:question_id]).update!(
+        lo_id: params[:edit_question_name],
+        question_text: params[:edit_question_text])
 
     redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
   end
@@ -67,7 +63,7 @@ class AdministrationsController < ApplicationController
   def edit_answers
     lo = LearningObject.find_by_id(params[:question_id])
     lo.answers.each do |a|
-      a.update(
+      a.update!(
           is_correct: params["correct_answer_#{a.id}"],
           answer_text: params["edit_answer_text_#{a.id}"]
       )

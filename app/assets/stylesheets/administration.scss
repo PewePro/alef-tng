@@ -59,12 +59,17 @@
   @include center-block;
 }
 
-.admin input, .admin select {
+.admin input, .admin select, .admin textarea {
   @include medium-font;
   @include border-radius(0.25rem);
   margin: 1rem 0;
   border: 1px solid $gray;
   padding: 0.5rem 1rem;
+  transition: border 0.25s;
+
+  &:focus, &:active {
+    border-color: $gray-dark;
+  }
 }
 
 #week-concept-table {
@@ -184,9 +189,11 @@
 
   .question-answer {
     width: 90%;
-    &.question-answer-with-original {
-      margin-bottom: 0;
-    }
+  }
+
+  .question-answer-area {
+    width: 90%;
+    height: 100px;
   }
 
   input[type="checkbox"] {
@@ -194,18 +201,30 @@
     display: inline;
   }
 
-  .original-answer {
-    font-size: 0.85em;
-    letter-spacing: normal;
-    display: none;
+}
 
-    a {
-      color: $red;
+.admin {
+  .question-answer-with-original {
+    margin-bottom: 0;
+  }
+}
 
-      &:hover {
-        text-decoration: underline;
-      }
+.original-answer, .original-input-text {
+  font-size: 0.85em;
+  letter-spacing: normal;
+  display: none;
+  color: $gray-dark;
+  padding: 5px 15px;
+
+  a {
+    color: $red;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
+}
 
+.original-answer {
+  padding: 0;
 }
