@@ -33,6 +33,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Airbrake for exception tracking
 gem 'airbrake', '~> 4.1'
 
+gem 'byebug'
+
 gem 'execjs'
 gem 'therubyracer'
 

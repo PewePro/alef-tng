@@ -6,65 +6,114 @@
 </nav>
 <hr class="nav-offset">
 
-  <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+<div class="container">
 
-    <div class="admin">
+  <div class="tabs">
 
-      <h3>Úprava otázky</h3> <br/>
+    <ul id="editor-tabs" class="tablist" role="tablist">
+      <li><a href="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
+      <li><a href="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
+      <li class="active"><a href="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
+    </ul>
 
-      <%= label_tag "Zadaj nový názov otázky:" %>
-      <%= text_field_tag :edit_question_name, nil, class: "question_text_field", placeholder: @question.lo_id %>
-      <hr/>
-      <%= label_tag "Zadaj nový text otázky:" %>
-      <%= text_field_tag :edit_question_text, nil, class: "question_text_field", placeholder: @question.question_text %>
+    <div id="editor-tabs-content" class="tab-content">
 
-      <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-      <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+      <div role="tabpanel" class="tab-pane" id="question-settings">
 
-    </div>
+        <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
 
-    <div class="admin">
+            <div class="admin">
 
-      <h3>Úprava odpovedí</h3>
+              <h3>Úprava otázky</h3> <br/>
 
-      <table class="answers-table">
-        <thead>
-          <tr>
-            <th class="answers-table-id">ID</th>
-            <th>Text odpovede</th>
-            <th class="answers-table-icon">Správnosť</th>
-            <th class="answers-table-icon">Možnosti</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @question.answers.order('answers.id').each do |a|%>
-          <tr>
-            <td class="answers-table-id"><%= a.id %></td>
-            <td>
-              <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
-              <div class="original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
-            </td>
-            <td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) unless a.learning_object.type == "EvaluatorQuestion" %></td>
-            <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
-          </tr>
+              <%= label_tag "Zadaj nový názov otázky:" %>
+              <%= text_field_tag :edit_question_name, nil, class: "question_text_field", placeholder: @question.lo_id %>
+              <hr/>
+              <%= label_tag "Zadaj nový text otázky:" %>
+              <%= text_field_tag :edit_question_text, nil, class: "question_text_field", placeholder: @question.question_text %>
+
+              <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+              <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+
+            </div>
+
         <% end %>
-        </tbody>
-      </table>
 
-      <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-      <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="answer-settings">
+
+        <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+
+            <div class="admin">
+
+              <h3>Úprava odpovedí</h3>
+
+              <table class="answers-table">
+                <thead>
+                <tr>
+                  <th class="answers-table-id">ID</th>
+                  <th>Text odpovede</th>
+                  <th class="answers-table-icon">Správnosť</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @question.answers.order('answers.id').each do |a|%>
+                    <tr>
+                      <td class="answers-table-id"><%= a.id %></td>
+                      <td>
+                        <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                        <div class="original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
+                      </td>
+                      <td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) unless a.learning_object.type == "EvaluatorQuestion" %></td>
+                      <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+
+              <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+              <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+
+            </div>
+
+
+            <div class="admin">
+              <%= form_tag url_for(add_answer_path(:question_id => @question.id)), :method => 'post' do %>
+                  <h3>Pridanie novej odpovede</h3> <br/>
+                  <%= label_tag "Zadaj nový text odpovede:" %>
+                  <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
+                  <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag :correct_answer %></td> </tr></table>
+                  <%= submit_tag "Pridaj" %>
+              <% end %>
+            </div>
+
+        <% end %>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane active" id="feedbacks">
+
+        <div class="admin">
+
+          <ul class="simple-list">
+
+            <% @feedbacks.each do |feedback| %>
+            <li class="list-item">
+              <div class="content"><%= feedback.message %></div>
+              <div class="meta"><%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>&nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
+            </li>
+            <% end %>
+
+          </ul>
+
+        </div>
+
+      </div>
 
     </div>
 
-  <% end %>
+  </div>
 
-<div class="admin">
-  <%= form_tag url_for(add_answer_path(:question_id => @question.id)), :method => 'post' do %>
-      <h3>Pridanie novej odpovede</h3> <br/>
-      <%= label_tag "Zadaj nový text odpovede:" %>
-      <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
-      <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag :correct_answer %></td> </tr></table>
-      <%= submit_tag "Pridaj" %>
-      </table>
-  <% end %>
 </div>

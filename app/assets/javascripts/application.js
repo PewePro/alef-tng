@@ -17,6 +17,7 @@
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
+//= require bootstrap.tabs
 //= require detect-zoom
 //= require ifvisible
 //= require time-me

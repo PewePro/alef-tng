@@ -46,6 +46,7 @@ class AdministrationsController < ApplicationController
 
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
+    @feedbacks = @question.feedbacks.includes(:user)
   end
 
   def edit_question

@@ -49,6 +49,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    byebug (8.2.1)
     cancan (1.6.10)
     capistrano (3.4.0)
       i18n
@@ -224,6 +225,7 @@ DEPENDENCIES
   airbrake (~> 4.1)
   andand
   axlsx
+  byebug
   cancan
   capistrano
   capistrano-bundler
