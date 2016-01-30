@@ -11,27 +11,27 @@
   <div class="tabs">
 
     <ul id="editor-tabs" class="tablist" role="tablist">
-      <li class="active"><a href="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
-      <li><a href="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
-      <li><a href="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
+      <li class="active"><a href="#" data-target="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
+      <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
+      <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
     </ul>
 
     <div id="editor-tabs-content" class="tab-content is-first">
 
       <div role="tabpanel" class="tab-pane active" id="question-settings">
 
-        <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+        <%= form_tag "#{url_for(edit_question_path(:question_id => @question.id))}#question-settings", :method => :post do %>
 
             <div class="admin">
 
               <h3>Úprava otázky</h3> <br/>
 
               <%= label_tag "Názov otázky:" %>
-              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field", onkeyup: "Admin.checkAnwserAny(this, '#{@question.lo_id}');" %>
+              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field", onchange: "Admin.checkAnwserAny(this, '#{@question.lo_id}');", onkeyup: "Admin.checkAnwserAny(this, '#{@question.lo_id}');" %>
               <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.lo_id %> (<a href="#" onclick="$('#edit_question_name').val('<%= @question.lo_id %>').trigger('keyup');return false">obnoviť</a>)</div>
               <hr/>
               <%= label_tag "Text otázky:" %>
-              <%= text_field_tag :edit_question_text, @question.question_text, class: "question_text_field", onkeyup: "Admin.checkAnwserAny(this, '#{@question.question_text}');" %>
+              <%= text_field_tag :edit_question_text, @question.question_text, class: "question_text_field", onchange: "Admin.checkAnwserAny(this, '#{@question.question_text}');", onkeyup: "Admin.checkAnwserAny(this, '#{@question.question_text}');" %>
               <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.question_text %> (<a href="#" onclick="$('#edit_question_text').val('<%= @question.question_text %>').trigger('keyup');return false">obnoviť</a>)</div>
 
               <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
@@ -45,7 +45,7 @@
 
       <div role="tabpanel" class="tab-pane" id="answer-settings">
 
-        <%= form_tag url_for(edit_question_path(:question_id => @question.id)), :method => :post do %>
+        <%= form_tag "#{url_for(edit_answers_path(:question_id => @question.id))}#answer-settings", :method => :post do %>
 
             <div class="admin">
 
@@ -84,16 +84,16 @@
 
             </div>
 
-            <div class="admin">
-              <%= form_tag url_for(add_answer_path(:question_id => @question.id)), :method => 'post' do %>
-                  <h3>Pridanie novej odpovede</h3> <br/>
-                  <%= label_tag "Zadaj nový text odpovede:" %>
-                  <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
-                  <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag :correct_answer %></td> </tr></table>
-                  <%= submit_tag "Pridaj" %>
-              <% end %>
-            </div>
+        <% end %>
 
+        <%= form_tag "#{url_for(add_answer_path(question_id: @question.id))}#answer-settings", :method => 'post' do %>
+          <div class="admin">
+              <h3>Pridanie novej odpovede</h3> <br/>
+              <%= label_tag "Zadaj nový text odpovede:" %>
+              <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
+              <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag :correct_answer %></td> </tr></table>
+              <%= submit_tag "Pridaj" %>
+          </div>
         <% end %>
 
       </div>
@@ -127,17 +127,38 @@
 
 <script type="text/javascript">
   $(function(){
+
     var tabs = $('#editor-tabs').find('a');
-    var firstTab = tabs.first();
     tabs.click(function (e) {
+      set_tab(tabs, $(this));
       e.preventDefault();
-      $(this).tab('show');
-      if ($(this).attr('id') == firstTab.attr('id')) {
-        $('#editor-tabs-content').addClass('is-first');
-      }
-      else {
-        $('#editor-tabs-content').removeClass('is-first');
-      }
-    })
+      e.stopImmediatePropagation();
+    });
+
+    if (location.hash.length > 0) {
+      set_tab(tabs, tabs.filter('[data-target="'+location.hash+'"]'));
+    }
+
   });
+
+  function set_tab(tabs, tab) {
+
+    var firstTab = tabs.first();
+
+    if (history.pushState) {
+      history.pushState(null, null, $(tab).attr('data-target'));
+    }
+    else {
+      location.hash = $(tab).attr('data-target');
+    }
+
+    $(tab).tab('show');
+    if ($(tab).attr('id') == firstTab.attr('id')) {
+      $('#editor-tabs-content').addClass('is-first');
+    }
+    else {
+      $('#editor-tabs-content').removeClass('is-first');
+    }
+
+  }
 </script>
