@@ -55,5 +55,7 @@ Rails.application.routes.draw do
   post 'admin/question_concept_config/:course_id/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
   post 'admin/question_concept_config/:course_id/add_question_concept' => 'administrations#add_question_concept', as: 'add_question_concept'
 
+  patch 'admin/feedbacks/:id/mark_resolved' => 'administrations#mark_feedback_resolved', as: 'mark_feedback_resolved'
+
 
 end

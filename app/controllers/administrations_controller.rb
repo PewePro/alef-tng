@@ -46,7 +46,10 @@ class AdministrationsController < ApplicationController
 
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
-    @feedbacks = @question.feedbacks.includes(:user)
+    @feedbacks = {
+        resolved: @question.feedbacks.resolved.includes(:user),
+        unresolved: @question.feedbacks.unresolved.includes(:user)
+    }
   end
 
   def edit_question
@@ -101,6 +104,13 @@ class AdministrationsController < ApplicationController
   def delete_question_concept
     question = LearningObject.find(params[:question_id])
     Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
+  # Oznaci spatnu vazbu ako vyriesenu.
+  def mark_feedback_resolved
+    resolved = (params[:solved].to_i == 1)
+    Feedback.find(params[:id]).update(resolved: resolved)
+    render js: "$('#feedback#{params[:id]}').slideUp(100);"
   end
 
   def add_question_concept

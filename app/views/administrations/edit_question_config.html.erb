@@ -45,6 +45,21 @@
 
       <div role="tabpanel" class="tab-pane" id="answer-settings">
 
+        <% # Widget so spatnou vazbou. %>
+        <div id="feedback-widget">
+
+          <% @feedbacks[:unresolved].each do |feedback| %>
+          <div class="feedback">
+            <%= feedback.message %>
+            <div class="meta">
+              <%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>
+              <%= link_to "Označiť ako vyriešené", mark_feedback_resolved_path(feedback.id), remote: true, method: :patch %>
+            </div>
+          </div>
+          <% end %>
+
+        </div>
+
         <%= form_tag "#{url_for(edit_answers_path(:question_id => @question.id))}#answer-settings", :method => :post do %>
 
             <div class="admin">
@@ -104,10 +119,13 @@
 
           <% if @feedbacks.size > 0 %>
             <ul class="simple-list">
-              <% @feedbacks.each do |feedback| %>
-                  <li class="list-item">
+              <% @feedbacks[:unresolved].each do |feedback| %>
+                  <li class="list-item" id="feedback<%= feedback.id %>">
                     <div class="content"><%= feedback.message %></div>
-                    <div class="meta"><%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>&nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
+                    <div class="meta">
+                      <%= link_to "Označiť ako vyriešené", mark_feedback_resolved_path(feedback.id), remote: true, method: :patch %>
+                      &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>
+                      &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
                   </li>
               <% end %>
             </ul>
