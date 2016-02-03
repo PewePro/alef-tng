@@ -47,8 +47,8 @@ class AdministrationsController < ApplicationController
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
     @feedbacks = {
-        resolved: @question.feedbacks.resolved.includes(:user),
-        unresolved: @question.feedbacks.unresolved.includes(:user)
+        not_reviewed: @question.feedbacks.not_reviewed.includes(:user),
+        all: @question.feedbacks.includes(:user)
     }
   end
 
@@ -106,11 +106,44 @@ class AdministrationsController < ApplicationController
     Concept.find(params[:concept_id]).learning_objects.delete(question)
   end
 
-  # Oznaci spatnu vazbu ako vyriesenu.
-  def mark_feedback_resolved
-    resolved = (params[:solved].to_i == 1)
-    Feedback.find(params[:id]).update(resolved: resolved)
-    render js: "$('#feedback#{params[:id]}').slideUp(100);"
+  # Pouziva sa pre vzdialene nacitanie nevyriesenej spatnej vazby (pre widget).
+  def question_feedbacks
+    @question = LearningObject.find_by_id(params[:id])
+
+    list = @question.feedbacks.not_reviewed.includes(:user).map do |feedback|
+      {
+          id: feedback.id,
+          message: feedback.message,
+          fullname: "#{feedback.user.first_name} #{feedback.user.last_name}",
+          time: feedback.created_at.strftime("%d.%m.%Y %H:%M:%S")
+      }
+    end
+
+    render json: list
+  end
+
+  # Oznaci spatnu vazbu za schvalenu.
+  def mark_feedback_accepted
+    Feedback.find(params[:id]).update(accepted: true)
+    render js: "Admin.hideFeedbackBox(#{params[:id]});"
+  end
+
+  # Oznaci spatnu vazbu za zamietnutu.
+  def mark_feedback_rejected
+    Feedback.find(params[:id]).update(accepted: false)
+    render js: "Admin.hideFeedbackBox(#{params[:id]});"
+  end
+
+  # Zobrazi spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_visible
+    Feedback.find(params[:id]).update(visible: true)
+    render nothing: true
+  end
+
+  # Skryje spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_hidden
+    Feedback.find(params[:id]).update(visible: false)
+    render js: "Admin.hideFeedbackBox(#{params[:id]});"
   end
 
   def add_question_concept

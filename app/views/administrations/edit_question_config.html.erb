@@ -13,7 +13,7 @@
     <ul id="editor-tabs" class="tablist" role="tablist">
       <li class="active"><a href="#" data-target="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
       <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
-      <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba (<%= @feedbacks.count %>)</a></li>
+      <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
     </ul>
 
     <div id="editor-tabs-content" class="tab-content is-first">
@@ -45,61 +45,64 @@
 
       <div role="tabpanel" class="tab-pane" id="answer-settings">
 
-        <% # Widget so spatnou vazbou. %>
-        <div id="feedback-widget">
+        <div class="row">
 
-          <% @feedbacks[:unresolved].each do |feedback| %>
-          <div class="feedback">
-            <%= feedback.message %>
-            <div class="meta">
-              <%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>
-              <%= link_to "Označiť ako vyriešené", mark_feedback_resolved_path(feedback.id), remote: true, method: :patch %>
+          <div class="col-lg-12" id="answer-settings-col">
+
+            <%= form_tag "#{url_for(edit_answers_path(:question_id => @question.id))}#answer-settings", :method => :post do %>
+
+                <div class="admin">
+
+                  <h3>Úprava odpovedí</h3>
+
+                  <table class="answers-table">
+                    <thead>
+                    <tr>
+                      <th class="answers-table-id">ID</th>
+                      <th>Text odpovede</th>
+                      <% unless @question.type == "EvaluatorQuestion" %><th class="answers-table-icon">Správnosť</th><% end %>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @question.answers.order('answers.id').each do |a|%>
+                        <tr>
+                          <td class="answers-table-id"><%= a.id %></td>
+                          <td>
+                            <% if a.learning_object.type == "EvaluatorQuestion" %>
+                                <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                            <% else %>
+                                <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                            <% end %>
+                            <div class="original-input-text original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
+                          </td>
+                          <% unless a.learning_object.type == "EvaluatorQuestion" %><td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) %></td><% end %>
+                          <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+
+                  <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+                  <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+
+                </div>
+
+            <% end %>
+
+          </div>
+          <div class="col-lg-4" id="answer-feedback-col">
+            <div id="feedback-widget" class="content-widget">
+
+                <h3>Nová spätná väzba</h3>
+
+                <ul class="mini-list">
+                </ul>
+
             </div>
           </div>
-          <% end %>
 
         </div>
-
-        <%= form_tag "#{url_for(edit_answers_path(:question_id => @question.id))}#answer-settings", :method => :post do %>
-
-            <div class="admin">
-
-              <h3>Úprava odpovedí</h3>
-
-              <table class="answers-table">
-                <thead>
-                <tr>
-                  <th class="answers-table-id">ID</th>
-                  <th>Text odpovede</th>
-                  <% unless @question.type == "EvaluatorQuestion" %><th class="answers-table-icon">Správnosť</th><% end %>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <% @question.answers.order('answers.id').each do |a|%>
-                    <tr>
-                      <td class="answers-table-id"><%= a.id %></td>
-                      <td>
-                        <% if a.learning_object.type == "EvaluatorQuestion" %>
-                            <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
-                        <% else %>
-                            <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
-                        <% end %>
-                        <div class="original-input-text original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
-                      </td>
-                      <% unless a.learning_object.type == "EvaluatorQuestion" %><td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) %></td><% end %>
-                      <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
-                    </tr>
-                <% end %>
-                </tbody>
-              </table>
-
-              <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-              <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
-
-            </div>
-
-        <% end %>
 
         <%= form_tag "#{url_for(add_answer_path(question_id: @question.id))}#answer-settings", :method => 'post' do %>
           <div class="admin">
@@ -117,13 +120,12 @@
 
         <div class="admin">
 
-          <% if @feedbacks.size > 0 %>
+          <% if @feedbacks[:all].size > 0 %>
             <ul class="simple-list">
-              <% @feedbacks[:unresolved].each do |feedback| %>
-                  <li class="list-item" id="feedback<%= feedback.id %>">
+              <% @feedbacks[:all].each do |feedback| %>
+                  <li class="list-item">
                     <div class="content"><%= feedback.message %></div>
                     <div class="meta">
-                      <%= link_to "Označiť ako vyriešené", mark_feedback_resolved_path(feedback.id), remote: true, method: :patch %>
                       &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>
                       &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
                   </li>
@@ -157,6 +159,11 @@
       set_tab(tabs, tabs.filter('[data-target="'+location.hash+'"]'));
     }
 
+    Admin.fetchFeedback(<%= @question.id %>);
+    setInterval(function(){
+      Admin.fetchFeedback(<%= @question.id %>);
+    }, 30000);
+
   });
 
   function set_tab(tabs, tab) {
@@ -180,3 +187,20 @@
 
   }
 </script>
+
+<%# Sablona pre polozku feedback widgetu (doT.js). %>
+<div id="feedback-widget-template" style="display: none">
+  <li class="list-item" id="feedback{{=it.id}}">
+    <div class="content">{{=it.message}}</div>
+    <div class="tools">
+      <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+      <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Skryť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+    </div>
+    <div class="meta">{{it.fullname}}, {{it.time}}</div>
+  </li>
+</div>

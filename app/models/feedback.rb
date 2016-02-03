@@ -1,7 +1,6 @@
 class Feedback < ActiveRecord::Base
   belongs_to :user
-
-  enum admin_status: { new: 0, solved: 1 }
+  scope :not_reviewed, -> { where(accepted: nil) }
 
   def url_path
     URI.parse(self.url).path

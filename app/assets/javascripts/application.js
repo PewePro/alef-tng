@@ -18,6 +18,8 @@
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
 //= require bootstrap.tabs
+//= require bootstrap.tooltips
+//= require doT
 //= require detect-zoom
 //= require ifvisible
 //= require time-me

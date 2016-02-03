@@ -55,7 +55,11 @@ Rails.application.routes.draw do
   post 'admin/question_concept_config/:course_id/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
   post 'admin/question_concept_config/:course_id/add_question_concept' => 'administrations#add_question_concept', as: 'add_question_concept'
 
-  patch 'admin/feedbacks/:id/mark_resolved' => 'administrations#mark_feedback_resolved', as: 'mark_feedback_resolved'
+  get 'admin/questions/:id/feedbacks' => 'administrations#question_feedbacks', as: 'question_feedbacks'
+  patch 'admin/feedbacks/:id/accept' => 'administrations#mark_feedback_accepted', as: 'mark_feedback_accepted'
+  patch 'admin/feedbacks/:id/reject' => 'administrations#mark_feedback_rejected', as: 'mark_feedback_rejected'
+  patch 'admin/feedbacks/:id/show' => 'administrations#mark_feedback_visible', as: 'mark_feedback_visible'
+  patch 'admin/feedbacks/:id/hide' => 'administrations#mark_feedback_hidden', as: 'mark_feedback_hidden'
 
 
 end
