@@ -83,24 +83,39 @@ var Admin = {
 
     },
 
-    hideFeedbackBox: function(id) {
-        $('#feedback'+id).slideUp(250);
-        Admin.fetchFeedback(Admin.currentLoId);
-    },
+    // Na pozadi nacita zoznam vsetkej spatnej vazby.
+    fetchFeedback: function() {
 
-    // Na pozadi nacita obsah feedback widgetu.
-    fetchFeedback: function(lo_id) {
-
-        Admin.currentLoId = lo_id;
-
-        //question_feedbacks
-        var url = '<%= Rails.application.routes.url_helpers.question_feedbacks_path('LO_ID') %>'.replace('LO_ID', lo_id);
-        var template = doT.template($('#feedback-widget-template').html().replace('FEEDBACK_ID', '{{=it.id}}'));
-        var list = $('#feedback-widget').find('.mini-list');
+        var url = '<%= Rails.application.routes.url_helpers.question_feedbacks_path('LO_ID') %>'.replace('LO_ID', Admin.currentLoId);
+        var template = doT.template($('#feedback-widget-template').html().replace(/FEEDBACK_ID/g, '{{=it.id}}'));
+        var list = $('#feedbacks-list');
+        var listEmpty = $('#feedbacks-empty');
+        var listUnresolved = $('#feedback-widget').find('.mini-list');
+        var unresolved = 0;
 
         $.getJSON(url, {}, function(resp) {
 
-          if (resp.length > 0) {
+          if (resp.length == 0) {
+            list.hide();
+            listEmpty.show();
+          }
+          else {
+            list.show();
+            listEmpty.hide();
+          }
+
+          list.html('');
+          listUnresolved.html('');
+
+          $.each(resp, function(i, feedback) {
+            feedback.widget = false;
+            list.append(template(feedback));
+            feedback.widget = true;
+            listUnresolved.append(template(feedback));
+            if (feedback.accepted == null) { unresolved++; }
+          });
+
+          if (unresolved > 0) {
             $('#answer-settings-col').addClass('col-lg-8').removeClass('col-lg-12');
             $('#answer-feedback-col').fadeIn(100);
             $('#feedback-not-reviewed-count').html(' ('+resp.length+')');
@@ -111,14 +126,8 @@ var Admin = {
             $('#feedback-not-reviewed-count').html('');
           }
 
-          list.html('');
-
-          $.each(resp, function(i, feedback){
-            list.append(template(feedback));
-          });
-
         });
 
-    }
+    },
 
 };

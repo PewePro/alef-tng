@@ -120,20 +120,10 @@
 
         <div class="admin">
 
-          <% if @feedbacks[:all].size > 0 %>
-            <ul class="simple-list">
-              <% @feedbacks[:all].each do |feedback| %>
-                  <li class="list-item">
-                    <div class="content"><%= feedback.message %></div>
-                    <div class="meta">
-                      &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= "#{feedback.user.first_name} #{feedback.user.last_name}" %>
-                      &nbsp;&nbsp;&bull;&nbsp;&nbsp;<%= feedback.created_at.strftime("%d.%m.%Y %H:%M:%S") %></div>
-                  </li>
-              <% end %>
-            </ul>
-          <% else %>
-            Ľutujeme, ale študenti ešte nezaslali pre túto otázku žiadnu spätnú väzbu.
-          <% end %>
+          <ul class="simple-list" id="feedbacks-list" style="display: none;">
+          </ul>
+
+          <div id="feedbacks-empty">Ľutujeme, ale zdá sa, že sa nenašla žiadna spätná väzba.</div>
 
         </div>
 
@@ -159,9 +149,10 @@
       set_tab(tabs, tabs.filter('[data-target="'+location.hash+'"]'));
     }
 
-    Admin.fetchFeedback(<%= @question.id %>);
+    Admin.currentLoId = <%= @question.id %>;
+    Admin.fetchFeedback();
     setInterval(function(){
-      Admin.fetchFeedback(<%= @question.id %>);
+      Admin.fetchFeedback();
     }, 30000);
 
   });
@@ -190,17 +181,56 @@
 
 <%# Sablona pre polozku feedback widgetu (doT.js). %>
 <div id="feedback-widget-template" style="display: none">
-  <li class="list-item" id="feedback{{=it.id}}">
+  <li class="list-item" data-feedback-id="{{=it.id}}">
     <div class="content">{{=it.message}}</div>
     <div class="tools">
-      <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
-      &nbsp;&nbsp;&bull;&nbsp;&nbsp;
-      <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
-      &nbsp;&nbsp;&bull;&nbsp;&nbsp;
-      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
-                  title: 'Skryť komentár zo stránky otázky',
-                  data: { toggle: "tooltip" } %>
+      {{?it.widget}}
+        <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        &nbsp;&bull;&nbsp;
+        <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        &nbsp;&bull;&nbsp;
+        {{?it.visible}}
+        <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                    title: 'Skryť komentár zo stránky otázky',
+                    data: { toggle: "tooltip" } %>
+        {{??}}
+        <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                    title: 'Zobraziť komentár zo stránky otázky',
+                    data: { toggle: "tooltip" } %>
+        {{?}}
+      {{??}}
+        {{?it.accepted == null}}
+        <span class="status"><i class="icon-star"></i> Nový</span>
+        {{?? it.accepted == true}}
+        <span class="status status-success"><i class="icon-checkbox-checked"></i> Akceptovaný</span>
+        {{??}}
+        <span class="status status-danger"><i class="icon-cancel-circled"></i> Zamietnutý</span>
+        {{?}}
+        {{?it.visible == true}}
+        <span class="status status-success"><i class="icon-seen"></i> Viditeľný</span>
+        {{??}}
+        <span class="status status-danger"><i class="icon-eye-off"></i> Skrytý</span>
+        {{?}}
+        {{?it.accepted != true}}
+        &nbsp;&bull;&nbsp;
+        <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        {{?}}
+        {{?it.accepted != false}}
+        &nbsp;&bull;&nbsp;
+        <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        {{?}}
+        &nbsp;&bull;&nbsp;
+        {{?it.visible == true}}
+        <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                    title: 'Skryť komentár zo stránky otázky',
+                    data: { toggle: "tooltip" } %>
+        {{??}}
+        <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                    title: 'Zobraziť komentár zo stránky otázky',
+                    data: { toggle: "tooltip" } %>
+        {{?}}
+      {{?}}
     </div>
-    <div class="meta">{{it.fullname}}, {{it.time}}</div>
+    <div class="meta">{{=it.fullname}}, {{=it.time}}</div>
   </li>
 </div>
