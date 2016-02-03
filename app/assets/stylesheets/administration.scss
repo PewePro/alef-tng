@@ -72,6 +72,13 @@
   }
 }
 
+.back-link {
+  float: right;
+  font-size: 0.9em;
+  margin-top: 12px;
+  margin-right: 15px;
+}
+
 #week-concept-table {
   td:not(:first-child) {text-align: center;}
   td:first-child {text-align: right; padding: 0 1rem;}
