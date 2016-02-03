@@ -55,18 +55,19 @@
 
                   <h3>Úprava odpovedí</h3>
 
+                  <p><strong>Text otázky:</strong> <%= @question.question_text %></p>
+
                   <table class="answers-table">
                     <thead>
                     <tr>
                       <th class="answers-table-id">ID</th>
                       <th>Text odpovede</th>
-                      <% unless @question.type == "EvaluatorQuestion" %><th class="answers-table-icon">Správnosť</th><% end %>
-                      <th></th>
+                      <th class="answers-table-tools">Možnosti</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <% @question.answers.order('answers.id').each do |a|%>
-                        <tr>
+                    <% @question.answers.force_all.order('answers.id').each do |a|%>
+                        <tr class="<%= 'hidden' unless a.visible? %>">
                           <td class="answers-table-id"><%= a.id %></td>
                           <td>
                             <% if a.learning_object.type == "EvaluatorQuestion" %>
@@ -76,8 +77,19 @@
                             <% end %>
                             <div class="original-input-text original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
                           </td>
-                          <% unless a.learning_object.type == "EvaluatorQuestion" %><td class="answers-table-icon"><%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct) %></td><% end %>
-                          <td class="answers-table-icon"><%= link_to( (button_tag '<i class="icon-delete"></i>'.html_safe, type: 'button' ), url_for(delete_answer_path(:answer_id => a.id)), :method => :post ) %></td>
+                          <td class="answers-table-tools">
+                            <% unless a.learning_object.type == "EvaluatorQuestion" %>
+                                <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon') %>
+                                <%= label_tag("correct_answer_#{a.id}", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                            <% end %>
+                              <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon') %>
+                              <%= label_tag("visible_answer_#{a.id}", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+                            <%= link_to('<i class="icon-delete"></i>'.html_safe, delete_answer_path(answer_id: a.id),
+                                        :method => :post,
+                                        class: 'danger',
+                                        data: { toggle: 'tooltip', confirm: 'Naozaj chcete odstrániť túto odpoveď na otázku?' },
+                                        title: 'Odstrániť odpoveď') %>
+                          </td>
                         </tr>
                     <% end %>
                     </tbody>

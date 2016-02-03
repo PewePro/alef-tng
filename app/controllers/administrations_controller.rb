@@ -55,20 +55,23 @@ class AdministrationsController < ApplicationController
         lo_id: params[:edit_question_name],
         question_text: params[:edit_question_text])
 
-    redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+    redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
   end
 
   # Ulozi zmeny v odpovediach na otazky.
   def edit_answers
     lo = LearningObject.find_by_id(params[:question_id])
-    lo.answers.each do |a|
+    results = []
+    lo.answers.force_all.each do |a|
       a.update!(
-          is_correct: params["correct_answer_#{a.id}"],
+          is_correct: !!params["correct_answer_#{a.id}"],
+          visible: !!params["visible_answer_#{a.id}"],
           answer_text: params["edit_answer_text_#{a.id}"]
       )
+      results << !!params["visible_answer_#{a.id}"]
     end
 
-    redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložená."
   end
 
   def delete_answer
@@ -80,7 +83,6 @@ class AdministrationsController < ApplicationController
   def add_answer
     correct_ans = false
     correct_ans = true if params[:correct_answer]
-    puts "ANSWER_TEXT: #{params[:add_answer_text]} | LEARNING_OBJECT_ID: #{params[:question_id]} | IS_CORRECT: #{correct_ans}"
     Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct_ans)
     redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
   end

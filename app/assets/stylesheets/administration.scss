@@ -173,18 +173,36 @@
 .answers-table {
   width: 100%;
 
+  tr.hidden {
+    opacity: 0.5;
+    transition: opacity 0.5s;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+
   .answers-table-id {
     width: 30px;
     text-align: center;
   }
 
-  .answers-table-icon {
-    width: 60px;
+  .answers-table-tools {
+    width: 100px;
     text-align: center;
 
-    button {
-      display: inline;
+    label, a {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      border-radius: 50%;
+      display: inline-block;
+
+      &:hover {
+        background-color: $gray-lighter;
+      }
     }
+
   }
 
   .question-answer {
