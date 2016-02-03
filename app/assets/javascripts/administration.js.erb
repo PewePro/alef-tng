@@ -111,14 +111,16 @@ var Admin = {
             feedback.widget = false;
             list.append(template(feedback));
             feedback.widget = true;
-            listUnresolved.append(template(feedback));
-            if (feedback.accepted == null) { unresolved++; }
+            if (feedback.accepted == null) {
+              listUnresolved.append(template(feedback));
+              unresolved++;
+            }
           });
 
           if (unresolved > 0) {
             $('#answer-settings-col').addClass('col-lg-8').removeClass('col-lg-12');
             $('#answer-feedback-col').fadeIn(100);
-            $('#feedback-not-reviewed-count').html(' ('+resp.length+')');
+            $('#feedback-not-reviewed-count').html(' ('+unresolved+')');
           }
           else {
             $('#answer-feedback-col').fadeOut(100);
