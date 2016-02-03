@@ -67,6 +67,30 @@ var Admin = {
         });
     },
 
+    // Overuje, ci nebola zvolena viac ako jedna spravna odpoved.
+    verifySingleChoice: function(input) {
+
+      var checked = $('input[data-type="correctness"]:checked');
+
+      if (checked.length > 1) {
+        alert('Otázka môže mať najviac 1 správnu odpoveď. Pôvodne zvolená správna odpoveď bola odznačená.');
+        checked.not(input).prop('checked', false);
+      }
+
+    },
+
+  // Overuje, ci nie je viac ako jedna moznost viditelna.
+  verifyEvaluator: function(input) {
+
+    var checked = $('input[data-type="visibility"]:checked');
+
+    if (checked.length > 1) {
+      alert('V otázke sa môže zobrazovať iba jedna možnosť. Pôvodne viditeľná možnosť odpoveď bude skrytá.');
+      checked.not(input).prop('checked', false);
+    }
+
+  },
+
     // Sleduje input a caka na to, kym sa zmeni jeho hodnota. Akonahle sa zmeni, zobrazi sa povodna hodnota.
     checkAnwserAny: function(input, defaultValue) {
 

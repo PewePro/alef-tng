@@ -1,14 +1,33 @@
 <nav>
   <div class="admin-nav">
-    <h2><%= @question.id %> : <%= @question.lo_id %></h2>
+    <h2><i data-toggle="tooltip" data-placement="right" title="<%=
+      case @question.type
+        when "SingleChoiceQuestion"
+          'výber z jednej možnosti'
+        when "MultiChoiceQuestion"
+          'výber z viacerých možností'
+        when "EvaluatorQuestion"
+          'posúvač'
+      end %>" class="icon-<%=
+      case @question.type
+        when "SingleChoiceQuestion"
+          'radio-checked'
+        when "MultiChoiceQuestion"
+          'checkbox-checked'
+        when "EvaluatorQuestion"
+          'sliders'
+      end %>"></i><%= @question.id %> : <%= @question.lo_id %></h2>
     <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
   </div>
 </nav>
+
 <hr class="nav-offset">
 
-<div class="container">
+<div class="back-link">
+  <%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @question.course_id) %>
+</div>
 
-  <div class="back-link"><%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @question.course_id) %></div>
+<div class="container">
 
   <div class="tabs">
 
@@ -81,10 +100,10 @@
                           </td>
                           <td class="answers-table-tools">
                             <% unless a.learning_object.type == "EvaluatorQuestion" %>
-                                <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon') %>
+                                <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon', data: { type: 'correctness' }) %>
                                 <%= label_tag("correct_answer_#{a.id}", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
                             <% end %>
-                              <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon') %>
+                              <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon', data: { type: 'visibility' }) %>
                               <%= label_tag("visible_answer_#{a.id}", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
                             <%= link_to('<i class="icon-delete"></i>'.html_safe, delete_answer_path(answer_id: a.id),
                                         :method => :post,
@@ -125,9 +144,11 @@
               <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
               Možnosti odpovede:
               &nbsp;
-              <%= check_box_tag("correct_answer", 1, false, class: 'icon') %>
-              <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
-              &nbsp;&nbsp;
+              <% unless @question.type == "EvaluatorQuestion" %>
+                <%= check_box_tag("correct_answer", 1, false, class: 'icon') %>
+                <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                &nbsp;&nbsp;
+              <% end %>
               <%= check_box_tag("visible_answer", 1, true, class: 'icon') %>
               <%= label_tag("visible_answer", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
               <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
@@ -180,6 +201,10 @@
     setInterval(function(){
       Admin.fetchFeedback();
     }, 30000);
+
+    <%# Overovanie korektnosti odpovedi. %>
+    <% if @question.type == "SingleChoiceQuestion" %>$('input[data-type="correctness"]').change(function(){ Admin.verifySingleChoice($(this)); });<% end %>
+    <% if @question.type == "EvaluatorQuestion" %>$('input[data-type="visibility"]').change(function(){ Admin.verifyEvaluator($(this)); });<% end %>
 
   });
 
