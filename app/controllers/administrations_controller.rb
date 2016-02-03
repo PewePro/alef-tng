@@ -60,17 +60,25 @@ class AdministrationsController < ApplicationController
   # Ulozi zmeny v odpovediach na otazky.
   def edit_answers
     lo = LearningObject.find_by_id(params[:question_id])
-    results = []
-    lo.answers.force_all.each do |a|
-      a.update!(
-          is_correct: !!params["correct_answer_#{a.id}"],
-          visible: !!params["visible_answer_#{a.id}"],
-          answer_text: params["edit_answer_text_#{a.id}"]
-      )
-      results << !!params["visible_answer_#{a.id}"]
+
+    begin
+      ActiveRecord::Base.transaction do
+        lo.answers.force_all.each do |a|
+          a.update!(
+              is_correct: !!params["correct_answer_#{a.id}"],
+              visible: !!params["visible_answer_#{a.id}"],
+              answer_text: params["edit_answer_text_#{a.id}"]
+          )
+        end
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
     end
 
-    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložená."
+    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložené."
   end
 
   def delete_answer
@@ -80,10 +88,27 @@ class AdministrationsController < ApplicationController
   end
 
   def add_answer
-    correct = !!params[:correct_answer]
-    visible = !!params[:visible_answer]
-    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct, visible: visible)
-    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
+    lo = LearningObject.find_by_id(params[:question_id])
+
+    begin
+      ActiveRecord::Base.transaction do
+        correct = !!params[:correct_answer]
+        visible = !!params[:visible_answer]
+        Answer.create!({
+                           answer_text: params[:add_answer_text],
+                           learning_object_id: params[:question_id],
+                           is_correct: correct,
+                           visible: visible
+                       })
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
+    end
+
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
   end
 
   def download_statistics

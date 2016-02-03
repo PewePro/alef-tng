@@ -7,7 +7,7 @@
         when "MultiChoiceQuestion"
           'výber z viacerých možností'
         when "EvaluatorQuestion"
-          'posúvač'
+          'evaluator'
       end %>" class="icon-<%=
       case @question.type
         when "SingleChoiceQuestion"
@@ -140,18 +140,19 @@
         <%= form_tag "#{url_for(add_answer_path(question_id: @question.id))}#answer-settings", :method => 'post' do %>
           <div class="admin">
               <h3>Pridanie novej odpovede</h3> <br/>
-              <%= label_tag "Zadaj nový text odpovede:" %>
-              <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
-              Možnosti odpovede:
-              &nbsp;
+              <%= label_tag :add_answer_text, "Zadaj nový text odpovede:" %>
+              <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede", class: 'simple-text' %>
+              <span class="options-label">Možnosti:</span>
               <% unless @question.type == "EvaluatorQuestion" %>
-                <%= check_box_tag("correct_answer", 1, false, class: 'icon') %>
+                <%= check_box_tag("correct_answer", 1, @question.allow_new_correctness?, class: 'icon') %>
                 <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
                 &nbsp;&nbsp;
               <% end %>
-              <%= check_box_tag("visible_answer", 1, true, class: 'icon') %>
+              <%= check_box_tag("visible_answer", 1, @question.allow_new_visibility?, class: 'icon') %>
               <%= label_tag("visible_answer", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
-              <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
+              <div class="form-buttons">
+                <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
+              </div>
           </div>
         <% end %>
 

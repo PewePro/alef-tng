@@ -22,6 +22,22 @@
     border: none;
   }
 
+  input.simple-text {
+    width: 350px;
+    display: inline-block;
+    margin: 0.5rem 10px 0.5rem 0;
+  }
+
+  .form-buttons {
+    margin-top: 5px;
+  }
+
+  .options-label {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: $gray-darker;
+  }
+
   &.wide {
     max-width: none;
     box-sizing: border-box;

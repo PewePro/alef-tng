@@ -5,6 +5,8 @@ class LearningObject < ActiveRecord::Base
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
 
+  include Exceptions
+
   DIFFICULTY = {
     TRIVIAL: :trivial,       # I'm too young to die
     EASY: :easy,             # Hey, not too rough
@@ -38,6 +40,51 @@ class LearningObject < ActiveRecord::Base
 
   def link_concept(concept)
     self.concepts << concept unless self.concepts.include?(concept)
+  end
+
+  # Overi, ci nova odpoved moze byt oznacena ako spravna.
+  def allow_new_correctness?
+    if type == "SingleChoiceQuestion"
+      answers.each do |answer|
+        return false if answer.is_correct
+      end
+    end
+    true
+  end
+
+  # Overi, ci nova odpoved moze byt oznacena ako viditelna.
+  def allow_new_visibility?
+    if type == "EvaluatorQuestion"
+      answers.each do |answer|
+        return false if answer.visible
+      end
+    end
+    true
+  end
+
+  # Overi, ci su korektne nastavenie informacie o odpovediach.
+  def validate_answers!
+
+    case type
+      when "SingleChoiceQuestion"
+
+        correct_answers = 0
+        answers.each do |answer|
+          correct_answers += 1 if answer.is_correct
+          raise AnswersCorrectnessError if correct_answers > 1
+        end
+
+      when "EvaluatorQuestion"
+
+        visible_answers = 0
+        answers.each do |answer|
+          visible_answers += 1 if answer.visible
+          raise AnswersVisibilityError if visible_answers > 1
+        end
+
+      else
+    end
+
   end
 
 end
