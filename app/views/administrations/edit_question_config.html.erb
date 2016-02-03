@@ -121,8 +121,14 @@
               <h3>Pridanie novej odpovede</h3> <br/>
               <%= label_tag "Zadaj nový text odpovede:" %>
               <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede" %>
-              <table class="edit_question_table"><tr> <th>Správna odpoveď:</th> <td><%= check_box_tag :correct_answer %></td> </tr></table>
-              <%= submit_tag "Pridaj" %>
+              Možnosti odpovede:
+              &nbsp;
+              <%= check_box_tag("correct_answer", 1, false, class: 'icon') %>
+              <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+              &nbsp;&nbsp;
+              <%= check_box_tag("visible_answer", 1, true, class: 'icon') %>
+              <%= label_tag("visible_answer", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+              <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
           </div>
         <% end %>
 

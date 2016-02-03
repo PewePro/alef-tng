@@ -49,11 +49,10 @@ class AdministrationsController < ApplicationController
   end
 
   def edit_question
-    #lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
-    #lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
     LearningObject.find_by_id(params[:question_id]).update!(
         lo_id: params[:edit_question_name],
-        question_text: params[:edit_question_text])
+        question_text: params[:edit_question_text]
+    )
 
     redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
   end
@@ -81,9 +80,9 @@ class AdministrationsController < ApplicationController
   end
 
   def add_answer
-    correct_ans = false
-    correct_ans = true if params[:correct_answer]
-    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct_ans)
+    correct = !!params[:correct_answer]
+    visible = !!params[:visible_answer]
+    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct, visible: visible)
     redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
   end
 
