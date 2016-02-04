@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203133109) do
+ActiveRecord::Schema.define(version: 20160204004009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20160203133109) do
     t.boolean  "accepted"
     t.boolean  "visible",            default: true, null: false
   end
+
+  add_index "feedbacks", ["learning_object_id", "accepted"], name: "index_feedbacks_on_learning_object_id_and_accepted", using: :btree
 
   create_table "learning_objects", force: :cascade do |t|
     t.string   "lo_id"
