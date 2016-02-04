@@ -60,18 +60,25 @@ hr {
     margin: 0;
     line-height: normal;
 
+    &:first-child {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
     &:last-child {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
       border-bottom: none;
     }
 
     .meta {
       font-size: 0.8em;
       color: $gray;
-      margin-top: 2.5px;
+      margin-top: 5px;
     }
 
     .tools {
-      margin-top: 5px;
+      margin-top: 10px;
       font-size: 0.9em;
       color: $gray;
 
@@ -103,6 +110,12 @@ hr {
         }
       }
     }
+  }
+}
+
+.simple-list {
+  .list-item-highlighted {
+    background-color: #fafafa;
   }
 }
 

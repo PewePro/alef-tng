@@ -233,7 +233,7 @@
 
 <%# Sablona pre polozku feedback widgetu (doT.js). %>
 <div id="feedback-widget-template" style="display: none">
-  <li class="list-item" data-feedback-id="{{=it.id}}">
+  <li class="list-item{{?it.accepted == null}} list-item-highlighted{{?}}" data-feedback-id="{{=it.id}}">
     <div class="content">{{=it.message}}</div>
     <div class="tools">
       {{?it.widget}}
