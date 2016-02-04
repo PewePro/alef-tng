@@ -6,38 +6,52 @@
 </nav>
 <hr class="nav-offset">
 
-<div class="admin">
-  <table id="question-concept-table">
-    <% @questions.each do |q| %>
-        <tr>
-          <td style="width: 100%;">
-            <div class="question-concept-table-cell">
-              <i class="icon-<%=
-                  case q.type
-                    when "SingleChoiceQuestion"
-                      'radio-checked'
-                    when "MultiChoiceQuestion"
-                      'checkbox-checked'
-                    when "EvaluatorQuestion"
-                      'sliders'
-                  end %>"></i>
-              <strong><%= q.lo_id %></strong>
-              <%= q.question_text %>
-              <span class="question-concept-table-answers">
-                  <% q.answers.each do |a|
-                    if a.is_correct %>
-                        <strong>"<%= a.answer_text %>",</strong>
-                    <% else %>
-                        "<%= a.answer_text %>",
-                    <% end %>
-                  <% end %>
-                </span>
-            </div>
-          </td>
-          <td>
-            <%= link_to( (button_tag '<i class="icon-edit"></i>'.html_safe, type: 'button' ), url_for(edit_question_config_path(:question_id => q.id)) ) %>
-          </td>
-        </tr>
-    <% end %>
-  </table>
+<% if @feedbacks[:count] > 0 %>
+<div id="feedback-alert" class="admin">
+  <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= @feedbacks[:count] %> nových komentárov k otázkam.
+  <%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);' %>
+</div>
+<% end %>
+
+<div id="questions-list" class="admin">
+  <% @questions.each do |q| %>
+  <div class="question row<%= ' without-feedback' unless @feedbacks[:aggs].has_key?(q.id) && @feedbacks[:aggs][q.id] > 0 %>">
+    <div class="question-tools">
+      <% if @feedbacks[:aggs].has_key?(q.id) && @feedbacks[:aggs][q.id] > 0 %>
+          <%= link_to(@feedbacks[:aggs][q.id], "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+          class: :highlighted, title: 'Nové komentáre', data: { toggle: :tooltip }) %>
+      <% else %>
+          <%= link_to('0', "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+                      title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
+      <% end %>
+      <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_question_config_path(:question_id => q.id)) %>
+    </div>
+    <div class="question-icon"><i data-toggle="tooltip" title="<%=
+      case q.type
+        when "SingleChoiceQuestion"
+          'výber z jednej možnosti'
+        when "MultiChoiceQuestion"
+          'výber z viacerých možností'
+        when "EvaluatorQuestion"
+          'evaluator'
+      end %>" class="icon-<%=
+      case q.type
+        when "SingleChoiceQuestion"
+          'radio-checked'
+        when "MultiChoiceQuestion"
+          'checkbox-checked'
+        when "EvaluatorQuestion"
+          'sliders'
+      end %>"></i></div>
+    <div class="question-headline">
+      <div class="title"><%= link_to(q.lo_id, edit_question_config_path(:question_id => q.id)) %></div>
+      <div class="text"><%= q.question_text %></div>
+      <div class="answers">
+        <% q.answers.each_with_index do |a, i| %>
+          <% if a.is_correct %><span class="correct"><%= a.answer_text %></span><% else %><%= a.answer_text %><% end %><%= ', ' unless q.answers.size == (i+1) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
 </div>

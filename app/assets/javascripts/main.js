@@ -35,6 +35,9 @@ var ready = (function () {
     if ($('#body-administrations-question_concept_config').length) {
         Admin.setupQuestionConceptConfig()
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
+
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani

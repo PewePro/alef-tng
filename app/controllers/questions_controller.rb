@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
       gon.solution = solution
     end
 
-    @feedbacks = @question.feedbacks.includes(:user)
+    @feedbacks = @question.feedbacks.visible.includes(:user)
   end
 
   def evaluate

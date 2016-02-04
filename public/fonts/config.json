@@ -13,6 +13,12 @@
       "src": "fontawesome"
     },
     {
+      "uid": "474656633f79ea2f1dad59ff63f6bf07",
+      "css": "star",
+      "code": 59415,
+      "src": "fontawesome"
+    },
+    {
       "uid": "8b80d36d4ef43889db10bc1f0dc9a862",
       "css": "user",
       "code": 59404,
@@ -25,9 +31,27 @@
       "src": "fontawesome"
     },
     {
+      "uid": "43ab845088317bd348dee1d975700c48",
+      "css": "ok-circled",
+      "code": 59414,
+      "src": "fontawesome"
+    },
+    {
       "uid": "1400d5103edd2fa6d2d61688fee79a5a",
       "css": "checkbox-checked",
       "code": 59401,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0f4cae16f34ae243a6144c18a003f2d8",
+      "css": "cancel-circled",
+      "code": 59413,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "2e2dba0307a502a8507c1729084c7ab5",
+      "css": "cancel-circled2",
+      "code": 59416,
       "src": "fontawesome"
     },
     {
@@ -46,6 +70,12 @@
       "uid": "c5fd349cbd3d23e4ade333789c29c729",
       "css": "seen",
       "code": 59395,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "7fd683b2c518ceb9e5fa6757f2276faa",
+      "css": "eye-off",
+      "code": 59412,
       "src": "fontawesome"
     },
     {

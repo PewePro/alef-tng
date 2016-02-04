@@ -41,7 +41,14 @@ class AdministrationsController < ApplicationController
 
   def question_config
     @course = Course.find(params[:course_id])
-    @questions = @course.learning_objects
+    @questions = @course.learning_objects.eager_load(:answers)
+
+    feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
+    feedback_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
+    @feedbacks = {
+        aggs: feedback_aggs,
+        count: feedback_new_count
+    }
   end
 
   def edit_question_config
@@ -49,17 +56,36 @@ class AdministrationsController < ApplicationController
   end
 
   def edit_question
+    LearningObject.find_by_id(params[:question_id]).update!(
+        lo_id: params[:edit_question_name],
+        question_text: params[:edit_question_text]
+    )
+
+    redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
+  end
+
+  # Ulozi zmeny v odpovediach na otazky.
+  def edit_answers
     lo = LearningObject.find_by_id(params[:question_id])
-    lo.update(:lo_id => params[:edit_question_name]) if params[:edit_question_name] != ""
-    lo.update(:question_text => params[:edit_question_text]) if params[:edit_question_text] != ""
-    lo.answers.each do |a|
-      is_correct = false
-      is_correct = true if params["correct_answer_#{a.id}"]
-      a.update(:is_correct => is_correct)
-      a.update(:answer_text => params["edit_answer_text_#{a.id}"]) if params["edit_answer_text_#{a.id}"] != ""
+
+    begin
+      ActiveRecord::Base.transaction do
+        lo.answers.force_all.each do |a|
+          a.update!(
+              is_correct: !!params["correct_answer_#{a.id}"],
+              visible: !!params["visible_answer_#{a.id}"],
+              answer_text: params["edit_answer_text_#{a.id}"]
+          )
+        end
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
     end
 
-    redirect_to edit_question_config_path, :notice => "Otázka bola upravená"
+    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložené."
   end
 
   def delete_answer
@@ -69,11 +95,27 @@ class AdministrationsController < ApplicationController
   end
 
   def add_answer
-    correct_ans = false
-    correct_ans = true if params[:correct_answer]
-    puts "ANSWER_TEXT: #{params[:add_answer_text]} | LEARNING_OBJECT_ID: #{params[:question_id]} | IS_CORRECT: #{correct_ans}"
-    Answer.create!(answer_text: params[:add_answer_text], learning_object_id: params[:question_id], is_correct: correct_ans)
-    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná"
+    lo = LearningObject.find_by_id(params[:question_id])
+
+    begin
+      ActiveRecord::Base.transaction do
+        correct = !!params[:correct_answer]
+        visible = !!params[:visible_answer]
+        Answer.create!({
+                           answer_text: params[:add_answer_text],
+                           learning_object_id: params[:question_id],
+                           is_correct: correct,
+                           visible: visible
+                       })
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
+    end
+
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
   end
 
   def download_statistics
@@ -91,6 +133,48 @@ class AdministrationsController < ApplicationController
   def delete_question_concept
     question = LearningObject.find(params[:question_id])
     Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
+  # Pouziva sa pre vzdialene nacitanie spatnej vazby.
+  def question_feedbacks
+    @question = LearningObject.find_by_id(params[:id])
+
+    list = @question.feedbacks.includes(:user).order(accepted: :desc).order(created_at: :asc).map do |feedback|
+      {
+          id: feedback.id,
+          accepted: feedback.accepted,
+          message: feedback.message,
+          fullname: "#{feedback.user.first_name} #{feedback.user.last_name}",
+          time: feedback.created_at.strftime("%d.%m.%Y %H:%M:%S"),
+          visible: feedback.visible
+      }
+    end
+
+    render json: list
+  end
+
+  # Oznaci spatnu vazbu za schvalenu.
+  def mark_feedback_accepted
+    Feedback.find(params[:id]).update(accepted: true)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Oznaci spatnu vazbu za zamietnutu.
+  def mark_feedback_rejected
+    Feedback.find(params[:id]).update(accepted: false)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Zobrazi spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_visible
+    Feedback.find(params[:id]).update(visible: true)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Skryje spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_hidden
+    Feedback.find(params[:id]).update(visible: false)
+    render js: "Admin.fetchFeedback();"
   end
 
   def add_question_concept

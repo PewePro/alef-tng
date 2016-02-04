@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         message: params[:message],
         user_id: current_user.id,
         user_agent: request.env['HTTP_USER_AGENT'],
-        accept: request.env['HTTP_USER_ACCEPT'],
+        accept: request.env['HTTP_ACCEPT'],
         url: request.env['HTTP_REFERER']
     )
 
