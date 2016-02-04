@@ -80,7 +80,7 @@ class AdministrationsController < ApplicationController
         lo.validate_answers!
       end
     rescue AnswersCorrectnessError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako správnu odpoveď.")
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
     rescue AnswersVisibilityError
       return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
     end
@@ -110,7 +110,7 @@ class AdministrationsController < ApplicationController
         lo.validate_answers!
       end
     rescue AnswersCorrectnessError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako správnu odpoveď.")
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
     rescue AnswersVisibilityError
       return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
     end

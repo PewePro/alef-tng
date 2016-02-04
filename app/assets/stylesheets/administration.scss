@@ -116,11 +116,9 @@
   tr:nth-child(2n) {background-color: $porcelain;}
 
   .question-concept-table-cell {
-    //height: 4.2rem;
-    min-height: 4.2rem;
+    height: 4.2rem;
     overflow: hidden;
-    padding: 0.9rem 0.5rem;
-    line-height: 120%;
+    padding: 0.5rem 0.5rem;
 
     &.show {
       height: auto;
