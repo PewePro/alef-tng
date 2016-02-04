@@ -156,4 +156,17 @@ var Admin = {
 
     },
 
+    questionsToggleWithFeedback: function(link) {
+
+      if ($(link).attr('data-status') == "with-feedback") {
+        $('#questions-list').find('.without-feedback').show();
+        $(link).html('Zobraziť iba otázky s novými komentármi &raquo;').attr('data-status', 'all');
+      }
+      else {
+        $('#questions-list').find('.without-feedback').hide();
+        $(link).html('Zobraziť všetky otázky &raquo;').attr('data-status', 'with-feedback');
+      }
+
+    }
+
 };

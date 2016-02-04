@@ -199,7 +199,7 @@
 
     Admin.currentLoId = <%= @question.id %>;
     Admin.fetchFeedback();
-    setInterval(function(){
+    turbolinksSetInterval(function(){
       Admin.fetchFeedback();
     }, 30000);
 
@@ -237,9 +237,9 @@
     <div class="content">{{=it.message}}</div>
     <div class="tools">
       {{?it.widget}}
-        <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        <%= link_to "Vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
         &nbsp;&bull;&nbsp;
-        <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        <%= link_to "Neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
         &nbsp;&bull;&nbsp;
         {{?it.visible}}
         <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
@@ -254,9 +254,9 @@
         {{?it.accepted == null}}
         <span class="status"><i class="icon-star"></i> Nový</span>
         {{?? it.accepted == true}}
-        <span class="status status-success"><i class="icon-checkbox-checked"></i> Akceptovaný</span>
+        <span class="status status-success"><i class="icon-checkbox-checked"></i> Vyriešený</span>
         {{??}}
-        <span class="status status-danger"><i class="icon-cancel-circled"></i> Zamietnutý</span>
+        <span class="status status-danger"><i class="icon-cancel-circled"></i> Neriešený</span>
         {{?}}
         {{?it.visible == true}}
         <span class="status status-success"><i class="icon-seen"></i> Viditeľný</span>
@@ -265,11 +265,11 @@
         {{?}}
         {{?it.accepted != true}}
         &nbsp;&bull;&nbsp;
-        <%= link_to "Akceptovať", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        <%= link_to "Označiť ako vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
         {{?}}
         {{?it.accepted != false}}
         &nbsp;&bull;&nbsp;
-        <%= link_to "Zamietnuť", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+        <%= link_to "Označiť ako neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
         {{?}}
         &nbsp;&bull;&nbsp;
         {{?it.visible == true}}

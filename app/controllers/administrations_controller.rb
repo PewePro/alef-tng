@@ -42,6 +42,13 @@ class AdministrationsController < ApplicationController
   def question_config
     @course = Course.find(params[:course_id])
     @questions = @course.learning_objects.eager_load(:answers)
+
+    feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
+    feedback_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
+    @feedbacks = {
+        aggs: feedback_aggs,
+        count: feedback_new_count
+    }
   end
 
   def edit_question_config
@@ -132,7 +139,7 @@ class AdministrationsController < ApplicationController
   def question_feedbacks
     @question = LearningObject.find_by_id(params[:id])
 
-    list = @question.feedbacks.includes(:user).order(id: :asc).map do |feedback|
+    list = @question.feedbacks.includes(:user).order(accepted: :desc).order(created_at: :asc).map do |feedback|
       {
           id: feedback.id,
           accepted: feedback.accepted,
