@@ -86,6 +86,11 @@ group :development, :test do
   gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-passenger'
 
-  gem 'factory_girl_rails'
+  # Fixtures replacement with a straightforward definition syntax.
+  gem 'factory_girl_rails', '~> 4.6'
+
+  # Rspec
+  gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
+
 end
 
