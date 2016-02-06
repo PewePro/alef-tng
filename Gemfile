@@ -86,11 +86,17 @@ group :development, :test do
   gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-passenger'
 
+  # Capybara helps you test web applications by simulating how a real user would interact with your app.
+  gem 'capybara', '2.6.2'
+
   # Fixtures replacement with a straightforward definition syntax.
   gem 'factory_girl_rails', '~> 4.6'
 
   # Rspec
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
+
+  # WebDriver is a tool for writing automated tests of websites
+  gem 'selenium-webdriver', '2.51.0'
 
 end
 
