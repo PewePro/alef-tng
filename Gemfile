@@ -73,9 +73,6 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
@@ -89,14 +86,24 @@ group :development, :test do
   # Capybara helps you test web applications by simulating how a real user would interact with your app.
   gem 'capybara', '2.6.2'
 
+  # Strategies for cleaning databases.
+  gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
+
   # Fixtures replacement with a straightforward definition syntax.
-  gem 'factory_girl_rails', '~> 4.6'
+  gem 'factory_girl_rails', '~> 4.0'
 
   # Rspec
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
 
   # WebDriver is a tool for writing automated tests of websites
   gem 'selenium-webdriver', '2.51.0'
+
+end
+
+group :development do
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
 
 end
 

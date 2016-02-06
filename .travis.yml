@@ -1,0 +1,17 @@
+language: ruby
+rvm:
+- 2.2.0
+cache: bundler
+addons:
+  postgresql: '9.4'
+branches:
+  only:
+  - master
+before_script:
+- psql -c 'create database travis_ci_test;' -U postgres
+- cp config/database.yml.travis config/database.yml
+- bundle exec rake db:schema:load
+notifications:
+  email: false
+  slack:
+    secure: l8AKzrDLkTkor6s3F1kMKKMG0VLHGp1uMQTOiyMHCW1d1IPDoZZO50MlXuhgaM9wEu4doVIooD5obgrbOXyWvITtAogw7NdymJJf7kUApDEmaRrfRLGLT0CKKEHgLid3ave4Uc1lCm9pzcqo45aTGwDhSrTbYqqxF9j3EM8vqrc=

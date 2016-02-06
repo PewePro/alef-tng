@@ -85,6 +85,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.0)
+    database_cleaner (1.5.1)
     debug_inspector (0.0.2)
     devise (3.5.6)
       bcrypt (~> 3.0)
@@ -271,10 +272,11 @@ DEPENDENCIES
   capistrano-rbenv
   capybara (= 2.6.2)
   coffee-rails (~> 4.1.0)
+  database_cleaner (~> 1.5, >= 1.5.1)
   devise
   devise_ldap_authenticatable
   execjs
-  factory_girl_rails (~> 4.6)
+  factory_girl_rails (~> 4.0)
   gon
   jbuilder (~> 2.0)
   jquery-rails
