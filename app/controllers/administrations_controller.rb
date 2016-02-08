@@ -119,11 +119,6 @@ class AdministrationsController < ApplicationController
     redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
   end
 
-  # Zobrazi nahlad otazky v administracii.
-  def question_preview
-
-  end
-
   def download_statistics
     @setup = Setup.find(params[:_setup_id])
     filepath_full = @setup.compute_stats()
