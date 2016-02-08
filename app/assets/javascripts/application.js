@@ -26,3 +26,7 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require_tree .
+
+
+// Nastavenia pre nprogress.
+NProgress.configure({ showSpinner: false });

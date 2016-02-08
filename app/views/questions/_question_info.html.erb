@@ -3,7 +3,7 @@
   <% if @relations["UserSolvedLoRelation"] != nil %>
       <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)
   <% end %>
-  <% if @user.role == "teacher" %>
+  <% if @user.administrator? %>
       <%= link_to( '<i class="icon-edit"></i> Upraviť'.html_safe , url_for(edit_question_config_path(:question_id => @question.id)) ) %>
   <% end %>
 </div>

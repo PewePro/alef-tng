@@ -17,15 +17,11 @@
         when "EvaluatorQuestion"
           'sliders'
       end %>"></i><%= @question.id %> : <%= @question.lo_id %></h2>
-    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+    <%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @question.course_id), class: 'admin-nav-button' %>
   </div>
 </nav>
 
 <hr class="nav-offset">
-
-<div class="back-link">
-  <%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @question.course_id) %>
-</div>
 
 <div class="container">
 
@@ -35,6 +31,7 @@
       <li class="active"><a href="#" data-target="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
       <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
       <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
+      <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
     </ul>
 
     <div id="editor-tabs-content" class="tab-content is-first">
@@ -177,6 +174,12 @@
 
       </div>
 
+      <div role="tabpanel" class="tab-pane" id="question-preview">
+
+        <%= render 'questions/question_core', hide_question_options: true %>
+
+      </div>
+
     </div>
 
   </div>
@@ -185,6 +188,8 @@
 
 <script type="text/javascript">
   $(function(){
+
+    Slider.setupEvaluatorSlider();
 
     var tabs = $('#editor-tabs').find('a');
     tabs.click(function (e) {

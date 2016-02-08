@@ -36,6 +36,10 @@ var ready = (function () {
         Admin.setupQuestionConceptConfig()
     }
 
+    if ($('.admin-nav').length) {
+        Admin.checkNavOffset();
+    }
+
     $('[data-toggle="tooltip"]').tooltip();
 
 });

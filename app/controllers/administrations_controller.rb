@@ -53,6 +53,7 @@ class AdministrationsController < ApplicationController
 
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
+    @answers = @question.answers
   end
 
   def edit_question
@@ -116,6 +117,11 @@ class AdministrationsController < ApplicationController
     end
 
     redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
+  end
+
+  # Zobrazi nahlad otazky v administracii.
+  def question_preview
+
   end
 
   def download_statistics

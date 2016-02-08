@@ -8,27 +8,7 @@
 </div>
 <div class="mobile-content main">
   <%= render 'question_info' %>
-<div class="question-text">
-    <%= @question.question_text %>
-
-    <% unless @question.image.nil? %>
-        <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => @question.id), class: 'question-image', alt: @question.lo_id+' Obrázok' %>
-    <% end %>
-</div>
-  <form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
-      <input type="hidden" name="type" value="<%= @question.type %>">
-      <div id="question-options">
-        <% case @question.type
-           when 'SingleChoiceQuestion' %>
-            <%= render 'single_choice_options' %>
-        <% when 'MultiChoiceQuestion' %>
-            <%= render 'multi_choice_options' %>
-        <% when 'EvaluatorQuestion' %>
-            <%= render 'evaluator_slider' %>
-        <% end %>
-      </div>
-    <%= render 'question_options' %>
-  </form>
+  <%= render 'question_core' %>
       <div id="question-feedback">
       <h3>Komentáre</h3>
       <% unless @feedbacks.empty? %>

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/:week_number/:id' => 'questions#show'
-  get 'w/:week_number/:id/image' => 'questions#show_image'
+  get 'q/:id/image' => 'questions#show_image'
 
   # Loguje cas straveny na otazke
   post 'log_time' => 'questions#log_time'
