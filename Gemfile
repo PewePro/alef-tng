@@ -63,6 +63,9 @@ gem 'gon'
 # performance monitoring with newrelic
 gem 'newrelic_rpm'
 
+# Progress bar (for turbolinks).
+gem 'nprogress-rails', '~> 0.1.6.7'
+
 # Localization
 gem 'rails-i18n'
 

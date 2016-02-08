@@ -23,4 +23,6 @@
 //= require detect-zoom
 //= require ifvisible
 //= require time-me
+//= require nprogress
+//= require nprogress-turbolinks
 //= require_tree .
