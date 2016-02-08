@@ -88,22 +88,6 @@
   }
 }
 
-.back-link {
-  max-width: 960px;
-  margin: 0 auto;
-  font-size: 0.9em;
-  text-align: right;
-
-  a {
-    padding: 5px 10px;
-    display: inline-block;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
 #week-concept-table {
   td:not(:first-child) {text-align: center;}
   td:first-child {text-align: right; padding: 0 1rem;}
@@ -281,6 +265,11 @@
   display: none;
 }
 
+// Nahlad otazky.
+#question-preview {
+  padding: 20px;
+}
+
 // Zoznam otazok v editacii otazok.
 #feedback-alert {
   @include red-light-white;
@@ -299,6 +288,22 @@
     font-size: 0.8em;
     margin-left: 40px;
   }
+}
+
+// Tlacidla na pracu so spatnou vazbou.
+#feedback-refresh-button {
+
+  &.empty {
+    float: right;
+  }
+
+  &:not(.empty) {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+  }
+
 }
 
 #questions-list {

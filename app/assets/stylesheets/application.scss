@@ -44,3 +44,8 @@
 @import "questions/questions_answers";
 @import "questions/evaluator";
 @import "administration";
+
+// nprogress
+$nprogress-color: $gray-light;
+@import 'nprogress';
+@import 'nprogress-bootstrap';

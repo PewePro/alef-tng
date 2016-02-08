@@ -1,4 +1,25 @@
 var Admin = {
+
+
+
+  // Zabezpeci, aby navigacny panel neprekryval obsah.
+  checkNavOffset: function() {
+
+    // Maximalna tolerovatelna miera prekrytia obsahu.
+    var contentTreshold = 5;
+
+    var offset = $('.nav-offset');
+    var navHeight = $('nav').outerHeight();
+    var offsetHeight = parseInt(offset.height());
+    var contentMargin = parseInt(offset.after().css('margin-top'));
+
+    if (navHeight - offsetHeight > contentTreshold) {
+      offset.height(navHeight);
+    }
+
+  },
+
+
     setupWeekConceptTable : function() {
         $('#week-concept-table td').click(function() {
             var i = $(this).find('input[type=checkbox]');
@@ -115,17 +136,22 @@ var Admin = {
         var list = $('#feedbacks-list');
         var listEmpty = $('#feedbacks-empty');
         var listUnresolved = $('#feedback-widget').find('.mini-list');
+        var refreshButton = $('#feedback-refresh-button');
         var unresolved = 0;
+
+        refreshButton.prop('disabled', true);
 
         $.getJSON(url, {}, function(resp) {
 
           if (resp.length == 0) {
             list.hide();
             listEmpty.show();
+            refreshButton.addClass('empty');
           }
           else {
             list.show();
             listEmpty.hide();
+            refreshButton.removeClass('empty');
           }
 
           list.html('');
@@ -152,6 +178,8 @@ var Admin = {
             $('#feedback-not-reviewed-count').html('');
           }
 
+        }).always(function(){
+          refreshButton.prop('disabled', false);
         });
 
     },

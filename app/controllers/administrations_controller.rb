@@ -53,6 +53,7 @@ class AdministrationsController < ApplicationController
 
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
+    @answers = @question.answers
   end
 
   def edit_question
