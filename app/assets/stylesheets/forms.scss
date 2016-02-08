@@ -31,3 +31,15 @@ input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"
   background-color: $gray-lighter !important;;
   color: $gray-light !important;
 }
+
+/* Obycajne tlacidla */
+.btn {
+  background-color: $gray-lighter;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $gray-light;
+  }
+}

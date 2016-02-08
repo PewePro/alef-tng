@@ -1,9 +1,13 @@
 <div id="question-info">
-  <i class="icon-seen"></i> Videné (<%= @relations["UserVisitedLoRelation"] %>x)
-  <% if @relations["UserSolvedLoRelation"] != nil %>
-      <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)
-  <% end %>
   <% if @user.administrator? %>
-      <%= link_to( '<i class="icon-edit"></i> Upraviť'.html_safe , url_for(edit_question_config_path(:question_id => @question.id)) ) %>
+      <%= link_to('<i class="icon-edit"></i> Upraviť'.html_safe,
+                  edit_question_config_path(:question_id => @question.id),
+                  class: 'btn pull-right') %>
   <% end %>
+  <div class="texts">
+    <i class="icon-seen"></i> Videné (<%= @relations["UserVisitedLoRelation"] %>x)
+    <% if @relations["UserSolvedLoRelation"] != nil %>
+        <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)
+    <% end %>
+  </div>
 </div>

@@ -290,6 +290,22 @@
   }
 }
 
+// Tlacidla na pracu so spatnou vazbou.
+#feedback-refresh-button {
+
+  &.empty {
+    float: right;
+  }
+
+  &:not(.empty) {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+  }
+
+}
+
 #questions-list {
   max-width: 990px;
   border-radius: 6px;

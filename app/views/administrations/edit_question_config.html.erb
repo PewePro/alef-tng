@@ -159,10 +159,8 @@
 
         <div class="admin">
 
-          <div class="row">
-            <div class="pull-right">
-              <a href="#" onclick="Admin.fetchFeedback();return false;">Obnoviť</a>
-            </div>
+          <div id="feedback-refresh-button" class="empty">
+            <a class="btn" href="#" onclick="Admin.fetchFeedback();return false;">Obnoviť</a>
           </div>
 
           <ul class="simple-list" id="feedbacks-list" style="display: none;">

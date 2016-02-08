@@ -136,17 +136,22 @@ var Admin = {
         var list = $('#feedbacks-list');
         var listEmpty = $('#feedbacks-empty');
         var listUnresolved = $('#feedback-widget').find('.mini-list');
+        var refreshButton = $('#feedback-refresh-button');
         var unresolved = 0;
+
+        refreshButton.prop('disabled', true);
 
         $.getJSON(url, {}, function(resp) {
 
           if (resp.length == 0) {
             list.hide();
             listEmpty.show();
+            refreshButton.addClass('empty');
           }
           else {
             list.show();
             listEmpty.hide();
+            refreshButton.removeClass('empty');
           }
 
           list.html('');
@@ -173,6 +178,8 @@ var Admin = {
             $('#feedback-not-reviewed-count').html('');
           }
 
+        }).always(function(){
+          refreshButton.prop('disabled', false);
         });
 
     },
