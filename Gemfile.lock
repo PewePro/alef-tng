@@ -128,9 +128,6 @@ GEM
     nprogress-rails (0.1.6.7)
     orm_adapter (0.5.0)
     pandoc-ruby (1.0.0)
-    passenger (5.0.23)
-      rack
-      rake (>= 0.8.1)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -244,7 +241,6 @@ DEPENDENCIES
   nokogiri
   nprogress-rails (~> 0.1.6.7)
   pandoc-ruby (~> 1.0.0)
-  passenger
   pg
   rails (= 4.2.4)
   rails-i18n

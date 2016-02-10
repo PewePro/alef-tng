@@ -62,6 +62,8 @@ gem 'whenever', :require => false
 # Error tracking
 gem 'rollbar', '~> 2.7.1'
 
+gem 'passenger'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
@@ -81,7 +83,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'passenger'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
   gem 'byebug'
