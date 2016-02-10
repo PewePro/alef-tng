@@ -2,6 +2,9 @@
 
 ALEF: TNG is a learning system.
 
+## TNG?
+This is _T_he _N_ext _G_eneration of original ALEF.
+
 ## Requirements
 
 * Ruby 2.2

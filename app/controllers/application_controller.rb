@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :auth_user!
+  before_action :auth_user!, except: [:ping]
 
 
   def auth_user!
