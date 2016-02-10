@@ -63,3 +63,16 @@
   font-variant: small-caps;
 }
 
+// @source https://github.com/twbs/bootstrap/blob/master/less/mixins/clearfix.less
+@mixin clearfix {
+
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+
+}

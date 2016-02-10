@@ -1,9 +1,13 @@
 .admin {
-  width: 100%;
   max-width: 960px;
   @include white-dark;
   margin: 2rem auto;
   padding: 1rem;
+
+  @media screen and (max-width: 480px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   h3 {
     border-bottom: 1px solid $gray;
@@ -16,6 +20,22 @@
   input[type="submit"] {
     @include red-white;
     border: none;
+  }
+
+  input.simple-text {
+    width: 350px;
+    display: inline-block;
+    margin: 0.5rem 10px 0.5rem 0;
+  }
+
+  .form-buttons {
+    margin-top: 5px;
+  }
+
+  .options-label {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: $gray-darker;
   }
 
   &.wide {
@@ -55,12 +75,17 @@
   @include center-block;
 }
 
-.admin input, .admin select {
+.admin input, .admin select, .admin textarea {
   @include medium-font;
   @include border-radius(0.25rem);
   margin: 1rem 0;
   border: 1px solid $gray;
   padding: 0.5rem 1rem;
+  transition: border 0.25s;
+
+  &:focus, &:active {
+    border-color: $gray-dark;
+  }
 }
 
 #week-concept-table {
@@ -73,9 +98,9 @@
 
 #question-concept-table {
   tr:nth-child(2n) {background-color: $porcelain;}
+
   .question-concept-table-cell {
     height: 4.2rem;
-    min-height: 4.2rem;
     overflow: hidden;
     padding: 0.5rem 0.5rem;
 
@@ -86,6 +111,12 @@
 
   button:hover {
     color: $red;
+  }
+
+  .question-title {
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.5rem;
   }
 }
 
@@ -141,4 +172,236 @@
 
 .concept-add {
   display: inline-block;
+}
+
+.admin {
+  button.btn, input.btn {
+    display: inline-block;
+  }
+
+  button.btn {
+    font-size: 0.875rem;
+  }
+}
+
+.answers-table {
+  width: 100%;
+
+  tr.hidden {
+    opacity: 0.5;
+    transition: opacity 0.5s;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+
+  .answers-table-id {
+    width: 30px;
+    text-align: center;
+  }
+
+  .answers-table-tools {
+    width: 100px;
+    text-align: center;
+
+    label, a {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      border-radius: 50%;
+      display: inline-block;
+
+      &:hover {
+        background-color: $gray-lighter;
+      }
+    }
+
+  }
+
+  .question-answer {
+    width: 90%;
+  }
+
+  .question-answer-area {
+    width: 90%;
+    height: 100px;
+  }
+
+  input[type="checkbox"] {
+    padding: 0;
+    display: inline;
+  }
+
+}
+
+.admin {
+  .question-answer-with-original {
+    margin-bottom: 0;
+  }
+}
+
+.original-answer, .original-input-text {
+  font-size: 0.85em;
+  letter-spacing: normal;
+  display: none;
+  color: $gray-dark;
+  padding: 5px 15px;
+
+  a {
+    color: $red;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.original-answer {
+  padding: 0;
+}
+
+#answer-feedback-col {
+  display: none;
+}
+
+// Nahlad otazky.
+#question-preview {
+  padding: 20px;
+}
+
+// Zoznam otazok v editacii otazok.
+#feedback-alert {
+  @include red-light-white;
+  border-radius: 6px;
+  font-size: 1.2em;
+  padding: 1.5rem 1rem;
+
+  .preicon {
+    width: 40px;
+    text-align: center;
+    display: inline-block;
+  }
+
+  a {
+    display: block;
+    font-size: 0.8em;
+    margin-left: 40px;
+  }
+}
+
+// Tlacidla na pracu so spatnou vazbou.
+#feedback-refresh-button {
+
+  &.empty {
+    float: right;
+  }
+
+  &:not(.empty) {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+  }
+
+}
+
+#questions-list {
+  max-width: 990px;
+  border-radius: 6px;
+  padding: 0;
+
+  .question {
+    border-bottom: 2px solid $porcelain;
+    transition: background-color 0.25s ease-in-out;
+
+    &:first-child {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+
+    &:hover {
+      background-color: $gray-lightest;
+    }
+
+    .question-tools {
+      float: right;
+
+      a {
+        background-color: $gray-lightest;
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
+        display: inline-block;
+        text-align: center;
+        font-size: 1.1em;
+        margin-top: 30px;
+        margin-right: 10px;
+        border-radius: 50%;
+        transition: background-color 0.25s ease-in-out;
+
+        &:last-child {
+          margin-right: 20px;
+        }
+
+        &:hover {
+          background-color: $gray-lighter;
+        }
+
+        &.highlighted {
+          background-color: $red;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .question-icon {
+      background-color: #ffffff;
+      border: 3px solid $gray-lighter;
+      float: left;
+      border-radius: 50%;
+      line-height: 64px;
+      width: 64px;
+      height: 64px;
+      text-align: center;
+      font-size: 1.2em;
+      margin: 20px;
+    }
+
+    .question-headline {
+      margin-left: 110px;
+      margin-right: 146px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .title {
+        font-size: 1.2em;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .text {
+        color: $gray-darker;
+        margin-bottom: 4px;
+      }
+
+      .answers {
+        font-size: 0.85em;
+        color: $gray;
+
+        .correct {
+          font-weight: 700;
+          text-decoration: underline;
+        }
+      }
+
+    }
+
+  }
+
 }

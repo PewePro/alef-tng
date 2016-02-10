@@ -35,6 +35,13 @@ var ready = (function () {
     if ($('#body-administrations-question_concept_config').length) {
         Admin.setupQuestionConceptConfig()
     }
+
+    if ($('.admin-nav').length) {
+        Admin.checkNavOffset();
+    }
+
+    $('[data-toggle="tooltip"]').tooltip();
+
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani

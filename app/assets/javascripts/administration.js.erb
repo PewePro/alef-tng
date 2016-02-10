@@ -1,0 +1,200 @@
+var Admin = {
+
+
+
+  // Zabezpeci, aby navigacny panel neprekryval obsah.
+  checkNavOffset: function() {
+
+    // Maximalna tolerovatelna miera prekrytia obsahu.
+    var contentTreshold = 5;
+
+    var offset = $('.nav-offset');
+    var navHeight = $('nav').outerHeight();
+    var offsetHeight = parseInt(offset.height());
+    var contentMargin = parseInt(offset.after().css('margin-top'));
+
+    if (navHeight - offsetHeight > contentTreshold) {
+      offset.height(navHeight);
+    }
+
+  },
+
+
+    setupWeekConceptTable : function() {
+        $('#week-concept-table td').click(function() {
+            var i = $(this).find('input[type=checkbox]');
+            if(i.is(':checked')) {
+                i.click();
+            } else {
+                i.click();
+            }
+        });
+
+        $('#week-concept-table td input').click(function(event) {
+            event.stopPropagation();
+        });
+
+        $('.switch-all').click(function() {
+            var val = $(this).is(':checked');
+            var week = $(this).data('week');
+            $('input[data-week='+week+']').prop("checked",val);
+        });
+    },
+
+    setupQuestionConceptConfig : function() {
+        this.setupConceptDelete();
+        $('.question-concept-table-cell').click(function() {
+            $(this).toggleClass('show');
+        });
+
+        $('.concept-autocomplete').autocomplete({
+            source: gon.concepts
+        });
+
+        $('.concept-add').click(function() {
+            var input = $('.concept-autocomplete[data-question-id='+$(this).data('question-id')+']');
+            Admin.addConcept(input);
+        });
+
+        $('.concept-autocomplete').keyup(function(e){
+            if (e.keyCode==13) {
+                Admin.addConcept($(this));
+            }
+        })
+
+    },
+
+    addConcept : function(input) {
+        $.ajax({
+            url: window.location+'/add_question_concept',
+            method: 'POST',
+            data: {
+                question_id: input.data('question-id'),
+                concept_name: input.val()
+            }
+        });
+    },
+
+    setupConceptDelete : function() {
+        $('.concept-delete').click(function() {
+            $.ajax({
+                url: window.location+'/delete_question_concept',
+                method: 'POST',
+                data: {
+                    question_id: $(this).data('question-id'),
+                    concept_id: $(this).data('concept-id')
+                }
+            });
+        });
+    },
+
+    // Overuje, ci nebola zvolena viac ako jedna spravna odpoved.
+    verifySingleChoice: function(input) {
+
+      var checked = $('input[data-type="correctness"]:checked');
+
+      if (checked.length > 1) {
+        alert('Otázka môže mať najviac 1 správnu odpoveď. Pôvodne zvolená správna odpoveď bola odznačená.');
+        checked.not(input).prop('checked', false);
+      }
+
+    },
+
+  // Overuje, ci nie je viac ako jedna moznost viditelna.
+  verifyEvaluator: function(input) {
+
+    var checked = $('input[data-type="visibility"]:checked');
+
+    if (checked.length > 1) {
+      alert('V otázke sa môže zobrazovať iba jedna možnosť. Pôvodne viditeľná možnosť odpoveď bude skrytá.');
+      checked.not(input).prop('checked', false);
+    }
+
+  },
+
+    // Sleduje input a caka na to, kym sa zmeni jeho hodnota. Akonahle sa zmeni, zobrazi sa povodna hodnota.
+    checkAnwserAny: function(input, defaultValue) {
+
+        var originalAnswer = $(input).next('.original-input-text');
+
+        if ($(input).val() != defaultValue) {
+            $(input).addClass('question-answer-with-original');
+            originalAnswer.slideDown(200);
+        }
+        else {
+            $(input).removeClass('question-answer-with-original');
+            originalAnswer.slideUp(200);
+        }
+
+    },
+
+    // Na pozadi nacita zoznam vsetkej spatnej vazby.
+    fetchFeedback: function() {
+
+        var url = '<%= Rails.application.routes.url_helpers.question_feedbacks_path('LO_ID') %>'.replace('LO_ID', Admin.currentLoId);
+        var template = doT.template($('#feedback-widget-template').html().replace(/FEEDBACK_ID/g, '{{=it.id}}'));
+        var list = $('#feedbacks-list');
+        var listEmpty = $('#feedbacks-empty');
+        var listUnresolved = $('#feedback-widget').find('.mini-list');
+        var refreshButton = $('#feedback-refresh-button');
+        var unresolved = 0;
+
+        refreshButton.prop('disabled', true);
+
+        $.getJSON(url, {}, function(resp) {
+
+          if (resp.length == 0) {
+            list.hide();
+            listEmpty.show();
+            refreshButton.addClass('empty');
+          }
+          else {
+            list.show();
+            listEmpty.hide();
+            refreshButton.removeClass('empty');
+          }
+
+          list.html('');
+          listUnresolved.html('');
+
+          $.each(resp, function(i, feedback) {
+            feedback.widget = false;
+            list.append(template(feedback));
+            feedback.widget = true;
+            if (feedback.accepted == null) {
+              listUnresolved.append(template(feedback));
+              unresolved++;
+            }
+          });
+
+          if (unresolved > 0) {
+            $('#answer-settings-col').addClass('col-lg-8').removeClass('col-lg-12');
+            $('#answer-feedback-col').fadeIn(100);
+            $('#feedback-not-reviewed-count').html(' ('+unresolved+')');
+          }
+          else {
+            $('#answer-feedback-col').fadeOut(100);
+            $('#answer-settings-col').removeClass('col-lg-8').addClass('col-lg-12');
+            $('#feedback-not-reviewed-count').html('');
+          }
+
+        }).always(function(){
+          refreshButton.prop('disabled', false);
+        });
+
+    },
+
+    questionsToggleWithFeedback: function(link) {
+
+      if ($(link).attr('data-status') == "with-feedback") {
+        $('#questions-list').find('.without-feedback').show();
+        $(link).html('Zobraziť iba otázky s novými komentármi &raquo;').attr('data-status', 'all');
+      }
+      else {
+        $('#questions-list').find('.without-feedback').hide();
+        $(link).html('Zobraziť všetky otázky &raquo;').attr('data-status', 'with-feedback');
+      }
+
+    }
+
+};

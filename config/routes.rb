@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/:week_number/:id' => 'questions#show'
-  get 'w/:week_number/:id/image' => 'questions#show_image'
+  get 'q/:id/image' => 'questions#show_image'
 
   # Loguje cas straveny na otazke
   post 'log_time' => 'questions#log_time'
@@ -47,12 +47,19 @@ Rails.application.routes.draw do
   get 'admin/question_config/:course_id' => 'administrations#question_config', as: 'question_config'
   get 'admin/question_config/:question_id/edit_question_config' => 'administrations#edit_question_config', as: 'edit_question_config'
   post 'admin/question_config/:question_id/edit_question' => 'administrations#edit_question', as: 'edit_question'
+  post 'admin/question_config/:question_id/edit_answers' => 'administrations#edit_answers', as: 'edit_answers'
   post 'admin/question_config/:question_id/delete_answer' => 'administrations#delete_answer', as: 'delete_answer'
   post 'admin/question_config/:question_id/add_answer' => 'administrations#add_answer', as: 'add_answer'
 
   get 'admin/question_concept_config/:course_id' => 'administrations#question_concept_config', as: 'question_concept_config'
   post 'admin/question_concept_config/:course_id/delete_question_concept' => 'administrations#delete_question_concept', as: 'delete_question_concept'
   post 'admin/question_concept_config/:course_id/add_question_concept' => 'administrations#add_question_concept', as: 'add_question_concept'
+
+  get 'admin/questions/:id/feedbacks' => 'administrations#question_feedbacks', as: 'question_feedbacks'
+  patch 'admin/feedbacks/:id/accept' => 'administrations#mark_feedback_accepted', as: 'mark_feedback_accepted'
+  patch 'admin/feedbacks/:id/reject' => 'administrations#mark_feedback_rejected', as: 'mark_feedback_rejected'
+  patch 'admin/feedbacks/:id/show' => 'administrations#mark_feedback_visible', as: 'mark_feedback_visible'
+  patch 'admin/feedbacks/:id/hide' => 'administrations#mark_feedback_hidden', as: 'mark_feedback_hidden'
 
 
 end
