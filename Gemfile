@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.2.4'
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -24,19 +23,8 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use Airbrake for exception tracking
-gem 'airbrake'
-
 gem 'execjs'
-gem 'therubyracer'
-
-gem 'passenger'
+gem 'therubyracer', platforms: :ruby
 
 # Use Devise - a flexible authentication solution (login, registration, ...)
 gem 'devise'
@@ -67,6 +55,9 @@ gem 'rails-i18n'
 # Reoccuring tasks
 gem 'whenever', :require => false
 
+# Error tracking
+gem 'rollbar', '~> 2.7.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
@@ -85,5 +76,10 @@ group :development, :test do
   gem 'capistrano-passenger'
 
   gem 'factory_girl_rails'
+
+end
+
+group :development do
+  gem 'passenger'
 end
 
