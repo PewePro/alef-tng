@@ -9,7 +9,7 @@
 <% if @feedbacks[:count] > 0 %>
 <div id="feedback-alert" class="admin">
   <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= @feedbacks[:count] %> nových komentárov k otázkam.
-  <%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);' %>
+  <%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);return false;' %>
 </div>
 <% end %>
 
