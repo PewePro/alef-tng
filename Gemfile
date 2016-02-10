@@ -72,11 +72,11 @@ group :development, :test do
   gem 'spring'
 
   # Use Capistrano for deployment
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.3.5'
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano-rails', '~> 1.1.3'
-  gem 'capistrano-passenger'
+  gem 'capistrano-passenger', '0.0.2'
 
   gem 'factory_girl_rails'
 
