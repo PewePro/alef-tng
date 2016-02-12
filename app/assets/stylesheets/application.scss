@@ -46,6 +46,7 @@
 @import "administration";
 
 // nprogress
-$nprogress-color: $gray-light;
+$nprogress-color: $gray-lighter;
+$nprogress-height: 4px;
 @import 'nprogress';
 @import 'nprogress-bootstrap';
