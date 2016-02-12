@@ -6,23 +6,23 @@
 </nav>
 <hr class="nav-offset">
 
-<% if @feedbacks[:count] > 0 %>
+<% if @feedbacks[:new_count] > 0 %>
 <div id="feedback-alert" class="admin">
-  <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= @feedbacks[:count] %> nových komentárov k otázkam.
+  <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= @feedbacks[:new_count] %> nových komentárov k otázkam.
   <%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);return false;' %>
 </div>
 <% end %>
 
 <div id="questions-list" class="admin">
   <% @questions.each do |q| %>
-  <div class="question row<%= ' without-feedback' unless @feedbacks[:aggs].has_key?(q.id) && @feedbacks[:aggs][q.id] > 0 %>">
+  <div class="question row<%= ' without-feedback' unless @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>">
     <div class="question-tools">
-      <% if @feedbacks[:aggs].has_key?(q.id) && @feedbacks[:aggs][q.id] > 0 %>
-          <%= link_to(@feedbacks[:aggs][q.id], "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
-          class: :highlighted, title: 'Nové komentáre', data: { toggle: :tooltip }) %>
+      <% if @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>
+          <%= link_to("#{@feedbacks[:new_aggs][q.id]} / #{@feedbacks[:all_aggs][q.id]}", "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+          class: 'counter highlighted', title: 'Nové komentáre', data: { toggle: :tooltip }) %>
       <% else %>
-          <%= link_to('0', "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
-                      title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
+          <%= link_to(@feedbacks[:all_aggs][q.id] || 0, "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+          class: 'counter',title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
       <% end %>
       <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_question_config_path(:question_id => q.id)) %>
     </div>
