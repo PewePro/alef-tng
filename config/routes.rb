@@ -36,6 +36,9 @@ Rails.application.routes.draw do
 
   get 'ping' => 'application#ping'
 
+  # Markdown
+  post 'markdown/preview' => 'markdown/preview'
+
   # Administracia
   get 'admin' => 'administrations#index', as: 'administration'
 

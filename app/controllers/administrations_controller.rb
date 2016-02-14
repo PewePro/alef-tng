@@ -92,7 +92,7 @@ class AdministrationsController < ApplicationController
   end
 
   def delete_answer
-    answer = Answer.find_by_id(params[:answer_id])
+    answer = Answer.force_all.find_by_id(params[:answer_id])
     answer.destroy
     redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
   end

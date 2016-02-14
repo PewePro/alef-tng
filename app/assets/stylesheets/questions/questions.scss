@@ -32,6 +32,10 @@
   padding: 0.5rem 1rem 0.5rem;
   @include bold;
   line-height: 1.5rem;
+
+  .question-agree {
+    text-align: center;
+  }
 }
 
 #question-evaluation-message {

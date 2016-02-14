@@ -56,6 +56,9 @@ gem 'nprogress-rails', '~> 0.1.6.7'
 # Localization
 gem 'rails-i18n'
 
+# Ruby library for Markdown processing that smells like butterflies and popcorn.
+gem 'redcarpet', '3.3.4'
+
 # Reoccuring tasks
 gem 'whenever', :require => false
 

@@ -1,0 +1,50 @@
+// Umoznuje zobrazovat nahlad textarea prvkov cez markdown.
+.markdown-preview {
+  position: relative;
+
+  .preview-toggle {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    padding: 5px 8px;
+    font-size: 0.85em;
+    line-height: normal;
+    cursor: pointer;
+    z-index: 51;
+    display: none;
+
+    &.active {
+      background-color: $gray-light
+    }
+  }
+
+  &:hover {
+    .preview-toggle {
+      display: inline;
+    }
+  }
+
+  .preview-area {
+    position: absolute;
+    width: 100%;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    display: none;
+
+    .preview-area-inner {
+      overflow: auto;
+    }
+
+    p, ul {
+      margin: 0 0;
+    }
+
+    li {
+      line-height: normal;
+      margin: 5px 0;
+    }
+
+  }
+
+}

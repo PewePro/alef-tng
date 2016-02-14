@@ -45,12 +45,10 @@
               <h3>Úprava otázky</h3> <br/>
 
               <%= label_tag "Názov otázky:" %>
-              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field", onchange: "Admin.checkAnwserAny(this, '#{@question.lo_id}');", onkeyup: "Admin.checkAnwserAny(this, '#{@question.lo_id}');" %>
-              <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.lo_id %> (<a href="#" onclick="$('#edit_question_name').val('<%= @question.lo_id %>').trigger('keyup');return false">obnoviť</a>)</div>
+              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field" %>
               <hr/>
               <%= label_tag "Text otázky:" %>
-              <%= text_field_tag :edit_question_text, @question.question_text, class: "question_text_field", onchange: "Admin.checkAnwserAny(this, '#{@question.question_text}');", onkeyup: "Admin.checkAnwserAny(this, '#{@question.question_text}');" %>
-              <div class="original-input-text"><strong>Pôvodná odpoveď:</strong> <%= @question.question_text %> (<a href="#" onclick="$('#edit_question_text').val('<%= @question.question_text %>').trigger('keyup');return false">obnoviť</a>)</div>
+              <%= text_area_tag :edit_question_text, @question.question_text, class: "question_text_field" %>
 
               <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
               <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
@@ -89,11 +87,10 @@
                           <td class="answers-table-id"><%= a.id %></td>
                           <td>
                             <% if a.learning_object.type == "EvaluatorQuestion" %>
-                                <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                                <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area" %>
                             <% else %>
-                                <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer", onkeyup: "Admin.checkAnwserAny(this, '#{a.answer_text}');" %>
+                                <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer" %>
                             <% end %>
-                            <div class="original-input-text original-answer"><strong>Pôvodná odpoveď:</strong> <%= a.answer_text %> (<a href="#" onclick="$('#edit_answer_text_<%= a.id %>').val('<%= a.answer_text %>').trigger('keyup');return false">obnoviť</a>)</div>
                           </td>
                           <td class="answers-table-tools">
                             <% unless a.learning_object.type == "EvaluatorQuestion" %>
@@ -188,6 +185,12 @@
   $(function(){
 
     Slider.setupEvaluatorSlider();
+
+    // Zapnutie markdownu.
+    new MarkdownPreview($('#edit_question_text'), { className: 'admin-markdown-textarea admin-markdown-edit-textarea' });
+    $('.question-answer-area').each(function() {
+      new MarkdownPreview($(this), { className: 'admin-markdown-textarea' });
+    });
 
     var tabs = $('#editor-tabs').find('a');
     tabs.click(function (e) {

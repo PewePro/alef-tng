@@ -13,7 +13,7 @@
     border-bottom: 1px solid $gray;
   }
 
-  .question_text_field {
+  .question_text_field, .admin-markdown-edit-textarea {
     width: 95%;
   }
 
@@ -75,7 +75,7 @@
   @include center-block;
 }
 
-.admin input, .admin select, .admin textarea {
+.admin input, .admin select, .admin textarea, .admin-markdown-textarea {
   @include medium-font;
   @include border-radius(0.25rem);
   margin: 1rem 0;
@@ -223,7 +223,7 @@
     width: 90%;
   }
 
-  .question-answer-area {
+  .question-answer-area, .admin-markdown-textarea {
     width: 90%;
     height: 100px;
   }
@@ -233,6 +233,10 @@
     display: inline;
   }
 
+}
+
+.admin-markdown-textarea {
+  background-color: #ffffff;
 }
 
 .admin {

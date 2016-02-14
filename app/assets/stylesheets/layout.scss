@@ -2,6 +2,12 @@ body {
   @include dark-white;
 }
 
+blockquote {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  padding: 10px;
+}
+
 .strong {
   font-weight: bold;
 }
