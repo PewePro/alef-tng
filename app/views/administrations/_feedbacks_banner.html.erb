@@ -4,7 +4,7 @@
                   next_feedback_question_path(course.id),
                   class: 'action-btn',
                   data: { toggle: :tooltip },
-                  title: "Prejsť na otázku bez vyriešenej spätnej väzby") %>
+                  title: "Prejsť na otázku s nevyriešenou spätnou väzbou") %>
       <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= feedbacks_new_count %> nových komentárov k otázkam.
       <% unless lite %><%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);return false;' %><% end %>
     </div>
