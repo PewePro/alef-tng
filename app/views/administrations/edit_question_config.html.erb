@@ -1,14 +1,6 @@
 <nav>
   <div class="admin-nav">
-    <h2><i data-toggle="tooltip" data-placement="right" title="<%=
-      case @question.type
-        when "SingleChoiceQuestion"
-          'výber z jednej možnosti'
-        when "MultiChoiceQuestion"
-          'výber z viacerých možností'
-        when "EvaluatorQuestion"
-          'evaluator'
-      end %>" class="icon-<%=
+    <h2><i data-toggle="tooltip" data-placement="right" title="<%= t("questions.labels.types.#{@question.type.downcase}") %>" class="icon-<%=
       case @question.type
         when "SingleChoiceQuestion"
           'radio-checked'
@@ -44,16 +36,34 @@
 
             <div class="admin">
 
-              <h3>Úprava otázky</h3> <br/>
+              <h3>Úprava otázky</h3>
 
-              <%= label_tag "Názov otázky:" %>
-              <%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field" %>
-              <hr/>
-              <%= label_tag "Text otázky:" %>
-              <%= text_area_tag :edit_question_text, @question.question_text, class: "question_text_field" %>
+              <dl class="dl-horizontal">
+                <dt><%= label_tag t('questions.labels.title') %></dt>
+                <dd><%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field" %></dd>
 
-              <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-              <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+                <dt><%= label_tag t('questions.labels.text') %></dt>
+                <dd><%= text_area_tag :edit_question_text, @question.question_text, class: "question_text_field" %></dd>
+
+                <dt><%= label_tag t('questions.labels.type') %></dt>
+                <dd><%= t("questions.labels.types.#{@question.type.downcase}") %></dd>
+
+                <dt><%= label_tag t('questions.labels.difficulty') %></dt>
+                <dd><%= "0%" %></dd>
+
+                <dt><%= label_tag t('questions.labels.external_reference') %></dt>
+                <dd><%= @question.external_reference %></dd>
+
+                <dt><%= label_tag t('questions.labels.successfulness') %></dt>
+                <% successfulness = @question.successfulness %>
+                <dd><%= "#{successfulness[:rate]} % (#{successfulness[:solved]} úspešných z #{successfulness[:total]})" %></dd>
+
+                <dt></dt>
+                <dd>
+                  <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+                  <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+                </dd>
+              </dl>
 
             </div>
 

@@ -185,3 +185,37 @@ hr {
 .text-right {
   text-align: right;
 }
+
+// @via http://getbootstrap.com/
+dl {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+
+  .dl-horizontal dt {
+    float: left;
+    width: 160px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 10px;
+  }
+
+  .dl-horizontal dd {
+    margin-left: 180px;
+    margin-top: 10px;
+  }
+
+}

@@ -16,7 +16,7 @@ describe 'Users::SessionsController' do
       fill_in('local_user_login', with: @user.login)
       fill_in('local_user_password', with: @user.password)
 
-      click_button('Prihlásiť')
+      click_button(t('homescreen.links.login'))
 
     end
 
@@ -27,13 +27,13 @@ describe 'Users::SessionsController' do
       fill_in('local_user_login', with: @admin.login)
       fill_in('local_user_password', with: @admin.password)
 
-      click_button('Prihlásiť')
+      click_button(t('homescreen.links.login'))
 
       find('.user-element-cta').click
 
-      find('a', text: 'Administrácia').click
+      find('a', text: t('homescreen.links.admin')).click
 
-      expect(page).to have_text('Administrácia')
+      expect(page).to have_text(t('homescreen.links.admin'))
 
     end
 
@@ -44,10 +44,10 @@ describe 'Users::SessionsController' do
       fill_in('local_user_login', with: @user.login)
       fill_in('local_user_password', with: @user.password)
 
-      click_button('Prihlásiť')
+      click_button(t('homescreen.links.login'))
 
       find('.user-element-cta').click
-      expect(page).not_to have_text("Administrácia")
+      expect(page).not_to have_text(t('homescreen.links.admin'))
 
       visit administration_path
 

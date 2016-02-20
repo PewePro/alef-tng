@@ -21,3 +21,15 @@
 
 en:
   hello: "Hello world"
+
+  global:
+    links:
+      cancel:       "Cancel"
+      submit:       "Submit"
+
+  homescreen:
+    links:
+      admin:        "Admin"
+      feedback:     "Feedback"
+      login:        "Login"
+      logout:       "Logout"
