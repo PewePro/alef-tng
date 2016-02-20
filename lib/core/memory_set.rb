@@ -1,42 +1,46 @@
-# Rozsirenie nad mnozinou, ktore sluzi na zapamatanie si poslednych N poloziek.
-class MemorySet
+module Core
 
-  # @param id [String] jedinecny identifikator memory setu
-  # @param _session [] relacia Railsu
-  # @param size [Integer] maximalna velkost mnoziny (N)
-  def initialize(id, _session, size)
+  # Rozsirenie nad mnozinou, ktore sluzi na zapamatanie si poslednych N poloziek.
+  class MemorySet
 
-    @id = id
-    @session = _session
-    @session[:memory_sets] ||= {}
-    @size = size
-    @set = @session[:memory_sets].has_key?(id) ? @session[:memory_sets][id] : []
+    # @param id [String] jedinecny identifikator memory setu
+    # @param _session [] relacia Railsu
+    # @param size [Integer] maximalna velkost mnoziny (N)
+    def initialize(id, _session, size)
 
-  end
+      @id = id
+      @session = _session
+      @session[:memory_sets] ||= {}
+      @size = size
+      @set = @session[:memory_sets].has_key?(id) ? @session[:memory_sets][id] : []
 
-  # Prida novy prvok.
-  def << (element)
-    @set << element
-    @set.shift if @set.size > @size
-    save
-  end
+    end
 
-  # Ziska zoznam vsetkych prvkov.
-  def get
-    @set
-  end
+    # Prida novy prvok.
+    def << (element)
+      @set << element
+      @set.shift if @set.size > @size
+      save
+    end
 
-  # Vycisti vsetky prvky memory setu.
-  def clear
-    @set = []
-    save
-  end
+    # Ziska zoznam vsetkych prvkov.
+    def get
+      @set
+    end
 
-  private
+    # Vycisti vsetky prvky memory setu.
+    def clear
+      @set = []
+      save
+    end
 
-  # Ulozi zmeny do session.
-  def save
-    @session[:memory_sets][@id] = @set
+    private
+
+    # Ulozi zmeny do session.
+    def save
+      @session[:memory_sets][@id] = @set
+    end
+
   end
 
 end
