@@ -1,0 +1,11 @@
+<% if feedbacks_new_count > 0 %>
+    <div id="feedback-alert" class="admin<%= ' feedback-lite' if lite %>">
+      <%= link_to("Nasledujúca otázka &raquo;".html_safe,
+                  next_feedback_question_path(course.id),
+                  class: 'action-btn',
+                  data: { toggle: :tooltip },
+                  title: "Prejsť na otázku bez vyriešenej spätnej väzby") %>
+      <span class="preicon"><i class="icon-star"></i></span>Našli sme <%= feedbacks_new_count %> nových komentárov k otázkam.
+      <% unless lite %><%= link_to "Zobraziť iba otázky s novými komentármi &raquo;".html_safe, '', onclick: 'Admin.questionsToggleWithFeedback(this);return false;' %><% end %>
+    </div>
+<% end %>

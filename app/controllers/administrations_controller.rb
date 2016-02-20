@@ -56,6 +56,7 @@ class AdministrationsController < ApplicationController
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
     @answers = @question.answers
+    @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
   end
 
   def edit_question
@@ -178,6 +179,23 @@ class AdministrationsController < ApplicationController
   def mark_feedback_hidden
     Feedback.find(params[:id]).update(visible: false)
     render js: "Admin.fetchFeedback();"
+  end
+
+  # Ziska nasledujucu otazku (z kurzu), ku ktorej este nebola pridana spatna vazba.
+  def next_feedback_question
+    @course = Course.find(params[:id])
+
+    unless session.has_key?(:unresoved_feedbacks) && session[:unresoved_feedbacks].any?
+      session[:unresoved_feedbacks] = @course.feedbackable_questions
+    end
+
+    lo = LearningObject.where(id: session[:unresoved_feedbacks].pop).first
+    if lo
+      redirect_to(edit_question_config_path(question_id: lo.id))
+    else
+      redirect_to(question_config_path(@course.id))
+    end
+
   end
 
   def add_question_concept

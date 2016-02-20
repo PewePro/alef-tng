@@ -64,5 +64,7 @@ Rails.application.routes.draw do
   patch 'admin/feedbacks/:id/show' => 'administrations#mark_feedback_visible', as: 'mark_feedback_visible'
   patch 'admin/feedbacks/:id/hide' => 'administrations#mark_feedback_hidden', as: 'mark_feedback_hidden'
 
+  get 'admin/courses/:id/questions/next_unresolved' => 'administrations#next_feedback_question', as: 'next_feedback_question'
+
 
 end
