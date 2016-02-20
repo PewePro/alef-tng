@@ -14,7 +14,10 @@
   }
 
   .question_text_field, .admin-markdown-edit-textarea {
-    width: 95%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   input[type="submit"] {
@@ -226,6 +229,18 @@
   .question-answer-area, .admin-markdown-textarea {
     width: 90%;
     height: 100px;
+  }
+
+  .admin-markdown-preview {
+    width: 95%;
+
+    .question-answer-area, .admin-markdown-textarea {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
   }
 
   input[type="checkbox"] {

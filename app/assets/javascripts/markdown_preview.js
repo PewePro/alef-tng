@@ -12,6 +12,7 @@
         this.options = $.extend({
             autosize: true,
             className: '',
+            outerClassName: '',
             showAlways: false
         }, opts);
 
@@ -34,7 +35,7 @@
         init: function() {
 
             // Obalime textarea prvok do divu.
-            $(this.textarea).wrap('<div id="'+this.id+'" class="markdown-preview"></div>');
+            $(this.textarea).wrap('<div id="'+this.id+'" class="markdown-preview '+(this.options.outerClassName)+'"></div>');
             this.wrapper = $('#'+this.id);
 
             this.button = $('<div class="btn preview-toggle">'+MarkdownPreview.showText+'</div>');
