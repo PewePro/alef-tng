@@ -4,7 +4,6 @@ rvm:
 cache: bundler
 addons:
   postgresql: '9.4'
-  firefox: '39.0'
 before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp config/database.yml.travis config/database.yml

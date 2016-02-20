@@ -94,7 +94,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
 
   # WebDriver is a tool for writing automated tests of websites
-  gem 'selenium-webdriver', '2.52.0'
+  gem 'selenium-webdriver', '2.50.0'
 
 end
 
