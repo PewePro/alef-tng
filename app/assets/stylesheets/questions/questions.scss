@@ -98,11 +98,24 @@
       margin-right: 5px;
     }
 
+    .bull {
+      margin: 0 5px;
+
+      @media screen and (max-width: 480px) {
+        display: none;
+      }
+    }
+
     .question-feedback-time {
-      margin-left: 5px;
+      color: $gray-light;
+
+      @media screen and (max-width: 480px) {
+        display: block;
+      }
     }
 
     .question-feedback-solved {
+      float: right;
       color: $green;
     }
   }

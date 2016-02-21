@@ -15,13 +15,12 @@
       <% @feedbacks.order(created_at: :desc).each do |f| %>
             <div class="question-feedback-message">
                 <div class="question-feedback-meta">
-                  <span class="question-feedback-name"><%= f.user.first_name %> <%= f.user.last_name %></span>
-                  &bull;
-                  <span class="question-feedback-time"><%= format_time(f.created_at) %></span>
                   <% if f.accepted %>
-                    &bull;
-                    <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> vyriešený</span>
+                  <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> vyriešený</span>
                   <% end %>
+                  <span class="question-feedback-name"><%= f.user.first_name %> <%= f.user.last_name %></span>
+                  <span class="bull">&bull;</span>
+                  <span class="question-feedback-time livestamp" data-toggle="tooltip" title="<%= format_time(f.created_at) %>" data-timestamp="<%= f.created_at.to_time %>"><%= format_time(f.created_at) %></span>
                 </div>
                 <%= f.message %>
             </div>
