@@ -30,11 +30,16 @@ class AdministrationsController < ApplicationController
   end
 
   def setup_config_relations
+    setup = Setup.find(params[:setup_id])
     relations = params[:relations]
     relations.each do |concept, weeks|
       c = Concept.find(concept)
-      w = Setup.find(params[:setup_id]).weeks.find(weeks.keys)
+      w = setup.weeks.find(weeks.keys)
       c.weeks = w
+    end
+    # clear all concepts with nothing checked
+    (setup.course.concepts.all - Concept.find(relations.keys)).each do |c|
+      c.weeks = []
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
