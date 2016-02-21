@@ -11,4 +11,9 @@ module ApplicationHelper
     strip_tags(apply_markdown(text))
   end
 
+  # Naformatuje casovu peciatku.
+  def format_time(timestamp)
+    timestamp.strftime('%d.%m.%Y %H:%M:%S')
+  end
+
 end

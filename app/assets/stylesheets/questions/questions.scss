@@ -74,18 +74,42 @@
 }
 
 #question-feedback {
-  margin: 0 1rem;
   padding: 1rem 0;
-}
 
-.question-feedback-name {
-  text-transform: lowercase;
-  font-variant: small-caps;
-  @include bold;
-}
+  h3 {
+    margin: 0 1rem;
+  }
 
-.question-feedback-message {
-  margin: 1rem 0;
-  font-size: 0.85rem;
-  display: none;
+  .question-feedback-message {
+    border-top: 1px solid $gray-lighter;
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    //display: none;
+
+    .question-feedback-meta {
+      color: $gray-dark;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .question-feedback-name {
+      @include bold;
+      margin-right: 5px;
+    }
+
+    .question-feedback-time {
+      margin-left: 5px;
+    }
+
+    .question-feedback-solved {
+      color: $green;
+    }
+  }
+
+  #question-feedback-warning {
+    padding: 0 1rem;
+  }
+
+
 }
