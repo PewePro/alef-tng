@@ -206,7 +206,7 @@
       outerClassName: 'admin-markdown-preview'
     });
     $('.question-answer-area').each(function() {
-      new MarkdownPreview($(this), { className: 'admin-markdown-textarea', outerClassName: 'admin-markdown-preview' });
+      new MarkdownPreview($(this), { autofix: true, className: 'admin-markdown-textarea', outerClassName: 'admin-markdown-preview' });
     });
 
     var tabs = $('#editor-tabs').find('a');

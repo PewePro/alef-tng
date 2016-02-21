@@ -10,6 +10,7 @@
         this.textarea = textarea;
 
         this.options = $.extend({
+            autofix: false,
             autosize: true,
             className: '',
             outerClassName: '',
@@ -26,6 +27,27 @@
         }
 
         this.init();
+
+        // Zmensime textarea prvok.
+        if (this.options.autofix) {
+
+            // Budeme cakat, az kym sa element nevykresli.
+            this.waitInterval = setInterval(function(){
+
+                if (this.textarea.is(':visible')) {
+
+                    var diff = this.textarea.innerWidth() - this.wrapper.innerWidth();
+                    var newWidth = this.textarea.width() - diff;
+                    this.textarea.width(newWidth);
+                    this.previewAreaInner.width(newWidth);
+
+                    clearInterval(this.waitInterval);
+
+                }
+
+            }.bind(this), 100);
+
+        }
 
     }
 
