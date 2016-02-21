@@ -62,7 +62,8 @@ class AdministrationsController < ApplicationController
   def edit_question
     LearningObject.find_by_id(params[:question_id]).update!(
         lo_id: params[:edit_question_name],
-        question_text: params[:edit_question_text]
+        question_text: params[:edit_question_text],
+        difficulty: params[:difficulty]
     )
 
     redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."

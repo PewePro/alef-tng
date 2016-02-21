@@ -49,7 +49,9 @@
                 <dd><%= t("questions.labels.types.#{@question.type.downcase}") %></dd>
 
                 <dt><%= label_tag t('questions.labels.difficulty') %></dt>
-                <dd><%= "0%" %></dd>
+                <dd><%= select_tag(:difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
+                  [t("questions.labels.difficulties.#{difficulty}"), difficulty]
+                }, @question.difficulty), class: 'form-control') %></dd>
 
                 <dt><%= label_tag t('questions.labels.external_reference') %></dt>
                 <dd><%= @question.external_reference %></dd>

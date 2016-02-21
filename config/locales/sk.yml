@@ -16,6 +16,13 @@ sk:
   questions:
     labels:
       difficulty:             "Náročnosť"
+      difficulties:
+        easy:                 "Ľahká"
+        hard:                 "Náročná"
+        impossible:           "Impossible"
+        medium:               "Stredná"
+        trivial:              "Triviálna"
+        unknown_difficulty:   "Neznáma"
       external_reference:     "Identifikátor z CSV"
       successfulness:         "Úspešnosť"
       title:                  "Názov otázky"
