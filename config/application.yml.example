@@ -14,4 +14,4 @@
 
 # To use some production features in local development (e.g. deploy),
 # copy this file to 'config/application.yml' and edit
-ALEFTNG_ROLLBAR_ACCESS_TOKEN: '035df0236ff1422eb5747260510bb4a8'
+ALEFTNG_ROLLBAR_ACCESS_TOKEN: ''
