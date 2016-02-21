@@ -13,6 +13,10 @@ sk:
       login:        "Prihlásiť sa"
       logout:       "Odhlásiť"
 
+  feedbacks:
+    label:
+      solved:                 "vyriešený"
+
   questions:
     labels:
       difficulty:             "Náročnosť"

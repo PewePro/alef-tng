@@ -16,7 +16,7 @@
             <div class="question-feedback-message">
                 <div class="question-feedback-meta">
                   <% if f.accepted %>
-                  <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> vyriešený</span>
+                  <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> <%= t('feedbacks.label.solved') %></span>
                   <% end %>
                   <span class="question-feedback-name"><%= f.user.first_name %> <%= f.user.last_name %></span>
                   <span class="bull">&bull;</span>
