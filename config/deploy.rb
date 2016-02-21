@@ -15,6 +15,12 @@ set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/sys
 
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
+load 'lib/exceptions.rb'
+include Exceptions
+set :rollbar_token, (ENV['ALEFTNG_ROLLBAR_ACCESS_TOKEN'] || (raise ApplicationConfigurationIncomplete))
+set :rollbar_env, Proc.new { fetch :stage }
+set :rollbar_role, Proc.new { :app }
+
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
