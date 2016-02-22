@@ -110,7 +110,7 @@
 
         },
 
-        /** Vyvola nacitanie ukazky. */
+        /** Vyvola skrytie ukazky. */
         hidePreview: function() {
 
             if (!this.isPreviewed) {
