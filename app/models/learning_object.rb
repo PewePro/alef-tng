@@ -22,6 +22,7 @@ class LearningObject < ActiveRecord::Base
       self.difficulty == "#{diff}"
     end
   end
+
   def next(week_number)
     Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
   end
@@ -32,6 +33,17 @@ class LearningObject < ActiveRecord::Base
 
   def seen_by_user(user_id)
     UserVisitedLoRelation.create(user_id: user_id, learning_object_id: self.id, setup_id: 1)
+  end
+
+  # Ziska a vypocita informacie o uspesnosti otazky.
+  def successfulness
+
+    stats = UserToLoRelation.where(learning_object: self.id).group(:type).count(:id)
+    total = stats['UserSolvedLoRelation'].to_i + stats['UserFailedLoRelation'].to_i
+
+    rate = total > 0 ? ((stats['UserSolvedLoRelation'].to_f / total.to_f)*100).round(2) : 0.0
+    { solved: stats['UserSolvedLoRelation'], failed: stats['UserFailedLoRelation'], total: total, rate: rate }
+
   end
 
   def url_name

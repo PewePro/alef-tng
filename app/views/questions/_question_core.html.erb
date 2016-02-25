@@ -1,5 +1,5 @@
 <div class="question-text">
-  <%= @question.question_text %>
+  <%= apply_markdown(@question.question_text).html_safe %>
   <% unless @question.image.nil? %>
       <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => @question.id), class: 'question-image', alt: @question.lo_id+' Obrázok' %>
   <% end %>

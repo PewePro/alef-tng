@@ -19,14 +19,15 @@
 //= require jquery.ui.touch-punch
 //= require bootstrap.tabs
 //= require bootstrap.tooltips
-//= require doT
+//= require lib/doT
+//= require lib/moment-with-locales
+//= require lib/livestamp
 //= require detect-zoom
 //= require ifvisible
 //= require time-me
 //= require nprogress
 //= require nprogress-turbolinks
 //= require_tree .
-
 
 // Nastavenia pre nprogress.
 NProgress.configure({ showSpinner: false });

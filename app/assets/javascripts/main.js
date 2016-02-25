@@ -40,7 +40,14 @@ var ready = (function () {
         Admin.checkNavOffset();
     }
 
+    // Aktivacia tooltipov.
     $('[data-toggle="tooltip"]').tooltip();
+
+    // Aktivacia moment.js.
+    moment.locale('sk');
+    $('.livestamp').each(function(){
+        $(this).livestamp($(this).attr('data-timestamp'));
+    });
 
 });
 

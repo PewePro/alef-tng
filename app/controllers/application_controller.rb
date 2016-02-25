@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
   include Exceptions
 
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
