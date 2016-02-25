@@ -1,4 +1,7 @@
-job_type :runner_rbenv, "export PATH=/home/aleftng/.rbenv/shims:/home/aleftng/.rbenv/bin:/usr/bin:$PATH; eval \"$(rbenv init -)\"; cd :path && bundle exec rollbar-rails-runner -e :environment ':task' :output"
+job_type :runner_rbenv, "export PATH=/home/aleftng/.rbenv/shims:/home/aleftng/.rbenv/bin:/usr/bin:$PATH;"\
+                        "eval \"$(rbenv init -)\";"\
+                        "eval /home/aleftng/load_env.rb;"\
+                        "cd :path && bundle exec rollbar-rails-runner -e :environment ':task' :output"
 
 case @environment
 
