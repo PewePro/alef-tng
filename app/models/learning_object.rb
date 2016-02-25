@@ -38,17 +38,11 @@ class LearningObject < ActiveRecord::Base
   # Ziska a vypocita informacie o uspesnosti otazky.
   def successfulness
 
-    sql = "SELECT
-            count(CASE WHEN type = 'UserSolvedLoRelation' THEN 1 END) as solved,
-            count(CASE WHEN type = 'UserFailedLoRelation' THEN 1 END) as failed
-           FROM user_to_lo_relations
-           WHERE learning_object_id = #{self.id}"
+    stats = UserToLoRelation.where(learning_object: self.id).group(:type).count(:id)
+    total = stats['UserSolvedLoRelation'].to_i + stats['UserFailedLoRelation'].to_i
 
-    stats = ActiveRecord::Base.connection.execute(sql).first
-    total = stats['solved'].to_i + stats['failed'].to_i
-
-    rate = total > 0 ? ((stats['solved'].to_f / total.to_f)*100).round(2) : 0.0
-    { solved: stats['solved'], failed: stats['failed'], total: total, rate: rate }
+    rate = total > 0 ? ((stats['UserSolvedLoRelation'].to_f / total.to_f)*100).round(2) : 0.0
+    { solved: stats['UserSolvedLoRelation'], failed: stats['UserFailedLoRelation'], total: total, rate: rate }
 
   end
 
