@@ -28,7 +28,7 @@
   <h3>Správa obsahu otázok</h3>
   <ul>
     <% @courses.each do |c| %>
-        <li><%= link_to c.name, question_config_path(c.id), class: "admin-link" %></li>
+        <li><%= link_to c.name, admin_questions_path(course: c.id), class: "admin-link" %></li>
     <% end %>
   </ul>
 </div>

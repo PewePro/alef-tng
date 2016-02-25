@@ -47,6 +47,8 @@
 @import "questions/evaluator";
 @import "administration";
 
+@import "admin/questions";
+
 // nprogress
 $nprogress-color: $gray-lighter;
 $nprogress-height: 4px;

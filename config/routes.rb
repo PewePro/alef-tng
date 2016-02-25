@@ -66,5 +66,14 @@ Rails.application.routes.draw do
 
   get 'admin/courses/:id/questions/next_unresolved' => 'administrations#next_feedback_question', as: 'next_feedback_question'
 
+  # Administracia.
+  namespace :admin do
+
+    resource :questions do
+      get :index, :new
+    end
+
+  end
+
 
 end

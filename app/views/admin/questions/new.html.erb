@@ -1,0 +1,223 @@
+<nav>
+  <div class="admin-nav">
+    <h2>Správa obsahu otázok</h2>
+    <%= link_to t('homescreen.links.admin'), administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="container">
+
+  <div class="tabs">
+
+    <ul id="editor-tabs" class="tablist" role="tablist">
+      <li class="active"><a href="#" data-target="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
+      <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
+      <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
+      <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
+    </ul>
+
+    <div id="editor-tabs-content" class="tab-content is-first">
+
+      <div role="tabpanel" class="tab-pane active" id="question-settings">
+
+        <%= form_tag "#{url_for(edit_question_path(:question_id => @question.id))}#question-settings", :method => :post do %>
+
+            <div class="admin">
+
+              <h3>Úprava otázky</h3>
+
+              <dl class="dl-horizontal">
+                <dt><%= label_tag t('questions.labels.title') %></dt>
+                <dd><%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field" %></dd>
+
+                <dt><%= label_tag t('questions.labels.text') %></dt>
+                <dd><%= text_area_tag :edit_question_text, @question.question_text, class: "question_text_field" %></dd>
+
+                <dt><%= label_tag t('questions.labels.type') %></dt>
+                <dd><%= t("questions.labels.types.#{@question.type.downcase}") %></dd>
+
+                <dt><%= label_tag t('questions.labels.difficulty') %></dt>
+                <dd><%= select_tag(:difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
+                  [t("questions.labels.difficulties.#{difficulty}"), difficulty]
+                }, @question.difficulty), class: 'form-control') %></dd>
+
+                <dt><%= label_tag t('questions.labels.external_reference') %></dt>
+                <dd><%= @question.external_reference %></dd>
+
+                <dt><%= label_tag t('questions.labels.successfulness') %></dt>
+                <% successfulness = @question.successfulness %>
+                <dd><%= "#{successfulness[:rate]} % (#{successfulness[:solved]} úspešných z #{successfulness[:total]})" %></dd>
+
+                <dt></dt>
+                <dd>
+                  <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+                  <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+                </dd>
+              </dl>
+
+            </div>
+
+        <% end %>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="answer-settings">
+
+        <div class="row">
+
+          <div class="col-lg-12" id="answer-settings-col">
+
+            <%= form_tag "#{url_for(edit_answers_path(:question_id => @question.id))}#answer-settings", :method => :post do %>
+
+                <div class="admin">
+
+                  <h3>Úprava odpovedí</h3>
+
+                  <p><strong>Text otázky:</strong> <%= @question.question_text %></p>
+
+                  <table class="answers-table">
+                    <thead>
+                    <tr>
+                      <th class="answers-table-id">ID</th>
+                      <th>Text odpovede</th>
+                      <th class="answers-table-tools">Možnosti</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @question.answers.force_all.order('answers.id').each do |a|%>
+                        <tr class="<%= 'hidden' unless a.visible? %>">
+                          <td class="answers-table-id"><%= a.id %></td>
+                          <td>
+                            <% if a.learning_object.type == "EvaluatorQuestion" %>
+                                <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area" %>
+                            <% else %>
+                                <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer" %>
+                            <% end %>
+                          </td>
+                          <td class="answers-table-tools">
+                            <% unless a.learning_object.type == "EvaluatorQuestion" %>
+                                <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon', data: { type: 'correctness' }) %>
+                                <%= label_tag("correct_answer_#{a.id}", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                            <% end %>
+                            <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon', data: { type: 'visibility' }) %>
+                            <%= label_tag("visible_answer_#{a.id}", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+                            <%= link_to('<i class="icon-delete"></i>'.html_safe, delete_answer_path(answer_id: a.id),
+                                        :method => :post,
+                                        class: 'danger',
+                                        data: { toggle: 'tooltip', confirm: 'Naozaj chcete odstrániť túto odpoveď na otázku?' },
+                                        title: 'Odstrániť odpoveď') %>
+                          </td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+
+                  <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+                  <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+
+                </div>
+
+            <% end %>
+
+          </div>
+          <div class="col-lg-4" id="answer-feedback-col">
+            <div id="feedback-widget" class="content-widget">
+
+              <h3>Nová spätná väzba</h3>
+
+              <ul class="mini-list">
+              </ul>
+
+            </div>
+          </div>
+
+        </div>
+
+        <%= form_tag "#{url_for(add_answer_path(question_id: @question.id))}#answer-settings", :method => 'post' do %>
+            <div class="admin">
+              <h3>Pridanie novej odpovede</h3> <br/>
+              <%= label_tag :add_answer_text, "Zadaj nový text odpovede:" %>
+              <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede", class: 'simple-text' %>
+              <span class="options-label">Možnosti:</span>
+              <% unless @question.type == "EvaluatorQuestion" %>
+                  <%= check_box_tag("correct_answer", 1, @question.allow_new_correctness?, class: 'icon') %>
+                  <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                  &nbsp;&nbsp;
+              <% end %>
+              <%= check_box_tag("visible_answer", 1, @question.allow_new_visibility?, class: 'icon') %>
+              <%= label_tag("visible_answer", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+              <div class="form-buttons">
+                <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
+              </div>
+            </div>
+        <% end %>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="feedbacks">
+
+        <div class="admin">
+
+          <div id="feedback-refresh-button" class="empty">
+            <a class="btn" href="#" onclick="Admin.fetchFeedback();return false;">Obnoviť</a>
+          </div>
+
+          <ul class="simple-list" id="feedbacks-list" style="display: none;">
+          </ul>
+
+          <div id="feedbacks-empty">Ľutujeme, ale zdá sa, že sa nenašla žiadna spätná väzba.</div>
+
+        </div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="question-preview">
+
+        <%= render 'questions/question_core', hide_question_options: true %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function(){
+
+    Slider.setupEvaluatorSlider();
+
+    // Zapnutie markdownu.
+    new MarkdownPreview($('#edit_question_text'), {
+      className: 'admin-markdown-textarea admin-markdown-edit-textarea',
+      outerClassName: 'admin-markdown-preview'
+    });
+    $('.question-answer-area').each(function() {
+      new MarkdownPreview($(this), { autofix: true, className: 'admin-markdown-textarea', outerClassName: 'admin-markdown-preview' });
+    });
+
+    var tabs = $('#editor-tabs').find('a');
+    tabs.click(function (e) {
+      set_tab(tabs, $(this));
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    });
+
+    if (location.hash.length > 0) {
+      set_tab(tabs, tabs.filter('[data-target="'+location.hash+'"]'));
+    }
+
+    Admin.currentLoId = <%= @question.id %>;
+    Admin.fetchFeedback();
+    turbolinksSetInterval(function(){
+      Admin.fetchFeedback();
+    }, 30000);
+
+    <%# Overovanie korektnosti odpovedi. %>
+    <% if @question.type == "SingleChoiceQuestion" %>$('input[data-type="correctness"]').change(function(){ Admin.verifySingleChoice($(this)); });<% end %>
+    <% if @question.type == "EvaluatorQuestion" %>$('input[data-type="visibility"]').change(function(){ Admin.verifyEvaluator($(this)); });<% end %>
+
+  });
+</script>

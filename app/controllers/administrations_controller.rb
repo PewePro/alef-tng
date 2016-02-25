@@ -44,20 +44,6 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
-  def question_config
-    @course = Course.find(params[:course_id])
-    @questions = @course.learning_objects.eager_load(:answers)
-
-    feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
-    feedback_all_aggs = Feedback.select("learning_object_id").group(:learning_object_id).count
-    feedback_new_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
-    @feedbacks = {
-        all_aggs: feedback_all_aggs,
-        new_aggs: feedback_new_aggs,
-        new_count: feedback_new_count
-    }
-  end
-
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
     @answers = @question.answers
