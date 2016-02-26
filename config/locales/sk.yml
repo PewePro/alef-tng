@@ -1,2 +1,38 @@
-en:
+sk:
   hello: "Ahoj svet!"
+
+  global:
+    links:
+      cancel:       "Zrušiť"
+      submit:       "Odoslať"
+
+  homescreen:
+    links:
+      admin:        "Administrácia"
+      feedback:     "Spätná väzba"
+      login:        "Prihlásiť sa"
+      logout:       "Odhlásiť"
+
+  feedbacks:
+    label:
+      solved:                 "vyriešený"
+
+  questions:
+    labels:
+      difficulty:             "Náročnosť"
+      difficulties:
+        easy:                 "Ľahká"
+        hard:                 "Náročná"
+        impossible:           "Impossible"
+        medium:               "Stredná"
+        trivial:              "Triviálna"
+        unknown_difficulty:   "Neznáma"
+      external_reference:     "Identifikátor z CSV"
+      successfulness:         "Úspešnosť"
+      title:                  "Názov otázky"
+      text:                   "Text otázky"
+      type:                   "Typ"
+      types:
+        evaluatorquestion:    "evaluator"
+        multichoicequestion:  "výber z viacerých možností"
+        singlechoicequestion: "výber z jednej možnosti"

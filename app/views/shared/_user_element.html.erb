@@ -6,8 +6,8 @@
       </div>
       <%= text_area_tag :message, '', id: 'contact-textarea' %>
       <div id="contact-button-field">
-        <button id="contact-send-btn">Odoslať</button>
-        <button id="contact-cancel-btn">Zrušiť</button>
+        <button id="contact-send-btn"><%= t('global.links.submit') %></button>
+        <button id="contact-cancel-btn"><%= t('global.links.cancel') %></button>
       </div>
     </div>
 <% end %>
@@ -15,10 +15,10 @@
   <div class="mobile-content">
     <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
     <% if can? :manage, :administration %>
-        <%= link_to raw("<i class='icon-admin'></i>Administrácia"), administration_path, class: 'user-panel-button' %>
+        <%= link_to raw("<i class='icon-admin'></i>#{t('homescreen.links.admin')}"), administration_path, class: 'user-panel-button' %>
     <% end %>
 
-    <a class="user-panel-button" id="contact-btn"><i class="icon-mail"></i>Spätná väzba</a>
-    <%= link_to raw("<i class='icon-logout'></i>Odhlásiť"), destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>
+    <a class="user-panel-button" id="contact-btn"><i class="icon-mail"></i><%= t('homescreen.links.feedback') %></a>
+    <%= link_to raw("<i class='icon-logout'></i>#{t('homescreen.links.logout')}"), destroy_user_session_path, :method => :delete, class: 'user-panel-button' %>
   </div>
 </div>

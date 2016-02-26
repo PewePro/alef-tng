@@ -49,22 +49,26 @@ class AdministrationsController < ApplicationController
     @questions = @course.learning_objects.eager_load(:answers)
 
     feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
-    feedback_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
+    feedback_all_aggs = Feedback.select("learning_object_id").group(:learning_object_id).count
+    feedback_new_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
     @feedbacks = {
-        aggs: feedback_aggs,
-        count: feedback_new_count
+        all_aggs: feedback_all_aggs,
+        new_aggs: feedback_new_aggs,
+        new_count: feedback_new_count
     }
   end
 
   def edit_question_config
     @question = LearningObject.find_by_id(params[:question_id])
     @answers = @question.answers
+    @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
   end
 
   def edit_question
     LearningObject.find_by_id(params[:question_id]).update!(
         lo_id: params[:edit_question_name],
-        question_text: params[:edit_question_text]
+        question_text: params[:edit_question_text],
+        difficulty: params[:difficulty]
     )
 
     redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
@@ -95,7 +99,7 @@ class AdministrationsController < ApplicationController
   end
 
   def delete_answer
-    answer = Answer.find_by_id(params[:answer_id])
+    answer = Answer.force_all.find_by_id(params[:answer_id])
     answer.destroy
     redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
   end
@@ -181,6 +185,23 @@ class AdministrationsController < ApplicationController
   def mark_feedback_hidden
     Feedback.find(params[:id]).update(visible: false)
     render js: "Admin.fetchFeedback();"
+  end
+
+  # Ziska nasledujucu otazku (z kurzu), ku ktorej este nebola pridana spatna vazba.
+  def next_feedback_question
+    @course = Course.find(params[:id])
+
+    unless session.has_key?(:unresoved_feedbacks) && session[:unresoved_feedbacks].any?
+      session[:unresoved_feedbacks] = @course.feedbackable_questions
+    end
+
+    lo = LearningObject.where(id: session[:unresoved_feedbacks].pop).first
+    if lo
+      redirect_to(edit_question_config_path(question_id: lo.id))
+    else
+      redirect_to(question_config_path(@course.id))
+    end
+
   end
 
   def add_question_concept

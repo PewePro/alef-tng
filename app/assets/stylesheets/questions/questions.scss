@@ -32,6 +32,10 @@
   padding: 0.5rem 1rem 0.5rem;
   @include bold;
   line-height: 1.5rem;
+
+  .question-agree {
+    text-align: center;
+  }
 }
 
 #question-evaluation-message {
@@ -70,18 +74,55 @@
 }
 
 #question-feedback {
-  margin: 0 1rem;
   padding: 1rem 0;
-}
 
-.question-feedback-name {
-  text-transform: lowercase;
-  font-variant: small-caps;
-  @include bold;
-}
+  h3 {
+    margin: 0 1rem;
+  }
 
-.question-feedback-message {
-  margin: 1rem 0;
-  font-size: 0.85rem;
-  display: none;
+  .question-feedback-message {
+    border-top: 1px solid $gray-lighter;
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    display: none;
+
+    .question-feedback-meta {
+      color: $gray-dark;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .question-feedback-name {
+      @include bold;
+      margin-right: 5px;
+    }
+
+    .bull {
+      margin: 0 5px;
+
+      @media screen and (max-width: 480px) {
+        display: none;
+      }
+    }
+
+    .question-feedback-time {
+      color: $gray-light;
+
+      @media screen and (max-width: 480px) {
+        display: block;
+      }
+    }
+
+    .question-feedback-solved {
+      float: right;
+      color: $green;
+    }
+  }
+
+  #question-feedback-warning {
+    padding: 0 1rem;
+  }
+
+
 }

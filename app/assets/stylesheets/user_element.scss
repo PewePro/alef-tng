@@ -40,6 +40,7 @@
 
 .user-element-cta {
   cursor: pointer;
+  float: right;
 }
 
 #contact {
@@ -48,7 +49,7 @@
   height: 100%;
   position: fixed;
   z-index: 300;
-  bottom: 100%;
+  bottom: 120%;
   transition: bottom 500ms ease-out;
   padding: 1rem;
   box-sizing: border-box;
