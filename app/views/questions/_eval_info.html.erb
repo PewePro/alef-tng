@@ -1,22 +1,18 @@
 
 <div class="nav-info mobile-content">
-
-  <% if @room.state.to_s != "used" %>
-      <%if (@room.score < @room.score_limit)%>
-        <%= "Na otvorenie novej miestnosti je potrebné dosiahnuť 100%"%>
+    <% if !(current_user.show_solutions) %>
+      <% if @room.state.to_s != "used" %>
+          <%if (@room.score < @room.score_limit)%>
+            <%= "Dosiahnuté skóre:"%>
+          <%else%>
+            <%= "Gratulujeme, dosiahli ste minimálne skóre!"%>
+          <%end%>
       <%else%>
-        <%= "Tento pokus je úspešný"%>
+          <%= "Tento test ste už úspešne vyriešili." %>
       <%end%>
-  <%else%>
-      <%= "Túto miestnosť ste už na otvorenie použili" %>
-  <%end%>
-  <% if (@room.score<= @room.score_limit)%>
-  <div class="week-progressbar" data-number-all="<%= @room.score_limit.to_i %>" data-number-done="<%= @room.score.to_i %>">
-    <div class="progressbar-caption"></div>
-  </div>
-  <%else%>
-      <div class="week-progressbar" data-number-all="<%= @room.score_limit.to_i %>" data-number-done="<%= @room.score_limit.to_i %>">
+      <div class="question-progressbar" data-number-all="<%= @room.score_limit %>" data-number-done="<%= @room.score %>">
         <div class="progressbar-caption"></div>
       </div>
-  <%end%>
+    <%end%>
+  <%= @number_of_question.to_s + ". otázka z " + @room.learning_objects.count.to_s %>
 </div>

@@ -24,7 +24,7 @@
 
 }
 
-.card_open .week-progressbar {
+.card_open .room-progressbar {
   border: 1px solid $gray;
   margin: 1rem 0 0.5rem;
 }
@@ -53,6 +53,11 @@
   border: 1px solid $gray;
   margin: 1rem 0 0.5rem;
 }
+.card .room-progressbar {
+  border: 1px solid $gray;
+  margin: 1rem 0 0.5rem;
+}
+
 
 .week-current {
   color: $red;

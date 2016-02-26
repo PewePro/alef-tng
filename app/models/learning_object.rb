@@ -22,9 +22,9 @@ class LearningObject < ActiveRecord::Base
       self.difficulty == "#{diff}"
     end
   end
-  def next(room_id)
+  def next(room_id,actual_question_id)
     id_array = []
-    @results=RoomsLearningObject.get_id_do_not_viseted(room_id)
+    @results=RoomsLearningObject.get_id_do_not_viseted_minus_actual(room_id,actual_question_id)
     @results.each do |r|
       id_array.push(r['learning_object_id'].to_i)
     end

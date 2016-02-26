@@ -5,35 +5,45 @@
 
 
 <div class="mobile-content main">
-  <% @learning_objects.each do |lo| %>
-      <a href="<%=
-          url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => @week.id, :room_number => @room.id
-      %>" class="card">
-        <div class="question-card-content">
-          <h3 class="card-header"><%= lo.lo_id %></h3>
-          <p class="card-text">
-            <%= lo.question_text %>
-          </p>
-        </div>
-        <div class="card-info">
-          <%
-             result = @results.find {|r| r["result_id"] == lo.id.to_s}
-             unless result.nil?
-               views = result['visited']
-               done = result['solved']
-             end
-             unless views.nil?
-          %>
-              <i class="icon-seen"></i> Videné (<%= views %>x)
-          <% else %>
-              <i class="icon-new"></i> Nové
-          <%
-             end
-             unless done.nil? or done.to_i.zero?
-          %>
-              <i class="icon-done"></i> Vyriešené (<%= done %>x)
-          <% end %>
-        </div>
-      </a>
-  <% end %>
+  <% p current_user.show_solutions.to_s %>
+  <% if (current_user.show_solutions && @room.state == "do_not_use")  %>
+      <div id="question-options-evaluate">
+        <div class="question-options-message" id="question-evaluation-next">Tento test v režime Učenie<br>nemáte sprístupnený!</div>
+        <a href="<%=
+            url_for :controller => 'weeks', :action => 'show'
+        %>" class="question-button question-button-red" id="question-evaluation-next" >Zmeň režim</a>
+      </div>
+  <%else%>
+      <% @learning_objects.each do |lo| %>
+          <a href="<%=
+              url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => @week.id, :room_number => @room.id
+          %>" class="card">
+            <div class="question-card-content">
+              <h3 class="card-header"><%= lo.lo_id %></h3>
+              <p class="card-text">
+                <%= lo.question_text %>
+              </p>
+            </div>
+            <div class="card-info">
+              <%
+                 result = @results.find {|r| r["result_id"] == lo.id.to_s}
+                 unless result.nil?
+                   views = result['visited']
+                   done = result['solved']
+                 end
+                 unless views.nil?
+              %>
+                  <i class="icon-seen"></i> Videné (<%= views %>x)
+              <% else %>
+                  <i class="icon-new"></i> Nové
+              <%
+                 end
+                 unless done.nil? or done.to_i.zero?
+              %>
+                  <i class="icon-done"></i> Vyriešené (<%= done %>x)
+              <% end %>
+            </div>
+          </a>
+      <% end %>
+  <%end%>
 </div>

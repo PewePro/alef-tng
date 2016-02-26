@@ -12,12 +12,12 @@
   %>
       <% if r.state == "do_not_use" %>
               <a href="<%=
-                  url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week_number
+                  url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week.number
               %>" class="card_open ">
-                <h3 class="card-header"><%= r.name %><%= ' (otvor novú miestnosť)' if r.state == "do_not_use" %></h3>
+                <h3 class="card-header"><%= r.name %><%= ' (neúspešný)' if r.state == "do_not_use" %></h3>
                 <%= r.decsription.to_s %>
                 <% if r.question_count > 0 %>
-                    <div class="week-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done @user.id %>">
+                    <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
                       <div class="progressbar-caption"></div>
                     </div>
                 <% else %>
@@ -26,12 +26,12 @@
               </a>
       <% else %>
             <a href="<%=
-                url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week_number
+                url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week.number
             %>" class="card ">
-              <h3 class="card-header"><%= r.name %><%= ' (otvor novú miestnosť)' if r.state == "do_not_use" %></h3>
+              <h3 class="card-header"><%= r.name %><%= ' (neúspešný)' if r.state == "do_not_use" %></h3>
               <%= r.decsription.to_s %>
               <% if r.question_count > 0 %>
-                  <div class="week-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done @user.id %>">
+                  <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
                     <div class="progressbar-caption"></div>
                   </div>
               <% else %>

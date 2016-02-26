@@ -4,7 +4,7 @@
 %>
 <div class="nav-info mobile-content">
   <%= start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")  %>
-  <div class="week-progressbar" data-number-all="<%= @all %>" data-number-done="<%= @used %>">
+  <div class="week-progressbar" data-number-all="<%= @week.rooms_count %>" data-number-done="<%= @week.rooms_count_done current_user.id %>">
     <div class="progressbar-caption"></div>
   </div>
 

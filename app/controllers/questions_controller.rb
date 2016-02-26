@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
     @question = LearningObject.find(params[:id])
     rel = @question.seen_by_user(user_id)
     gon.userVisitedLoRelationId = rel.id
-    @next_question = @question.next(params[:room_number])
+    @next_question = @question.next(params[:room_number],@question.id)
     @previous_question = @question.previous(params[:room_number])
     @room_number = params[:room_number]
     @week_number= params[:week_number]
@@ -23,6 +23,16 @@ class QuestionsController < ApplicationController
       gon.solution = solution
     end
 
+    if !(current_user.show_solutions)
+      if @room.answered(@question.id,@room.id)
+        @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id) + 1
+      else
+        @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id)
+      end
+    else
+      @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
+    end
+
     @feedbacks = @question.feedbacks.includes(:user)
   end
 
@@ -30,7 +40,6 @@ class QuestionsController < ApplicationController
     weight_solved = 5
     weight_failed = 2
     weight_dont_now = 1
-
     @setup = Setup.take
     @week = @setup.weeks.find_by_number(params[:week_number])
 
@@ -46,9 +55,10 @@ class QuestionsController < ApplicationController
       failed = result['failed']
       donotnow = result['donotnow']
     end
-    p "solved " + solved.to_s
-    p "failed " + failed.to_s
-    p "donotnow "  + donotnow.to_s
+    p "BBBBBBBBBBBBBBBBBBBBBBBB"
+    p solved
+    p failed
+    p donotnow
 
     room = Room.find(params[:room_number])
 
@@ -61,35 +71,33 @@ class QuestionsController < ApplicationController
     importance = lo.importance.to_s
     imp_value = 0.0
 
-    if difficulty.to_s == "easy"
-      dif_value = 1
-    elsif difficulty.to_s == "trivial"
-      dif_value = 2
+    if difficulty.to_s == "trivial"
+      dif_value = 0.01
+    elsif difficulty.to_s == "easy"
+      dif_value = 0.25
     elsif difficulty.to_s == "medium"
-      dif_value = 3
+      dif_value = 0.5
     elsif difficulty.to_s == "hard"
-      dif_value = 4
-    elsif difficulty.to_s == "very hard"
-      dif_value = 5
+      dif_value = 0.75
+    elsif difficulty.to_s == "impossible"
+      dif_value = 1
     else
-      dif_value = 3
+      dif_value = 0.5
     end
 
     if importance.to_s == "1"
-      imp_value = 1
+      imp_value = 0
     elsif importance.to_s == "2"
-      imp_value = 2
+      imp_value = 0.5
     elsif importance.to_s == "3"
-      imp_value = 3
+      imp_value = 1
     else
-      imp_value = 2
+      imp_value = 0.5
     end
-
-    dif_value = dif_value.to_f / 3
-    imp_value = imp_value.to_f / 2
 
     dif_compute = 0.0
     results = Levels::Preproces.preproces_data(@setup)
+
     all = 0
     do_not_know_value = 0
     results.each do |r|
@@ -103,7 +111,6 @@ class QuestionsController < ApplicationController
 
     if all!= 0
       dif_compute = do_not_know_value.to_f / all.to_f
-      dif_compute = dif_compute * 5 / 3
       dif_result = (dif_value + dif_compute) / 2.0
     else
       dif_result = dif_value
@@ -115,16 +122,12 @@ class QuestionsController < ApplicationController
     p "dif_compute " + dif_compute.to_s
 
     if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
-      p params[:commit]
-      p result
+      p "som dnukaaaa"
       if params[:commit] == 'dont_know'
-        p "do_not_know"
         score = weight_dont_now * imp_value *dif_result
       elsif (params[:commit] == 'send_answer' and result)
-        p "solved"
         score = weight_solved * imp_value * dif_result
       elsif (params[:commit] == 'send_answer' and not result)
-        p "failed"
         score = weight_failed * imp_value * dif_result
       end
     end
@@ -191,28 +194,32 @@ class QuestionsController < ApplicationController
   end
 
   def next
-   # setup = Setup.take
-   # week = setup.weeks.find_by_number(params[:week_number])
-   # RecommenderSystem::Recommender.setup(current_user.id,week.id)
-   # best = RecommenderSystem::HybridRecommender.new.get_best
-   # los = LearningObject.find(best[0])
 
     @room = Room.find_by_id(params[:room_number])
 
-    id_array = []
-    @results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
-    @results.each do |r|
-      id_array.push(r['learning_object_id'].to_i)
-    end
+    if !(current_user.show_solutions)
+      id_array = []
+      @results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
+      @results.each do |r|
+        id_array.push(r['learning_object_id'].to_i)
+      end
 
-    if (id_array.empty?)
-      lo = @room.learning_objects.all.distinct
-      lo.each do |l|
-        id_array.push(l.id)
+      if (id_array.empty?)
+        lo = @room.learning_objects.all.distinct
+        lo.each do |l|
+          id_array.push(l.id)
+        end
+      end
+
+      los = @room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
+    else
+      lo_id = params[:lo_id]
+      los = @room.learning_objects.where("learning_object_id > ?",lo_id).order(id: :asc).first
+      if los.nil?
+        los = @room.learning_objects.order(id: :asc).first
       end
     end
 
-    los = @room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
     redirect_to action: "show", id: los.url_name, week_number: params[:week_number]
   end
 end

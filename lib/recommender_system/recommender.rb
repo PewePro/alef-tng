@@ -1,16 +1,17 @@
 module RecommenderSystem
   class Recommender
 
-    def self.setup(user_id, week_id)
+    def self.setup(user_id, week_id, type_question)
       @@user_id = user_id
       @@week_id = week_id
+      @@type_question = type_question
       @@los = Hash.new
       @@rels = Hash.new
     end
 
     def self.learning_objects
       if @@los.empty?
-        @@los = Week.find(@@week_id).learning_objects.includes(:concepts).distinct
+        @@los = Week.find(@@week_id).free_los_by_type_of_question(@@type_question,@@user_id)
       end
       @@los
     end

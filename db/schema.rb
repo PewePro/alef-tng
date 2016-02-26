@@ -72,7 +72,6 @@ ActiveRecord::Schema.define(version: 20151226105657) do
   create_table "irt_values", force: :cascade do |t|
     t.float   "difficulty"
     t.float   "discrimination"
-    t.integer "user_id"
     t.integer "learning_object_id"
   end
 
@@ -118,8 +117,6 @@ ActiveRecord::Schema.define(version: 20151226105657) do
     t.string  "name"
     t.string  "decsription"
     t.string  "state",         default: "do_not_use"
-    t.boolean "defined",       default: false
-    t.string  "difficulty",    default: "unknown_difficulty"
     t.integer "number_of_try"
     t.float   "score",         default: 0.0
     t.float   "score_limit",   default: 0.0
@@ -203,7 +200,6 @@ ActiveRecord::Schema.define(version: 20151226105657) do
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
   add_foreign_key "irt_values", "learning_objects"
-  add_foreign_key "irt_values", "users"
   add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "users"
   add_foreign_key "recommendation_linkers", "weeks"

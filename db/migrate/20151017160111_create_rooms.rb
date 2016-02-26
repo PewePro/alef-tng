@@ -6,8 +6,6 @@ class CreateRooms < ActiveRecord::Migration
       t.string :name
       t.string :decsription
       t.string :state, default: 'do_not_use'
-      t.boolean :defined, default: FALSE
-      t.string :difficulty, :default => LearningObject::DIFFICULTY[:UNKNOWN]
       t.integer :number_of_try
       t.float :score, default: 0.to_f
       t.float :score_limit, default: 0.to_f

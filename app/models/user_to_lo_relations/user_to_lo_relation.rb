@@ -52,11 +52,11 @@ class UserToLoRelation < ActiveRecord::Base
         INNER JOIN "concepts_weeks" ON "concepts"."id" = "concepts_weeks"."concept_id"
         INNER JOIN "weeks" ON "concepts_weeks"."week_id" = "weeks"."id"
         INNER JOIN "rooms" ON "rooms"."week_id" = "weeks"."id"
-        WHERE "concepts_weeks"."week_id" = '+week_id.to_s+' AND "rooms"."id" = '+room_id.to_s+'
+        WHERE "concepts_weeks"."week_id" = '+week_id.to_s+'
         GROUP BY learning_objects.id
       ) AS los
       LEFT JOIN user_to_lo_relations as rels ON rels.learning_object_id = los.id
-      WHERE user_id = '+user_id.to_s+' AND number_of_try = '+number_of_try.to_s+'
+      WHERE user_id = '+user_id.to_s+' AND number_of_try = '+number_of_try.to_s+' AND room_id = '+room_id.to_s+'
       GROUP BY los.id
     '
     ActiveRecord::Base.connection.execute(sql)
