@@ -4,12 +4,12 @@ job_type :runner_rbenv, "export PATH=/home/aleftng/.rbenv/shims:/home/aleftng/.r
                         "cd :path && RAILS_ENV=:environment bundle exec rollbar-rails-runner ':task' :output" #
 
 TIME = {
-    'production': '3:00am',
-    'staging': '4:00am',
-    'sandbox': '5:00am'
+    production: '3:00am',
+    staging: '4:00am',
+    sandbox: '5:00am'
 }
 
-every :day, :at => TIME[@environment] do
+every :day, :at => TIME[@environment.to_sym] do
       runner_rbenv "RecommenderSystem::ActivityRecommender.update_table"
 end
 
