@@ -9,7 +9,6 @@ class RoomsController < ApplicationController
     @next_room = @room.next(current_user.id,@week.id)
     @previous_room = @room.previous(current_user.id,@week.id)
 
-
     @learning_objects = @room.learning_objects.order(id: :asc).distinct
     @results = UserToLoRelation.get_results(current_user.id,@week.id)
 
@@ -23,7 +22,7 @@ class RoomsController < ApplicationController
 
     weight_comment = 3
 
-    @value = @room.score_limit
+    @value = @room.score_limit.to_f
 
     @week=Week.find_by_id(@room.week_id)
 
@@ -33,9 +32,6 @@ class RoomsController < ApplicationController
       @all = (@week.learning_objects.distinct.count / 10).to_i + 1
     end
     @count = @week.rooms.where("user_id = ?", current_user.id).count
-    p "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    p @all
-    p @count
 
     if @room.state.to_s != "used"
       score1 = 0
@@ -102,11 +98,7 @@ class RoomsController < ApplicationController
         end
       end
 
-      @score = (@room.score + score1).to_f
-      p "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      p score1
-      p @score.to_s
-
+      @score = @room.score + score1
 
       if (@all <= @count && @room.score + score1 >= @value)
         @room.update_attribute(:state, "used")
@@ -116,14 +108,12 @@ class RoomsController < ApplicationController
         @room.update_attribute(:score, (@room.score + score1).to_d)
       else
         val = Levels::RoomsCreation.compute_limit(learning_objects.count,learning_objects,@setup)
-        p "aaaaaaaaaaaannnnnbbbbbbbbbbbbbb"
-        p val
         @room.update_attribute(:score_limit, val.to_d)
         @room.update_attribute(:score, 0.to_d)
       end
     else
       @room_for_open = @week.rooms.where("state = ?","do_not_use").first
-      @score = @room.score
+      @score = @room.score.to_f
     end
 
     @room.update_attribute(:number_of_try, (@room.number_of_try + 1) )

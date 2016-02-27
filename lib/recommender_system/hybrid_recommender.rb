@@ -28,7 +28,6 @@ module RecommenderSystem
     # Necha prebehnut vsetky odporucace a ich vysledky zratava dokopy
     unless config.nil? or config.recommenders_options.nil?
       config.recommenders_options.includes(:recommender).each do |r|
-        p "RecommenderSystem::#{r.recommender.name}Recommender"
         r_class = Object.const_get "RecommenderSystem::#{r.recommender.name}Recommender"
         result = r_class.new.get_list
         result.each do |id, value|

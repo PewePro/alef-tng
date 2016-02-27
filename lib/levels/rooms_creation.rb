@@ -11,7 +11,6 @@ module Levels
       order = order.shuffle
       order=order[0..(number_lo -1)]
 
-
       name = "Miestnosť č. " + (@week.rooms.count + 1).to_s
       room = Room.create(:name => name,:week_id => @week.id, :user_id => user_id, :score => 0.0.to_f, :number_of_try => 0)
 
@@ -31,7 +30,6 @@ module Levels
       sum_imp = 0
 
       for i in 0..(number_lo-1)
-        p i.to_s + " otazka"
         l = learning_objects[i]
         lo = LearningObject.where("id = ?", l.id).first
 
@@ -54,8 +52,6 @@ module Levels
           dif_value = 0.5
         end
 
-        p "dif_value " + dif_value.to_s
-
         dif_compute = 0.0
         dif_result = 0.0
         results = Levels::Preproces.preproces_data(setup)
@@ -73,13 +69,10 @@ module Levels
 
         if all!= 0
           dif_compute = do_not_know_value.to_f / all.to_f
-          p "dif_compute " + dif_compute.to_s
           dif_result = (dif_value + dif_compute) / 2.0
         else
           dif_result = dif_value
         end
-
-        p "dif_result " + dif_result.to_s
 
         sum_dif +=dif_result
 
@@ -93,21 +86,12 @@ module Levels
           imp_value = 0.5
         end
 
-        p "imp_value " + imp_value.to_s
-
         sum_imp +=imp_value
 
       end
 
-      p "sum_dif " + sum_dif.to_s
-      p "sum_imp " + sum_imp.to_s
-      p "number_lo " + number_lo.to_s
-
       avg_dif = sum_dif.to_f / number_lo.to_f
       avg_imp = sum_imp.to_f / number_lo.to_f
-
-      p "avg_img " + avg_imp.to_s
-      p "avg_dif " + avg_dif.to_s
 
       number_questions * weight_solved * avg_imp * avg_dif
 
@@ -163,10 +147,7 @@ module Levels
       number_of_evaluator_q = @week.free_los_by_type_of_question("EvaluatorQuestion",user_id).count
       number_of_choice_q = @week.free_los_by_type_of_question("ChoiceQuestion",user_id).count
       part_evaluator = number_of_evaluator_q.to_f / (number_of_evaluator_q + number_of_choice_q).to_f
-      p "part_evaluator " + part_evaluator.to_s
       result_number_evaluator = (number_lo * part_evaluator).round
-
-      p "result_number_evaluator " + result_number_evaluator.to_s
 
       if (result_number_evaluator > number_of_evaluator_q)
         evaluator = number_of_evaluator_q
@@ -184,13 +165,6 @@ module Levels
           choice +=1
         end
       end
-
-      p "numberlo " + number_lo.to_s
-      p "dostupne evaluator " + number_of_evaluator_q.to_s
-      p "dostupne choice " + number_of_choice_q.to_s
-
-      p "evaluator " + evaluator.to_s
-      p "choice " + choice.to_s
 
       if (evaluator > 0)
         RecommenderSystem::Recommender.setup(user_id,week_id,"EvaluatorQuestion")
@@ -214,9 +188,6 @@ module Levels
         sorted_los2 = sorted_los2[0..(choice -1)]
         @sorted_los = @sorted_los + sorted_los2
       end
-
-      p "akskkskskskskaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-      p @sorted_los
 
       score_limit = compute_limit(number_lo,@sorted_los,@setup)
       name = "Test " + @week.number.to_s + "." + (@week.rooms.where(user_id: user_id).count + 1).to_s

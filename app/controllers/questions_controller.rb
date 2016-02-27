@@ -55,11 +55,6 @@ class QuestionsController < ApplicationController
       failed = result['failed']
       donotnow = result['donotnow']
     end
-    p "BBBBBBBBBBBBBBBBBBBBBBBB"
-    p solved
-    p failed
-    p donotnow
-
     room = Room.find(params[:room_number])
 
     if params[:commit] == 'send_answer'
@@ -117,12 +112,8 @@ class QuestionsController < ApplicationController
     end
 
     score = 0.0
-    p "dif_value " + dif_value.to_s
-    p "imp_value " + imp_value.to_s
-    p "dif_compute " + dif_compute.to_s
 
     if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
-      p "som dnukaaaa"
       if params[:commit] == 'dont_know'
         score = weight_dont_now * imp_value *dif_result
       elsif (params[:commit] == 'send_answer' and result)
@@ -131,9 +122,6 @@ class QuestionsController < ApplicationController
         score = weight_failed * imp_value * dif_result
       end
     end
-
-    p "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    p score
 
     room.update_attribute(:score, (room.score + score).to_d)
 
