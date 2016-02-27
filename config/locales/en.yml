@@ -21,3 +21,39 @@
 
 en:
   hello: "Hello world"
+
+  global:
+    links:
+      cancel:       "Cancel"
+      submit:       "Submit"
+
+  homescreen:
+    links:
+      admin:        "Admin"
+      feedback:     "Feedback"
+      login:        "Sign in"
+      logout:       "Sign out"
+
+  feedbacks:
+    label:
+      solved:                 "solved"
+
+  questions:
+    labels:
+      difficulty:             "Difficulty"
+      difficulties:
+        easy:                 "Easy"
+        hard:                 "Hard"
+        impossible:           "Impossible"
+        medium:               "Medium"
+        trivial:              "Trivial"
+        unknown_difficulty:   "Unknown"
+      external_reference:     "CSV identifier"
+      successfulness:         "Successfulness"
+      title:                  "Title"
+      text:                   "Text"
+      type:                   "Type"
+      types:
+        evaluatorquestion:    "evaluator"
+        multichoicequestion:  "multi-choice"
+        singlechoicequestion: "single-choice"

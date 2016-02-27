@@ -11,7 +11,7 @@
 
 <div class="mobile-content main">
   <% @weeks.each do |w|
-     if @setup.show_all || Date.today > w.start_at
+     if @setup.show_all || Date.today >= w.start_at
   %>
       <a href="<%=
           url_for controller: 'weeks', action: 'show', week_number: w.number

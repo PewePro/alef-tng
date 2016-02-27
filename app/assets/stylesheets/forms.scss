@@ -1,0 +1,45 @@
+input[type="checkbox"].icon {
+  display: none !important;
+
+  &+ label.icon-checkbox {
+    margin-left: 0;
+    margin-right: 0;
+    cursor: pointer;
+  }
+
+  &+ label.icon-checkbox:before {
+    content: '\e818';
+    color: $gray;
+  }
+
+  &:checked + label.icon-checkbox:before {
+    content: '\e816';
+    color: #000000;
+  }
+
+  &+ label.icon-eyebox:before {
+    content: '\e814';
+  }
+
+  &:checked + label.icon-eyebox:before {
+    content: '\e803';
+  }
+
+}
+
+input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"]:disabled {
+  background-color: $gray-lighter !important;;
+  color: $gray-light !important;
+}
+
+/* Obycajne tlacidla */
+.btn {
+  background-color: $gray-lighter;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.5s;
+
+  &:hover {
+    background-color: $gray-light;
+  }
+}

@@ -19,3 +19,14 @@ function bindIfNotBounded(el, ev, action) {
         $(el).on(ev, action);
     }
 }
+
+// @source http://product.reverb.com/2015/04/09/fun-with-setinterval-and-turbolinks/
+function turbolinksSetInterval(intervalFunction, seconds) {
+    var interval = setInterval(intervalFunction, seconds);
+    $(document).on('page:change', removeInterval);
+
+    function removeInterval() {
+        clearInterval(interval);
+        $(document).off('page:change', removeInterval);
+    }
+}

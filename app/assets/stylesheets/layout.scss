@@ -2,6 +2,20 @@ body {
   @include dark-white;
 }
 
+blockquote {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.danger {
+  color: $red-light;
+}
+
 .mobile-content {
   margin: 0 auto;
   width: 100%;
@@ -30,4 +44,178 @@ body {
 hr {
   display: block; height: 1px;
   border: 0; border-top: 1px solid $gray;
+}
+
+.container {
+  max-width: 990px;
+  margin: 2rem auto;
+}
+
+.simple-list, .mini-list {
+  background-color: $white;
+  border: 1px solid $gray;
+  border-radius: 6px;
+  margin: 10px;
+  padding: 0;
+  list-style: none;
+  line-height: normal;
+
+  .list-item {
+    border-bottom: 1px solid $gray;
+    padding: 1.0rem;
+    margin: 0;
+    line-height: normal;
+
+    &:first-child {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-bottom: none;
+    }
+
+    .meta {
+      font-size: 0.8em;
+      color: $gray;
+      margin-top: 5px;
+    }
+
+    .tools {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: $gray;
+
+      .status {
+        background-color: #fafafa;
+        border-radius: 12px;
+        padding: 2px 8px;
+        color: $gray-darker;
+        font-size: 0.80em;
+        text-transform: uppercase;
+
+        &.status-success {
+          background-color: $green-lighter;
+          color: #000000;
+        }
+
+        &.status-danger {
+          background-color: $red-lighter;
+          color: #000000;
+        }
+      }
+
+      a {
+        color: $red-light;
+
+        &:hover {
+          color: $red;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.simple-list {
+  .list-item-highlighted {
+    background-color: #fafafa;
+  }
+}
+
+.mini-list {
+
+  .list-item {
+    padding: 0.5rem;
+  }
+
+}
+
+.content-widget {
+  background-color: #fafafa;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 10px;
+
+  .show-all {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+  }
+
+  .simple-list, .mini-list {
+    margin: 5px 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+}
+
+.row {
+  &:after, &:before {
+    display: table;
+    content: " ";
+  }
+  &:after {
+    clear: both;
+  }
+
+  .col, .col-lg-4, .col-lg-8, .col-lg-12 {
+    float: left;
+    transition: width 0.5s ease-in-out;
+  }
+
+  .col-lg-12 {
+    width: 100%;
+  }
+  .col-lg-8 {
+    width: 66%;
+  }
+  .col-lg-4 {
+    width: 33%;
+  }
+}
+
+.pull-right {
+  float: right;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// @via http://getbootstrap.com/
+dl {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+
+  .dl-horizontal dt {
+    float: left;
+    width: 160px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 10px;
+  }
+
+  .dl-horizontal dd {
+    margin-left: 180px;
+    margin-top: 10px;
+  }
+
 }

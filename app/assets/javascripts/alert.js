@@ -10,4 +10,4 @@ var Alert = {
             text: message
         }).appendTo(outerDiv);
     }
-}
+};

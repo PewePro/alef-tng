@@ -32,6 +32,11 @@
 @import "card";
 @import "alerts";
 @import "toggle";
+@import "forms";
+@import "tabs";
+@import "bootstrap.tooltips";
+
+@import "markdown_preview";
 
 @import "login";
 @import "user_element";
@@ -41,3 +46,9 @@
 @import "questions/questions_answers";
 @import "questions/evaluator";
 @import "administration";
+
+// nprogress
+$nprogress-color: $gray-lighter;
+$nprogress-height: 4px;
+@import 'nprogress';
+@import 'nprogress-bootstrap';

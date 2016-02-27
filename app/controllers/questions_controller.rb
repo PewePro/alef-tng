@@ -34,6 +34,7 @@ class QuestionsController < ApplicationController
     end
 
     @feedbacks = @question.feedbacks.includes(:user)
+    @feedbacks = @question.feedbacks.visible.includes(:user)
   end
 
   def eval_question

@@ -1,7 +1,16 @@
-job_type :runner_rbenv, "export PATH=/home/aleftng/.rbenv/shims:/home/aleftng/.rbenv/bin:/usr/bin:$PATH; eval \"$(rbenv init -)\"; cd :path && bundle exec rails runner -e :environment ':task' :output"
+job_type :runner_rbenv, "export PATH=/home/aleftng/.rbenv/shims:/home/aleftng/.rbenv/bin:/usr/bin:$PATH;"\
+                        "eval \"$(rbenv init -)\";"\
+                        "eval `/home/aleftng/load_env.rb`;"\
+                        "cd :path && RAILS_ENV=:environment bundle exec rollbar-rails-runner ':task' :output" #
 
-every :day, :at => '5:00am' do
-  runner_rbenv "RecommenderSystem::ActivityRecommender.update_table"
+TIME = {
+    production: '3:00am',
+    staging: '4:00am',
+    sandbox: '5:00am'
+}
+
+every :day, :at => TIME[@environment.to_sym] do
+      runner_rbenv "RecommenderSystem::ActivityRecommender.update_table"
 end
 
 # Use this file to easily define all of your cron jobs.

@@ -1,4 +1,5 @@
 class AdministrationsController < ApplicationController
+
   authorize_resource :class => false
   def index
     @setups = Setup.all
@@ -29,15 +30,103 @@ class AdministrationsController < ApplicationController
   end
 
   def setup_config_relations
+    setup = Setup.find(params[:setup_id])
     relations = params[:relations]
     relations.each do |concept, weeks|
       c = Concept.find(concept)
-      w = Setup.find(params[:setup_id]).weeks.find(weeks.keys)
+      w = setup.weeks.find(weeks.keys)
       c.weeks = w
+    end
+    # clear all concepts with nothing checked
+    (setup.course.concepts.all - Concept.find(relations.keys)).each do |c|
+      c.weeks = []
     end
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
+  def question_config
+    @course = Course.find(params[:course_id])
+    @questions = @course.learning_objects.eager_load(:answers)
+
+    feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
+    feedback_all_aggs = Feedback.select("learning_object_id").group(:learning_object_id).count
+    feedback_new_aggs = feedback_new_count > 0 ? Feedback.select("learning_object_id").where(accepted: nil).group(:learning_object_id).count : {}
+    @feedbacks = {
+        all_aggs: feedback_all_aggs,
+        new_aggs: feedback_new_aggs,
+        new_count: feedback_new_count
+    }
+  end
+
+  def edit_question_config
+    @question = LearningObject.find_by_id(params[:question_id])
+    @answers = @question.answers
+    @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
+  end
+
+  def edit_question
+    LearningObject.find_by_id(params[:question_id]).update!(
+        lo_id: params[:edit_question_name],
+        question_text: params[:edit_question_text],
+        difficulty: params[:difficulty]
+    )
+
+    redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
+  end
+
+  # Ulozi zmeny v odpovediach na otazky.
+  def edit_answers
+    lo = LearningObject.find_by_id(params[:question_id])
+
+    begin
+      ActiveRecord::Base.transaction do
+        lo.answers.force_all.each do |a|
+          a.update!(
+              is_correct: !!params["correct_answer_#{a.id}"],
+              visible: !!params["visible_answer_#{a.id}"],
+              answer_text: params["edit_answer_text_#{a.id}"]
+          )
+        end
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
+    end
+
+    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložené."
+  end
+
+  def delete_answer
+    answer = Answer.force_all.find_by_id(params[:answer_id])
+    answer.destroy
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
+  end
+
+  def add_answer
+    lo = LearningObject.find_by_id(params[:question_id])
+
+    begin
+      ActiveRecord::Base.transaction do
+        correct = !!params[:correct_answer]
+        visible = !!params[:visible_answer]
+        Answer.create!({
+                           answer_text: params[:add_answer_text],
+                           learning_object_id: params[:question_id],
+                           is_correct: correct,
+                           visible: visible
+                       })
+        lo.validate_answers!
+      end
+    rescue AnswersCorrectnessError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
+    rescue AnswersVisibilityError
+      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
+    end
+
+    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
+  end
 
   def download_statistics
     @setup = Setup.find(params[:_setup_id])
@@ -54,6 +143,65 @@ class AdministrationsController < ApplicationController
   def delete_question_concept
     question = LearningObject.find(params[:question_id])
     Concept.find(params[:concept_id]).learning_objects.delete(question)
+  end
+
+  # Pouziva sa pre vzdialene nacitanie spatnej vazby.
+  def question_feedbacks
+    @question = LearningObject.find_by_id(params[:id])
+
+    list = @question.feedbacks.includes(:user).order(accepted: :desc).order(created_at: :asc).map do |feedback|
+      {
+          id: feedback.id,
+          accepted: feedback.accepted,
+          message: feedback.message,
+          fullname: "#{feedback.user.first_name} #{feedback.user.last_name}",
+          time: feedback.created_at.strftime("%d.%m.%Y %H:%M:%S"),
+          visible: feedback.visible
+      }
+    end
+
+    render json: list
+  end
+
+  # Oznaci spatnu vazbu za schvalenu.
+  def mark_feedback_accepted
+    Feedback.find(params[:id]).update(accepted: true)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Oznaci spatnu vazbu za zamietnutu.
+  def mark_feedback_rejected
+    Feedback.find(params[:id]).update(accepted: false)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Zobrazi spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_visible
+    Feedback.find(params[:id]).update(visible: true)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Skryje spatnu vazbu (na stranke s otazkou).
+  def mark_feedback_hidden
+    Feedback.find(params[:id]).update(visible: false)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Ziska nasledujucu otazku (z kurzu), ku ktorej este nebola pridana spatna vazba.
+  def next_feedback_question
+    @course = Course.find(params[:id])
+
+    unless session.has_key?(:unresoved_feedbacks) && session[:unresoved_feedbacks].any?
+      session[:unresoved_feedbacks] = @course.feedbackable_questions
+    end
+
+    lo = LearningObject.where(id: session[:unresoved_feedbacks].pop).first
+    if lo
+      redirect_to(edit_question_config_path(question_id: lo.id))
+    else
+      redirect_to(question_config_path(@course.id))
+    end
+
   end
 
   def add_question_concept

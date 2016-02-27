@@ -1,4 +1,9 @@
-<div class="question-text">"<%= @answers.first.try(:answer_text) %>" Súhlasíte s touto odpoveďou?</div>
+<div class="question-text">
+  <% if !(@answers.first.nil?) %>
+    <%= apply_markdown(@answers.first.answer_text).html_safe %>
+  <%end%>
+  <div class="question-agree">Súhlasíte s touto odpoveďou?</div>
+</div>
 
 <div id="evaluator-slider-container">
     <div id="evaluator-slider"></div>

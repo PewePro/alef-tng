@@ -23,3 +23,12 @@
     <% end %>
   </ul>
 </div>
+
+<div class="admin">
+  <h3>Správa obsahu otázok</h3>
+  <ul>
+    <% @courses.each do |c| %>
+        <li><%= link_to c.name, question_config_path(c.id), class: "admin-link" %></li>
+    <% end %>
+  </ul>
+</div>

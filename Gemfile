@@ -24,19 +24,8 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use Airbrake for exception tracking
-gem 'airbrake'
-
 gem 'execjs'
-gem 'therubyracer'
-
-gem 'passenger'
+gem 'therubyracer', platforms: :ruby
 
 # Use Devise - a flexible authentication solution (login, registration, ...)
 gem 'devise'
@@ -61,29 +50,64 @@ gem 'gon'
 # performance monitoring with newrelic
 gem 'newrelic_rpm'
 
+# Progress bar (for turbolinks).
+gem 'nprogress-rails', '~> 0.1.6.7'
+
 # Localization
 gem 'rails-i18n'
 
+# Ruby library for Markdown processing that smells like butterflies and popcorn.
+gem 'redcarpet', '3.3.4'
+
 # Reoccuring tasks
 gem 'whenever', :require => false
+
+# Error tracking
+gem 'rollbar', '~> 2.7.1'
+
+gem 'passenger'
+
+# ENV for local development
+gem 'figaro', '~> 1.1'
+gem 'capistrano-figaro', '~> 1.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
   # Use Capistrano for deployment
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.3.5'
   gem 'capistrano-rbenv'
   gem 'capistrano-bundler'
   gem 'capistrano-rails', '~> 1.1.3'
-  gem 'capistrano-passenger'
+  gem 'capistrano-passenger', '0.0.2'
 
-  gem 'factory_girl_rails'
+  # Capybara helps you test web applications by simulating how a real user would interact with your app.
+  gem 'capybara', '2.6.2'
+
+  # Strategies for cleaning databases.
+  gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
+
+  # Fixtures replacement with a straightforward definition syntax.
+  gem 'factory_girl_rails', '~> 4.0'
+
+  # Rspec
+  gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
+
+  # WebDriver is a tool for writing automated tests of websites
+  gem 'selenium-webdriver', '2.50.0'
+
+end
+
+group :development do
+
+  gem 'byebug'
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
+
 end
 

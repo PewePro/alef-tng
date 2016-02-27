@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151226105657) do
+ActiveRecord::Schema.define(version: 20160204004009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,11 +27,12 @@ ActiveRecord::Schema.define(version: 20151226105657) do
   add_index "activity_recommender_records", ["learning_object_id", "relation_learning_object_id", "relation_type"], name: "activity_recommender_table_index", using: :btree
 
   create_table "answers", force: :cascade do |t|
-    t.integer  "learning_object_id", null: false
+    t.integer  "learning_object_id",                null: false
     t.text     "answer_text"
     t.boolean  "is_correct"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "visible",            default: true, null: false
   end
 
   create_table "concepts", force: :cascade do |t|
@@ -59,15 +60,19 @@ ActiveRecord::Schema.define(version: 20151226105657) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.text     "message",            null: false
+    t.text     "message",                           null: false
     t.integer  "user_id"
     t.text     "url"
     t.text     "accept"
     t.text     "user_agent"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "learning_object_id"
+    t.boolean  "accepted"
+    t.boolean  "visible",            default: true, null: false
   end
+
+  add_index "feedbacks", ["learning_object_id", "accepted"], name: "index_feedbacks_on_learning_object_id_and_accepted", using: :btree
 
   create_table "irt_values", force: :cascade do |t|
     t.float   "difficulty"

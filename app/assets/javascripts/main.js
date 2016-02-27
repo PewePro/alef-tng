@@ -48,6 +48,20 @@ var ready = (function () {
     if ($('#body-administrations-question_concept_config').length) {
         Admin.setupQuestionConceptConfig()
     }
+
+    if ($('.admin-nav').length) {
+        Admin.checkNavOffset();
+    }
+
+    // Aktivacia tooltipov.
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Aktivacia moment.js.
+    moment.locale('sk');
+    $('.livestamp').each(function(){
+        $(this).livestamp($(this).attr('data-timestamp'));
+    });
+
 });
 
 // Uprava kvoli turbolinkam, tento ready kod sa nacita pri kazdom presmerovani

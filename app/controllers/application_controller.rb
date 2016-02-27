@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
+  include Exceptions
+
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     render :text => exception, :status => 500
   end
@@ -12,7 +15,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :auth_user!
+  before_action :auth_user!, except: [:ping]
 
 
   def auth_user!
@@ -20,6 +23,10 @@ class ApplicationController < ActionController::Base
       session[:previous_url] = request.fullpath unless request.xhr? # do not store AJAX calls
       redirect_to new_user_session_path
     end
+  end
+
+  def ping
+    render html: 'PING_OK'
   end
 
   def after_sign_in_path_for(resource)

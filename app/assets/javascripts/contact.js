@@ -10,7 +10,7 @@
       this.ctaBtn = $('#contact-btn');
       this.cancelBtn = $('#contact-cancel-btn');
       this.sendBtn = $('#contact-send-btn');
-      this.textarea = $('#contact textarea')
+      this.textarea = $('#contact textarea');
 
       this.ctaBtn.click(function() {
         Contact.show();
