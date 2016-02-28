@@ -1,0 +1,44 @@
+<nav>
+  <div class="admin-nav">
+    <h2>Pridanie novej otázky</h2>
+    <%= link_to t('homescreen.links.admin'), administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="container">
+
+  <%= form_for @learning_object, url: admin_learning_objects_path(course: @course), method: :post do |f| %>
+
+    <div class="admin">
+
+      <h3>Vytvorenie otázky</h3>
+
+      <dl class="dl-horizontal">
+        <dt><%= f.label :lo_id, t('questions.labels.title') %></dt>
+        <dd><%= f.text_field :lo_id, class: "question_text_field", required: true %></dd>
+
+        <dt><%= f.label :question_text, t('questions.labels.text') %></dt>
+        <dd><%= f.text_area :question_text, class: "question_text_field", required: true %></dd>
+
+        <dt><%= f.label :type, t('questions.labels.type') %></dt>
+        <dd><%= f.select :type, options_for_select(LearningObject::TYPE.map { |key, type|
+          [t("questions.labels.types.#{key}"), type]
+        }, nil), prompt: t('global.labels.choose'), class: 'form-control', required: true %></dd>
+
+        <dt><%= f.label t('questions.labels.difficulty') %></dt>
+        <dd><%= f.select :difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
+          [t("questions.labels.difficulties.#{difficulty}"), difficulty]
+        }, nil), prompt: t('global.labels.choose'), class: 'form-control' %></dd>
+
+        <dt></dt>
+        <dd>
+          <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+          <%= button_tag "Zrušiť", class: :btn, type: :reset %>
+        </dd>
+      </dl>
+
+    </div>
+
+  <% end %>
+</div>

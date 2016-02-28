@@ -1,10 +1,21 @@
 <nav>
   <div class="admin-nav">
-    <h2>Správa obsahu otázok</h2>
-    <%= link_to t('homescreen.links.admin'), administration_path, class: 'admin-nav-button' %>
+    <h2><i data-toggle="tooltip" data-placement="right" title="<%= t("questions.labels.types.#{@question.type.downcase}") %>" class="icon-<%=
+      case @question.type
+        when "SingleChoiceQuestion"
+          'radio-checked'
+        when "MultiChoiceQuestion"
+          'checkbox-checked'
+        when "EvaluatorQuestion"
+          'sliders'
+      end %>"></i><%= @question.id %> : <%= @question.lo_id %></h2>
+    <%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @question.course_id), class: 'admin-nav-button' %>
   </div>
 </nav>
+
 <hr class="nav-offset">
+
+<%= render 'administrations/feedbacks_banner', feedbacks_new_count: @feedback_new_count, course: @question.course, lite: true %>
 
 <div class="container">
 
@@ -220,4 +231,81 @@
     <% if @question.type == "EvaluatorQuestion" %>$('input[data-type="visibility"]').change(function(){ Admin.verifyEvaluator($(this)); });<% end %>
 
   });
+
+  function set_tab(tabs, tab) {
+
+    var firstTab = tabs.first();
+
+    if (history.pushState) {
+      history.pushState(null, null, $(tab).attr('data-target'));
+    }
+    else {
+      location.hash = $(tab).attr('data-target');
+    }
+
+    $(tab).tab('show');
+    if ($(tab).attr('id') == firstTab.attr('id')) {
+      $('#editor-tabs-content').addClass('is-first');
+    }
+    else {
+      $('#editor-tabs-content').removeClass('is-first');
+    }
+
+  }
 </script>
+
+<%# Sablona pre polozku feedback widgetu (doT.js). %>
+<div id="feedback-widget-template" style="display: none">
+  <li class="list-item{{?it.accepted == null}} list-item-highlighted{{?}}" data-feedback-id="{{=it.id}}">
+    <div class="content">{{=it.message}}</div>
+    <div class="tools">
+      {{?it.widget}}
+      <%= link_to "Vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&bull;&nbsp;
+      {{?it.visible}}
+      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Skryť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{??}}
+      <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Zobraziť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{?}}
+      {{??}}
+      {{?it.accepted == null}}
+      <span class="status"><i class="icon-star"></i> Nový</span>
+      {{?? it.accepted == true}}
+      <span class="status status-success"><i class="icon-checkbox-checked"></i> Vyriešený</span>
+      {{??}}
+      <span class="status status-danger"><i class="icon-cancel-circled"></i> Neriešený</span>
+      {{?}}
+      {{?it.visible == true}}
+      <span class="status status-success"><i class="icon-seen"></i> Viditeľný</span>
+      {{??}}
+      <span class="status status-danger"><i class="icon-eye-off"></i> Skrytý</span>
+      {{?}}
+      {{?it.accepted != true}}
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Označiť ako vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      {{?}}
+      {{?it.accepted != false}}
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Označiť ako neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      {{?}}
+      &nbsp;&bull;&nbsp;
+      {{?it.visible == true}}
+      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Skryť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{??}}
+      <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Zobraziť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{?}}
+      {{?}}
+    </div>
+    <div class="meta">{{=it.fullname}}, {{=it.time}}</div>
+  </li>
+</div>

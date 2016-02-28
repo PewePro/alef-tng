@@ -69,8 +69,9 @@ Rails.application.routes.draw do
   # Administracia.
   namespace :admin do
 
-    resource :questions do
-      get :index, :new
+    resource :learning_objects do
+      get :index, :new, :edit
+      post :create, :update
     end
 
   end

@@ -11,7 +11,7 @@
 <div id="header-panel" class="admin">
 
   <div class="buttons">
-    <button type="button" class="btn btn-primary">+ Vytvoriť otázku</button>
+    <%= link_to "+ #{t('questions.links.create')}", new_admin_learning_objects_path(course: @course), class: 'btn' %>
   </div>
 
   <div class="tools">
@@ -29,13 +29,13 @@
       <div class="question row<%= ' without-feedback' unless @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>">
         <div class="question-tools">
           <% if @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>
-              <%= link_to("#{@feedbacks[:new_aggs][q.id]} / #{@feedbacks[:all_aggs][q.id]}", "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+              <%= link_to("#{@feedbacks[:new_aggs][q.id]} / #{@feedbacks[:all_aggs][q.id]}", "#{edit_admin_learning_objects_path(q)}#feedbacks",
                           class: 'counter highlighted', title: 'Nové komentáre', data: { toggle: :tooltip }) %>
           <% else %>
-              <%= link_to(@feedbacks[:all_aggs][q.id] || 0, "#{edit_question_config_path(:question_id => q.id)}#feedbacks",
+              <%= link_to(@feedbacks[:all_aggs][q.id] || 0, "#{edit_admin_learning_objects_path(q)}#feedbacks",
                           class: 'counter',title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
           <% end %>
-          <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_question_config_path(:question_id => q.id)) %>
+          <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_admin_learning_objects_path(q)) %>
         </div>
         <div class="question-icon"><i data-toggle="tooltip" title="<%=
           case q.type
@@ -55,7 +55,7 @@
               'sliders'
           end %>"></i></div>
         <div class="question-headline">
-          <div class="title"><%= link_to(q.lo_id, edit_question_config_path(:question_id => q.id)) %></div>
+          <div class="title"><%= link_to(q.lo_id, edit_admin_learning_objects_path(q)) %></div>
           <div class="text"><%= q.question_text %></div>
           <div class="answers">
             <% q.answers.each_with_index do |a, i| %>

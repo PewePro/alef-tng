@@ -2,6 +2,8 @@ sk:
   hello: "Ahoj svet!"
 
   global:
+    labels:
+      choose:       "vyberte si..."
     links:
       cancel:       "Zrušiť"
       submit:       "Odoslať"
@@ -36,3 +38,5 @@ sk:
         evaluatorquestion:    "evaluator"
         multichoicequestion:  "výber z viacerých možností"
         singlechoicequestion: "výber z jednej možnosti"
+    links:
+      create:                 "Vytvoriť otázku"

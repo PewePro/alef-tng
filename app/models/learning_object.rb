@@ -16,6 +16,12 @@ class LearningObject < ActiveRecord::Base
     UNKNOWN: :unknown_difficulty
   }
 
+  TYPE = {
+      singlechoicequestion: "SingleChoiceQuestion",
+      multichoicequestion: "MultiChoiceQuestion",
+      evaluatorquestion: "EvaluatorQuestion"
+  }
+
   # generuje metody z hashu DIFFICULTY, napr. 'learning_object.trivial?'
   LearningObject::DIFFICULTY.values.each do |diff|
     define_method("#{diff}?") do

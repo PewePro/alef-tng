@@ -1,5 +1,5 @@
 module Admin
-  class QuestionsController < ApplicationController
+  class LearningObjectsController < ApplicationController
 
     before_action :get_course, only: [:index, :new, :create]
 
@@ -22,12 +22,21 @@ module Admin
 
     # Vytvorenie novej otazky.
     def new
-      @question = Question.new
+      @learning_object = LearningObject.new
     end
 
     # Ulozenie novej otazky.
     def create
+      learning_object_params = params.require(:learning_object).permit(:lo_id, :quest_text, :type, :difficulty)
+      @course.learning_objects.create(learning_object_params)
+      redirect_to administration_path, notice: "Otázka bola úspešne vytvorená."
+    end
 
+    # Editacia otazky.
+    def edit
+      @learning_object = LearningObject.find_by_id(params[:question_id])
+      @answers = @learning_object.answers
+      @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
     end
 
     private
