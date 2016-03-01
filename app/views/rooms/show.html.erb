@@ -5,7 +5,6 @@
 
 
 <div class="mobile-content main">
-  <% p current_user.show_solutions.to_s %>
   <% if (current_user.show_solutions && @room.state == "do_not_use")  %>
       <div id="question-options-evaluate">
         <div class="question-options-message" id="question-evaluation-next">Tento test v režime Učenie<br>nemáte sprístupnený!</div>
@@ -16,7 +15,7 @@
   <%else%>
       <% @learning_objects.each do |lo| %>
           <a href="<%=
-              url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => @week.id, :room_number => @room.id
+              url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => params[:week_number], :room_number => @room.id
           %>" class="card">
             <div class="question-card-content">
               <h3 class="card-header"><%= lo.lo_id %></h3>

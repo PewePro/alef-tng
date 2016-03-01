@@ -21,17 +21,17 @@ class Room < ActiveRecord::Base
     @results=RoomsLearningObject.get_id_do_not_viseted(room_id).count
   end
 
-  def next(user_id,week_id)
+  def next (user_id,week_id)
     Room.where('id > ? AND user_id = ? AND week_id = ?', self.id,user_id,week_id).order(id: :asc).first
   end
 
-  def previous(user_id,week_id)
+  def previous (user_id,week_id)
     Room.where('id < ? AND user_id = ? AND week_id = ?', self.id,user_id,week_id).order(id: :desc).first
   end
 
   def answered (lo_id, room_id)
-    @results=RoomsLearningObject.get_id_do_not_viseted(room_id)
-    @results.each do |r|
+    results=RoomsLearningObject.get_id_do_not_viseted(room_id)
+    results.each do |r|
       if lo_id == r['learning_object_id'].to_i
         return true
       end

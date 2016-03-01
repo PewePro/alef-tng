@@ -8,9 +8,9 @@
 
   <div id="question-options-evaluate">
     <div class="question-options-message"  id="question-evaluation-message"></div>
-    <% if @score >= @value %>
+    <% if @score >= @score_limit %>
         <% if @room.state == "do_not_use" %>
-            <% if @all <= @count %>
+            <% if @count_real <= @count_actual %>
                 <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Úspešne ste vyriešili všetky testy v aktuálnom týždni!</div>
                 <br><a href="<%=
                 url_for :controller => 'weeks', :action => 'show'
@@ -22,7 +22,7 @@
                 %>" class="question-button question-button-red" id="question-evaluation-next">Otvor nový test</a>
             <% end %>
         <% else %>
-            <% if @all <= @count %>
+            <% if @count_real <= @count_actual %>
                 <div class="question-options-message" id="question-evaluation-next"><br><br>gratulujeme<br>Úspešne ste vyriešili všetky testy v aktuálnom týždni!</div>
                 <br><a href="<%=
                 url_for :controller => 'weeks', :action => 'show'
@@ -37,7 +37,7 @@
         <% end %>
     <% else %>
         <div class="question-options-message" id="question-evaluation-next"><br><br>Je nám to ľúto<br><br>Bohužial, ste nedosiahli potrebné skóre na úspešné vyriešenie testu!
-        <br><br> Vaše skóre: <%= @score.to_i.to_s%><br> Potrebné skóre: <%= @value.to_s%>
+        <br><br> Vaše skóre: <%= @score.to_s%><br> Potrebné skóre: <%= @score_limit.to_s%>
         </div>
 
     <% end %>

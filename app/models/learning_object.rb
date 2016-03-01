@@ -26,16 +26,16 @@ class LearningObject < ActiveRecord::Base
   end
   def next(room_id,actual_question_id)
     id_array = []
-    @results=RoomsLearningObject.get_id_do_not_viseted_minus_actual(room_id,actual_question_id)
-    @results.each do |r|
+    results=RoomsLearningObject.get_id_do_not_viseted_minus_actual(room_id,actual_question_id)
+    results.each do |r|
       id_array.push(r['learning_object_id'].to_i)
     end
-    @room = Room.find(room_id)
+    room = Room.find(room_id)
 
-    if !(id_array.empty?)
-      los = @room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
-    else
+    if id_array.empty?
       los = nil
+    else
+      los = room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
     end
 
     los

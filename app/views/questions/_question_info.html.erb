@@ -1,5 +1,5 @@
 <div id="question-info">
-  <% if @user.administrator? %>
+  <% if current_user.administrator? %>
       <%= link_to('<i class="icon-edit"></i> Upraviť'.html_safe,
                   edit_question_config_path(:question_id => @question.id),
                   class: 'btn pull-right') %>

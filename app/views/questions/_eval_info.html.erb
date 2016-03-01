@@ -1,7 +1,7 @@
 
 <div class="nav-info mobile-content">
-    <% if !(current_user.show_solutions) %>
-      <% if @room.state.to_s != "used" %>
+    <% unless current_user.show_solutions %>
+      <% if @room.state != "used" %>
           <%if (@room.score < @room.score_limit)%>
             <%= "Dosiahnuté skóre:"%>
           <%else%>

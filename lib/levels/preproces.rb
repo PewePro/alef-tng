@@ -6,16 +6,16 @@ module Levels
       relations = setup.user_to_lo_relations
 
       relations. each do |rel|
-       id_user = rel.user_id.to_i
-       id_lo = rel.learning_object_id.to_i
-       type = rel.type.to_s
-       if type.to_s == "UserSolvedLoRelation"
+       id_user = rel.user_id
+       id_lo = rel.learning_object_id
+       type = rel.type
+       if type == "UserSolvedLoRelation"
          if result.has_key?([id_user,id_lo])
            result[[id_user,id_lo]] =  result[[id_user,id_lo]].to_s + "1"
          else
            result[[id_user,id_lo]] = "1"
          end
-       elsif type.to_s == "UserFailedLoRelation" || type.to_s == "UserDidntKnowLoRelation"
+       elsif type == "UserFailedLoRelation" || type == "UserDidntKnowLoRelation"
          if result.has_key?([id_user,id_lo])
            result[[id_user,id_lo]] =  result[[id_user,id_lo]].to_s + "0"
          else
@@ -25,13 +25,13 @@ module Levels
       end
 
       result.each do |r|
-        if r[1].to_s.length >=3 && r[1].to_s.last(3) == "111"
+        if r[1].length >=3 && r[1].last(3) == "111"
           result_int[r[0]]= 1
-        elsif r[1].to_s.length >=2 && r[1].to_s.last(2) == "11" && r[1].to_s.count("1") >= (r[1].to_s.count("0").to_i - 1)
+        elsif r[1].length >=2 && r[1].last(2) == "11" && r[1].count("1") >= (r[1].count("0") - 1)
           result_int[r[0]]= 1
-        elsif (r[1].to_s.last(1) == "1") && (r[1].to_s.count("1") > r[1].to_s.count("0"))
+        elsif (r[1].last(1) == "1") && (r[1].count("1") > r[1].count("0"))
           result_int[r[0]]= 1
-        elsif (r[1].to_s.last(1) == "0") && (r[1].to_s.count("1") >= (r[1].to_s.count("0").to_i + 2))
+        elsif (r[1].last(1) == "0") && (r[1].count("1") >= (r[1].count("0") + 2))
           result_int[r[0]]= 1
         else
           result_int[r[0]]= 0

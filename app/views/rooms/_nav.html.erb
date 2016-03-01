@@ -5,7 +5,7 @@
         <i class="icon-left disabled"></i>
     <% else %>
         <a href="<%=
-            url_for controller: 'rooms', action: 'show', room_number:  @previous_room.id, week_number: @week.id
+            url_for controller: 'rooms', action: 'show', room_number:  @previous_room.id, week_number: params[:week_number]
 
         %>"><i class="icon-left"></i></a>
     <% end %>
@@ -13,7 +13,7 @@
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=
-            url_for controller: 'rooms', action: 'show', room_number:  @next_room.id, week_number: @week.id
+            url_for controller: 'rooms', action: 'show', room_number:  @next_room.id, week_number: params[:week_number]
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <a href="<%=

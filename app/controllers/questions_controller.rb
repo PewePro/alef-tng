@@ -1,23 +1,19 @@
 class QuestionsController < ApplicationController
   def show
-    @user = current_user
-    user_id = @user.id
 
     @question = LearningObject.find(params[:id])
-    rel = @question.seen_by_user(user_id)
+    rel = @question.seen_by_user(current_user.id)
     gon.userVisitedLoRelationId = rel.id
     @next_question = @question.next(params[:room_number],@question.id)
     @previous_question = @question.previous(params[:room_number])
-    @room_number = params[:room_number]
-    @week_number= params[:week_number]
 
     @room = Room.find(params[:room_number])
 
     @answers = @question.answers
-    @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: user_id).group('type').count
+    @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: current_user.id).group('type').count
 
-    if @user.show_solutions
-      UserViewedSolutionLoRelation.create(user_id: user_id, learning_object_id: params[:id], setup_id: 1, )
+    if current_user.show_solutions
+      UserViewedSolutionLoRelation.create(user_id: current_user.id, learning_object_id: params[:id], setup_id: 1, )
       solution = @question.get_solution(current_user.id)
       gon.show_solutions = TRUE
       gon.solution = solution
@@ -33,24 +29,22 @@ class QuestionsController < ApplicationController
       @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
     end
 
-    @feedbacks = @question.feedbacks.includes(:user)
-    @feedbacks = @question.feedbacks.visible.includes(:user)
+    @feedbacks = @question.feedbacks.visible.includes(:current_user)
   end
 
   def eval_question
     weight_solved = 5
     weight_failed = 2
     weight_dont_now = 1
-    @setup = Setup.take
-    @week = @setup.weeks.find_by_number(params[:week_number])
+    setup = Setup.take
 
     room = Room.find(params[:room_number])
 
     lo_class = Object.const_get params[:type]
     lo = lo_class.find(params[:id])
 
-    @results = UserToLoRelation.get_results_room(current_user.id,@week.id,params[:room_number], room.number_of_try)
-    result = @results.find {|r| r["result_id"] == lo.id.to_s}
+    results = UserToLoRelation.get_results_room(current_user.id,params[:week_number],params[:room_number], room.number_of_try)
+    result = results.find {|r| r["result_id"] == lo.id.to_s}
     unless result.nil?
       solved = result['solved']
       failed = result['failed']
@@ -62,50 +56,58 @@ class QuestionsController < ApplicationController
       result = lo.right_answer? params[:answer], @solution
     end
 
-    difficulty = lo.difficulty.to_s
+    difficulty = lo.difficulty
     dif_value = 0.0
-    importance = lo.importance.to_s
+    importance = lo.importance
     imp_value = 0.0
 
-    if difficulty.to_s == "trivial"
-      dif_value = 0.01
-    elsif difficulty.to_s == "easy"
-      dif_value = 0.25
-    elsif difficulty.to_s == "medium"
+    if difficulty.nil?
       dif_value = 0.5
-    elsif difficulty.to_s == "hard"
-      dif_value = 0.75
-    elsif difficulty.to_s == "impossible"
-      dif_value = 1
     else
-      dif_value = 0.5
+      if difficulty == "trivial"
+        dif_value = 0.01
+      elsif difficulty == "easy"
+        dif_value = 0.25
+      elsif difficulty == "medium"
+        dif_value = 0.5
+      elsif difficulty == "hard"
+        dif_value = 0.75
+      elsif difficulty == "impossible"
+        dif_value = 1
+      else
+        dif_value = 0.5
+      end
     end
 
-    if importance.to_s == "1"
-      imp_value = 0
-    elsif importance.to_s == "2"
+    if importance.nil?
       imp_value = 0.5
-    elsif importance.to_s == "3"
-      imp_value = 1
     else
-      imp_value = 0.5
+      if importance == "1"
+        imp_value = 0
+      elsif importance == "2"
+        imp_value = 0.5
+      elsif importance == "3"
+        imp_value = 1
+      else
+        imp_value = 0.5
+      end
     end
 
     dif_compute = 0.0
-    results = Levels::Preproces.preproces_data(@setup)
+    results = Levels::Preproces.preproces_data(setup)
 
     all = 0
     do_not_know_value = 0
     results.each do |r|
-      if r[0][1].to_i == lo.id
+      if r[0][1] == lo.id
         all +=1
-        if r[1].to_i == 0
+        if r[1] == 0
           do_not_know_value +=1
         end
       end
     end
 
-    if all!= 0
+    if all != 0
       dif_compute = do_not_know_value.to_f / all.to_f
       dif_result = (dif_value + dif_compute) / 2.0
     else
@@ -124,7 +126,7 @@ class QuestionsController < ApplicationController
       end
     end
 
-    room.update_attribute(:score, (room.score + score).to_d)
+    room.update_attribute(:score, (room.score + score))
 
   end
 
@@ -158,7 +160,7 @@ class QuestionsController < ApplicationController
     rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
     rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result
 
-    if room.state.to_s != "used"
+    if room.state != "used"
       eval_question
     end
 
@@ -184,29 +186,29 @@ class QuestionsController < ApplicationController
 
   def next
 
-    @room = Room.find_by_id(params[:room_number])
+    room = Room.find_by_id(params[:room_number])
 
-    if !(current_user.show_solutions)
+    if current_user.show_solutions
+      lo_id = params[:lo_id]
+      los = room.learning_objects.where("learning_object_id > ?",lo_id).order(id: :asc).first
+      if los.nil?
+        los = room.learning_objects.order(id: :asc).first
+      end
+    else
       id_array = []
-      @results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
-      @results.each do |r|
+      results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
+      results.each do |r|
         id_array.push(r['learning_object_id'].to_i)
       end
 
       if (id_array.empty?)
-        lo = @room.learning_objects.all.distinct
+        lo = room.learning_objects.all.distinct
         lo.each do |l|
           id_array.push(l.id)
         end
       end
 
-      los = @room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
-    else
-      lo_id = params[:lo_id]
-      los = @room.learning_objects.where("learning_object_id > ?",lo_id).order(id: :asc).first
-      if los.nil?
-        los = @room.learning_objects.order(id: :asc).first
-      end
+      los = room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
     end
 
     redirect_to action: "show", id: los.url_name, week_number: params[:week_number]

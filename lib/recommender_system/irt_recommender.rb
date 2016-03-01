@@ -9,13 +9,13 @@ module RecommenderSystem
           difficulty = 0.5
           discrimination = 0.5
         else
-          difficulty = irt_values.difficulty.to_f
-          discrimination = irt_values.discrimination.to_f
+          difficulty = irt_values.difficulty
+          discrimination = irt_values.discrimination
         end
         user = User.find(self.user_id)
-        proficiency = user.proficiency.to_f
+        proficiency = user.proficiency
         probability = (Math::E**(discrimination*(proficiency-difficulty))) / (1 + Math::E**(discrimination*(proficiency-difficulty)))
-        list[lo.id] = probability.to_f
+        list[lo.id] = probability
       end
       list
     end

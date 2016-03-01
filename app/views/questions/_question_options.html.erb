@@ -11,11 +11,11 @@
   <% if @next_question == nil %>
       <div class="question-options-message" id="question-evaluation-next">toto bola<br>posledná otázka!</div>
       <a href="<%=
-          url_for :controller => 'rooms', :action => 'eval', :week_number => @week_number, :room_number => @room_number
+          url_for :controller => 'rooms', :action => 'eval', :week_number => params[:week_number], :room_number => params[:room_number]
       %>" class="question-button question-button-red" id="question-evaluation-next">Vyhodnotenie</a>
   <% else %>
       <a href="<%=
-          url_for :controller => 'questions', :action => 'next', :week_number => @week_number, :room_number => @room_number, :lo_id => @question.id
+          url_for :controller => 'questions', :action => 'next', :week_number => params[:week_number], :room_number => params[:room_number], :lo_id => @question.id
       %>" class="question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
   <% end %>
 </div>
