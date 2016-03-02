@@ -1,13 +1,8 @@
+#
+# Prosim, zachovavajte abecedne poradie klucov.
+#
+
 sk:
-  hello: "Ahoj svet!"
-
-  global:
-    labels:
-      choose:       "vyberte si..."
-    links:
-      cancel:       "Zrušiť"
-      submit:       "Odoslať"
-
   homescreen:
     links:
       admin:        "Administrácia"
@@ -15,28 +10,9 @@ sk:
       login:        "Prihlásiť sa"
       logout:       "Odhlásiť"
 
-  feedbacks:
-    label:
-      solved:                 "vyriešený"
-
-  questions:
+  global:
     labels:
-      difficulty:             "Náročnosť"
-      difficulties:
-        easy:                 "Ľahká"
-        hard:                 "Náročná"
-        impossible:           "Impossible"
-        medium:               "Stredná"
-        trivial:              "Triviálna"
-        unknown_difficulty:   "Neznáma"
-      external_reference:     "Identifikátor z CSV"
-      successfulness:         "Úspešnosť"
-      title:                  "Názov otázky"
-      text:                   "Text otázky"
-      type:                   "Typ"
-      types:
-        evaluatorquestion:    "evaluator"
-        multichoicequestion:  "výber z viacerých možností"
-        singlechoicequestion: "výber z jednej možnosti"
+      choose:       "vyberte si..."
     links:
-      create:                 "Vytvoriť otázku"
+      cancel:       "Zrušiť"
+      submit:       "Odoslať"
