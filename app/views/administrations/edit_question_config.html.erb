@@ -39,24 +39,24 @@
               <h3>Úprava otázky</h3>
 
               <dl class="dl-horizontal">
-                <dt><%= label_tag t('questions.labels.title') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.title') %></dt>
                 <dd><%= text_field_tag :edit_question_name, @question.lo_id, class: "question_text_field" %></dd>
 
-                <dt><%= label_tag t('questions.labels.text') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.text') %></dt>
                 <dd><%= text_area_tag :edit_question_text, @question.question_text, class: "question_text_field" %></dd>
 
-                <dt><%= label_tag t('questions.labels.type') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.type') %></dt>
                 <dd><%= t("questions.labels.types.#{@question.type.downcase}") %></dd>
 
-                <dt><%= label_tag t('questions.labels.difficulty') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.difficulty') %></dt>
                 <dd><%= select_tag(:difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
                   [t("questions.labels.difficulties.#{difficulty}"), difficulty]
                 }, @question.difficulty), class: 'form-control') %></dd>
 
-                <dt><%= label_tag t('questions.labels.external_reference') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.external_reference') %></dt>
                 <dd><%= @question.external_reference %></dd>
 
-                <dt><%= label_tag t('questions.labels.successfulness') %></dt>
+                <dt><%= label_tag t('admin.questions.labels.successfulness') %></dt>
                 <% successfulness = @question.successfulness %>
                 <dd><%= "#{successfulness[:rate]} % (#{successfulness[:solved]} úspešných z #{successfulness[:total]})" %></dd>
 

@@ -11,6 +11,8 @@ en:
       logout:       "Sign out"
 
   global:
+    labels:
+      choose:       "choose..."
     links:
       cancel:       "Cancel"
       submit:       "Submit"

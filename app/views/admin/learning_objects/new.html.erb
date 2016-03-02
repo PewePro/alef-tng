@@ -15,18 +15,18 @@
       <h3>Vytvorenie otázky</h3>
 
       <dl class="dl-horizontal">
-        <dt><%= f.label :lo_id, t('questions.labels.title') %></dt>
+        <dt><%= f.label :lo_id, t('admin.questions.labels.title') %></dt>
         <dd><%= f.text_field :lo_id, class: "question_text_field", required: true %></dd>
 
-        <dt><%= f.label :question_text, t('questions.labels.text') %></dt>
+        <dt><%= f.label :question_text, t('admin.questions.labels.text') %></dt>
         <dd><%= f.text_area :question_text, class: "question_text_field", required: true %></dd>
 
-        <dt><%= f.label :type, t('questions.labels.type') %></dt>
+        <dt><%= f.label :type, t('admin.questions.labels.type') %></dt>
         <dd><%= f.select :type, options_for_select(LearningObject::TYPE.map { |key, type|
           [t("questions.labels.types.#{key}"), type]
         }, nil), prompt: t('global.labels.choose'), class: 'form-control', required: true %></dd>
 
-        <dt><%= f.label t('questions.labels.difficulty') %></dt>
+        <dt><%= f.label t('admin.questions.labels.difficulty') %></dt>
         <dd><%= f.select :difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
           [t("questions.labels.difficulties.#{difficulty}"), difficulty]
         }, nil), prompt: t('global.labels.choose'), class: 'form-control' %></dd>
