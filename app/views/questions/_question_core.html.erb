@@ -1,5 +1,4 @@
 <div class="question-text">
-  <%= learning_object.inspect %>
   <%= apply_markdown(learning_object.question_text).html_safe %>
   <% unless learning_object.image.nil? %>
       <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => learning_object.id), class: 'question-image', alt: learning_object.lo_id+' Obrázok' %>

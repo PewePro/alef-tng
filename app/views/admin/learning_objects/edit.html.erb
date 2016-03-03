@@ -86,8 +86,7 @@
         <div class="row">
 
           <div class="col-lg-12" id="answer-settings-col">
-
-            <%= form_tag "#{url_for(edit_answers_path(:question_id => @learning_object.id))}#answer-settings", :method => :post do %>
+            <%= form_tag admin_learning_object_answers_path(learning_object_id: @learning_object.id), method: :patch do %>
 
                 <div class="admin">
 
@@ -117,12 +116,12 @@
                           <td class="answers-table-tools">
                             <% unless a.learning_object.type == "EvaluatorQuestion" %>
                                 <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon', data: { type: 'correctness' }) %>
-                                <%= label_tag("correct_answer_#{a.id}", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                                <%= label_tag("correct_answer_#{a.id}", "<i class=\"icon-checkbox\"></i>".html_safe, title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
                             <% end %>
                             <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon', data: { type: 'visibility' }) %>
-                            <%= label_tag("visible_answer_#{a.id}", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
-                            <%= link_to('<i class="icon-delete"></i>'.html_safe, delete_answer_path(answer_id: a.id),
-                                        :method => :post,
+                            <%= label_tag("visible_answer_#{a.id}", "<i class=\"icon-checkbox icon-eyebox\"></i>".html_safe, title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+                            <%= link_to('<i class="icon-delete"></i>'.html_safe, admin_learning_object_answer_path(id: @learning_object.id, answer_id: a.id),
+                                        method: :delete,
                                         class: 'danger',
                                         data: { toggle: 'tooltip', confirm: 'Naozaj chcete odstrániť túto odpoveď na otázku?' },
                                         title: 'Odstrániť odpoveď') %>
@@ -153,23 +152,25 @@
 
         </div>
 
-        <%= form_tag "#{url_for(add_answer_path(question_id: @learning_object.id))}#answer-settings", :method => 'post' do %>
+        <%= form_for @learning_object.answers.new, url: { controller: 'admin/answers', action: 'create' }, method: :post do |f| %>
+
             <div class="admin">
               <h3>Pridanie novej odpovede</h3> <br/>
-              <%= label_tag :add_answer_text, "Zadaj nový text odpovede:" %>
-              <%= text_field_tag :add_answer_text, nil, placeholder: "Text odpovede", class: 'simple-text' %>
+              <%= f.label :answer_text, "Zadaj nový text odpovede:" %>
+              <%= f.text_field :answer_text, placeholder: "Text odpovede", class: 'simple-text' %>
               <span class="options-label">Možnosti:</span>
               <% unless @learning_object.type == "EvaluatorQuestion" %>
-                  <%= check_box_tag("correct_answer", 1, @learning_object.allow_new_correctness?, class: 'icon') %>
-                  <%= label_tag("correct_answer", '', class: 'icon-checkbox', title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                  <%= f.check_box(:is_correct, { checked: @learning_object.allow_new_correctness? , class: 'icon' }, 1) %>
+                  <%= f.label(:is_correct, "<i class=\"icon-checkbox\"></i>".html_safe, class: :inline, title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
                   &nbsp;&nbsp;
               <% end %>
-              <%= check_box_tag("visible_answer", 1, @learning_object.allow_new_visibility?, class: 'icon') %>
-              <%= label_tag("visible_answer", '', class: 'icon-checkbox icon-eyebox', title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+              <%= f.check_box(:visible_answer, { checked: @learning_object.allow_new_visibility?, class: 'icon' }, 1) %>
+              <%= f.label(:visible_answer, "<i class=\"icon-checkbox icon-eyebox\"></i>".html_safe, class: :inline, title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
               <div class="form-buttons">
-                <%= submit_tag "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
+                <%= f.submit value: "Pridať odpoveď", data: { disable_with: "priebieha ukladanie..." } %>
               </div>
             </div>
+
         <% end %>
 
       </div>

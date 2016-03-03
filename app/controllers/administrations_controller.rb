@@ -44,60 +44,6 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
-  # Ulozi zmeny v odpovediach na otazky.
-  def edit_answers
-    lo = LearningObject.find_by_id(params[:question_id])
-
-    begin
-      ActiveRecord::Base.transaction do
-        lo.answers.force_all.each do |a|
-          a.update!(
-              is_correct: !!params["correct_answer_#{a.id}"],
-              visible: !!params["visible_answer_#{a.id}"],
-              answer_text: params["edit_answer_text_#{a.id}"]
-          )
-        end
-        lo.validate_answers!
-      end
-    rescue AnswersCorrectnessError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
-    rescue AnswersVisibilityError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
-    end
-
-    redirect_to edit_question_config_path, :notice => "Zmeny v odpovediach boli úspešne uložené."
-  end
-
-  def delete_answer
-    answer = Answer.force_all.find_by_id(params[:answer_id])
-    answer.destroy
-    redirect_to edit_question_config_path, :notice => "Odpoveď bola odstránená"
-  end
-
-  def add_answer
-    lo = LearningObject.find_by_id(params[:question_id])
-
-    begin
-      ActiveRecord::Base.transaction do
-        correct = !!params[:correct_answer]
-        visible = !!params[:visible_answer]
-        Answer.create!({
-                           answer_text: params[:add_answer_text],
-                           learning_object_id: params[:question_id],
-                           is_correct: correct,
-                           visible: visible
-                       })
-        lo.validate_answers!
-      end
-    rescue AnswersCorrectnessError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
-    rescue AnswersVisibilityError
-      return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
-    end
-
-    redirect_to edit_question_config_path, :notice => "Odpoveď bola pridaná."
-  end
-
   def download_statistics
     @setup = Setup.find(params[:_setup_id])
     filepath_full = @setup.compute_stats()

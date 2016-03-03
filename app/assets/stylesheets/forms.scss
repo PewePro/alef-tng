@@ -1,27 +1,28 @@
 input[type="checkbox"].icon {
   display: none !important;
 
-  &+ label.icon-checkbox {
+  &+ label i.icon-checkbox {
     margin-left: 0;
     margin-right: 0;
     cursor: pointer;
   }
 
-  &+ label.icon-checkbox:before {
+  &+ label i.icon-checkbox:before {
     content: '\e818';
     color: $gray;
+    margin-left: 0;
   }
 
-  &:checked + label.icon-checkbox:before {
+  &:checked + label i.icon-checkbox:before {
     content: '\e816';
     color: #000000;
   }
 
-  &+ label.icon-eyebox:before {
+  &+ label i.icon-eyebox:before {
     content: '\e814';
   }
 
-  &:checked + label.icon-eyebox:before {
+  &:checked + label i.icon-eyebox:before {
     content: '\e803';
   }
 
