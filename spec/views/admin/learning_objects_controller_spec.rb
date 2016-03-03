@@ -66,6 +66,7 @@ describe Admin::LearningObjectsController do
 
       fill_in(t('activerecord.attributes.learning_object.lo_id'), with: another_learning_object.lo_id)
       fill_in(t('activerecord.attributes.learning_object.question_text'), with: another_learning_object.question_text)
+      select(t('admin.questions.labels.difficulties.impossible'), from: t('activerecord.attributes.learning_object.difficulty'))
 
       click_button(t('global.links.save_changes'))
 

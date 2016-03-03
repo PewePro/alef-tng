@@ -92,7 +92,8 @@ group :development, :test do
   gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
 
   # helps you find and manage missing and unused translations
-  gem 'i18n-tasks', '0.9.4'
+  gem 'parser', '~> 2.2.2.6'
+  gem 'i18n-tasks', '0.8.7'
 
   # Fixtures replacement with a straightforward definition syntax.
   gem 'factory_girl_rails', '~> 4.0'
