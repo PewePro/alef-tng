@@ -7,20 +7,30 @@ class LearningObject < ActiveRecord::Base
 
   include Exceptions
 
+  # Validacie modelu.
+  validates_presence_of :lo_id, presence: true
+  validates_presence_of :question_text, presence: true
+  validates_presence_of :type, presence: true
+  validates_presence_of :difficulty, presence: true
+
   DIFFICULTY = {
-    TRIVIAL: :trivial,       # I'm too young to die
-    EASY: :easy,             # Hey, not too rough
-    MEDIUM: :medium,         # Hurt me plenty
-    HARD: :hard,             # Ultra-Violence
-    IMPOSSIBLE: :impossible, # Nightmare!
-    UNKNOWN: :unknown_difficulty
+    TRIVIAL:    'trivial',          # I'm too young to die
+    EASY:       'easy',             # Hey, not too rough
+    MEDIUM:     'medium',           # Hurt me plenty
+    HARD:       'hard',             # Ultra-Violence
+    IMPOSSIBLE: 'impossible',       # Nightmare!
+    UNKNOWN:    'unknown_difficulty'
   }
+
+  validates :difficulty, inclusion: { :in => DIFFICULTY.values }
 
   TYPE = {
       singlechoicequestion: "SingleChoiceQuestion",
       multichoicequestion: "MultiChoiceQuestion",
       evaluatorquestion: "EvaluatorQuestion"
   }
+
+  validates :type, inclusion: { :in => TYPE.values }
 
   # generuje metody z hashu DIFFICULTY, napr. 'learning_object.trivial?'
   LearningObject::DIFFICULTY.values.each do |diff|

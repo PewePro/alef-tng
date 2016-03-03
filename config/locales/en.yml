@@ -3,16 +3,26 @@
 #
 
 en:
+  activerecord:
+    attributes:
+      learning_object:
+        difficulty:                   "Difficulty"
+        lo_id:                        "Title"
+        question_text:                "Question text"
+        type:                         "Type"
+
   homescreen:
     links:
-      admin:        "Admin"
-      feedback:     "Feedback"
-      login:        "Sign in"
-      logout:       "Sign out"
+      admin:                          "Admin"
+      feedback:                       "Feedback"
+      login:                          "Sign in"
+      logout:                         "Sign out"
 
   global:
     labels:
-      choose:       "choose..."
+      choose:                         "choose..."
     links:
-      cancel:       "Cancel"
-      submit:       "Submit"
+      cancel:                         "Cancel"
+      discard_changes:                "Zrušiť zmeny"
+      save_changes:                   "Uložiť zmeny"
+      submit:                         "Submit"

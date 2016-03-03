@@ -1,13 +1,14 @@
 <div class="question-text">
-  <%= apply_markdown(@question.question_text).html_safe %>
-  <% unless @question.image.nil? %>
-      <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => @question.id), class: 'question-image', alt: @question.lo_id+' Obrázok' %>
+  <%= learning_object.inspect %>
+  <%= apply_markdown(learning_object.question_text).html_safe %>
+  <% unless learning_object.image.nil? %>
+      <%= image_tag url_for(:controller => "questions", :action => "show_image", :id => learning_object.id), class: 'question-image', alt: learning_object.lo_id+' Obrázok' %>
   <% end %>
 </div>
-<form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= @question.type.downcase %>" class="question-form" data-remote>
-  <input type="hidden" name="type" value="<%= @question.type %>">
+<form method="post" action="<%= request.original_url %>/evaluate_answers" id="question-form-<%= learning_object.type.downcase %>" class="question-form" data-remote>
+  <input type="hidden" name="type" value="<%= learning_object.type %>">
   <div id="question-options">
-    <% case @question.type
+    <% case learning_object.type
          when 'SingleChoiceQuestion' %>
         <%= render 'questions/single_choice_options' %>
     <% when 'MultiChoiceQuestion' %>

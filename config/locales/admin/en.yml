@@ -6,26 +6,22 @@ en:
   admin:
     feedbacks:
       label:
-        solved:                 "solved"
+        solved:                       "solved"
 
     questions:
       labels:
-        difficulty:             "Difficulty"
         difficulties:
-          easy:                 "Easy"
-          hard:                 "Hard"
-          impossible:           "Impossible"
-          medium:               "Medium"
-          trivial:              "Trivial"
-          unknown_difficulty:   "Unknown"
-        external_reference:     "CSV identifier"
-        successfulness:         "Successfulness"
-        title:                  "Title"
-        text:                   "Text"
-        type:                   "Type"
+          easy:                       "Easy"
+          hard:                       "Hard"
+          impossible:                 "Impossible"
+          medium:                     "Medium"
+          trivial:                    "Trivial"
+          unknown_difficulty:         "Unknown"
+        external_reference:           "CSV identifier"
+        successfulness:               "Successfulness"
         types:
-          evaluatorquestion:    "evaluator"
-          multichoicequestion:  "multi-choice"
-          singlechoicequestion: "single-choice"
+          evaluatorquestion:          "evaluator"
+          multichoicequestion:        "multi-choice"
+          singlechoicequestion:       "single-choice"
       links:
-        create:                 "Create question"
+        create:                       "Create question"

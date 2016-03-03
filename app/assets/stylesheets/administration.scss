@@ -97,6 +97,12 @@
   }
 }
 
+.form-group {
+   input, select, textarea, .admin-markdown-textarea {
+    margin: 0;
+  }
+}
+
 #week-concept-table {
   td:not(:first-child) {text-align: center;}
   td:first-child {text-align: right; padding: 0 1rem;}

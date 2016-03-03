@@ -10,31 +10,43 @@
 
   <%= form_for @learning_object, url: admin_learning_objects_path(course: @course), method: :post do |f| %>
 
-    <div class="admin">
+    <div class="form-group admin">
 
       <h3>Vytvorenie otázky</h3>
 
       <dl class="dl-horizontal">
-        <dt><%= f.label :lo_id, t('admin.questions.labels.title') %></dt>
-        <dd><%= f.text_field :lo_id, class: "question_text_field", required: true %></dd>
+        <dt><%= f.label :lo_id, t('activerecord.attributes.learning_object.lo_id') %></dt>
+        <dd>
+          <%= f.text_field :lo_id, class: "question_text_field", required: true %>
+          <%= f.errors :lo_id %>
+        </dd>
 
-        <dt><%= f.label :question_text, t('admin.questions.labels.text') %></dt>
-        <dd><%= f.text_area :question_text, class: "question_text_field", required: true %></dd>
+        <dt><%= f.label :question_text, t('activerecord.attributes.learning_object.question_text') %></dt>
+        <dd>
+          <%= f.text_area :question_text, class: "question_text_field", required: true %>
+          <%= f.errors :question_text %>
+        </dd>
 
-        <dt><%= f.label :type, t('admin.questions.labels.type') %></dt>
-        <dd><%= f.select :type, options_for_select(LearningObject::TYPE.map { |key, type|
-          [t("questions.labels.types.#{key}"), type]
-        }, nil), prompt: t('global.labels.choose'), class: 'form-control', required: true %></dd>
+        <dt><%= f.label :type, t('activerecord.attributes.learning_object.type') %></dt>
+        <dd>
+          <%= f.select :type, options_for_select(LearningObject::TYPE.map { |key, type|
+          [t("admin.questions.labels.types.#{key}"), type]
+            }, nil), prompt: t('global.labels.choose'), class: 'form-control', required: true %>
+          <%= f.errors :type %>
+        </dd>
 
-        <dt><%= f.label t('admin.questions.labels.difficulty') %></dt>
-        <dd><%= f.select :difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
-          [t("questions.labels.difficulties.#{difficulty}"), difficulty]
-        }, nil), prompt: t('global.labels.choose'), class: 'form-control' %></dd>
+        <dt><%= f.label t('activerecord.attributes.learning_object.difficulty') %></dt>
+        <dd>
+          <%= f.select :difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
+          [t("admin.questions.labels.difficulties.#{difficulty}"), difficulty]
+            }, nil), prompt: t('global.labels.choose'), class: 'form-control' %>
+          <%= f.errors :difficulty %>
+        </dd>
 
         <dt></dt>
         <dd>
-          <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-          <%= button_tag "Zrušiť", class: :btn, type: :reset %>
+          <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+          <%= button_tag t('global.links.cancel'), class: :btn, type: :reset %>
         </dd>
       </dl>
 

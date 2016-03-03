@@ -43,3 +43,24 @@ input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"
     background-color: $gray-light;
   }
 }
+
+// Chybove hlasky.
+.form-control-errors {
+  background-color: #f0f0f0;
+  border: 2px solid $red-lighter;
+  border-radius: 6px;
+  font-size: 0.9em;
+  padding: 5px 10px;
+  margin-top: 5px;
+  width: 50%;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 5px 0;
+    }
+  }
+}

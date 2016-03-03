@@ -3,7 +3,7 @@ module Admin
 
     before_action :get_course, only: [:index, :new, :create]
 
-    #TODO
+    #TODO: Pridat autorizaciu cez cancan.
     #authorize_resource :class => false
 
     # Zobrazenie zoznamu uloh.
@@ -20,23 +20,42 @@ module Admin
       }
     end
 
-    # Vytvorenie novej otazky.
+    # Vytvorenie noveho vzdelavacieho objektu.
     def new
       @learning_object = LearningObject.new
     end
 
-    # Ulozenie novej otazky.
+    # Ulozenie noveho vzdelavacieho objektu.
     def create
-      learning_object_params = params.require(:learning_object).permit(:lo_id, :quest_text, :type, :difficulty)
-      @course.learning_objects.create(learning_object_params)
-      redirect_to administration_path, notice: "Otázka bola úspešne vytvorená."
+      begin
+        learning_object_params = params.require(:learning_object).permit(:lo_id, :question_text, :type, :difficulty)
+        @learning_object = @course.learning_objects.new(learning_object_params)
+        @learning_object.save!
+        redirect_to edit_admin_learning_object_path(@learning_object), notice: "Otázka bola úspešne vytvorená."
+      rescue ActiveRecord::RecordInvalid
+        flash[:notice] = "Prosím, vyplňte všetky povinné polia."
+        render 'new'
+      end
     end
 
-    # Editacia otazky.
+    # Vykresli formular na upravenie vzdelavacieho objektu.
     def edit
-      @learning_object = LearningObject.find_by_id(params[:question_id])
+      @learning_object = LearningObject.find(params[:learning_object_id])
       @answers = @learning_object.answers
       @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
+    end
+
+    # Aktualizuje informacie o vzdelavacom objekte.
+    def update
+      begin
+        learning_object_params = params.require(:learning_object).permit(:lo_id, :question_text, :difficulty)
+        @learning_object = LearningObject.find(params[:learning_object_id])
+        @learning_object.update!(learning_object_params)
+        redirect_to edit_admin_learning_object_path(@learning_object), notice: "Otázka bola úspešne uložená."
+      rescue ActiveRecord::RecordInvalid
+        flash[:notice] = "Prosím, vyplňte všetky povinné polia."
+        render 'edit'
+      end
     end
 
     private

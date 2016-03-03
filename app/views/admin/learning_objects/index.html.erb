@@ -11,7 +11,7 @@
 <div id="header-panel" class="admin">
 
   <div class="buttons">
-    <%= link_to "+ #{t('admin.questions.links.create')}", new_admin_learning_objects_path(course: @course), class: 'btn' %>
+    <%= link_to "+ #{t('admin.questions.links.create')}", new_admin_learning_object_path(course: @course), class: 'btn' %>
   </div>
 
   <div class="tools">
@@ -29,23 +29,15 @@
       <div class="question row<%= ' without-feedback' unless @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>">
         <div class="question-tools">
           <% if @feedbacks[:new_aggs].has_key?(q.id) && @feedbacks[:new_aggs][q.id] > 0 %>
-              <%= link_to("#{@feedbacks[:new_aggs][q.id]} / #{@feedbacks[:all_aggs][q.id]}", "#{edit_admin_learning_objects_path(q)}#feedbacks",
+              <%= link_to("#{@feedbacks[:new_aggs][q.id]} / #{@feedbacks[:all_aggs][q.id]}", "#{edit_admin_learning_object_path(q)}#feedbacks",
                           class: 'counter highlighted', title: 'Nové komentáre', data: { toggle: :tooltip }) %>
           <% else %>
-              <%= link_to(@feedbacks[:all_aggs][q.id] || 0, "#{edit_admin_learning_objects_path(q)}#feedbacks",
+              <%= link_to(@feedbacks[:all_aggs][q.id] || 0, "#{edit_admin_learning_object_path(q)}#feedbacks",
                           class: 'counter',title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
           <% end %>
-          <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_admin_learning_objects_path(q)) %>
+          <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_admin_learning_object_path(q)) %>
         </div>
-        <div class="question-icon"><i data-toggle="tooltip" title="<%=
-          case q.type
-            when "SingleChoiceQuestion"
-              'výber z jednej možnosti'
-            when "MultiChoiceQuestion"
-              'výber z viacerých možností'
-            when "EvaluatorQuestion"
-              'evaluator'
-          end %>" class="icon-<%=
+        <div class="question-icon"><i data-toggle="tooltip" title="<%= t("admin.questions.labels.types.#{q.type.downcase}") %>" class="icon-<%=
           case q.type
             when "SingleChoiceQuestion"
               'radio-checked'
@@ -55,7 +47,7 @@
               'sliders'
           end %>"></i></div>
         <div class="question-headline">
-          <div class="title"><%= link_to(q.lo_id, edit_admin_learning_objects_path(q)) %></div>
+          <div class="title"><%= link_to(q.lo_id, edit_admin_learning_object_path(q)) %></div>
           <div class="text"><%= q.question_text %></div>
           <div class="answers">
             <% q.answers.each_with_index do |a, i| %>

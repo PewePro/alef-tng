@@ -3,16 +3,26 @@
 #
 
 sk:
+  activerecord:
+    attributes:
+      learning_object:
+        difficulty:                   "Náročnosť"
+        lo_id:                        "Názov"
+        question_text:                "Text otázky"
+        type:                         "Typ"
+
   homescreen:
     links:
-      admin:        "Administrácia"
-      feedback:     "Spätná väzba"
-      login:        "Prihlásiť sa"
-      logout:       "Odhlásiť"
+      admin:                          "Administrácia"
+      feedback:                       "Spätná väzba"
+      login:                          "Prihlásiť sa"
+      logout:                         "Odhlásiť"
 
   global:
     labels:
-      choose:       "vyberte si..."
+      choose:                         "vyberte si..."
     links:
-      cancel:       "Zrušiť"
-      submit:       "Odoslať"
+      cancel:                         "Zrušiť"
+      discard_changes:                "Zrušiť zmeny"
+      save_changes:                   "Uložiť zmeny"
+      submit:                         "Odoslať"
