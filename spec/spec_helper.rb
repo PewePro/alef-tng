@@ -49,10 +49,12 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
     Rails.application.load_seed
+    Warden.test_mode!
   end
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Warden.test_reset!
   end
 
 # The settings below are suggested to provide a good initial experience
