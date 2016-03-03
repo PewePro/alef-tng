@@ -15,7 +15,7 @@
   <%else%>
       <% @learning_objects.each do |lo| %>
           <a href="<%=
-              url_for :controller => 'questions', :action => 'show', :id => lo.url_name, :week_number => params[:week_number], :room_number => @room.id
+              url_for :controller => 'questions', :action => 'show', :id => lo.url_name
           %>" class="card">
             <div class="question-card-content">
               <h3 class="card-header"><%= lo.lo_id %></h3>
@@ -24,22 +24,13 @@
               </p>
             </div>
             <div class="card-info">
-              <%
-                 result = @results.find {|r| r["result_id"] == lo.id.to_s}
-                 unless result.nil?
-                   views = result['visited']
-                   done = result['solved']
-                 end
-                 unless views.nil?
-              %>
-                  <i class="icon-seen"></i> Videné (<%= views %>x)
+              <% unless views_los(@results,lo).nil? %>
+                  <i class="icon-seen"></i> Videné (<%= views_los(@results,lo) %>x)
               <% else %>
                   <i class="icon-new"></i> Nové
-              <%
-                 end
-                 unless done.nil? or done.to_i.zero?
-              %>
-                  <i class="icon-done"></i> Vyriešené (<%= done %>x)
+              <% end
+                 unless done_los(@results,lo).nil? or done_los(@results,lo).to_i.zero? %>
+                  <i class="icon-done"></i> Vyriešené (<%= done_los(@results,lo) %>x)
               <% end %>
             </div>
           </a>

@@ -1,14 +1,14 @@
 
 <div class="nav-info mobile-content">
     <% unless current_user.show_solutions %>
-      <% if @room.state != "used" %>
-          <%if (@room.score < @room.score_limit)%>
-            <%= "Dosiahnuté skóre:"%>
-          <%else%>
-            <%= "Gratulujeme, dosiahli ste minimálne skóre!"%>
-          <%end%>
-      <%else%>
+      <% if @room.state == "used" %>
           <%= "Tento test ste už úspešne vyriešili." %>
+      <%else%>
+          <%if (@room.score < @room.score_limit)%>
+               Dosiahnuté skóre:
+          <%else%>
+              <%= "Gratulujeme, dosiahli ste minimálne skóre!"%>
+          <%end%>
       <%end%>
       <div class="question-progressbar" data-number-all="<%= @room.score_limit %>" data-number-done="<%= @room.score %>">
         <div class="progressbar-caption"></div>

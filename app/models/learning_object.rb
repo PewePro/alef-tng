@@ -18,12 +18,35 @@ class LearningObject < ActiveRecord::Base
     UNKNOWN: :unknown_difficulty
   }
 
+  DIFFICULTY_VALUE = {
+      trivial: 0.01,
+      easy: 0.25,
+      medium: 0.5,
+      hard: 0.75,
+      impossible: 1,
+      unknown_difficulty: 0.5
+  }
+  IMPORTANCE = {  # Toto neviem ake ma hodnoty zatial, treba naimportovat
+      EASY: :easy,
+      MEDIUM: :medium,
+      HARD: :hard,
+      UNKNOWN: :unknown_importance
+  }
+
+  IMPORTANCE_VALUE = {
+      easy: 0,
+      medium: 0.5,
+      hard: 1,
+      UNKNOWN: 0.5
+  }
+
   # generuje metody z hashu DIFFICULTY, napr. 'learning_object.trivial?'
   LearningObject::DIFFICULTY.values.each do |diff|
     define_method("#{diff}?") do
       self.difficulty == "#{diff}"
     end
   end
+
   def next(room_id,actual_question_id)
     id_array = []
     results=RoomsLearningObject.get_id_do_not_viseted_minus_actual(room_id,actual_question_id)

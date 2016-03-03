@@ -24,17 +24,17 @@ class Week < ActiveRecord::Base
   end
 
   def rooms_count
-    if (self.learning_objects.distinct.count % 10 == 0)
-      count = (self.learning_objects.distinct.count / 10).to_i
+    if (self.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
+      count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
     else
-      count = (self.learning_objects.distinct.count / 10).to_i + 1
+      count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i + 1
     end
     count
   end
 
   def rooms_count_done user_id
     rooms = self.rooms.where("user_id = ?", user_id).order(state: :asc, id: :asc)
-    rooms.where(state: "used").all.count
+    rooms.where(state: "used").count
   end
 
   def start_at

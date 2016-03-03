@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   def show
 
+    @user = current_user
     @question = LearningObject.find(params[:id])
     rel = @question.seen_by_user(current_user.id)
     gon.userVisitedLoRelationId = rel.id
@@ -12,44 +13,39 @@ class QuestionsController < ApplicationController
     @answers = @question.answers
     @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: current_user.id).group('type').count
 
-    if current_user.show_solutions
+    if @user.show_solutions
       UserViewedSolutionLoRelation.create(user_id: current_user.id, learning_object_id: params[:id], setup_id: 1, )
       solution = @question.get_solution(current_user.id)
       gon.show_solutions = TRUE
       gon.solution = solution
     end
 
-    if !(current_user.show_solutions)
+    if @user.show_solutions
+      @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
+    else
       if @room.answered(@question.id,@room.id)
         @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id) + 1
       else
         @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id)
       end
-    else
-      @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
     end
 
-    @feedbacks = @question.feedbacks.visible.includes(:current_user)
+    @feedbacks = @question.feedbacks.visible.includes(:user)
   end
 
   def eval_question
-    weight_solved = 5
-    weight_failed = 2
-    weight_dont_now = 1
     setup = Setup.take
-
     room = Room.find(params[:room_number])
 
     lo_class = Object.const_get params[:type]
     lo = lo_class.find(params[:id])
 
-    results = UserToLoRelation.get_results_room(current_user.id,params[:week_number],params[:room_number], room.number_of_try)
-    result = results.find {|r| r["result_id"] == lo.id.to_s}
-    unless result.nil?
-      solved = result['solved']
-      failed = result['failed']
-      donotnow = result['donotnow']
+    results_used = UserToLoRelation.get_results_room(current_user.id,params[:week_number],params[:room_number], room.number_of_try,lo.id).try(:first)
+    used = FALSE
+    unless results_used.nil?
+      used = results_used["solved"] != 0 || results_used["failed"] != 0 || results_used["donotnow"] != 0
     end
+
     room = Room.find(params[:room_number])
 
     if params[:commit] == 'send_answer'
@@ -62,35 +58,15 @@ class QuestionsController < ApplicationController
     imp_value = 0.0
 
     if difficulty.nil?
-      dif_value = 0.5
+      dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
     else
-      if difficulty == "trivial"
-        dif_value = 0.01
-      elsif difficulty == "easy"
-        dif_value = 0.25
-      elsif difficulty == "medium"
-        dif_value = 0.5
-      elsif difficulty == "hard"
-        dif_value = 0.75
-      elsif difficulty == "impossible"
-        dif_value = 1
-      else
-        dif_value = 0.5
-      end
+      dif_value = LearningObject::DIFFICULTY_VALUE[difficulty.to_sym]
     end
 
     if importance.nil?
-      imp_value = 0.5
+      imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
     else
-      if importance == "1"
-        imp_value = 0
-      elsif importance == "2"
-        imp_value = 0.5
-      elsif importance == "3"
-        imp_value = 1
-      else
-        imp_value = 0.5
-      end
+      imp_value = LearningObject::IMPORTANCE_VALUE[importance.to_sym]
     end
 
     dif_compute = 0.0
@@ -107,26 +83,26 @@ class QuestionsController < ApplicationController
       end
     end
 
-    if all != 0
+    if all == 0
+      dif_result = dif_value
+    else
       dif_compute = do_not_know_value.to_f / all.to_f
       dif_result = (dif_value + dif_compute) / 2.0
-    else
-      dif_result = dif_value
     end
 
     score = 0.0
 
-    if (solved.nil? && failed.nil? && donotnow.nil?) || (solved==0 && failed==0 && donotnow==0)
+    if results_used.nil? || !used
       if params[:commit] == 'dont_know'
-        score = weight_dont_now * imp_value *dif_result
-      elsif (params[:commit] == 'send_answer' and result)
-        score = weight_solved * imp_value * dif_result
-      elsif (params[:commit] == 'send_answer' and not result)
-        score = weight_failed * imp_value * dif_result
+        score = ENV["WEIGHT_DONT_NOW"].to_i * imp_value *dif_result
+      elsif (params[:commit] == 'send_answer' && result)
+        score = ENV["WEIGHT_SOLVED"].to_i * imp_value * dif_result
+      elsif (params[:commit] == 'send_answer' && !result)
+        score = ENV["WEIGHT_FAILED"].to_i * imp_value * dif_result
       end
     end
 
-    room.update_attribute(:score, (room.score + score))
+    room.update!(score: (room.score + score))
 
   end
 
@@ -157,12 +133,10 @@ class QuestionsController < ApplicationController
     end
 
     rel.type = 'UserDidntKnowLoRelation' if params[:commit] == 'dont_know'
-    rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' and result
-    rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' and not result
+    rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' && result
+    rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' && !result
 
-    if room.state != "used"
-      eval_question
-    end
+    eval_question unless room.state.to_s == "used"
 
     lo.user_to_lo_relations << rel
 
@@ -177,7 +151,7 @@ class QuestionsController < ApplicationController
   def log_time
     unless params[:id].nil?
       rel = UserVisitedLoRelation.find(params[:id])
-      if not rel.nil? and rel.user_id == current_user.id
+      if not rel.nil? && rel.user_id == current_user.id
         rel.update interaction: params[:time]
       end
     end

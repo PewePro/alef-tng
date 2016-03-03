@@ -12,10 +12,10 @@
   %>
       <% if r.state == "do_not_use" %>
               <a href="<%=
-                  url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week.number
+                  url_for controller: 'rooms', action: 'show', room_number: r.id
               %>" class="card_open ">
                 <h3 class="card-header"><%= r.name %><%= ' (neúspešný)' if r.state == "do_not_use" %></h3>
-                <%= r.decsription %>
+                <%= get_description(r) %>
                 <% if r.question_count > 0 %>
                     <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
                       <div class="progressbar-caption"></div>
@@ -26,10 +26,10 @@
               </a>
       <% else %>
             <a href="<%=
-                url_for controller: 'rooms', action: 'show', room_number: r.id, week_number: @week.number
+                url_for controller: 'rooms', action: 'show', room_number: r.id
             %>" class="card ">
               <h3 class="card-header"><%= r.name %><%= ' (neúspešný)' if r.state == "do_not_use" %></h3>
-              <%= r.decsription %>
+              <%= get_description(r) %>
               <% if r.question_count > 0 %>
                   <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
                     <div class="progressbar-caption"></div>

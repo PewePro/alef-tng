@@ -1,8 +1,8 @@
 module Levels
   class RoomsCreation
     def self.compute_limit(number_lo, learning_objects,setup)
-      weight_solved = 5
-      number_questions = number_lo * 0.6
+
+      number_questions = number_lo * ENV["MIN_PERCENTAGE"].to_f
 
       sum_dif = 0.0
       sum_imp = 0.0
@@ -17,21 +17,9 @@ module Levels
         imp_value = 0
 
         if dif.nil?
-          dif_value = 0.5
+          dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
         else
-          if dif == "trivial"
-            dif_value = 0.01
-          elsif dif == "easy"
-            dif_value = 0.25
-          elsif dif == "medium"
-            dif_value = 0.5
-          elsif dif == "hard"
-            dif_value = 0.75
-          elsif dif == "impossible"
-            dif_value = 1.0
-          else
-            dif_value = 0.5
-          end
+          dif_value = LearningObject::DIFFICULTY_VALUE[dif.to_sym]
         end
 
         dif_compute = 0.0
@@ -49,78 +37,35 @@ module Levels
           end
         end
 
-        if all!= 0
+        if all== 0
+          dif_result = dif_value
+        else
           dif_compute = do_not_know_value.to_f / all.to_f
           dif_result = (dif_value + dif_compute) / 2.0
-        else
-          dif_result = dif_value
         end
 
-        sum_dif +=dif_result
+        sum_dif += dif_result
 
-        if dif.nil?
-          imp_value = 0.5
+        if imp.nil?
+          imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
         else
-          if imp == "1"
-            imp_value = 0.0
-          elsif imp == "2"
-            imp_value = 0.5
-          elsif imp == "3"
-            imp_value = 1
-          else
-            imp_value = 0.5
-          end
+          imp_value = LearningObject::IMPORTANCE_VALUE[imp.to_sym]
         end
 
-        sum_imp +=imp_value
+        sum_imp += imp_value
 
       end
 
       avg_dif = sum_dif / number_lo.to_f
       avg_imp = sum_imp / number_lo.to_f
 
-      number_questions * weight_solved * avg_imp * avg_dif
+      number_questions * ENV["WEIGHT_SOLVED"].to_i * avg_imp * avg_dif
 
-    end
-    def self.prepare_description(number_lo,sorted_los)
-      description = "Najviac zastúpené témy: "
-      number = 5
-      list = Hash.new
-
-      for i in 0..(number_lo-1)
-        l = sorted_los[i]
-        lo = LearningObject.where("id = ?", l.id).first
-        concepts = lo.concepts
-        concepts.each do |c|
-          if list.has_key?(c.name)
-            list[c.name] = list[c.name].to_i + 1
-          else
-            list[c.name] = 1
-          end
-        end
-      end
-
-      list = list.sort_by{|_key, value| value}.reverse.to_h
-
-      if list.length < number
-        number = list.length
-      end
-
-
-      for i in 0..(number - 1)
-        if i!= (number-1)
-          description = description + list.keys[i] + " => " + list.values[i].to_s + " krát, "
-        else
-          description = description + list.keys[i] + " => " + list.values[i].to_s + " krát."
-        end
-      end
-
-      description
     end
 
     def self.create(week_id,user_id)
-      if (Week.find(week_id).free_los(user_id).count > 10 )
-        number_lo = 10
+      if (Week.find(week_id).free_los(user_id).count > ENV["NUMBER_LOS"].to_i )
+        number_lo = ENV["NUMBER_LOS"].to_i
       else
         number_lo = Week.find(week_id).free_los(user_id).count
       end
@@ -143,7 +88,7 @@ module Levels
       if (choice > number_of_choice_q)
         choice = number_of_choice_q
       end
-      if (evaluator + choice != number_lo)
+      unless evaluator + choice == number_lo
         if number_of_evaluator_q > evaluator
           evaluator +=1
         elsif number_of_evaluator_q > choice
@@ -176,9 +121,8 @@ module Levels
 
       score_limit = compute_limit(number_lo,sorted_los,setup)
       name = "Test " + week.number.to_s + "." + (week.rooms.where(user_id: user_id).count + 1).to_s
-      description = prepare_description(number_lo,sorted_los)
 
-      room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit, :decsription => description)
+      room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit)
 
       for j in 0..(number_lo-1)
         l = sorted_los[j]

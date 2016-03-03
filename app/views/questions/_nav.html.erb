@@ -1,11 +1,11 @@
 <nav class="question-nav not-zoomable">
   <%= render 'shared/user_element' %>
   <div class="mobile-content">
-    <% if @next_question == nil %>
+    <% if @next_question.nil? %>
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=
-            url_for :controller => 'questions', :action => 'next', :week_number => params[:week_number], :room_number => params[:room_number], :lo_id => @question.id
+            url_for :controller => 'questions', :action => 'next', :lo_id => @question.id
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <a href="<%= url_for controller: 'weeks', action: 'show' %>">

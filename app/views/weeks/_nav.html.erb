@@ -1,14 +1,14 @@
 <nav class="not-zoomable">
   <%= render 'shared/user_element' %>
   <div class="mobile-content">
-    <% if @previous_week == nil %>
+    <% if @previous_week.nil? %>
         <i class="icon-left disabled"></i>
     <% else %>
         <a href="<%=
             url_for :controller => 'weeks', :action => 'show', :week_number => @previous_week.number
         %>"><i class="icon-left"></i></a>
     <% end %>
-    <% if @next_week == nil %>
+    <% if @next_week.nil? %>
         <i class="nav-right-icons icon-right disabled"></i>
     <% else %>
         <a href="<%=

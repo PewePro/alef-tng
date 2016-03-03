@@ -6,7 +6,7 @@
   <% end %>
   <div class="texts">
     <i class="icon-seen"></i> Videné (<%= @relations["UserVisitedLoRelation"] %>x)
-    <% if @relations["UserSolvedLoRelation"] != nil %>
+    <% unless @relations["UserSolvedLoRelation"].nil? %>
         <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)
     <% end %>
   </div>
