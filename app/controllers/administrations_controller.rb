@@ -44,22 +44,6 @@ class AdministrationsController < ApplicationController
     redirect_to setup_config_path, :notice => "Úspešne uložené"
   end
 
-  def edit_question_config
-    @question = LearningObject.find_by_id(params[:question_id])
-    @answers = @question.answers
-    @feedback_new_count = Feedback.where(accepted: nil).where.not(learning_object_id: nil).count
-  end
-
-  def edit_question
-    LearningObject.find_by_id(params[:question_id]).update!(
-        lo_id: params[:edit_question_name],
-        question_text: params[:edit_question_text],
-        difficulty: params[:difficulty]
-    )
-
-    redirect_to edit_question_config_path, :notice => "Otázka bola úspešne uložená."
-  end
-
   # Ulozi zmeny v odpovediach na otazky.
   def edit_answers
     lo = LearningObject.find_by_id(params[:question_id])
