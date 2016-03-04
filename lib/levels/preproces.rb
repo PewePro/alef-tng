@@ -11,13 +11,13 @@ module Levels
        type = rel.type
        if type == "UserSolvedLoRelation"
          if result.has_key?([id_user,id_lo])
-           result[[id_user,id_lo]] =  result[[id_user,id_lo]].to_s + "1"
+           result[[id_user,id_lo]] =  "#{result[[id_user,id_lo]].to_s}1"
          else
            result[[id_user,id_lo]] = "1"
          end
        elsif type == "UserFailedLoRelation" || type == "UserDidntKnowLoRelation"
          if result.has_key?([id_user,id_lo])
-           result[[id_user,id_lo]] =  result[[id_user,id_lo]].to_s + "0"
+           result[[id_user,id_lo]] =  "#{result[[id_user,id_lo]].to_s}0"
          else
            result[[id_user,id_lo]] = "0"
          end

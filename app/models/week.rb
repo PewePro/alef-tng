@@ -2,6 +2,7 @@ class Week < ActiveRecord::Base
   belongs_to :setup
   has_and_belongs_to_many :concepts
   has_many :rooms
+  has_many :concepts_weeks
   has_many :learning_objects, through: :concepts
 
   def next
@@ -24,10 +25,9 @@ class Week < ActiveRecord::Base
   end
 
   def rooms_count
-    if (self.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
-      count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
-    else
-      count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i + 1
+    count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
+    unless (self.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
+      count +=1
     end
     count
   end
@@ -49,49 +49,28 @@ class Week < ActiveRecord::Base
     (Date.today-self.start_at).to_i.between?(0,6)
   end
 
-  def free_los user_id
-    sql = '(SELECT DISTINCT learning_objects.* FROM learning_objects
-     INNER JOIN concepts_learning_objects ON learning_objects.id = concepts_learning_objects.learning_object_id
-     INNER JOIN concepts ON concepts_learning_objects.concept_id = concepts.id
-     INNER JOIN concepts_weeks ON concepts.id = concepts_weeks.concept_id
-     WHERE concepts_weeks.week_id = '+self.id.to_s+')
-     except
-     (SELECT DISTINCT learning_objects.* FROM learning_objects
-     INNER JOIN rooms_learning_objects ON learning_objects.id = rooms_learning_objects.learning_object_id
-     INNER JOIN rooms ON rooms_learning_objects.room_id = rooms.id
-     WHERE rooms.week_id = '+self.id.to_s+' AND rooms.user_id = '+user_id.to_s+');'
-
-    LearningObject.find_by_sql(sql.to_s)
-  end
-
-  def free_los_by_type_of_question (type_question, user_id)
-    type = "EvaluatorQuestion"
-    if (type_question.to_s == type)
-
-      sql = "(SELECT DISTINCT learning_objects.* FROM learning_objects
-       INNER JOIN concepts_learning_objects ON learning_objects.id = concepts_learning_objects.learning_object_id
-       INNER JOIN concepts ON concepts_learning_objects.concept_id = concepts.id
-       INNER JOIN concepts_weeks ON concepts.id = concepts_weeks.concept_id
-       WHERE concepts_weeks.week_id = "+self.id.to_s+" AND learning_objects.type = '#{type}')
-       except
-       (SELECT DISTINCT learning_objects.* FROM learning_objects
-       INNER JOIN rooms_learning_objects ON learning_objects.id = rooms_learning_objects.learning_object_id
-       INNER JOIN rooms ON rooms_learning_objects.room_id = rooms.id
-       WHERE rooms.week_id = "+self.id.to_s+" AND learning_objects.type = '#{type}' AND rooms.user_id = "+user_id.to_s+");"
+  def free_los (type_question, user_id)
+    if type_question.nil?
+      los_week = self.learning_objects.distinct
+      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ?", self.id,user_id)
+    elsif type_question == "EvaluatorQuestion"
+      los_week = self.learning_objects.where("learning_objects.type = ?","EvaluatorQuestion").distinct
+      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type = ?", self.id,user_id,"EvaluatorQuestion")
     else
-      sql = "(SELECT DISTINCT learning_objects.* FROM learning_objects
-       INNER JOIN concepts_learning_objects ON learning_objects.id = concepts_learning_objects.learning_object_id
-       INNER JOIN concepts ON concepts_learning_objects.concept_id = concepts.id
-       INNER JOIN concepts_weeks ON concepts.id = concepts_weeks.concept_id
-       WHERE concepts_weeks.week_id = "+self.id.to_s+" AND learning_objects.type != '#{type}')
-       except
-       (SELECT DISTINCT learning_objects.* FROM learning_objects
-       INNER JOIN rooms_learning_objects ON learning_objects.id = rooms_learning_objects.learning_object_id
-       INNER JOIN rooms ON rooms_learning_objects.room_id = rooms.id
-       WHERE rooms.week_id = "+self.id.to_s+" AND learning_objects.type != '#{type}' AND rooms.user_id = "+user_id.to_s+");"
+      los_week = self.learning_objects.where("learning_objects.type != ?","EvaluatorQuestion").distinct
+      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type != ?", self.id,user_id,"EvaluatorQuestion")
     end
-
-    LearningObject.find_by_sql(sql.to_s)
+    los_week.reject{ |los| los_in_rooms.include?(los)}
+  end
+  def free_los_with_irt (type_question, user_id)
+    if type_question == "EvaluatorQuestion"
+      los_week = self.learning_objects.where("learning_objects.type = ?","EvaluatorQuestion").distinct.eager_load(:irt_values)
+      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type = ?", self.id,user_id,"EvaluatorQuestion")
+    else
+      los_week = self.learning_objects.where("learning_objects.type != ?","EvaluatorQuestion").distinct.eager_load(:irt_values)
+      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type != ?", self.id,user_id,"EvaluatorQuestion")
+    end
+    los_week.reject{ |los| los_in_rooms.include?(los)}
   end
 
   before_destroy do |week|

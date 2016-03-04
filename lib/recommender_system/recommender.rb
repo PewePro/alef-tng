@@ -11,7 +11,7 @@ module RecommenderSystem
 
     def self.learning_objects
       if @@los.empty?
-        @@los = Week.find(@@week_id).free_los_by_type_of_question(@@type_question,@@user_id)
+        @@los = Week.find(@@week_id).free_los(@@type_question,@@user_id)
       end
       @@los
     end

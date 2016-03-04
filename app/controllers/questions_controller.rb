@@ -23,10 +23,9 @@ class QuestionsController < ApplicationController
     if @user.show_solutions
       @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
     else
-      if @room.answered(@question.id,@room.id)
-        @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id) + 1
-      else
-        @number_of_question = @room.question_count - @room.question_count_not_visited(@room.id)
+      @number_of_question = @room.question_count - @room.question_count_not_visited
+      if @room.not_answered(@question.id)
+        @number_of_question +=1
       end
     end
 
@@ -52,53 +51,24 @@ class QuestionsController < ApplicationController
       result = lo.right_answer? params[:answer], @solution
     end
 
-    difficulty = lo.difficulty
-    dif_value = 0.0
-    importance = lo.importance
-    imp_value = 0.0
-
-    if difficulty.nil?
-      dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
-    else
-      dif_value = LearningObject::DIFFICULTY_VALUE[difficulty.to_sym]
-    end
-
-    if importance.nil?
-      imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
-    else
-      imp_value = LearningObject::IMPORTANCE_VALUE[importance.to_sym]
-    end
-
-    dif_compute = 0.0
-    results = Levels::Preproces.preproces_data(setup)
-
-    all = 0
-    do_not_know_value = 0
-    results.each do |r|
-      if r[0][1] == lo.id
-        all +=1
-        if r[1] == 0
-          do_not_know_value +=1
-        end
-      end
-    end
-
-    if all == 0
-      dif_result = dif_value
-    else
-      dif_compute = do_not_know_value.to_f / all.to_f
-      dif_result = (dif_value + dif_compute) / 2.0
-    end
+    dif_result = lo.get_difficulty(setup)
+    imp_value = lo.get_importance
 
     score = 0.0
 
-    if results_used.nil? || !used
-      if params[:commit] == 'dont_know'
-        score = ENV["WEIGHT_DONT_NOW"].to_i * imp_value *dif_result
-      elsif (params[:commit] == 'send_answer' && result)
-        score = ENV["WEIGHT_SOLVED"].to_i * imp_value * dif_result
-      elsif (params[:commit] == 'send_answer' && !result)
-        score = ENV["WEIGHT_FAILED"].to_i * imp_value * dif_result
+    if lo.type == "EvaluatorQuestion"
+      solution = lo.get_solution(current_user.id)
+      rightness = 1 - ((solution - params[:answer].to_i).abs)/100
+      score = ENV["WEIGHT_SOLVED"].to_i * rightness * imp_value * dif_result
+    else
+      if results_used.nil? || !used
+        if params[:commit] == 'dont_know'
+          score = ENV["WEIGHT_DONT_NOW"].to_i * imp_value *dif_result
+        elsif (params[:commit] == 'send_answer' && result)
+          score = ENV["WEIGHT_SOLVED"].to_i * imp_value * dif_result
+        elsif (params[:commit] == 'send_answer' && !result)
+          score = ENV["WEIGHT_FAILED"].to_i * imp_value * dif_result
+        end
       end
     end
 
@@ -159,7 +129,6 @@ class QuestionsController < ApplicationController
   end
 
   def next
-
     room = Room.find_by_id(params[:room_number])
 
     if current_user.show_solutions
@@ -169,20 +138,12 @@ class QuestionsController < ApplicationController
         los = room.learning_objects.order(id: :asc).first
       end
     else
-      id_array = []
-      results=RoomsLearningObject.get_id_do_not_viseted(params[:room_number])
-      results.each do |r|
-        id_array.push(r['learning_object_id'].to_i)
+      los_not_visited = room.get_dont_visited
+      if los_not_visited.nil?
+        los = room.learning_objects.shuffle.first
+      else
+        los = los_not_visited.shuffle.first
       end
-
-      if (id_array.empty?)
-        lo = room.learning_objects.all.distinct
-        lo.each do |l|
-          id_array.push(l.id)
-        end
-      end
-
-      los = room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
     end
 
     redirect_to action: "show", id: los.url_name, week_number: params[:week_number]

@@ -7,53 +7,11 @@ module Levels
       sum_dif = 0.0
       sum_imp = 0.0
 
-      for i in 0..(number_lo-1)
-        l = learning_objects[i]
-        lo = LearningObject.where("id = ?", l.id).first
-
-        dif = lo.difficulty
-        dif_value = 0
-        imp = lo.importance
-        imp_value = 0
-
-        if dif.nil?
-          dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
-        else
-          dif_value = LearningObject::DIFFICULTY_VALUE[dif.to_sym]
-        end
-
-        dif_compute = 0.0
-        dif_result = 0.0
-        results = Levels::Preproces.preproces_data(setup)
-
-        all = 0
-        do_not_know_value = 0
-        results.each do |r|
-          if r[0][1] == lo.id
-            all +=1
-            if r[1] == 0
-              do_not_know_value +=1
-            end
-          end
-        end
-
-        if all== 0
-          dif_result = dif_value
-        else
-          dif_compute = do_not_know_value.to_f / all.to_f
-          dif_result = (dif_value + dif_compute) / 2.0
-        end
-
+      learning_objects.each do |l|
+        dif_result = l.get_difficulty(setup)
         sum_dif += dif_result
-
-        if imp.nil?
-          imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
-        else
-          imp_value = LearningObject::IMPORTANCE_VALUE[imp.to_sym]
-        end
-
+        imp_value = l.get_importance
         sum_imp += imp_value
-
       end
 
       avg_dif = sum_dif / number_lo.to_f
@@ -64,18 +22,18 @@ module Levels
     end
 
     def self.create(week_id,user_id)
-      if (Week.find(week_id).free_los(user_id).count > ENV["NUMBER_LOS"].to_i )
+      if (Week.find(week_id).free_los(nil,user_id).count > ENV["NUMBER_LOS"].to_i )
         number_lo = ENV["NUMBER_LOS"].to_i
       else
-        number_lo = Week.find(week_id).free_los(user_id).count
+        number_lo = Week.find(week_id).free_los(nil,user_id).count
       end
       setup = Setup.take
-      week = setup.weeks.find_by_id(week_id)
+      week = Week.find(week_id)
       learning_objects = week.learning_objects.all.distinct
 
       sorted_los = Array.new
-      number_of_evaluator_q = week.free_los_by_type_of_question("EvaluatorQuestion",user_id).count
-      number_of_choice_q = week.free_los_by_type_of_question("ChoiceQuestion",user_id).count
+      number_of_evaluator_q = week.free_los("EvaluatorQuestion",user_id).count
+      number_of_choice_q = week.free_los("ChoiceQuestion",user_id).count
       part_evaluator = number_of_evaluator_q.to_f / (number_of_evaluator_q + number_of_choice_q).to_f
       result_number_evaluator = (number_lo * part_evaluator).round
 
@@ -120,14 +78,13 @@ module Levels
       end
 
       score_limit = compute_limit(number_lo,sorted_los,setup)
-      name = "Test " + week.number.to_s + "." + (week.rooms.where(user_id: user_id).count + 1).to_s
+      name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
 
       room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit)
 
-      for j in 0..(number_lo-1)
-        l = sorted_los[j]
+      sorted_los.each do |l|
         RoomsLearningObject.create(:room_id => room.id,:learning_object_id => l.id)
-       end
+      end
 
       room.id
     end

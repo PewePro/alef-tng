@@ -8,7 +8,7 @@ class RoomsController < ApplicationController
     @next_room = @room.next(current_user.id,week.id)
     @previous_room = @room.previous(current_user.id,week.id)
 
-    @learning_objects = @room.learning_objects.order(id: :asc).distinct
+    @learning_objects = @room.learning_objects.order(id: :asc)
     @results = UserToLoRelation.get_results(current_user.id,week.id)
 
   end
@@ -16,16 +16,16 @@ class RoomsController < ApplicationController
   def eval
     setup = Setup.take
     @room = Room.find(params[:room_number])
-    learning_objects = @room.learning_objects.all.distinct
+    learning_objects = @room.learning_objects
 
     @score_limit = @room.score_limit
     week = Week.find_by_id(@room.week_id)
 
-    if (week.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
-      @count_real = (week.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
-    else
-      @count_real = (week.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i + 1
+    @count_real = (week.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
+    unless (week.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
+      @count_real +=1
     end
+
     @count_actual = week.rooms.where("user_id = ? AND state = ?", current_user.id, "used").count
 
     if @room.state == "used"
@@ -43,43 +43,8 @@ class RoomsController < ApplicationController
           if f.user_id == current_user.id
             order_to_comment_of_user += 1
 
-            difficulty = l.difficulty
-            dif_value = 0.0
-            importance = l.importance
-            imp_value = 0.0
-
-            if difficulty.nil?
-              dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
-            else
-              dif_value = LearningObject::DIFFICULTY_VALUE[difficulty.to_sym]
-            end
-
-            if importance.nil?
-              imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
-            else
-              imp_value = LearningObject::IMPORTANCE_VALUE[importance.to_sym]
-            end
-
-            dif_compute = 0.0
-            results = Levels::Preproces.preproces_data(setup)
-
-            all_questions = 0
-            do_not_know_value = 0
-            results.each do |r|
-              if r[0][1] == l.id
-                all_questions +=1
-                if r[1] == 0
-                  do_not_know_value +=1
-                end
-              end
-            end
-
-            if all_questions == 0
-              dif_result = dif_value
-            else
-              dif_compute = do_not_know_value.to_f / all_questions.to_f
-              dif_result = (dif_value + dif_compute) / 2.0
-            end
+            dif_result = l.get_difficulty(setup)
+            imp_value = l.get_importance
 
             score1 = score1 + ENV["WEIGHT_COMMENT"].to_i * dif_result * imp_value * (ENV["BASE_EXP_FUNCTION"].to_f ** order_to_comment) * (ENV["BASE_EXP_FUNCTION"].to_f ** order_to_comment_of_user)
           end
@@ -111,12 +76,13 @@ class RoomsController < ApplicationController
     setup = Setup.take
     week = setup.weeks.find_by_number(params[:week_number])
     room = Room.find(params[:room_number])
-    room.update!(state: "used")
-
-    room_id = Levels::RoomsCreation.create(week.id, current_user.id)
-
-    redirect_to action: "show",week_number: params[:week_number], room_number: room_id
-
+    if room.state == "used"
+      redirect_to controller: "weeks", action: "show"
+    else
+      room.update!(state: "used")
+      room_id = Levels::RoomsCreation.create(week.id, current_user.id)
+      redirect_to action: "show", room_number: room_id
+    end
   end
 
 end

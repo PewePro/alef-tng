@@ -3,6 +3,7 @@ class LearningObject < ActiveRecord::Base
   has_many :user_to_lo_relations
   has_many :rooms_learning_objects
   has_many :irt_values
+  has_many :concepts_learning_objects
   has_many :feedbacks
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
@@ -48,20 +49,10 @@ class LearningObject < ActiveRecord::Base
   end
 
   def next(room_id,actual_question_id)
-    id_array = []
-    results=RoomsLearningObject.get_id_do_not_viseted_minus_actual(room_id,actual_question_id)
-    results.each do |r|
-      id_array.push(r['learning_object_id'].to_i)
-    end
-    room = Room.find(room_id)
-
-    if id_array.empty?
-      los = nil
-    else
-      los = room.learning_objects.find(id_array[Random.rand(0..(id_array.count-1))])
-    end
-
-    los
+    room = Room.find_by_id(room_id)
+    los_not_visited = room.get_dont_visited
+    los_not_visited = los_not_visited.reject{ |los| los.id == actual_question_id}
+    los_not_visited.try(:shuffle).try(:first)
   end
 
   def previous(room_id)
@@ -134,6 +125,42 @@ class LearningObject < ActiveRecord::Base
       else
     end
 
+  end
+
+  def get_difficulty(setup)
+    if self.difficulty.nil?
+      dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
+    else
+      dif_value = LearningObject::DIFFICULTY_VALUE[self.difficulty.to_sym]
+    end
+
+    results = Levels::Preproces.preproces_data(setup)
+
+    all = 0
+    do_not_know_value = 0
+    results.each do |r|
+      if r[0][1] == self.id
+        all +=1
+        if r[1] == 0
+          do_not_know_value +=1
+        end
+      end
+    end
+
+    if all == 0
+      dif_result = dif_value
+    else
+      dif_result = (dif_value + (do_not_know_value.to_f / all.to_f)) / 2.0
+    end
+  end
+
+  def get_importance
+    if self.importance.nil?
+      imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
+    else
+      imp_value = LearningObject::IMPORTANCE_VALUE[self.importance.to_sym]
+    end
+    imp_value
   end
 
 end
