@@ -87,7 +87,7 @@ describe Admin::LearningObjectsController do
     end
 
     # Komplexny test, ktory overuje, ci je mozne vytvorit otazku a zobrazit ju ako pouzivatel.
-    it "should create simple question and put view it as a student" do
+    it "should create simple question and view it as a student" do
 
       visit administration_path
 
@@ -107,7 +107,7 @@ describe Admin::LearningObjectsController do
       learning_object = LearningObject.last
 
       # TODO: Pouzit button
-      # Teraz pridame do otazku do konceptu.
+      # Teraz pridame otazku do konceptu.
       visit administration_path
 
       find("#concept#{@course.id}").click
