@@ -26,6 +26,11 @@
       <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
       <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
       <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
+      <li class="pull-right"><%= link_to('<i class="icon-delete"></i>'.html_safe,
+                                         admin_learning_object_path(id: @learning_object.id),
+                                         class: 'delete-lo',
+                                         method: :delete,
+                                         data: { confirm: 'Naozaj chcete odstrániť tento vzdelávací objekt?' }) %></li>
     </ul>
 
     <div id="editor-tabs-content" class="tab-content is-first">

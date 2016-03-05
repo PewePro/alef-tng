@@ -66,8 +66,9 @@ Rails.application.routes.draw do
 
     resources :learning_objects do
       get :index, :new, :edit
-      patch :update
+      patch :update, :restore
       post :create
+      delete :destroy
 
       resources :answers do
         patch :update, on: :collection

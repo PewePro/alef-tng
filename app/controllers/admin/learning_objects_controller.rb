@@ -59,6 +59,20 @@ module Admin
       end
     end
 
+    # Odstranenie odstraneneho vzdelavacieho objektu.
+    def restore
+      LearningObject.restore(params[:learning_object_id])
+      lo = LearningObject.find(params[:learning_object_id])
+      redirect_to admin_learning_objects_path(course: lo.course_id), notice: "Otázka bola úspešne obnovená."
+    end
+
+    # Obnovi otazky.
+    def destroy
+      lo = LearningObject.find(params[:id])
+      lo.destroy!
+      redirect_to admin_learning_objects_path(course: lo.course_id), notice: "Otázka bola úspešne odstránená."
+    end
+
     private
     def get_course
       begin

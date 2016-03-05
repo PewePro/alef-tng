@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305191459) do
+ActiveRecord::Schema.define(version: 20160305192706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,12 +74,6 @@ ActiveRecord::Schema.define(version: 20160305191459) do
 
   add_index "feedbacks", ["learning_object_id", "accepted"], name: "index_feedbacks_on_learning_object_id_and_accepted", using: :btree
 
-  create_table "irt_values", force: :cascade do |t|
-    t.float   "difficulty"
-    t.float   "discrimination"
-    t.integer "learning_object_id"
-  end
-
   create_table "learning_objects", force: :cascade do |t|
     t.string   "lo_id"
     t.string   "type"
@@ -92,8 +86,10 @@ ActiveRecord::Schema.define(version: 20160305191459) do
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
-    t.string   "importance",         default: "UNKNOWN"
+    t.datetime "deleted_at"
   end
+
+  add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree
 
   create_table "recommendation_configurations", force: :cascade do |t|
     t.string  "name",                    null: false
@@ -114,22 +110,6 @@ ActiveRecord::Schema.define(version: 20160305191459) do
     t.integer "recommendation_configuration_id", null: false
     t.integer "recommender_id",                  null: false
     t.integer "weight",                          null: false
-  end
-
-  create_table "rooms", force: :cascade do |t|
-    t.integer "week_id"
-    t.integer "user_id"
-    t.string  "name"
-    t.string  "decsription"
-    t.string  "state",         default: "do_not_use"
-    t.integer "number_of_try"
-    t.float   "score",         default: 0.0
-    t.float   "score_limit",   default: 0.0
-  end
-
-  create_table "rooms_learning_objects", force: :cascade do |t|
-    t.integer "room_id"
-    t.integer "learning_object_id"
   end
 
   create_table "setups", force: :cascade do |t|
@@ -160,8 +140,6 @@ ActiveRecord::Schema.define(version: 20160305191459) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "activity_recommender_check", default: false
-    t.integer  "room_id"
-    t.integer  "number_of_try"
   end
 
   create_table "users", force: :cascade do |t|
@@ -185,7 +163,6 @@ ActiveRecord::Schema.define(version: 20160305191459) do
     t.string   "email"
     t.string   "ais_email"
     t.string   "group",               default: "X"
-    t.float    "proficiency",         default: 0.5
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
@@ -204,21 +181,15 @@ ActiveRecord::Schema.define(version: 20160305191459) do
   add_foreign_key "concepts_weeks", "weeks"
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
-  add_foreign_key "irt_values", "learning_objects"
   add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "users"
   add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommenders_options", "recommendation_configurations"
   add_foreign_key "recommenders_options", "recommenders"
-  add_foreign_key "rooms", "users"
-  add_foreign_key "rooms", "weeks"
-  add_foreign_key "rooms_learning_objects", "learning_objects"
-  add_foreign_key "rooms_learning_objects", "rooms"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
   add_foreign_key "user_to_lo_relations", "learning_objects"
-  add_foreign_key "user_to_lo_relations", "rooms"
   add_foreign_key "user_to_lo_relations", "setups"
   add_foreign_key "user_to_lo_relations", "users"
   add_foreign_key "weeks", "setups"

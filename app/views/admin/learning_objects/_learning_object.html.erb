@@ -1,0 +1,42 @@
+<%
+  klass = []
+  klass << 'without-feedback' unless @feedbacks[:new_aggs].has_key?(learning_object.id) && @feedbacks[:new_aggs][learning_object.id] > 0
+  klass << :deleted if learning_object.deleted?
+%>
+<div id="learning-object<%= learning_object.id %>" class="question row <%= klass.join(' ') %>">
+  <div class="question-tools">
+    <% if learning_object.deleted? %>
+        <%= link_to('Obnoviť', admin_learning_object_restore_path(learning_object),
+                    class: :counter,
+                    method: :patch,
+                    data: { confirm: 'Obnovením sa stane vzdelávací objekt opäť viditeľný v systéme.' }) %>
+    <% else %>
+      <% if @feedbacks[:new_aggs].has_key?(learning_object.id) && @feedbacks[:new_aggs][learning_object.id] > 0 %>
+          <%= link_to("#{@feedbacks[:new_aggs][learning_object.id]} / #{@feedbacks[:all_aggs][learning_object.id]}", "#{edit_admin_learning_object_path(learning_object)}#feedbacks",
+                      class: 'counter highlighted', title: 'Nové komentáre', data: { toggle: :tooltip }) %>
+      <% else %>
+          <%= link_to(@feedbacks[:all_aggs][learning_object.id] || 0, "#{edit_admin_learning_object_path(learning_object)}#feedbacks",
+                      class: 'counter',title: 'Žiadne nové komentáre', data: { toggle: :tooltip }) %>
+      <% end %>
+      <%= link_to('<i class="icon-edit"></i>'.html_safe, edit_admin_learning_object_path(learning_object)) %>
+    <% end %>
+  </div>
+  <div class="question-icon"><i data-toggle="tooltip" title="<%= t("admin.questions.labels.types.#{learning_object.type.downcase}") %>" class="icon-<%=
+    case learning_object.type
+      when "SingleChoiceQuestion"
+        'radio-checked'
+      when "MultiChoiceQuestion"
+        'checkbox-checked'
+      when "EvaluatorQuestion"
+        'sliders'
+    end %>"></i></div>
+  <div class="question-headline">
+    <div class="title"><%= link_to_unless(learning_object.deleted?, learning_object.lo_id, edit_admin_learning_object_path(learning_object)) %></div>
+    <div class="text"><%= learning_object.question_text %></div>
+    <div class="answers">
+      <% learning_object.answers.each_with_index do |a, i| %>
+          <% if a.is_correct %><span class="correct"><%= a.answer_text %></span><% else %><%= a.answer_text %><% end %><%= ', ' unless learning_object.answers.size == (i+1) %>
+      <% end %>
+    </div>
+  </div>
+</div>

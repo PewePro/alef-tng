@@ -1,4 +1,7 @@
+# Vzdelavaci objekt.
 class LearningObject < ActiveRecord::Base
+  acts_as_paranoid
+
   has_many :answers
   has_many :user_to_lo_relations
   has_many :feedbacks

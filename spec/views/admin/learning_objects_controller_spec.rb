@@ -86,6 +86,55 @@ describe Admin::LearningObjectsController do
 
     end
 
+    it "should delete question" do
+
+      visit administration_path
+
+      find("#learning-objects#{@course.id}").click
+
+      click_link("+ #{t('admin.questions.links.create')}")
+
+      learning_object = FactoryGirl.create(:learning_object)
+
+      # Vyplnenie vzdelavacieho objektu.
+      fill_in(t('activerecord.attributes.learning_object.lo_id'), with: learning_object.lo_id)
+      fill_in(t('activerecord.attributes.learning_object.question_text'), with: learning_object.question_text)
+      select(t('admin.questions.labels.types.singlechoicequestion'), from: t('activerecord.attributes.learning_object.type'))
+
+      click_button(t('global.links.save_changes'))
+
+      learning_object = LearningObject.last
+
+      # Overime, ci sa vzdelavaci objekt vytvoril.
+      visit admin_learning_objects_path(course: @course.id)
+      expect(page).to have_text(learning_object.lo_id)
+
+      click_link(learning_object.lo_id)
+
+      # A teraz ho vymazeme.
+      old_id = learning_object.id
+      find('.delete-lo').click
+      page.driver.browser.switch_to.alert.accept
+
+      # Maly hack, kedze inak to nejde.
+      visit administration_path
+      find("#learning-objects#{@course.id}").click
+
+      # Stranka by mala nadalej obsahovat otazku, kedze bude medzi vymazanymi.
+      expect(page).to have_text(learning_object.lo_id)
+      expect(LearningObject.where(id: old_id).first).to eq(nil)
+
+      # Teraz otazku obnovime.
+      within("#learning-object#{old_id}") do
+        #TODO: Preklad
+        click_link('Obnoviť')
+        page.driver.browser.switch_to.alert.accept
+      end
+
+      expect(page).to have_text(learning_object.lo_id)
+      expect(LearningObject.find(old_id)).to eq(learning_object)
+    end
+
     # Komplexny test, ktory overuje, ci je mozne vytvorit otazku a zobrazit ju ako pouzivatel.
     it "should create simple question and view it as a student" do
 

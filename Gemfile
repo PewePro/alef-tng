@@ -98,6 +98,9 @@ group :development, :test do
   # Fixtures replacement with a straightforward definition syntax.
   gem 'factory_girl_rails', '~> 4.0'
 
+  # Gem to hide, not destroy an ActiveRecord object.
+  gem "paranoia", "~> 2.0"
+
   # Rspec
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
 
