@@ -32,9 +32,9 @@ module Admin
         learning_object_params = params.require(:learning_object).permit(:lo_id, :question_text, :type, :difficulty)
         @learning_object = @course.learning_objects.new(learning_object_params)
         @learning_object.save!
-        redirect_to edit_admin_learning_object_path(@learning_object), notice: "Otázka bola úspešne vytvorená."
+        redirect_to edit_admin_learning_object_path(@learning_object), notice: t('admin.questions.texts.created')
       rescue ActiveRecord::RecordInvalid
-        flash[:notice] = "Prosím, vyplňte všetky povinné polia."
+        flash[:notice] = t('global.texts.please_fill_in')
         render 'new'
       end
     end
@@ -52,9 +52,9 @@ module Admin
         learning_object_params = params.require(:learning_object).permit(:lo_id, :question_text, :difficulty)
         @learning_object = LearningObject.find(params[:learning_object_id])
         @learning_object.update!(learning_object_params)
-        redirect_to edit_admin_learning_object_path(@learning_object), notice: "Otázka bola úspešne uložená."
+        redirect_to edit_admin_learning_object_path(@learning_object), notice: t('global.texts.updated')
       rescue ActiveRecord::RecordInvalid
-        flash[:notice] = "Prosím, vyplňte všetky povinné polia."
+        flash[:notice] = t('global.texts.please_fill_in')
         render 'edit'
       end
     end
@@ -63,14 +63,14 @@ module Admin
     def restore
       LearningObject.restore(params[:learning_object_id])
       lo = LearningObject.find(params[:learning_object_id])
-      redirect_to admin_learning_objects_path(course: lo.course_id), notice: "Otázka bola úspešne obnovená."
+      redirect_to admin_learning_objects_path(course: lo.course_id), notice: t('admin.questions.texts.restored')
     end
 
     # Obnovi otazky.
     def destroy
       lo = LearningObject.find(params[:id])
       lo.destroy!
-      redirect_to admin_learning_objects_path(course: lo.course_id), notice: "Otázka bola úspešne odstránená."
+      redirect_to admin_learning_objects_path(course: lo.course_id), notice: t('admin.questions.texts.deleted')
     end
 
     private

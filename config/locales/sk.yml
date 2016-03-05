@@ -24,5 +24,10 @@ sk:
     links:
       cancel:                         "Zrušiť"
       discard_changes:                "Zrušiť zmeny"
+      refresh:                        "Osviežiť"
+      restore:                        "Obnoviť"
       save_changes:                   "Uložiť zmeny"
       submit:                         "Odoslať"
+    texts:
+      please_fill_in:                 "Prosím, vyplňte všetky povinné polia."
+      updated:                        "Všetky zmeny boli úspešne uložené."

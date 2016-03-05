@@ -25,3 +25,7 @@ sk:
           singlechoicequestion:       "výber z jednej možnosti"
       links:
         create:                       "Vytvoriť otázku"
+      texts:
+        created:                      "Vzdelávací objekt bol úspešne vytvorený."
+        deleted:                      "Vzdelávací objekt bol úspešne odstránený."
+        restored:                     "Vzdelávací objekt bol úspešne obnovený."

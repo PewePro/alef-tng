@@ -126,8 +126,7 @@ describe Admin::LearningObjectsController do
 
       # Teraz otazku obnovime.
       within("#learning-object#{old_id}") do
-        #TODO: Preklad
-        click_link('Obnoviť')
+        click_link(t('global.links.restore'))
         page.driver.browser.switch_to.alert.accept
       end
 
@@ -176,7 +175,7 @@ describe Admin::LearningObjectsController do
       within('#concepts-form') do
         find("#relations_#{@concept.id}_#{@week.id}").set(true)
         #TODO: Pridať preklad.
-        click_button 'Uložiť'
+        click_button t('global.links.save_changes')
       end
 
       # Teraz by sme mali najst vytvoreny vzdelavaci objekt na hlavnej stranke.

@@ -6,7 +6,7 @@
 <div id="learning-object<%= learning_object.id %>" class="question row <%= klass.join(' ') %>">
   <div class="question-tools">
     <% if learning_object.deleted? %>
-        <%= link_to('Obnoviť', admin_learning_object_restore_path(learning_object),
+        <%= link_to(t('global.links.restore'), admin_learning_object_restore_path(learning_object),
                     class: :counter,
                     method: :patch,
                     data: { confirm: 'Obnovením sa stane vzdelávací objekt opäť viditeľný v systéme.' }) %>

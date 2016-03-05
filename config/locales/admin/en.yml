@@ -25,3 +25,7 @@ en:
           singlechoicequestion:       "single-choice"
       links:
         create:                       "Create question"
+      texts:
+        created:                      "Learning object has been successfully created."
+        deleted:                      "Learning object has been successfully deleted."
+        restored:                     "Learning object has been successfully restored."

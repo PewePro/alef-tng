@@ -23,6 +23,11 @@ en:
       choose:                         "choose..."
     links:
       cancel:                         "Cancel"
-      discard_changes:                "Zrušiť zmeny"
-      save_changes:                   "Uložiť zmeny"
+      discard_changes:                "Discard changes"
+      refresh:                        "Refresh"
+      restore:                        "Restore"
+      save_changes:                   "Save changes"
       submit:                         "Submit"
+    texts:
+      please_fill_in:                 "Please, fill in all required fields."
+      updated:                        "All changes have been successfully saved."
