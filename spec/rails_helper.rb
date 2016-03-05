@@ -8,6 +8,7 @@ require 'factory_girl_rails'
 
 require 'support/factory_girl'
 require 'spec_helper'
+require 'support/wait_for_ajax'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
@@ -67,4 +68,8 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
   Capybara.default_driver = :selenium
+
+  # Wait for ajax requests.
+  config.include WaitForAjax
+
 end

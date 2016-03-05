@@ -10,7 +10,7 @@
   <h3>Nastavenia setupov</h3>
   <ul>
   <% @setups.each do |s| %>
-    <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link" %></li>
+    <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link", id: "setup#{s.id}" %></li>
   <% end %>
   </ul>
 </div>
@@ -19,7 +19,7 @@
   <h3>Nastavenia kurzov</h3>
   <ul>
     <% @courses.each do |c| %>
-        <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link" %></li>
+        <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link", id: "concept#{c.id}" %></li>
     <% end %>
   </ul>
 </div>

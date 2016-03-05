@@ -23,7 +23,7 @@
 </div>
 <div class="admin">
   <h3>Nastavenia konceptov</h3>
-  <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
+  <%= form_tag url_for(setup_relations_path), method: 'post', id: 'concepts-form' do %>
   <table id="week-concept-table">
     <tr>
       <th>Názov konceptu</th>

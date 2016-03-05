@@ -9,7 +9,7 @@
 <div class="admin wide">
   <table id="question-concept-table">
     <% @questions.each do |q| %>
-        <tr>
+        <tr id="question<%= q.id %>">
             <td style="width: 40%;">
               <div class="question-concept-table-cell">
                 <i class="icon-<%=
