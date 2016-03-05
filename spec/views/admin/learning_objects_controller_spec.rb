@@ -130,12 +130,6 @@ describe Admin::LearningObjectsController do
         click_button 'Uložiť'
       end
 
-      # Teraz musime byt zli a vymazat iny Setup,
-      # lebo inak sa nedostaneme do toho, do ktoreho chceme.
-      UserToLoRelation.destroy_all
-      Week.where(setup: Setup.first).destroy_all
-      Setup.first.destroy
-
       # Teraz by sme mali najst vytvoreny vzdelavaci objekt na hlavnej stranke.
       visit root_path
 
