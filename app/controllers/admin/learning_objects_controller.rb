@@ -1,11 +1,8 @@
 module Admin
   # Umoznuje spravovat vzdelavacie objekty.
-  class LearningObjectsController < ApplicationController
+  class LearningObjectsController < BaseController
 
     before_filter :get_course, only: [:index, :new, :create]
-
-    #TODO: Pridat autorizaciu cez cancan.
-    #authorize_resource :class => false
 
     # Zobrazenie zoznamu uloh.
     def index

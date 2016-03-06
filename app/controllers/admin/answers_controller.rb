@@ -1,11 +1,8 @@
 module Admin
   # Umoznuje spravovat odpovede na otazky.
-  class AnswersController < ApplicationController
+  class AnswersController < BaseController
 
     before_filter :get_learning_object
-
-    #TODO: Pridat autorizaciu cez cancan.
-    #authorize_resource :class => false
 
     # Vytvori novu odpoved na vzdelavaci objekt.
     def create
@@ -19,9 +16,9 @@ module Admin
           @learning_object.validate_answers!
         end
       rescue AnswersCorrectnessError
-        return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
+        return redirect_to(edit_admin_learning_object_path(id: @learning_object.id, anchor: 'answer-settings'), :alert => "Otázka nesmie mať viac ako jednu správnu odpoveď.")
       rescue AnswersVisibilityError
-        return redirect_to(edit_question_config_path, :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
+        return redirect_to(edit_admin_learning_object_path(id: @learning_object.id, anchor: 'answer-settings'), :alert => "Otázka nesmie mať viac ako jednu viditeľnú odpoveď.")
       end
 
       redirect_to edit_admin_learning_object_path(id: @learning_object.id, anchor: 'answer-settings'), :notice => "Odpoveď bola pridaná."
