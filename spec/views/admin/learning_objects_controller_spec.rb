@@ -74,7 +74,7 @@ describe Admin::LearningObjectsController do
 
       click_button(t('global.links.save_changes'))
 
-      click_link("&raquo; #{t('admin.questions.links.back_to_management')}")
+      click_link(t('admin.questions.links.back_to_management'))
 
       visit administration_path
       find("#learning-objects#{@course.id}").click
