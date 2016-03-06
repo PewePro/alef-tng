@@ -24,6 +24,7 @@ class Week < ActiveRecord::Base
         count
   end
 
+  # Vrati ocakavany pocet miestnosti v tyzdni
   def rooms_count
     count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
     unless (self.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
@@ -32,6 +33,7 @@ class Week < ActiveRecord::Base
     count
   end
 
+  # Vrati pocet uspesne prejdenych miestnosti v danom tyzdni pre konkretneho pouzivatela
   def rooms_count_done user_id
     rooms = self.rooms.where("user_id = ?", user_id).order(state: :asc, id: :asc)
     rooms.where(state: "used").count
@@ -49,6 +51,7 @@ class Week < ActiveRecord::Base
     (Date.today-self.start_at).to_i.between?(0,6)
   end
 
+  # Vrati zoznam zatial nezaradenych otazok do miestnosti v danom tyzdni pre konkretneho pouzivatela
   def free_los (type_question, user_id)
     if type_question.nil?
       los_week = self.learning_objects.distinct
@@ -58,16 +61,6 @@ class Week < ActiveRecord::Base
       los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type = ?", self.id,user_id,"EvaluatorQuestion")
     else
       los_week = self.learning_objects.where("learning_objects.type != ?","EvaluatorQuestion").distinct
-      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type != ?", self.id,user_id,"EvaluatorQuestion")
-    end
-    los_week.reject{ |los| los_in_rooms.include?(los)}
-  end
-  def free_los_with_irt (type_question, user_id)
-    if type_question == "EvaluatorQuestion"
-      los_week = self.learning_objects.where("learning_objects.type = ?","EvaluatorQuestion").distinct.eager_load(:irt_values)
-      los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type = ?", self.id,user_id,"EvaluatorQuestion")
-    else
-      los_week = self.learning_objects.where("learning_objects.type != ?","EvaluatorQuestion").distinct.eager_load(:irt_values)
       los_in_rooms = LearningObject.joins(rooms_learning_objects: :room).where("rooms.week_id = ? AND rooms.user_id = ? AND learning_objects.type != ?", self.id,user_id,"EvaluatorQuestion")
     end
     los_week.reject{ |los| los_in_rooms.include?(los)}

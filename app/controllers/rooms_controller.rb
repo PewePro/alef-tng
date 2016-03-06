@@ -10,7 +10,6 @@ class RoomsController < ApplicationController
 
     @learning_objects = @room.learning_objects.order(id: :asc)
     @results = UserToLoRelation.get_results(current_user.id,week.id)
-
   end
 
   def eval
@@ -34,6 +33,7 @@ class RoomsController < ApplicationController
     else
       @count_actual += 1
 
+      # Vypocet skore za komentare
       score1 = 0.0
       learning_objects.eager_load(:feedbacks).where("feedbacks.visible = ?", true).each do |l|
         order_to_comment = 0
@@ -54,12 +54,15 @@ class RoomsController < ApplicationController
       @score = @room.score + score1
 
       if (@count_real <= @count_actual && @room.score + score1 >= @score_limit)
+        # Ak som na poslednej miestnosti v tyzdni a dosiahla som potrebne skore, nastavim stav na pouzita
         @room.update!(state: "used")
       end
 
       if (@room.score + score1 >= @score_limit)
+        # Ak som dosiahla potrebne skore v miestnosti, toto skore sa ulozi
         @room.update!(score: (@room.score + score1))
       else
+        # Ak som nedosiahla potrebne skore, znovu sa prepocita hranicne skore a moje skore sa vynuluje
         val = Levels::RoomsCreation.compute_limit(learning_objects.count,learning_objects,setup)
         @room.update!(score_limit: val.to_f)
         @room.update!(score: 0.0)

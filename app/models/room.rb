@@ -6,6 +6,7 @@ class Room < ActiveRecord::Base
   has_many :user_to_lo_relation
   has_many :learning_objects, through: :rooms_learning_objects
 
+  # Vrati learning objecty, ktore v danom pokuse a miestnosti este neboli videne
   def get_dont_visited
     visited_los = self.learning_objects.eager_load(:user_to_lo_relations).where("user_to_lo_relations.room_id = ? AND user_to_lo_relations.number_of_try = ?",self.id,self.number_of_try)
     los = self.learning_objects
@@ -17,6 +18,7 @@ class Room < ActiveRecord::Base
     self.learning_objects.count
   end
 
+  # Vrati pocet vyriesenych otazok v danej miestnosti
   def question_count_done user_id
     lo_ids = self.learning_objects.map(&:id)
     UserSolvedLoRelation.where(learning_object_id: lo_ids, user_id: user_id).
@@ -36,6 +38,7 @@ class Room < ActiveRecord::Base
     Room.where('id < ? AND user_id = ? AND week_id = ?', self.id,user_id,week_id).order(id: :desc).first
   end
 
+  # Vrati hodnotu, ci dana otazka bola alebo nebola zodpovedana
   def not_answered (lo_id)
     los =  self.get_dont_visited
     (los.map { |l| l.id == lo_id }).include?(true)

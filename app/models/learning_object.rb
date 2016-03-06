@@ -2,7 +2,6 @@ class LearningObject < ActiveRecord::Base
   has_many :answers
   has_many :user_to_lo_relations
   has_many :rooms_learning_objects
-  has_many :irt_values
   has_many :concepts_learning_objects
   has_many :feedbacks
   has_and_belongs_to_many :concepts, -> { uniq }
@@ -127,15 +126,18 @@ class LearningObject < ActiveRecord::Base
 
   end
 
+  # Vrati narocnost learning objectu
   def get_difficulty(setup)
+
+    #Ziska narocnost zadanu ucitelom
     if self.difficulty.nil?
       dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
     else
       dif_value = LearningObject::DIFFICULTY_VALUE[self.difficulty.to_sym]
     end
 
+    # Vypocita narocnost z interakcii v systeme
     results = Levels::Preproces.preproces_data(setup)
-
     all = 0
     do_not_know_value = 0
     results.each do |r|
@@ -147,6 +149,7 @@ class LearningObject < ActiveRecord::Base
       end
     end
 
+    # Vypocita vyslednu obtiaznost objektu
     if all == 0
       dif_result = dif_value
     else
@@ -154,6 +157,7 @@ class LearningObject < ActiveRecord::Base
     end
   end
 
+  # Vrati dolezitost learning objectu
   def get_importance
     if self.importance.nil?
       imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]

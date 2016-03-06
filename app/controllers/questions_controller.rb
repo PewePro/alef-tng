@@ -20,6 +20,7 @@ class QuestionsController < ApplicationController
       gon.solution = solution
     end
 
+    # Poradie zobrazenia danej otazky
     if @user.show_solutions
       @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
     else
@@ -32,6 +33,7 @@ class QuestionsController < ApplicationController
     @feedbacks = @question.feedbacks.visible.includes(:user)
   end
 
+  # Metoda sluzi na vypocet skore za odpoved na otazku
   def eval_question
     setup = Setup.take
     room = Room.find(params[:room_number])
@@ -51,14 +53,20 @@ class QuestionsController < ApplicationController
       result = lo.right_answer? params[:answer], @solution
     end
 
+    # Nacitanie parametrov  obtiaznosti a dolezitosti danej otazky
     dif_result = lo.get_difficulty(setup)
     imp_value = lo.get_importance
 
     score = 0.0
 
     if lo.type == "EvaluatorQuestion"
+      # V pripade, ze dana otazka je typu evaluator, spravnost sa vypocita ako vzdialenost od priemeru odpovedi
       solution = lo.get_solution(current_user.id)
-      rightness = 1 - ((solution - params[:answer].to_i).abs)/100
+      if solution.nil?
+        rightness = 1
+      else
+        rightness = 1 - ((solution - params[:answer].to_i).abs)/100
+      end
       score = ENV["WEIGHT_SOLVED"].to_i * rightness * imp_value * dif_result
     else
       if results_used.nil? || !used
@@ -132,12 +140,14 @@ class QuestionsController < ApplicationController
     room = Room.find_by_id(params[:room_number])
 
     if current_user.show_solutions
+      # V rezime so zobrazovanim spravnych odpovedi su otazky zoradene podla id
       lo_id = params[:lo_id]
       los = room.learning_objects.where("learning_object_id > ?",lo_id).order(id: :asc).first
       if los.nil?
         los = room.learning_objects.order(id: :asc).first
       end
     else
+      # V rezime bez zobrazovania spravnych odpovedi sa vyberie otazka, z tych, ktore este nevidel, resp. ak taka nie je tak nahodna z danej miestnosti
       los_not_visited = room.get_dont_visited
       if los_not_visited.nil?
         los = room.learning_objects.shuffle.first

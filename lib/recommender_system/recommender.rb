@@ -9,6 +9,7 @@ module RecommenderSystem
       @@rels = Hash.new
     end
 
+    # Metoda ziska learning objecty z daneho tyzdna, ktore este nie su zaradene do miestnosti
     def self.learning_objects
       if @@los.empty?
         @@los = Week.find(@@week_id).free_los(@@type_question,@@user_id)

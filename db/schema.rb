@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302222711) do
+ActiveRecord::Schema.define(version: 20160305154418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,12 +74,6 @@ ActiveRecord::Schema.define(version: 20160302222711) do
 
   add_index "feedbacks", ["learning_object_id", "accepted"], name: "index_feedbacks_on_learning_object_id_and_accepted", using: :btree
 
-  create_table "irt_values", force: :cascade do |t|
-    t.float   "difficulty"
-    t.float   "discrimination"
-    t.integer "learning_object_id"
-  end
-
   create_table "learning_objects", force: :cascade do |t|
     t.string   "lo_id"
     t.string   "type"
@@ -93,6 +87,8 @@ ActiveRecord::Schema.define(version: 20160302222711) do
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
     t.string   "importance",         default: "UNKNOWN"
+    t.float    "irt_difficulty"
+    t.float    "irt_discrimination"
   end
 
   create_table "recommendation_configurations", force: :cascade do |t|
@@ -203,7 +199,6 @@ ActiveRecord::Schema.define(version: 20160302222711) do
   add_foreign_key "concepts_weeks", "weeks"
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
-  add_foreign_key "irt_values", "learning_objects"
   add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "users"
   add_foreign_key "recommendation_linkers", "weeks"

@@ -1,19 +1,23 @@
 module RecommenderSystem
   class IrtRecommender < RecommenderSystem::Recommender
+    # Metoda vytvori list learning objektov s priradenymi hodnotami na zaklade pravdepodobnosti spravnej odpovede urcenej cez Item Response Theory
     def get_probability
-      los = Week.find(@@week_id).free_los_with_irt(@@type_question,@@user_id)
+      los = self.learning_objects
       list = Hash.new
       user = User.find(self.user_id)
       proficiency = user.proficiency
       los.each do |lo|
-        irt_values = lo.irt_values.first
-        if irt_values.nil?
+        if lo.irt_difficulty.nil?
           difficulty = 0.5
+        else
+          difficulty = lo.irt_difficulty
+        end
+        if lo.irt_discrimination.nil?
           discrimination = 0.5
         else
-          difficulty = irt_values.difficulty
-          discrimination = irt_values.discrimination
+          discrimination = lo.irt_discrimination
         end
+        # Vypocet pravdepodobnosti na zaklade 2P IRT
         probability = (Math::E**(discrimination*(proficiency-difficulty))) / (1 + Math::E**(discrimination*(proficiency-difficulty)))
         list[lo.id] = probability
       end

@@ -1,5 +1,7 @@
 module Levels
+  # Trieda sluzi na vytvorenie miestnosti
   class RoomsCreation
+    # Metoda vypocita hranicne skore pre danu miestnost
     def self.compute_limit(number_lo, learning_objects,setup)
 
       number_questions = number_lo * ENV["MIN_PERCENTAGE"].to_f
@@ -21,6 +23,7 @@ module Levels
 
     end
 
+    # Metoda vytvori novu miestnost
     def self.create(week_id,user_id)
       if (Week.find(week_id).free_los(nil,user_id).count > ENV["NUMBER_LOS"].to_i )
         number_lo = ENV["NUMBER_LOS"].to_i
@@ -31,6 +34,7 @@ module Levels
       week = Week.find(week_id)
       learning_objects = week.learning_objects.all.distinct
 
+      # Vypocet kolko otazok typu evaluator, resp. choice sa ma do miestnosti vybrat
       sorted_los = Array.new
       number_of_evaluator_q = week.free_los("EvaluatorQuestion",user_id).count
       number_of_choice_q = week.free_los("ChoiceQuestion",user_id).count
@@ -54,6 +58,7 @@ module Levels
         end
       end
 
+      # Vyber otazok typu evaluator
       if (evaluator > 0)
         RecommenderSystem::Recommender.setup(user_id,week_id,"EvaluatorQuestion")
         recommendations = RecommenderSystem::HybridRecommender.new.get_list
@@ -65,6 +70,7 @@ module Levels
         sorted_los = sorted_los[0..(evaluator -1)]
       end
 
+      # Vyber otazok typu choice
       if (choice > 0)
         RecommenderSystem::Recommender.setup(user_id,week_id,"ChoiceQuestion")
         recommendations = RecommenderSystem::HybridRecommender.new.get_list
@@ -77,6 +83,7 @@ module Levels
         sorted_los = sorted_los + sorted_los2
       end
 
+      # Vypocet score a vytvorenie miestnosti
       score_limit = compute_limit(number_lo,sorted_los,setup)
       name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
 
