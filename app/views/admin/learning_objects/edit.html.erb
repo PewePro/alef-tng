@@ -93,7 +93,8 @@
 
                 <div class="admin">
 
-                  <p><strong>Text otázky:</strong> <%= @learning_object.question_text %></p>
+                  <p><strong><%= t('activerecord.attributes.learning_object.question_text') %>:</strong>
+                    <%= @learning_object.question_text %></p>
 
                   <table class="answers-table">
                     <thead>
@@ -153,7 +154,7 @@
 
         </div>
 
-        <%= form_for @learning_object.answers.new, url: { controller: 'admin/answers', action: 'create' }, method: :post do |f| %>
+        <%= form_for Answer.new, url: { controller: 'admin/answers', action: 'create' }, method: :post do |f| %>
 
             <div class="admin">
               <h3>Pridanie novej odpovede</h3> <br/>
