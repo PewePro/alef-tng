@@ -24,6 +24,7 @@ sk:
     links:
       cancel:                         "Zrušiť"
       discard_changes:                "Zrušiť zmeny"
+      edit:                           "Upraviť"
       refresh:                        "Osviežiť"
       restore:                        "Obnoviť"
       save_changes:                   "Uložiť zmeny"

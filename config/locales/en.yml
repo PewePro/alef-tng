@@ -24,6 +24,7 @@ en:
     links:
       cancel:                         "Cancel"
       discard_changes:                "Discard changes"
+      edit:                           "Edit"
       refresh:                        "Refresh"
       restore:                        "Restore"
       save_changes:                   "Save changes"

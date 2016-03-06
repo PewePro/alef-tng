@@ -3,6 +3,7 @@
   @include white-dark;
   margin: 2rem auto;
   padding: 1rem;
+  border-radius: 4px;
 
   @media screen and (max-width: 480px) {
     padding-left: 0;
@@ -10,7 +11,13 @@
   }
 
   h3 {
-    border-bottom: 1px solid $gray;
+    border-bottom: 1px solid $gray-light;
+    font-size: 1.0em;
+    letter-spacing: normal;
+    text-transform: uppercase;
+    color: $gray-darker;
+    padding: 0 1rem 1rem;
+    margin: 0 -1rem;
   }
 
   .question_text_field, .admin-markdown-edit-textarea {

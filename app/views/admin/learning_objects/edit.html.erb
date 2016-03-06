@@ -9,7 +9,7 @@
         when "EvaluatorQuestion"
           'sliders'
       end %>"></i><%= @learning_object.id %> : <%= @learning_object.lo_id %></h2>
-    <%= link_to "&laquo; späť na zoznam otázok".html_safe, question_config_path(course_id: @learning_object.course_id), class: 'admin-nav-button' %>
+    <%= link_to "&laquo; späť na zoznam otázok".html_safe, admin_learning_objects_path(course_id: @learning_object.course_id), class: 'admin-nav-button' %>
   </div>
 </nav>
 
@@ -44,8 +44,6 @@
                                        method: :patch do |f| %>
 
             <div class="admin">
-
-              <h3>Úprava otázky</h3>
 
               <div class="form-group">
 
@@ -95,8 +93,6 @@
 
                 <div class="admin">
 
-                  <h3>Úprava odpovedí</h3>
-
                   <p><strong>Text otázky:</strong> <%= @learning_object.question_text %></p>
 
                   <table class="answers-table">
@@ -136,8 +132,8 @@
                     </tbody>
                   </table>
 
-                  <%= submit_tag "Uložiť zmeny", class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-                  <%= button_tag "Zrušiť zmeny", class: :btn, type: :reset %>
+                  <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+                  <%= button_tag t('global.links.discard_changes'), class: :btn, type: :reset %>
 
                 </div>
 

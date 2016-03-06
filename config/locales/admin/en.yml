@@ -18,12 +18,14 @@ en:
           trivial:                    "Trivial"
           unknown_difficulty:         "Unknown"
         external_reference:           "CSV identifier"
+        management:                   "Learning objects management"
         successfulness:               "Successfulness"
         types:
           evaluatorquestion:          "evaluator"
           multichoicequestion:        "multi-choice"
           singlechoicequestion:       "single-choice"
       links:
+        back_to_management:           "back to management"
         create:                       "Create question"
       texts:
         created:                      "Learning object has been successfully created."

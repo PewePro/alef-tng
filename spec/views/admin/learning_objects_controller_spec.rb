@@ -74,8 +74,7 @@ describe Admin::LearningObjectsController do
 
       click_button(t('global.links.save_changes'))
 
-      #TODO: Opravit link.
-      #click_link('&raquo; späť na zoznam otázok')
+      click_link("&raquo; #{t('admin.questions.links.back_to_management')}")
 
       visit administration_path
       find("#learning-objects#{@course.id}").click

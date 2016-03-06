@@ -18,12 +18,14 @@ sk:
           trivial:                    "Triviálna"
           unknown_difficulty:         "Neznáma"
         external_reference:           "Identifikátor z CSV"
+        management:                   "Správa vzdelávacích objektov"
         successfulness:               "Úspešnosť"
         types:
           evaluatorquestion:          "evaluator"
           multichoicequestion:        "výber z viacerých možností"
           singlechoicequestion:       "výber z jednej možnosti"
       links:
+        back_to_management:           "späť na zoznam objektov"
         create:                       "Vytvoriť otázku"
       texts:
         created:                      "Vzdelávací objekt bol úspešne vytvorený."
