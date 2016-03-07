@@ -27,7 +27,7 @@
       <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
       <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
       <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
-      <li class="pull-right"><%= link_to('<i class="icon-delete"></i>'.html_safe,
+      <li class="pull-right"><%= link_to(fa_icon(:trash),
                                          admin_learning_object_path(id: @learning_object.id),
                                          class: 'delete-lo',
                                          method: :delete,
@@ -123,7 +123,7 @@
                             <% end %>
                             <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon', data: { type: 'visibility' }) %>
                             <%= label_tag("visible_answer_#{a.id}", "<i class=\"icon-checkbox icon-eyebox\"></i>".html_safe, title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
-                            <%= link_to('<i class="icon-delete"></i>'.html_safe, admin_learning_object_answer_path(id: @learning_object.id, answer_id: a.id),
+                            <%= link_to(fa_icon(:trash), admin_learning_object_answer_path(id: @learning_object.id, answer_id: a.id),
                                         method: :delete,
                                         class: 'danger',
                                         data: { toggle: 'tooltip', confirm: 'Naozaj chcete odstrániť túto odpoveď na otázku?' },

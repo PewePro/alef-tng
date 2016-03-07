@@ -44,6 +44,9 @@ gem 'axlsx'
 # for nice nil safeguarding
 gem 'andand'
 
+# FontAwesome icon font.
+gem 'font-awesome-rails', '~> 4.5', '>= 4.5.0.1'
+
 # passing data from controllers to javascript
 gem 'gon'
 
