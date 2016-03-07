@@ -150,9 +150,11 @@ describe Admin::LearningObjectsController do
 
       learning_object = LearningObject.last
 
-      # TODO: Pouzit button
       # Teraz pridame otazku do konceptu.
-      visit administration_path
+      find('.admin-nav-button').click
+      wait_for_ajax
+
+      find('.admin-nav-button').click
 
       find("#concept#{@course.id}").click
 
@@ -170,7 +172,6 @@ describe Admin::LearningObjectsController do
       # Hladame potrebny checkbox
       within('#concepts-form') do
         find("#relations_#{@concept.id}_#{@week.id}").set(true)
-        #TODO: Pridať preklad.
         click_button t('global.links.save_changes')
       end
 
