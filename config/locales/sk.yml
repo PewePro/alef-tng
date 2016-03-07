@@ -15,6 +15,7 @@ sk:
     links:
       admin:                          "Administrácia"
       feedback:                       "Spätná väzba"
+      home:                           "Domov"
       login:                          "Prihlásiť sa"
       logout:                         "Odhlásiť"
 
@@ -26,6 +27,7 @@ sk:
       discard_changes:                "Zrušiť zmeny"
       edit:                           "Upraviť"
       refresh:                        "Osviežiť"
+      remove:                         "Odstrániť"
       restore:                        "Obnoviť"
       save_changes:                   "Uložiť zmeny"
       submit:                         "Odoslať"

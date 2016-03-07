@@ -1,7 +1,8 @@
 <nav>
   <div class="admin-nav">
     <h2>Administrácia</h2>
-    <%= link_to "Domov", root_path, class: 'admin-nav-button' %>
+    <%= link_to((fa_icon('home') + t('homescreen.links.home')).html_safe,
+                root_path, class: 'admin-nav-button') %>
   </div>
 </nav>
 <hr class="nav-offset">

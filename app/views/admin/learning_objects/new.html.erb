@@ -1,7 +1,8 @@
 <nav>
   <div class="admin-nav">
     <h2>Pridanie novej otázky</h2>
-    <%= link_to t('homescreen.links.admin'), administration_path, class: 'admin-nav-button' %>
+    <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
+                admin_learning_objects_path(course: @course.id), class: 'admin-nav-button' %>
   </div>
 </nav>
 <hr class="nav-offset">
@@ -46,7 +47,8 @@
         <dt></dt>
         <dd>
           <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
-          <%= button_tag t('global.links.cancel'), class: :btn, type: :reset %>
+          <%= button_tag t('global.links.cancel'), class: :btn, type: :reset,
+                         onclick: "location.href='#{admin_learning_objects_path(course: @course.id)}'" %>
         </dd>
       </dl>
 

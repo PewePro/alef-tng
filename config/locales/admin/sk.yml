@@ -25,8 +25,9 @@ sk:
           multichoicequestion:        "výber z viacerých možností"
           singlechoicequestion:       "výber z jednej možnosti"
       links:
-        back_to_management:           "späť na zoznam objektov"
+        back_to_management:           "späť na správu"
         create:                       "Vytvoriť otázku"
+        set_concepts:                 "Nastaviť koncepty"
       texts:
         created:                      "Vzdelávací objekt bol úspešne vytvorený."
         deleted:                      "Vzdelávací objekt bol úspešne odstránený."

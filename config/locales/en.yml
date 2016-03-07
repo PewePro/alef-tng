@@ -15,6 +15,7 @@ en:
     links:
       admin:                          "Admin"
       feedback:                       "Feedback"
+      home:                           "Home"
       login:                          "Sign in"
       logout:                         "Sign out"
 
@@ -26,6 +27,7 @@ en:
       discard_changes:                "Discard changes"
       edit:                           "Edit"
       refresh:                        "Refresh"
+      remove:                         "Remove"
       restore:                        "Restore"
       save_changes:                   "Save changes"
       submit:                         "Submit"

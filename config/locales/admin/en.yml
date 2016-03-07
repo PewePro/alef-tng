@@ -27,6 +27,7 @@ en:
       links:
         back_to_management:           "back to management"
         create:                       "Create question"
+        set_concepts:                 "Set concepts"
       texts:
         created:                      "Learning object has been successfully created."
         deleted:                      "Learning object has been successfully deleted."

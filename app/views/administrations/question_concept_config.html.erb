@@ -1,7 +1,8 @@
 <nav>
   <div class="admin-nav">
     <h2><%= @course.name %></h2>
-    <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+    <%= link_to((fa_icon('user-secret') + t('homescreen.links.admin')).html_safe,
+                administration_path, class: 'admin-nav-button') %>
   </div>
 </nav>
 <hr class="nav-offset">

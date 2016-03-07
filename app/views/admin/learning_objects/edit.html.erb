@@ -9,8 +9,8 @@
         when "EvaluatorQuestion"
           'sliders'
       end %>"></i><%= @learning_object.id %> : <%= @learning_object.lo_id %></h2>
-    <%= link_to t('admin.questions.links.back_to_management'),
-                admin_learning_objects_path(course_id: @learning_object.course_id), class: 'admin-nav-button' %>
+    <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
+                admin_learning_objects_path(course: @learning_object.course_id), class: 'admin-nav-button' %>
   </div>
 </nav>
 
@@ -27,11 +27,20 @@
       <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
       <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
       <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
-      <li class="pull-right"><%= link_to(fa_icon(:trash),
+      <li class="icon"><%= link_to(fa_icon(:trash),
                                          admin_learning_object_path(id: @learning_object.id),
                                          class: 'delete-lo',
                                          method: :delete,
-                                         data: { confirm: 'Naozaj chcete odstrániť tento vzdelávací objekt?' }) %></li>
+                                         data: {
+                                             confirm: 'Naozaj chcete odstrániť tento vzdelávací objekt?',
+                                             toggle: :tooltip
+                                         },
+                                         title: t('global.links.remove')) %></li>
+
+      <li class="icon"><%= link_to(fa_icon(:tag),
+                                         question_concept_config_path(@learning_object.course_id, anchor: "question#{@learning_object.id}"),
+                                         data: { toggle: :tooltip },
+                                         title: t('admin.questions.links.set_concepts')) %></li>
     </ul>
 
     <div id="editor-tabs-content" class="tab-content is-first">
@@ -221,7 +230,7 @@
       new MarkdownPreview($(this), { autofix: true, className: 'admin-markdown-textarea', outerClassName: 'admin-markdown-preview' });
     });
 
-    var tabs = $('#editor-tabs').find('a');
+    var tabs = $('#editor-tabs').find('li:not(.icon)').find('a');
     tabs.click(function (e) {
       set_tab(tabs, $(this));
       e.preventDefault();
