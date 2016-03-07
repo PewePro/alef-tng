@@ -7,6 +7,8 @@ sk:
     feedbacks:
       label:
         solved:                       "vyriešený"
+      texts:
+        feedbacks_empty:              "Ľutujeme, ale nenašla sa žiadna spätná väzba."
 
     questions:
       labels:
@@ -19,6 +21,7 @@ sk:
           unknown_difficulty:         "Neznáma"
         external_reference:           "Identifikátor z CSV"
         management:                   "Správa vzdelávacích objektov"
+        new_lo:                       "Vytvorenie nového vzdelávacieho objektu"
         successfulness:               "Úspešnosť"
         types:
           evaluatorquestion:          "evaluator"

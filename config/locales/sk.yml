@@ -33,4 +33,5 @@ sk:
       submit:                         "Odoslať"
     texts:
       please_fill_in:                 "Prosím, vyplňte všetky povinné polia."
+      saving:                         "prebieha ukladanie..."
       updated:                        "Všetky zmeny boli úspešne uložené."

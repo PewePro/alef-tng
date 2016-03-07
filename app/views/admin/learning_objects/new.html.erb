@@ -1,6 +1,6 @@
 <nav>
   <div class="admin-nav">
-    <h2>Pridanie novej otázky</h2>
+    <h2><%= t('admin.questions.labels.new_lo') %></h2>
     <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
                 admin_learning_objects_path(course: @course.id), class: 'admin-nav-button' %>
   </div>
@@ -13,7 +13,7 @@
 
     <div class="form-group admin">
 
-      <h3>Vytvorenie otázky</h3>
+      <h3><%= t('admin.questions.labels.new_lo') %></h3>
 
       <dl class="dl-horizontal">
         <dt><%= f.label :lo_id, t('activerecord.attributes.learning_object.lo_id') %></dt>
@@ -46,7 +46,7 @@
 
         <dt></dt>
         <dd>
-          <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: "prebieha ukladanie..." } %>
+          <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: t('global.texts.saving') } %>
           <%= button_tag t('global.links.cancel'), class: :btn, type: :reset,
                          onclick: "location.href='#{admin_learning_objects_path(course: @course.id)}'" %>
         </dd>

@@ -33,4 +33,5 @@ en:
       submit:                         "Submit"
     texts:
       please_fill_in:                 "Please, fill in all required fields."
+      saving:                         "saving..."
       updated:                        "All changes have been successfully saved."
