@@ -37,8 +37,8 @@
                     <%= link_to(fa_icon(:trash), admin_learning_object_answer_path(id: @learning_object.id, answer_id: a.id),
                                 method: :delete,
                                 class: 'danger',
-                                data: { toggle: 'tooltip', confirm: 'Naozaj chcete odstrániť túto odpoveď na otázku?' },
-                                title: 'Odstrániť odpoveď') %>
+                                data: { toggle: 'tooltip', confirm: '' },
+                                title: t('global.links.remove')) %>
                   </td>
                 </tr>
             <% end %>

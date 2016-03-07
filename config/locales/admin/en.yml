@@ -4,6 +4,10 @@
 
 en:
   admin:
+    answers:
+      questions:
+        remove:                       "Are you sure, do you want to remove the answer?"
+
     feedbacks:
       label:
         solved:                       "solved"

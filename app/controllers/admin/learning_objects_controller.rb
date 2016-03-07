@@ -56,7 +56,7 @@ module Admin
       end
     end
 
-    # Odstranenie odstraneneho vzdelavacieho objektu.
+    # Obnovenie odstraneneho vzdelavacieho objektu.
     def restore
       LearningObject.restore(params[:learning_object_id])
       lo = LearningObject.find(params[:learning_object_id])

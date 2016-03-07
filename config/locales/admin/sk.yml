@@ -4,6 +4,10 @@
 
 sk:
   admin:
+    answers:
+      questions:
+        remove:                       "Naozaj chcete odstrániť túto odpoveď na otázku?"
+
     feedbacks:
       label:
         solved:                       "vyriešený"
