@@ -46,7 +46,7 @@ class RoomsController < ApplicationController
         @room.update!(score: @score)
       else
         # Ak som nedosiahla potrebne skore, znovu sa prepocita hranicne skore a moje skore sa vynuluje
-        val = Levels::ScoreCalculation.compute_limit_score(learning_objects.count,learning_objects,setup)
+        val = Levels::ScoreCalculation.compute_limit_score(learning_objects,setup)
         @room.update!(score_limit: val.to_f)
         @room.update!(score: 0.0)
       end

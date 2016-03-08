@@ -2,24 +2,31 @@ module Levels
   # Trieda sluzi na vytvorenie miestnosti
   class ScoreCalculation
     # Metoda vypocita hranicne skore pre danu miestnost
-    def self.compute_limit_score(number_lo, learning_objects,setup)
-
-      number_questions = number_lo * Constants::MIN_PERCENTAGE_OF_SUCCESS
-
+    def self.compute_limit_score(learning_objects,setup)
       sum_dif = 0.0
       sum_imp = 0.0
+      number_non_evaluator = 0
 
       learning_objects.each do |l|
-        dif_result = l.get_difficulty(setup)
-        sum_dif += dif_result
-        imp_value = l.get_importance
-        sum_imp += imp_value
+        unless l.is_a?(EvaluatorQuestion)
+          number_non_evaluator += 1
+          dif_result = l.get_difficulty(setup)
+          sum_dif += dif_result
+          imp_value = l.get_importance
+          sum_imp += imp_value
+        end
       end
 
-      avg_dif = sum_dif / number_lo.to_f
-      avg_imp = sum_imp / number_lo.to_f
+      number_questions = number_non_evaluator * Constants::MIN_PERCENTAGE_OF_SUCCESS
 
-      number_questions * Constants::WEIGHT_SOLVED * avg_imp * avg_dif
+      score = 0
+      unless (number_non_evaluator == 0)
+        avg_dif = sum_dif / number_non_evaluator.to_f
+        avg_imp = sum_imp / number_non_evaluator.to_f
+        score = number_questions * Constants::WEIGHT_SOLVED * avg_imp * avg_dif
+      end
+
+      score
     end
 
     # Metoda vypocita skore pre poslednu odpoved studenta na otazku
@@ -43,16 +50,7 @@ module Levels
 
       score = 0.0
 
-      if lo.is_a?(EvaluatorQuestion)
-        # V pripade, ze dana otazka je typu evaluator, spravnost sa vypocita ako vzdialenost od priemeru odpovedi
-        solution = lo.get_solution(current_user.id)
-        if solution.nil?
-          rightness = 1
-        else
-          rightness = 1 - ((solution - params[:answer].to_i).abs)/100
-        end
-        score = Constants::WEIGHT_SOLVED * rightness * imp_value * dif_result
-      else
+      unless lo.is_a?(EvaluatorQuestion)
         if results_used.nil? || !used
           if params[:commit] == 'dont_know'
             score = Constants::WEIGHT_DONT_NOW * imp_value *dif_result

@@ -11,5 +11,8 @@ module Levels
 
     # The minimal percentage success required in the room
     MIN_PERCENTAGE_OF_SUCCESS = 0.6
+
+    # The number of evaluator question in room
+    NUMBER_EVALUATOR_LOS_IN_ROOM = 2
   end
 end

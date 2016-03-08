@@ -14,6 +14,7 @@ module Levels
       learning_objects = week.learning_objects.all.distinct
 
       # Vypocet kolko otazok typu evaluator, resp. choice sa ma do miestnosti vybrat
+      sorted_los2 = Array.new
       sorted_los = Array.new
       number_of_evaluator_q = week.free_los("EvaluatorQuestion",user_id).count
       number_of_choice_q = week.free_los("ChoiceQuestion",user_id).count
@@ -24,6 +25,11 @@ module Levels
         evaluator = number_of_evaluator_q
       else
         evaluator = result_number_evaluator
+      end
+      if (evaluator > Constants::NUMBER_EVALUATOR_LOS_IN_ROOM && number_of_choice_q >= Room::NUMBER_LOS_IN_ROOM - Constants::NUMBER_EVALUATOR_LOS_IN_ROOM)
+        evaluator = Constants::NUMBER_EVALUATOR_LOS_IN_ROOM
+      elsif (number_of_choice_q > 0)
+        evaluator = number_lo - number_of_choice_q
       end
       choice = number_lo - evaluator
       if (choice > number_of_choice_q)
@@ -63,7 +69,7 @@ module Levels
       end
 
       # Vypocet score a vytvorenie miestnosti
-      score_limit = Levels::ScoreCalculation.compute_limit_score(number_lo,sorted_los,setup)
+      score_limit = Levels::ScoreCalculation.compute_limit_score(sorted_los,setup)
       name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
 
       room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit)
