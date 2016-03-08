@@ -20,8 +20,8 @@ class RoomsController < ApplicationController
     @score_limit = @room.score_limit
     week = Week.find_by_id(@room.week_id)
 
-    @count_real = (week.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
-    unless (week.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
+    @count_real = (week.learning_objects.distinct.count / Room::NUMBER_LOS_IN_ROOM).to_i
+    unless (week.learning_objects.distinct.count % Room::NUMBER_LOS_IN_ROOM == 0)
       @count_real +=1
     end
 
@@ -33,37 +33,20 @@ class RoomsController < ApplicationController
     else
       @count_actual += 1
 
-      # Vypocet skore za komentare
-      score1 = 0.0
-      learning_objects.eager_load(:feedbacks).where("feedbacks.visible = ?", true).each do |l|
-        order_to_comment = 0
-        order_to_comment_of_user = 0
-        l.feedbacks.each do |f|
-          order_to_comment += 1
-          if f.user_id == current_user.id
-            order_to_comment_of_user += 1
+      # Ziskanie skore za komentare a vypocitanie noveho celkoveho skore
+      @score = @room.score + Levels::ScoreCalculation.compute_score_for_comments(learning_objects,setup,current_user)
 
-            dif_result = l.get_difficulty(setup)
-            imp_value = l.get_importance
-
-            score1 = score1 + ENV["WEIGHT_COMMENT"].to_i * dif_result * imp_value * (ENV["BASE_EXP_FUNCTION"].to_f ** order_to_comment) * (ENV["BASE_EXP_FUNCTION"].to_f ** order_to_comment_of_user)
-          end
-        end
-      end
-
-      @score = @room.score + score1
-
-      if (@count_real <= @count_actual && @room.score + score1 >= @score_limit)
+      if (@count_real <= @count_actual && @score >= @score_limit)
         # Ak som na poslednej miestnosti v tyzdni a dosiahla som potrebne skore, nastavim stav na pouzita
         @room.update!(state: "used")
       end
 
-      if (@room.score + score1 >= @score_limit)
+      if (@score >= @score_limit)
         # Ak som dosiahla potrebne skore v miestnosti, toto skore sa ulozi
-        @room.update!(score: (@room.score + score1))
+        @room.update!(score: @score)
       else
         # Ak som nedosiahla potrebne skore, znovu sa prepocita hranicne skore a moje skore sa vynuluje
-        val = Levels::RoomsCreation.compute_limit(learning_objects.count,learning_objects,setup)
+        val = Levels::ScoreCalculation.compute_limit_score(learning_objects.count,learning_objects,setup)
         @room.update!(score_limit: val.to_f)
         @room.update!(score: 0.0)
       end

@@ -1,32 +1,11 @@
 module Levels
   # Trieda sluzi na vytvorenie miestnosti
   class RoomsCreation
-    # Metoda vypocita hranicne skore pre danu miestnost
-    def self.compute_limit(number_lo, learning_objects,setup)
-
-      number_questions = number_lo * ENV["MIN_PERCENTAGE"].to_f
-
-      sum_dif = 0.0
-      sum_imp = 0.0
-
-      learning_objects.each do |l|
-        dif_result = l.get_difficulty(setup)
-        sum_dif += dif_result
-        imp_value = l.get_importance
-        sum_imp += imp_value
-      end
-
-      avg_dif = sum_dif / number_lo.to_f
-      avg_imp = sum_imp / number_lo.to_f
-
-      number_questions * ENV["WEIGHT_SOLVED"].to_i * avg_imp * avg_dif
-
-    end
 
     # Metoda vytvori novu miestnost
     def self.create(week_id,user_id)
-      if (Week.find(week_id).free_los(nil,user_id).count > ENV["NUMBER_LOS"].to_i )
-        number_lo = ENV["NUMBER_LOS"].to_i
+      if (Week.find(week_id).free_los(nil,user_id).count > Room::NUMBER_LOS_IN_ROOM )
+        number_lo = Room::NUMBER_LOS_IN_ROOM
       else
         number_lo = Week.find(week_id).free_los(nil,user_id).count
       end
@@ -84,7 +63,7 @@ module Levels
       end
 
       # Vypocet score a vytvorenie miestnosti
-      score_limit = compute_limit(number_lo,sorted_los,setup)
+      score_limit = Levels::ScoreCalculation.compute_limit_score(number_lo,sorted_los,setup)
       name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
 
       room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit)

@@ -3,18 +3,14 @@ module RoomHelper
   # Vrati pocet videnych otazok v danej miestnosti
   def views_los(results,lo)
     result = results.find {|r| r["result_id"] == lo.id.to_s}
-    unless result.nil?
-      view = result['visited']
-    end
+    view = result['visited'] unless result.nil?
     view
   end
 
   # Vrati pocet spravne zodpovedanych otazok v danje miestnosti
   def done_los(results,lo)
     result = results.find {|r| r["result_id"] == lo.id.to_s}
-    unless result.nil?
-      done = result['solved']
-    end
+    done = result['solved'] unless result.nil?
     done
   end
 
@@ -22,7 +18,6 @@ module RoomHelper
   def get_description(room)
     los = room.learning_objects.eager_load(:concepts)
     description = "Najviac zastúpené témy: "
-    number = 5
     list = Hash.new
 
     los.each do |l|
@@ -36,7 +31,7 @@ module RoomHelper
     end
 
     list = list.sort_by{|_key, value| value}.reverse.to_h
-    description += list.take(number).map{ |key, value| "#{key} => #{value}-krat"}.join(', ') + '.'
+    description += list.take(Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION).map{ |key, value| "#{key} => #{value}-krat"}.join(', ') + '.'
 
     description
   end

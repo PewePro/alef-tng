@@ -49,7 +49,7 @@ class LearningObject < ActiveRecord::Base
 
   def next(room_id,actual_question_id)
     room = Room.find_by_id(room_id)
-    los_not_visited = room.get_dont_visited
+    los_not_visited = room.get_not_visited_los
     los_not_visited = los_not_visited.reject{ |los| los.id == actual_question_id}
     los_not_visited.try(:shuffle).try(:first)
   end
@@ -130,11 +130,7 @@ class LearningObject < ActiveRecord::Base
   def get_difficulty(setup)
 
     #Ziska narocnost zadanu ucitelom
-    if self.difficulty.nil?
-      dif_value = LearningObject::DIFFICULTY_VALUE["unknown_difficulty".to_sym]
-    else
-      dif_value = LearningObject::DIFFICULTY_VALUE[self.difficulty.to_sym]
-    end
+    dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
 
     # Vypocita narocnost z interakcii v systeme
     results = Levels::Preproces.preproces_data(setup)
@@ -159,12 +155,7 @@ class LearningObject < ActiveRecord::Base
 
   # Vrati dolezitost learning objectu
   def get_importance
-    if self.importance.nil?
-      imp_value = LearningObject::DIFFICULTY_VALUE["UNKNOWN".to_sym]
-    else
-      imp_value = LearningObject::IMPORTANCE_VALUE[self.importance.to_sym]
-    end
-    imp_value
+    LearningObject::IMPORTANCE_VALUE[(self.importance ? self.importance.to_sym : :unknown_importance)]
   end
 
 end

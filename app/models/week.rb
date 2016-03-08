@@ -26,8 +26,8 @@ class Week < ActiveRecord::Base
 
   # Vrati ocakavany pocet miestnosti v tyzdni
   def rooms_count
-    count = (self.learning_objects.distinct.count / ENV["NUMBER_LOS"].to_i).to_i
-    unless (self.learning_objects.distinct.count % ENV["NUMBER_LOS"].to_i == 0)
+    count = (self.learning_objects.distinct.count / Room::NUMBER_LOS_IN_ROOM).to_i
+    unless (self.learning_objects.distinct.count % Room::NUMBER_LOS_IN_ROOM == 0)
       count +=1
     end
     count

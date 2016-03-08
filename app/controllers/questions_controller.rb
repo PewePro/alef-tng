@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   def show
 
-    @user = current_user
     @question = LearningObject.find(params[:id])
     rel = @question.seen_by_user(current_user.id)
     gon.userVisitedLoRelationId = rel.id
@@ -13,7 +12,7 @@ class QuestionsController < ApplicationController
     @answers = @question.answers
     @relations = UserToLoRelation.where(learning_object_id: params[:id], user_id: current_user.id).group('type').count
 
-    if @user.show_solutions
+    if current_user.show_solutions
       UserViewedSolutionLoRelation.create(user_id: current_user.id, learning_object_id: params[:id], setup_id: 1, )
       solution = @question.get_solution(current_user.id)
       gon.show_solutions = TRUE
@@ -21,66 +20,14 @@ class QuestionsController < ApplicationController
     end
 
     # Poradie zobrazenia danej otazky
-    if @user.show_solutions
+    if current_user.show_solutions
       @number_of_question = @room.learning_objects.where("learning_object_id < ?",@question.id).count + 1
     else
       @number_of_question = @room.question_count - @room.question_count_not_visited
-      if @room.not_answered(@question.id)
-        @number_of_question +=1
-      end
+      @number_of_question +=1 if @room.not_answered(@question.id)
     end
 
     @feedbacks = @question.feedbacks.visible.includes(:user)
-  end
-
-  # Metoda sluzi na vypocet skore za odpoved na otazku
-  def eval_question
-    setup = Setup.take
-    room = Room.find(params[:room_number])
-
-    lo_class = Object.const_get params[:type]
-    lo = lo_class.find(params[:id])
-
-    results_used = UserToLoRelation.get_results_room(current_user.id,params[:week_number],params[:room_number], room.number_of_try,lo.id).try(:first)
-    used = FALSE
-    unless results_used.nil?
-      used = results_used["solved"] != 0 || results_used["failed"] != 0 || results_used["donotnow"] != 0
-    end
-
-    room = Room.find(params[:room_number])
-
-    if params[:commit] == 'send_answer'
-      result = lo.right_answer? params[:answer], @solution
-    end
-
-    # Nacitanie parametrov  obtiaznosti a dolezitosti danej otazky
-    dif_result = lo.get_difficulty(setup)
-    imp_value = lo.get_importance
-
-    score = 0.0
-
-    if lo.type == "EvaluatorQuestion"
-      # V pripade, ze dana otazka je typu evaluator, spravnost sa vypocita ako vzdialenost od priemeru odpovedi
-      solution = lo.get_solution(current_user.id)
-      if solution.nil?
-        rightness = 1
-      else
-        rightness = 1 - ((solution - params[:answer].to_i).abs)/100
-      end
-      score = ENV["WEIGHT_SOLVED"].to_i * rightness * imp_value * dif_result
-    else
-      if results_used.nil? || !used
-        if params[:commit] == 'dont_know'
-          score = ENV["WEIGHT_DONT_NOW"].to_i * imp_value *dif_result
-        elsif (params[:commit] == 'send_answer' && result)
-          score = ENV["WEIGHT_SOLVED"].to_i * imp_value * dif_result
-        elsif (params[:commit] == 'send_answer' && !result)
-          score = ENV["WEIGHT_FAILED"].to_i * imp_value * dif_result
-        end
-      end
-    end
-
-    room.update!(score: (room.score + score))
 
   end
 
@@ -105,7 +52,7 @@ class QuestionsController < ApplicationController
     rel = UserToLoRelation.new(setup_id: setup_id, user_id: user_id, room_id: params[:room_number], number_of_try: room.number_of_try)
 
     if params[:commit] == 'send_answer'
-      result = lo.right_answer? params[:answer], @solution
+      result = lo.right_answer?(params[:answer], @solution)
       @eval = true # informacie pre js odpoved
       rel.interaction = params[:answer]
     end
@@ -114,7 +61,8 @@ class QuestionsController < ApplicationController
     rel.type = 'UserSolvedLoRelation' if params[:commit] == 'send_answer' && result
     rel.type = 'UserFailedLoRelation' if params[:commit] == 'send_answer' && !result
 
-    eval_question unless room.state.to_s == "used"
+    score_for_question = Levels::ScoreCalculation.compute_score_for_question(room,params,current_user) unless room.state.to_s == "used"
+    room.update!(score: (room.score + score_for_question)) unless score_for_question.nil?
 
     lo.user_to_lo_relations << rel
 
@@ -148,12 +96,7 @@ class QuestionsController < ApplicationController
       end
     else
       # V rezime bez zobrazovania spravnych odpovedi sa vyberie otazka, z tych, ktore este nevidel, resp. ak taka nie je tak nahodna z danej miestnosti
-      los_not_visited = room.get_dont_visited
-      if los_not_visited.nil?
-        los = room.learning_objects.shuffle.first
-      else
-        los = los_not_visited.shuffle.first
-      end
+      los = room.get_not_visited_los.shuffle.first || room.learning_objects.shuffle.first
     end
 
     redirect_to action: "show", id: los.url_name, week_number: params[:week_number]
