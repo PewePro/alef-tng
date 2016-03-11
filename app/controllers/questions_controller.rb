@@ -6,7 +6,6 @@ class QuestionsController < ApplicationController
     gon.userVisitedLoRelationId = rel.id
 
     if current_user.has_rooms?
-      p "dnuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
       @next_question = @question.next_in_room(params[:room_number],@question.id)
       @previous_question = @question.previous_in_room(params[:room_number])
 
@@ -18,7 +17,6 @@ class QuestionsController < ApplicationController
       else
         @number_of_question = @room.question_count - @room.question_count_not_visited
         @number_of_question +=1 if @room.not_answered(@question.id)
-        p "aaaaaaaaaaaaaaaaaaa" + @number_of_question.to_s
       end
     else
       @next_question = @question.next(params[:week_number])

@@ -58,7 +58,7 @@ class LearningObject < ActiveRecord::Base
     Room.find(room_id).learning_objects.where('learning_objects.id < ?', self.id).order(id: :desc).first
   end
 
-  def next(week_number)
+  def next(week_number) # mozno radsej spustit odporucanie.. pri tomto odporucani ani som vsetko nepresla a napisalo ze som na poslednej
     Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
   end
 

@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def has_rooms?
-    TRUE
+    self.involved_in_gamification
   end
 
 end

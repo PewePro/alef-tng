@@ -18,25 +18,30 @@ Rails.application.routes.draw do
 
   # Vrati dalsiu otazku podla odporucaca
   get 'w/:week_number/:room_number/:lo_id/next' => 'questions#next'
+  get 'w/:week_number/next' => 'questions#next'
 
   #Vypis miestnosti z daneho tyzdna
-  get 'w/:week_number/:room_number' => 'rooms#show'
+  get 'w/tests/:week_number/:room_number' => 'rooms#show'
 
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
-  get 'w/:week_number/:room_number/:id' => 'questions#show'
-  get 'w/:week_number/:room_number/:id/image' => 'questions#show_image'
+  get 'w/tests/:week_number/:room_number/:id' => 'questions#show'
+  get 'w/tests/:week_number/:room_number/:id/image' => 'questions#show_image'
+  get 'w/:week_number/:id' => 'questions#show'
+  get 'w/:week_number/:id/image' => 'questions#show_image'
 
   # Loguje cas straveny na otazke
   post 'log_time' => 'questions#log_time'
 
   # Opravi otazku a vrati spravnu odpoved
-  post 'w/:week_number/:room_number/:id/evaluate_answers' => 'questions#evaluate'
+  post 'w/tests/:week_number/:room_number/:id/evaluate_answers' => 'questions#evaluate'
+  post 'w/:week_number/:id/evaluate_answers' => 'questions#evaluate'
 
-  # Vyhodnoti pracu v danje miestnosti
-  post 'w/:week_number/:room_number/eval' => 'rooms#eval'
-  get 'w/:week_number/:room_number/:id/eval' => 'rooms#eval'
+  # Vyhodnoti pracu v danej miestnosti
+  post 'w/tests/:week_number/:room_number/eval' => 'rooms#eval'
+  get 'w/tests/:week_number/:room_number/:id/eval' => 'rooms#eval'
 
-  get 'w/:week_number/:room_number/:id/new' => 'rooms#new'
+  # Vytvori novu miestnost
+  get 'w/tests/:week_number/:room_number/:id/new' => 'rooms#new'
 
   # Prepina zobrazovenie odpovedi ku otazkam
   post 'user/toggle-show-solutions' => 'users#toggle_show_solutions'

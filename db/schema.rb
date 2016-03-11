@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305154418) do
+ActiveRecord::Schema.define(version: 20160311200950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,20 +167,21 @@ ActiveRecord::Schema.define(version: 20160305154418) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0,         null: false
+    t.integer  "sign_in_count",            default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
     t.string   "remember_token"
-    t.string   "role",                default: "student", null: false
-    t.string   "encrypted_password",  default: "",        null: false
-    t.string   "type",                default: "",        null: false
-    t.boolean  "show_solutions",      default: false
+    t.string   "role",                     default: "student", null: false
+    t.string   "encrypted_password",       default: "",        null: false
+    t.string   "type",                     default: "",        null: false
+    t.boolean  "show_solutions",           default: false
     t.string   "email"
     t.string   "ais_email"
-    t.string   "group",               default: "X"
-    t.float    "proficiency",         default: 0.5
+    t.string   "group",                    default: "X"
+    t.float    "proficiency",              default: 0.5
+    t.boolean  "involved_in_gamification", default: true,      null: false
   end
 
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
