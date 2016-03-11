@@ -47,15 +47,23 @@ class LearningObject < ActiveRecord::Base
     end
   end
 
-  def next(room_id,actual_question_id)
+  def next_in_room(room_id,actual_question_id)
     room = Room.find_by_id(room_id)
     los_not_visited = room.get_not_visited_los
     los_not_visited = los_not_visited.reject{ |los| los.id == actual_question_id}
     los_not_visited.try(:shuffle).try(:first)
   end
 
-  def previous(room_id)
+  def previous_in_room(room_id)
     Room.find(room_id).learning_objects.where('learning_objects.id < ?', self.id).order(id: :desc).first
+  end
+
+  def next(week_number)
+    Week.find_by_number(week_number).learning_objects.where('learning_objects.id > ?', self.id).order(id: :asc).first
+  end
+
+  def previous(week_number)
+    Week.find_by_number(week_number).learning_objects.where('learning_objects.id < ?', self.id).order(id: :desc).first
   end
 
   def seen_by_user(user_id)

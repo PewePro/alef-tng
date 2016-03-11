@@ -12,7 +12,11 @@ module RecommenderSystem
     # Metoda ziska learning objecty z daneho tyzdna, ktore este nie su zaradene do miestnosti
     def self.learning_objects
       if @@los.empty?
-        @@los = Week.find(@@week_id).free_los(@@type_question,@@user_id)
+        if User.find(@@user_id).has_rooms?
+          @@los = Week.find(@@week_id).free_los(@@type_question,@@user_id)
+        else
+          @@los = Week.find(@@week_id).learning_objects.includes(:concepts).distinct
+        end
       end
       @@los
     end

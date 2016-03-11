@@ -1,5 +1,5 @@
 module Levels
-  # Trieda sluzi na vytvorenie miestnosti
+  # Trieda sluzi na vypocet skor
   class ScoreCalculation
     # Metoda vypocita hranicne skore pre danu miestnost
     def self.compute_limit_score(learning_objects,setup)

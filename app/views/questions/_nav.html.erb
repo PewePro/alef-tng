@@ -8,9 +8,15 @@
             url_for :controller => 'questions', :action => 'next', :lo_id => @question.id
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
-    <a href="<%= url_for controller: 'rooms', action: 'show' %>">
-      <i class="nav-right-icons icon-level-up"></i>
-    </a>
+    <% if current_user.has_rooms? %>
+        <a href="<%= url_for controller: 'rooms', action: 'show' %>">
+          <i class="nav-right-icons icon-level-up"></i>
+        </a>
+    <% else %>
+        <a href="<%= url_for controller: 'weeks', action: 'show' %>">
+          <i class="nav-right-icons icon-level-up"></i>
+        </a>
+    <% end %>
     <a class="user-element-cta"><i class="nav-right-icons icon-user"></i></a>
   </div>
 </nav>

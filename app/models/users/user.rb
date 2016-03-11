@@ -26,4 +26,8 @@ class User < ActiveRecord::Base
     return u ? u.class.model_name.param_key.to_sym : :ldap_user
   end
 
+  def has_rooms?
+    TRUE
+  end
+
 end

@@ -5,7 +5,7 @@ var Progressbar = {
         var numberDone = $(progressbar).data('number-done');
         var percents = Math.floor(numberDone/numberAll * 100)
         var caption = $(progressbar).find('.progressbar-caption');
-        caption.html("Vyriešené testy " + numberDone + "/" + numberAll + " (" + percents + "%)");
+        caption.html("Vyriešené " + numberDone + "/" + numberAll + " (" + percents + "%)");
         $(progressbar).progressbar({
            value: numberDone,
            max: numberAll
