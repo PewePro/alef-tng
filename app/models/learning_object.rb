@@ -135,13 +135,13 @@ class LearningObject < ActiveRecord::Base
   end
 
   # Vrati narocnost learning objectu
-  def get_difficulty(setup)
+  def get_difficulty
 
     #Ziska narocnost zadanu ucitelom
     dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
 
     # Vypocita narocnost z interakcii v systeme
-    results = Levels::Preproces.preproces_data(setup)
+    results = Levels::Preproces.preproces_data
     all = 0
     do_not_know_value = 0
     results.each do |r|

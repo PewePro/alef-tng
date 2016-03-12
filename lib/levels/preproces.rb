@@ -2,7 +2,8 @@ module Levels
   # Triea zabezpecuje predstpracovanie dat pre irt a vypocet obtiaznosti otazok
   class Preproces
     # Metoda na zaklade heuristik vytvori dvojice user - learning object, s hodnotami vie alebo nevie, resp. 1 alebo 0
-    def self.preproces_data(setup)
+    def self.preproces_data
+      setup = Setup.take
       result = Hash.new
       result_int = Hash.new
       relations = setup.user_to_lo_relations

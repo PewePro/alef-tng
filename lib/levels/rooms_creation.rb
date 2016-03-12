@@ -69,7 +69,7 @@ module Levels
       end
 
       # Vypocet score a vytvorenie miestnosti
-      score_limit = Levels::ScoreCalculation.compute_limit_score(sorted_los,setup)
+      score_limit = Levels::ScoreCalculation.compute_limit_score(sorted_los)
       name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
 
       room = Room.create(:name => name,:week_id => week.id, :user_id => user_id, :score => 0.0, :number_of_try => 0, :score_limit => score_limit)

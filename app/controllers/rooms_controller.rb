@@ -13,7 +13,6 @@ class RoomsController < ApplicationController
   end
 
   def eval
-    setup = Setup.take
     @room = Room.find(params[:room_number])
     learning_objects = @room.learning_objects
 
@@ -34,7 +33,7 @@ class RoomsController < ApplicationController
       @count_actual += 1
 
       # Ziskanie skore za komentare a vypocitanie noveho celkoveho skore
-      @score = @room.score + Levels::ScoreCalculation.compute_score_for_comments(learning_objects,setup,current_user)
+      @score = @room.score + Levels::ScoreCalculation.compute_score_for_comments(learning_objects,current_user)
 
       if (@count_real <= @count_actual && @score >= @score_limit)
         # Ak som na poslednej miestnosti v tyzdni a dosiahla som potrebne skore, nastavim stav na pouzita
@@ -46,7 +45,7 @@ class RoomsController < ApplicationController
         @room.update!(score: @score)
       else
         # Ak som nedosiahla potrebne skore, znovu sa prepocita hranicne skore a moje skore sa vynuluje
-        val = Levels::ScoreCalculation.compute_limit_score(learning_objects,setup)
+        val = Levels::ScoreCalculation.compute_limit_score(learning_objects)
         @room.update!(score_limit: val.to_f)
         @room.update!(score: 0.0)
       end

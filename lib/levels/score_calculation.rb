@@ -2,7 +2,7 @@ module Levels
   # Trieda sluzi na vypocet skor
   class ScoreCalculation
     # Metoda vypocita hranicne skore pre danu miestnost
-    def self.compute_limit_score(learning_objects,setup)
+    def self.compute_limit_score(learning_objects)
       sum_dif = 0.0
       sum_imp = 0.0
       number_non_evaluator = 0
@@ -10,7 +10,7 @@ module Levels
       learning_objects.each do |l|
         unless l.is_a?(EvaluatorQuestion)
           number_non_evaluator += 1
-          dif_result = l.get_difficulty(setup)
+          dif_result = l.get_difficulty
           sum_dif += dif_result
           imp_value = l.get_importance
           sum_imp += imp_value
@@ -31,7 +31,6 @@ module Levels
 
     # Metoda vypocita skore pre poslednu odpoved studenta na otazku
     def self.compute_score_for_question(room,params,current_user)
-      setup = Setup.take
       lo_class = Object.const_get params[:type]
       lo = lo_class.find(params[:id])
       solution = lo.get_solution(current_user.id)
@@ -45,7 +44,7 @@ module Levels
       end
 
       # Nacitanie parametrov  obtiaznosti a dolezitosti danej otazky
-      dif_result = lo.get_difficulty(setup)
+      dif_result = lo.get_difficulty
       imp_value = lo.get_importance
 
       score = 0.0
@@ -66,7 +65,7 @@ module Levels
     end
 
     # Metoda vypocita skore za komentare v prislusnej miestnosti a pre konkretneho studenta
-    def self.compute_score_for_comments(learning_objects,setup,current_user)
+    def self.compute_score_for_comments(learning_objects,current_user)
       score = 0.0
 
       learning_objects.eager_load(:feedbacks).where("feedbacks.visible = ?", true).each do |l|
@@ -79,7 +78,7 @@ module Levels
             order_to_comment_of_user += 1
 
             # Ziskanie prametrov narocnosti a dolezisto daneho learning objectu
-            dif_result = l.get_difficulty(setup)
+            dif_result = l.get_difficulty
             imp_value = l.get_importance
 
             # Vypocet skore za komentare ako sucet ciastkovych skor za jednotlive komentare

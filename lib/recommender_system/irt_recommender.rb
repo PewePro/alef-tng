@@ -15,5 +15,11 @@ module RecommenderSystem
       end
       list
     end
+
+    # Opakuje sa o stvrtej rano, vid. config/schedule.rb
+    def self.update_table
+      p "dnuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
+      User.find(1).update!(proficiency: 500)
+    end
   end
 end
