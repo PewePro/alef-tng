@@ -11,6 +11,15 @@ TIME = {
 
 every :day, :at => TIME[@environment.to_sym] do
       runner_rbenv "RecommenderSystem::ActivityRecommender.update_table"
+end
+
+TIME2 = {
+    production: '3:30am',
+    staging: '4:30am',
+    sandbox: '5:30am'
+}
+
+every :day, :at => TIME2[@environment.to_sym] do
       runner_rbenv "RecommenderSystem::IrtRecommender.update_table"
 end
 

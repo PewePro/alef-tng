@@ -27,10 +27,8 @@ class Room < ActiveRecord::Base
   # Vrati pocet vyriesenych otazok v danej miestnosti
   def question_count_done user_id
     lo_ids = self.learning_objects.map(&:id)
-    p "aaaa"
-    pom =  UserSolvedLoRelation.where(learning_object_id: lo_ids, user_id: user_id).
+    UserSolvedLoRelation.where(learning_object_id: lo_ids, user_id: user_id).
         group(:learning_object_id).count.count
-    p pom
   end
 
   def question_count_not_visited
