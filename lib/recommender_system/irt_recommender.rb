@@ -39,18 +39,18 @@ module RecommenderSystem
 
       # Odstranenie userov, ktori nam nic nepovedia - user, ktory ma menej ako 10 odpovedi
 
-      array_of_deleted = matrix_relations.map {|m| m.count(1) + m.count(0) < 2}
+      array_of_deleted = matrix_relations.map {|m| m.count(1) + m.count(0) < 10}
       user_deleted = array_of_deleted.each_with_index.map { |a, i| a == true ? i : nil }.compact
-      matrix_relations = matrix_relations.reject {|m| m.count(1) + m.count(0) < 2}
+      matrix_relations = matrix_relations.reject {|m| m.count(1) + m.count(0) < 10}
       user_deleted = user_deleted.map{ |u| u+1 } # indexuje sa od 0 ale idcka su od 1!
       user_solved = 1..number_of_users
       user_solved = user_solved.reject{ |id| user_deleted.include?(id) }
 
       # Odstranenie otazok, ktore nam nic nepovedia - otazka, ktora ma menej ako 10 odpovedi
 
-      array_of_deleted = matrix_relations.transpose.map {|m| m.count(1) + m.count(0) < 2}
+      array_of_deleted = matrix_relations.transpose.map {|m| m.count(1) + m.count(0) < 10}
       items_deleted = array_of_deleted.each_with_index.map { |a, i| a == true ? i : nil }.compact
-      matrix_relations = (matrix_relations.transpose.reject {|m| m.count(1) + m.count(0) < 2}).transpose
+      matrix_relations = (matrix_relations.transpose.reject {|m| m.count(1) + m.count(0) < 10}).transpose
       items_deleted = items_deleted.map{ |u| u+1 } # indexuje sa od 0 ale idcka su od 1!
 
      unless matrix_relations.count == 0

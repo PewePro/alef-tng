@@ -9,7 +9,7 @@
         %>"><i class="nav-right-icons icon-right"></i></a>
     <% end %>
     <% if current_user.has_rooms? %>
-        <a href="<%= url_for controller: 'rooms', action: 'show' %>">
+        <a href="<%= url_for controller: 'rooms', action: 'show', room_number: params[:room_number] %>">
           <i class="nav-right-icons icon-level-up"></i>
         </a>
     <% else %>
