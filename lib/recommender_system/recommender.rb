@@ -57,8 +57,21 @@ module RecommenderSystem
         list
     end
 
-    def get_best
-      self.get_list.first
+    def get_best(last_id)
+      list =  self.get_list
+      if last_id.present?
+        # Osetrenie aby za sebou nenasledovali otazky rovnakeho typu
+        type_last = LearningObject.find(last_id).type
+        los = LearningObject.where("id IN (?)",list.transpose[0])
+        list_hash = list.to_h
+        list_hash.each do |l|
+          lo = los[los.map{ |lo| lo.id == l[0]}.index(true)]
+          unless lo.type == type_last
+            return l
+          end
+        end
+      end
+      list.first
     end
 
     def normalize list
