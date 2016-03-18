@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
         @number_of_question +=1 if @room.not_answered(@question.id)
       end
     else
-      @next_question = @question.next(params[:week_number])
+      @next_question = @question.next(current_user, params[:week_number])
       @previous_question = @question.previous(params[:week_number])
     end
 
