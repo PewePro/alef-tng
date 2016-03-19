@@ -18,6 +18,8 @@ module RecommenderSystem
 
     # Opakuje sa o stvrtej rano, vid. config/schedule.rb
     def self.update_table
+      require "rinruby"
+      
       # Predspracovanie dat
       result_relations = Levels::Preproces.preproces_data
       number_of_users = User.all.order("id DESC").first.id

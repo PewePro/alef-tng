@@ -71,7 +71,7 @@ gem 'figaro', '~> 1.1'
 gem 'capistrano-figaro', '~> 1.0'
 
 # gem for R
-gem 'rinruby'
+gem 'rinruby', :require => false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
