@@ -8,7 +8,7 @@ nav {
 
 }
 
-nav i {
+nav i:not(.fa) {
   font-size: 1.2rem;
   display: inline-block;
   line-height: 3rem;

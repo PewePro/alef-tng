@@ -1,27 +1,28 @@
 input[type="checkbox"].icon {
   display: none !important;
 
-  &+ label.icon-checkbox {
+  &+ label i.icon-checkbox {
     margin-left: 0;
     margin-right: 0;
     cursor: pointer;
   }
 
-  &+ label.icon-checkbox:before {
+  &+ label i.icon-checkbox:before {
     content: '\e818';
     color: $gray;
+    margin-left: 0;
   }
 
-  &:checked + label.icon-checkbox:before {
+  &:checked + label i.icon-checkbox:before {
     content: '\e816';
     color: #000000;
   }
 
-  &+ label.icon-eyebox:before {
+  &+ label i.icon-eyebox:before {
     content: '\e814';
   }
 
-  &:checked + label.icon-eyebox:before {
+  &:checked + label i.icon-eyebox:before {
     content: '\e803';
   }
 
@@ -41,5 +42,26 @@ input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"
 
   &:hover {
     background-color: $gray-light;
+  }
+}
+
+// Chybove hlasky.
+.form-control-errors {
+  background-color: #f0f0f0;
+  border: 2px solid $red-lighter;
+  border-radius: 6px;
+  font-size: 0.9em;
+  padding: 5px 10px;
+  margin-top: 5px;
+  width: 50%;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin: 5px 0;
+    }
   }
 }

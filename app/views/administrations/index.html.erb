@@ -1,7 +1,8 @@
 <nav>
   <div class="admin-nav">
     <h2>Administrácia</h2>
-    <%= link_to "Domov", root_path, class: 'admin-nav-button' %>
+    <%= link_to((fa_icon('home') + t('homescreen.links.home')).html_safe,
+                root_path, class: 'admin-nav-button') %>
   </div>
 </nav>
 <hr class="nav-offset">
@@ -10,7 +11,7 @@
   <h3>Nastavenia setupov</h3>
   <ul>
   <% @setups.each do |s| %>
-    <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link" %></li>
+    <li><%= link_to s.name, setup_config_path(s.id), class: "admin-link", id: "setup#{s.id}" %></li>
   <% end %>
   </ul>
 </div>
@@ -19,7 +20,7 @@
   <h3>Nastavenia kurzov</h3>
   <ul>
     <% @courses.each do |c| %>
-        <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link" %></li>
+        <li><%= link_to c.name, question_concept_config_path(c.id), class: "admin-link", id: "concept#{c.id}" %></li>
     <% end %>
   </ul>
 </div>
@@ -28,7 +29,7 @@
   <h3>Správa obsahu otázok</h3>
   <ul>
     <% @courses.each do |c| %>
-        <li><%= link_to c.name, question_config_path(c.id), class: "admin-link" %></li>
+        <li><%= link_to c.name, admin_learning_objects_path(course: c.id), class: "admin-link", id: "learning-objects#{c.id}" %></li>
     <% end %>
   </ul>
 </div>

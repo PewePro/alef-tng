@@ -1,0 +1,228 @@
+<nav>
+  <div class="admin-nav">
+    <h2><i data-toggle="tooltip" data-placement="right" title="<%= t("admin.questions.labels.types.#{@learning_object.type.downcase}") %>" class="icon-<%=
+      case @learning_object.type
+        when "SingleChoiceQuestion"
+          'radio-checked'
+        when "MultiChoiceQuestion"
+          'checkbox-checked'
+        when "EvaluatorQuestion"
+          'sliders'
+      end %>"></i><%= @learning_object.id %> : <%= @learning_object.lo_id %></h2>
+    <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
+                admin_learning_objects_path(course: @learning_object.course_id), class: 'admin-nav-button' %>
+  </div>
+</nav>
+
+<hr class="nav-offset">
+
+<%= render 'administrations/feedbacks_banner', feedbacks_new_count: @feedback_new_count, course: @learning_object.course, lite: true %>
+
+<div class="container">
+
+  <div class="tabs">
+
+    <ul id="editor-tabs" class="tablist" role="tablist">
+      <li class="active"><a href="#" data-target="#question-settings" role="tab" id="question-tab" data-toggle="tab">Nastavenia otázky</a></li>
+      <li><a href="#" data-target="#answer-settings" role="tab" id="answer-tab" data-toggle="tab">Odpovede</a></li>
+      <li><a href="#" data-target="#feedbacks" role="tab" id="feedback-tab" data-toggle="tab">Spätná väzba<span id="feedback-not-reviewed-count"></span></a></li>
+      <li><a href="#" data-target="#question-preview" role="tab" id="question-preview-tab" data-toggle="tab">Náhľad</a></li>
+      <li class="icon"><%= link_to(fa_icon(:trash),
+                                         admin_learning_object_path(id: @learning_object.id),
+                                         class: 'delete-lo',
+                                         method: :delete,
+                                         data: {
+                                             confirm: 'Naozaj chcete odstrániť tento vzdelávací objekt?',
+                                             toggle: :tooltip
+                                         },
+                                         title: t('global.links.remove')) %></li>
+
+      <li class="icon"><%= link_to(fa_icon(:tag),
+                                         question_concept_config_path(@learning_object.course_id, anchor: "question#{@learning_object.id}"),
+                                         data: { toggle: :tooltip },
+                                         title: t('admin.questions.links.set_concepts')) %></li>
+    </ul>
+
+    <div id="editor-tabs-content" class="tab-content is-first">
+
+      <div role="tabpanel" class="tab-pane active" id="question-settings">
+
+        <%= form_for @learning_object, as: :learning_object,
+                                       url: {
+                                                controller: 'admin/learning_objects',
+                                                action: :update},
+                                       method: :patch do |f| %>
+
+            <div class="admin">
+
+              <div class="form-group">
+
+                <dl class="dl-horizontal">
+                  <dt><%= f.label :lo_id, t('activerecord.attributes.learning_object.lo_id') %></dt>
+                  <dd><%= f.text_field :lo_id, class: "question_text_field" %></dd>
+
+                  <dt><%= f.label :question_text, t('activerecord.attributes.learning_object.question_text') %></dt>
+                  <dd><%= f.text_area :question_text, class: "question_text_field" %></dd>
+
+                  <dt><%= f.label :type, t('activerecord.attributes.learning_object.type') %></dt>
+                  <dd><%= t("admin.questions.labels.types.#{@learning_object.type.downcase}") %></dd>
+
+                  <dt><%= f.label :difficulty, t('activerecord.attributes.learning_object.difficulty') %></dt>
+                  <dd><%= f.select(:difficulty, options_for_select(LearningObject::DIFFICULTY.map { |id, difficulty|
+                    [t("admin.questions.labels.difficulties.#{difficulty}"), difficulty]
+                  }, @learning_object.difficulty), class: 'form-control') %></dd>
+
+                  <dt><%= f.label :external_reference, t('admin.questions.labels.external_reference') %></dt>
+                  <dd><%= @learning_object.external_reference || '-' %></dd>
+
+                  <dt><%= label_tag t('admin.questions.labels.successfulness') %></dt>
+                  <% successfulness = @learning_object.successfulness %>
+                  <dd><%= "#{successfulness[:rate]} % (#{successfulness[:solved]} úspešných z #{successfulness[:total]})" %></dd>
+
+                  <dt></dt>
+                  <dd>
+                    <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: t('global.texts.saving') } %>
+                    <%= button_tag t('global.links.discard_changes'), class: :btn, type: :reset %>
+                  </dd>
+                </dl>
+
+              </div>
+
+            </div>
+
+        <% end %>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="answer-settings">
+        <%= render 'answers' %>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="feedbacks">
+        <%= render 'feedbacks' %>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="question-preview">
+        <%= render 'questions/question_core', hide_question_options: true, learning_object: @learning_object %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function(){
+
+    Slider.setupEvaluatorSlider();
+
+    // Zapnutie markdownu.
+    new MarkdownPreview($('#edit_question_text'), {
+      className: 'admin-markdown-textarea admin-markdown-edit-textarea',
+      outerClassName: 'admin-markdown-preview'
+    });
+    $('.question-answer-area').each(function() {
+      new MarkdownPreview($(this), { autofix: true, className: 'admin-markdown-textarea', outerClassName: 'admin-markdown-preview' });
+    });
+
+    var tabs = $('#editor-tabs').find('li:not(.icon)').find('a');
+    tabs.click(function (e) {
+      set_tab(tabs, $(this));
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    });
+
+    if (location.hash.length > 0) {
+      set_tab(tabs, tabs.filter('[data-target="'+location.hash+'"]'));
+    }
+
+    Admin.currentLoId = <%= @learning_object.id %>;
+    Admin.fetchFeedback();
+    turbolinksSetInterval(function(){
+      Admin.fetchFeedback();
+    }, 30000);
+
+    <%# Overovanie korektnosti odpovedi. %>
+    <% if @learning_object.type == "SingleChoiceQuestion" %>$('input[data-type="correctness"]').change(function(){ Admin.verifySingleChoice($(this)); });<% end %>
+    <% if @learning_object.type == "EvaluatorQuestion" %>$('input[data-type="visibility"]').change(function(){ Admin.verifyEvaluator($(this)); });<% end %>
+
+  });
+
+  function set_tab(tabs, tab) {
+
+    var firstTab = tabs.first();
+
+    if (history.pushState) {
+      history.pushState(null, null, $(tab).attr('data-target'));
+    }
+    else {
+      location.hash = $(tab).attr('data-target');
+    }
+
+    $(tab).tab('show');
+    if ($(tab).attr('id') == firstTab.attr('id')) {
+      $('#editor-tabs-content').addClass('is-first');
+    }
+    else {
+      $('#editor-tabs-content').removeClass('is-first');
+    }
+
+  }
+</script>
+
+<%# Sablona pre polozku feedback widgetu (doT.js). %>
+<div id="feedback-widget-template" style="display: none">
+  <li class="list-item{{?it.accepted == null}} list-item-highlighted{{?}}" data-feedback-id="{{=it.id}}">
+    <div class="content">{{=it.message}}</div>
+    <div class="tools">
+      {{?it.widget}}
+      <%= link_to "Vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      &nbsp;&bull;&nbsp;
+      {{?it.visible}}
+      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Skryť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{??}}
+      <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Zobraziť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{?}}
+      {{??}}
+      {{?it.accepted == null}}
+      <span class="status"><i class="icon-star"></i> Nový</span>
+      {{?? it.accepted == true}}
+      <span class="status status-success"><i class="icon-checkbox-checked"></i> Vyriešený</span>
+      {{??}}
+      <span class="status status-danger"><i class="icon-cancel-circled"></i> Neriešený</span>
+      {{?}}
+      {{?it.visible == true}}
+      <span class="status status-success"><i class="icon-seen"></i> Viditeľný</span>
+      {{??}}
+      <span class="status status-danger"><i class="icon-eye-off"></i> Skrytý</span>
+      {{?}}
+      {{?it.accepted != true}}
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Označiť ako vyriešený", mark_feedback_accepted_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      {{?}}
+      {{?it.accepted != false}}
+      &nbsp;&bull;&nbsp;
+      <%= link_to "Označiť ako neriešený", mark_feedback_rejected_path('FEEDBACK_ID'), remote: true, method: :patch %>
+      {{?}}
+      &nbsp;&bull;&nbsp;
+      {{?it.visible == true}}
+      <%= link_to "Skryť", mark_feedback_hidden_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Skryť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{??}}
+      <%= link_to "Zobraziť", mark_feedback_visible_path('FEEDBACK_ID'), remote: true, method: :patch,
+                  title: 'Zobraziť komentár zo stránky otázky',
+                  data: { toggle: "tooltip" } %>
+      {{?}}
+      {{?}}
+    </div>
+    <div class="meta">{{=it.fullname}}, {{=it.time}}</div>
+  </li>
+</div>

@@ -5,8 +5,10 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
 require 'factory_girl_rails'
+
 require 'support/factory_girl'
 require 'spec_helper'
+require 'support/wait_for_ajax'
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
@@ -60,6 +62,14 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  # Authorization helpers.
+  config.include Warden::Test::Helpers
+
+
   config.include Capybara::DSL
   Capybara.default_driver = :selenium
+
+  # Wait for ajax requests.
+  config.include WaitForAjax
+
 end

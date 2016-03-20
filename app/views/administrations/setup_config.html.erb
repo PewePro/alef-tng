@@ -1,7 +1,8 @@
 <nav>
    <div class="admin-nav">
     <h2><%= @setup.name %></h2>
-     <%= link_to "Administrácia", administration_path, class: 'admin-nav-button' %>
+     <%= link_to((fa_icon('user-secret') + t('homescreen.links.admin')).html_safe,
+                 administration_path, class: 'admin-nav-button') %>
    </div>
 </nav>
 <hr class="nav-offset">
@@ -23,7 +24,7 @@
 </div>
 <div class="admin">
   <h3>Nastavenia konceptov</h3>
-  <%= form_tag url_for(setup_relations_path), html: {method: 'post'} do %>
+  <%= form_tag url_for(setup_relations_path), method: 'post', id: 'concepts-form' do %>
   <table id="week-concept-table">
     <tr>
       <th>Názov konceptu</th>
@@ -62,7 +63,7 @@
       <% end %>
     </tr>
   </table>
-  <%= submit_tag "Uložiť" %>
+  <%= submit_tag t('global.links.save_changes') %>
   <% end %>
 </div>
 

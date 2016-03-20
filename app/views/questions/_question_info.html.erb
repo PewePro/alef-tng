@@ -1,7 +1,7 @@
 <div id="question-info">
   <% if current_user.administrator? %>
-      <%= link_to('<i class="icon-edit"></i> Upraviť'.html_safe,
-                  edit_question_config_path(:question_id => @question.id),
+      <%= link_to("<i class=\"icon-edit\"></i> #{t('global.links.edit')}".html_safe,
+                  edit_admin_learning_object_path(@question),
                   class: 'btn pull-right') %>
   <% end %>
   <div class="texts">

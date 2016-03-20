@@ -1,0 +1,159 @@
+// Horny panel v administracii.
+#header-panel {
+  border-bottom: 3px solid $gray-light;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0;
+  max-width: 990px;
+  padding: 0;
+  @include clearfix;
+
+  .buttons {
+    float: right;
+    padding: 20px 15px;
+  }
+
+  .tools {
+    float: left;
+    padding: 10px;
+  }
+
+}
+
+// Zobrazovac otazok.
+#questions-list {
+  max-width: 990px;
+  border-radius: 0 0 6px 6px;
+  padding: 0;
+  margin-top: 0;
+
+  .question {
+    border-bottom: 2px solid $porcelain;
+    transition: background-color 0.25s ease-in-out;
+
+    &:last-child {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+
+    &:hover {
+      background-color: $gray-lightest;
+    }
+
+    .question-tools {
+      float: right;
+
+      a {
+        background-color: $gray-lightest;
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
+        display: inline-block;
+        text-align: center;
+        font-size: 1.1em;
+        margin-top: 30px;
+        margin-right: 10px;
+        border-radius: 24px;
+        transition: background-color 0.25s ease-in-out;
+
+        &.counter {
+          width: auto;
+          padding: 0 20px
+        }
+
+        &:last-child {
+          margin-right: 20px;
+        }
+
+        &:hover {
+          background-color: $gray-lighter;
+        }
+
+        &.highlighted {
+          background-color: $red;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .question-icon {
+      background-color: #ffffff;
+      border: 3px solid $gray-lighter;
+      float: left;
+      border-radius: 50%;
+      line-height: 64px;
+      width: 64px;
+      height: 64px;
+      text-align: center;
+      font-size: 1.2em;
+      margin: 20px;
+    }
+
+    .question-headline {
+      margin-left: 110px;
+      margin-right: 146px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .title {
+        font-size: 1.2em;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .text {
+        color: $gray-darker;
+        margin-bottom: 4px;
+      }
+
+      .answers {
+        font-size: 0.85em;
+        color: $gray;
+
+        .correct {
+          font-weight: 700;
+          text-decoration: underline;
+        }
+      }
+
+    }
+
+    &.deleted, &.deleted:hover {
+      background-color: #ffffff;
+
+      .question-icon {
+        color: $gray-light;
+      }
+
+      .question-headline {
+
+        .title {
+          text-decoration: line-through;
+          color: $gray-light;
+        }
+
+        .text, .answers {
+          color: $gray-light;
+        }
+
+      }
+    }
+
+  }
+
+}
+
+#question-settings {
+
+  @media (min-width: 768px) {
+
+    .dl-horizontal dt {
+      margin-top: 21px;
+    }
+
+    .dl-horizontal dd {
+      padding-top: 10px;
+    }
+
+  }
+
+}

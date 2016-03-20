@@ -86,10 +86,13 @@ ActiveRecord::Schema.define(version: 20160311200950) do
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
+    t.datetime "deleted_at"
     t.string   "importance",         default: "UNKNOWN"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
   end
+
+  add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree
 
   create_table "recommendation_configurations", force: :cascade do |t|
     t.string  "name",                    null: false
@@ -129,7 +132,7 @@ ActiveRecord::Schema.define(version: 20160311200950) do
 
   create_table "setups", force: :cascade do |t|
     t.string   "name"
-    t.datetime "first_week_at"
+    t.datetime "first_week_at",                 null: false
     t.integer  "week_count"
     t.datetime "created_at"
     t.datetime "updated_at"
