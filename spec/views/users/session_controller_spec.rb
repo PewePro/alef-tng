@@ -6,7 +6,7 @@ describe 'Users::SessionsController' do
     before do
       @user = FactoryGirl.create(:user)
       @admin = FactoryGirl.create(:admin)
-      @setup = Setup.create(course: Course.create)
+      FactoryGirl.create(:setup, course: FactoryGirl.create(:course))
     end
 
     # Pokusi sa prihlasit ako standardny pouzivatel.

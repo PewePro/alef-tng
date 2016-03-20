@@ -1,0 +1,88 @@
+<div class="row">
+
+  <div class="col-lg-12" id="answer-settings-col">
+    <%= form_tag admin_learning_object_answers_path(learning_object_id: @learning_object.id), method: :patch do %>
+
+        <div class="admin">
+
+          <p><strong><%= t('activerecord.attributes.learning_object.question_text') %>:</strong>
+            <%= @learning_object.question_text %></p>
+
+          <table class="answers-table">
+            <thead>
+            <tr>
+              <th class="answers-table-id">ID</th>
+              <th>Text odpovede</th>
+              <th class="answers-table-tools">Možnosti</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @learning_object.answers.force_all.order('answers.id').each do |a|%>
+                <tr class="<%= 'hidden' unless a.visible? %>">
+                  <td class="answers-table-id"><%= a.id %></td>
+                  <td>
+                    <% if a.learning_object.type == "EvaluatorQuestion" %>
+                        <%= text_area_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer-area" %>
+                    <% else %>
+                        <%= text_field_tag "edit_answer_text_#{a.id}", a.answer_text, class: "question-answer" %>
+                    <% end %>
+                  </td>
+                  <td class="answers-table-tools">
+                    <% unless a.learning_object.type == "EvaluatorQuestion" %>
+                        <%= check_box_tag("correct_answer_#{a.id}", 1, a.is_correct, class: 'icon', data: { type: 'correctness' }) %>
+                        <%= label_tag("correct_answer_#{a.id}", "<i class=\"icon-checkbox\"></i>".html_safe, title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+                    <% end %>
+                    <%= check_box_tag("visible_answer_#{a.id}", 1, a.visible, class: 'icon', data: { type: 'visibility' }) %>
+                    <%= label_tag("visible_answer_#{a.id}", "<i class=\"icon-checkbox icon-eyebox\"></i>".html_safe, title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+                    <%= link_to(fa_icon(:trash), admin_learning_object_answer_path(id: @learning_object.id, answer_id: a.id),
+                                method: :delete,
+                                class: 'danger',
+                                data: { toggle: 'tooltip', confirm: t('admin.answers.questions.remove') },
+                                title: t('global.links.remove')) %>
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+
+          <%= submit_tag t('global.links.save_changes'), class: :btn, data: { disable_with: t('global.texts.saving') } %>
+          <%= button_tag t('global.links.discard_changes'), class: :btn, type: :reset %>
+
+        </div>
+
+    <% end %>
+
+  </div>
+  <div class="col-lg-4" id="answer-feedback-col">
+    <div id="feedback-widget" class="content-widget">
+
+      <h3>Nová spätná väzba</h3>
+
+      <ul class="mini-list">
+      </ul>
+
+    </div>
+  </div>
+
+</div>
+
+<%= form_for Answer.new, url: { controller: 'admin/answers', action: 'create' }, method: :post do |f| %>
+
+    <div class="admin">
+      <h3>Pridanie novej odpovede</h3> <br/>
+      <%= f.label :answer_text, "Zadaj nový text odpovede:" %>
+      <%= f.text_field :answer_text, placeholder: "Text odpovede", class: 'simple-text' %>
+      <span class="options-label">Možnosti:</span>
+      <% unless @learning_object.type == "EvaluatorQuestion" %>
+          <%= f.check_box(:is_correct, { checked: @learning_object.allow_new_correctness? , class: 'icon' }, 1) %>
+          <%= f.label(:is_correct, "<i class=\"icon-checkbox\"></i>".html_safe, class: :inline, title: 'Správnosť odpovede', data: { toggle: 'tooltip' }) %>
+          &nbsp;&nbsp;
+      <% end %>
+      <%= f.check_box(:visible_answer, { checked: @learning_object.allow_new_visibility?, class: 'icon' }, 1) %>
+      <%= f.label(:visible_answer, "<i class=\"icon-checkbox icon-eyebox\"></i>".html_safe, class: :inline, title: 'Viditeľnosť odpovede', data: { toggle: 'tooltip' }) %>
+      <div class="form-buttons">
+        <%= f.submit value: "Pridať odpoveď", data: { disable_with: t('global.texts.saving') } %>
+      </div>
+    </div>
+
+<% end %>

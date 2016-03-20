@@ -13,6 +13,7 @@
  *= require jquery-ui/autocomplete
  *= require jquery-ui/progressbar
  *= require jquery-ui/slider
+ *= require font-awesome
  * require_tree .
  * require_self
  */
@@ -46,6 +47,8 @@
 @import "questions/questions_answers";
 @import "questions/evaluator";
 @import "administration";
+
+@import "admin/questions";
 
 // nprogress
 $nprogress-color: $gray-lighter;

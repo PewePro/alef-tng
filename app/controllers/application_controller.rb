@@ -47,5 +47,20 @@ class ApplicationController < ActionController::Base
     local_user_session || ldap_user_session
   end
 
+  # Pomocna metoda, vyziada potrebne parametre v URL adrese.
+  #
+  # @param required_params [Array] zoznam pozadovanych parametrov (ako String) v adrese poziadavky
+  # @raise [MissingArgumentError] ak aspon jeden parameter chyba
+  def require_params(*required_params)
+
+    missing = []
+    required_params.each do |param|
+      missing << param unless params[param].present?
+    end
+
+    raise MissingArgumentError.new("Missing parametres: ".missing.join(', ')) if missing.any?
+
+  end
+
   helper_method :user_signed_in?, :current_user, :user_session
 end

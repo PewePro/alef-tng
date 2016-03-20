@@ -1,0 +1,41 @@
+#
+# Prosim, zachovavajte abecedne poradie klucov.
+#
+
+en:
+  admin:
+    answers:
+      questions:
+        remove:                       "Are you sure, do you want to remove the answer?"
+
+    feedbacks:
+      label:
+        solved:                       "solved"
+      texts:
+        feedbacks_empty:              "Unfortunately, there is no feedback yet."
+
+    questions:
+      labels:
+        difficulties:
+          easy:                       "Easy"
+          hard:                       "Hard"
+          impossible:                 "Impossible"
+          medium:                     "Medium"
+          trivial:                    "Trivial"
+          unknown_difficulty:         "Unknown"
+        external_reference:           "CSV identifier"
+        management:                   "Learning objects management"
+        new_lo:                       "New learning object"
+        successfulness:               "Successfulness"
+        types:
+          evaluatorquestion:          "evaluator"
+          multichoicequestion:        "multi-choice"
+          singlechoicequestion:       "single-choice"
+      links:
+        back_to_management:           "back to management"
+        create:                       "Create question"
+        set_concepts:                 "Set concepts"
+      texts:
+        created:                      "Learning object has been successfully created."
+        deleted:                      "Learning object has been successfully deleted."
+        restored:                     "Learning object has been successfully restored."

@@ -1,0 +1,41 @@
+#
+# Prosim, zachovavajte abecedne poradie klucov.
+#
+
+sk:
+  admin:
+    answers:
+      questions:
+        remove:                       "Naozaj chcete odstrániť túto odpoveď na otázku?"
+
+    feedbacks:
+      label:
+        solved:                       "vyriešený"
+      texts:
+        feedbacks_empty:              "Ľutujeme, ale nenašla sa žiadna spätná väzba."
+
+    questions:
+      labels:
+        difficulties:
+          easy:                       "Ľahká"
+          hard:                       "Náročná"
+          impossible:                 "Impossible"
+          medium:                     "Stredná"
+          trivial:                    "Triviálna"
+          unknown_difficulty:         "Neznáma"
+        external_reference:           "Identifikátor z CSV"
+        management:                   "Správa vzdelávacích objektov"
+        new_lo:                       "Vytvorenie nového vzdelávacieho objektu"
+        successfulness:               "Úspešnosť"
+        types:
+          evaluatorquestion:          "evaluator"
+          multichoicequestion:        "výber z viacerých možností"
+          singlechoicequestion:       "výber z jednej možnosti"
+      links:
+        back_to_management:           "späť na správu"
+        create:                       "Vytvoriť otázku"
+        set_concepts:                 "Nastaviť koncepty"
+      texts:
+        created:                      "Vzdelávací objekt bol úspešne vytvorený."
+        deleted:                      "Vzdelávací objekt bol úspešne odstránený."
+        restored:                     "Vzdelávací objekt bol úspešne obnovený."

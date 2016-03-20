@@ -1,59 +1,37 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
 #
-# To use the locales, use `I18n.t`:
+# Prosim, zachovavajte abecedne poradie klucov.
 #
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-
-  global:
-    links:
-      cancel:       "Cancel"
-      submit:       "Submit"
+  activerecord:
+    attributes:
+      learning_object:
+        difficulty:                   "Difficulty"
+        lo_id:                        "Title"
+        question_text:                "Question text"
+        type:                         "Type"
 
   homescreen:
     links:
-      admin:        "Admin"
-      feedback:     "Feedback"
-      login:        "Sign in"
-      logout:       "Sign out"
+      admin:                          "Admin"
+      feedback:                       "Feedback"
+      home:                           "Home"
+      login:                          "Sign in"
+      logout:                         "Sign out"
 
-  feedbacks:
-    label:
-      solved:                 "solved"
-
-  questions:
+  global:
     labels:
-      difficulty:             "Difficulty"
-      difficulties:
-        easy:                 "Easy"
-        hard:                 "Hard"
-        impossible:           "Impossible"
-        medium:               "Medium"
-        trivial:              "Trivial"
-        unknown_difficulty:   "Unknown"
-      external_reference:     "CSV identifier"
-      successfulness:         "Successfulness"
-      title:                  "Title"
-      text:                   "Text"
-      type:                   "Type"
-      types:
-        evaluatorquestion:    "evaluator"
-        multichoicequestion:  "multi-choice"
-        singlechoicequestion: "single-choice"
+      choose:                         "choose..."
+    links:
+      cancel:                         "Cancel"
+      discard_changes:                "Discard changes"
+      edit:                           "Edit"
+      refresh:                        "Refresh"
+      remove:                         "Remove"
+      restore:                        "Restore"
+      save_changes:                   "Save changes"
+      submit:                         "Submit"
+    texts:
+      please_fill_in:                 "Please, fill in all required fields."
+      saving:                         "saving..."
+      updated:                        "All changes have been successfully saved."
