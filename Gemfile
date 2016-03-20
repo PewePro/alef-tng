@@ -59,6 +59,10 @@ gem 'nprogress-rails', '~> 0.1.6.7'
 # Localization
 gem 'rails-i18n'
 
+# Gem to hide, not destroy an ActiveRecord object.
+gem "paranoia", "~> 2.0"
+
+
 # Ruby library for Markdown processing that smells like butterflies and popcorn.
 gem 'redcarpet', '3.3.4'
 
@@ -100,9 +104,6 @@ group :development, :test do
 
   # Fixtures replacement with a straightforward definition syntax.
   gem 'factory_girl_rails', '~> 4.0'
-
-  # Gem to hide, not destroy an ActiveRecord object.
-  gem "paranoia", "~> 2.0"
 
   # Rspec
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'
