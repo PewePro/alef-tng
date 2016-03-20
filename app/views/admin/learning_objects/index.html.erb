@@ -1,0 +1,26 @@
+<nav>
+  <div class="admin-nav">
+    <h2><%= t('admin.questions.labels.management') %></h2>
+    <%= link_to((fa_icon('user-secret') + t('homescreen.links.admin')).html_safe,
+                administration_path, class: 'admin-nav-button') %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<%= render 'administrations/feedbacks_banner', feedbacks_new_count: @feedbacks[:new_count], course: @course, lite: false %>
+
+<div id="header-panel" class="admin">
+
+  <div class="buttons">
+    <%= link_to "+ #{t('admin.questions.links.create')}", new_admin_learning_object_path(course: @course), class: 'btn' %>
+  </div>
+
+  <div class="tools">
+  </div>
+
+</div>
+
+<div id="questions-list" class="admin">
+  <%= render partial: 'learning_object', collection: @questions, as: :learning_object %>
+  <%= render partial: 'learning_object', collection: @questions.only_deleted, as: :learning_object %>
+</div>

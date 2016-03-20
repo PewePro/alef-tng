@@ -2,6 +2,9 @@ module Exceptions
   class AnswersCorrectnessError < StandardError; end
   class AnswersVisibilityError < StandardError; end
 
+  # Chybajuci kluc v Hashi.
+  class MissingKeyError < StandardError; end
+
   # use this when ENV variables are missing
   class ApplicationConfigurationIncomplete < StandardError
     def message

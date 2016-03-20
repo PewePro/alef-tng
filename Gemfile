@@ -44,6 +44,9 @@ gem 'axlsx'
 # for nice nil safeguarding
 gem 'andand'
 
+# FontAwesome icon font.
+gem 'font-awesome-rails', '~> 4.5', '>= 4.5.0.1'
+
 # passing data from controllers to javascript
 gem 'gon'
 
@@ -91,8 +94,15 @@ group :development, :test do
   # Strategies for cleaning databases.
   gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
 
+  # helps you find and manage missing and unused translations
+  gem 'parser', '~> 2.2.2.6'
+  gem 'i18n-tasks', '0.8.7'
+
   # Fixtures replacement with a straightforward definition syntax.
   gem 'factory_girl_rails', '~> 4.0'
+
+  # Gem to hide, not destroy an ActiveRecord object.
+  gem "paranoia", "~> 2.0"
 
   # Rspec
   gem 'rspec-rails', '~> 3.4', '>= 3.4.1'

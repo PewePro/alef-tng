@@ -16,7 +16,7 @@
       <a href="<%=
           url_for controller: 'weeks', action: 'show', week_number: w.number
       %>" class="card <%= 'week-current' if w.actual? %>">
-        <h3 class="card-header"><%= w.number %>. týždeň <%= '(aktuálny)' if w.actual? %><date class="week-date"><%=
+        <h3 class="card-header" id="week<%= w.id %>"><%= w.number %>. týždeň <%= '(aktuálny)' if w.actual? %><date class="week-date"><%=
             w.start_at.strftime("%-d.%-m.")  %> - <%= w.end_at.strftime("%-d.%-m.%Y")
         %></date></h3>
         <% if w.question_count > 0 %>

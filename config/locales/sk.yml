@@ -1,38 +1,37 @@
-sk:
-  hello: "Ahoj svet!"
+#
+# Prosim, zachovavajte abecedne poradie klucov.
+#
 
-  global:
-    links:
-      cancel:       "Zrušiť"
-      submit:       "Odoslať"
+sk:
+  activerecord:
+    attributes:
+      learning_object:
+        difficulty:                   "Náročnosť"
+        lo_id:                        "Názov"
+        question_text:                "Text otázky"
+        type:                         "Typ"
 
   homescreen:
     links:
-      admin:        "Administrácia"
-      feedback:     "Spätná väzba"
-      login:        "Prihlásiť sa"
-      logout:       "Odhlásiť"
+      admin:                          "Administrácia"
+      feedback:                       "Spätná väzba"
+      home:                           "Domov"
+      login:                          "Prihlásiť sa"
+      logout:                         "Odhlásiť"
 
-  feedbacks:
-    label:
-      solved:                 "vyriešený"
-
-  questions:
+  global:
     labels:
-      difficulty:             "Náročnosť"
-      difficulties:
-        easy:                 "Ľahká"
-        hard:                 "Náročná"
-        impossible:           "Impossible"
-        medium:               "Stredná"
-        trivial:              "Triviálna"
-        unknown_difficulty:   "Neznáma"
-      external_reference:     "Identifikátor z CSV"
-      successfulness:         "Úspešnosť"
-      title:                  "Názov otázky"
-      text:                   "Text otázky"
-      type:                   "Typ"
-      types:
-        evaluatorquestion:    "evaluator"
-        multichoicequestion:  "výber z viacerých možností"
-        singlechoicequestion: "výber z jednej možnosti"
+      choose:                         "vyberte si..."
+    links:
+      cancel:                         "Zrušiť"
+      discard_changes:                "Zrušiť zmeny"
+      edit:                           "Upraviť"
+      refresh:                        "Osviežiť"
+      remove:                         "Odstrániť"
+      restore:                        "Obnoviť"
+      save_changes:                   "Uložiť zmeny"
+      submit:                         "Odoslať"
+    texts:
+      please_fill_in:                 "Prosím, vyplňte všetky povinné polia."
+      saving:                         "prebieha ukladanie..."
+      updated:                        "Všetky zmeny boli úspešne uložené."
