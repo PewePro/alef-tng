@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
-  def show
+  before_action :check_path, only: [:show]
 
+  def show
     @question = LearningObject.find(params[:id])
     rel = @question.seen_by_user(current_user.id)
     gon.userVisitedLoRelationId = rel.id
@@ -115,6 +116,30 @@ class QuestionsController < ApplicationController
       best = RecommenderSystem::HybridRecommender.new.get_best(params[:lo_id])
       los = LearningObject.find(best[0])
       redirect_to action: "show", id: los.url_name
+    end
+  end
+
+  def check_path
+    if current_user.andand.has_rooms?
+      non_exist = false
+      id =  params[:id].partition('-').first.to_i
+      if params[:room_number]
+        r = current_user.rooms.eager_load(:learning_objects).where("rooms.id = ? AND rooms.week_id =? AND learning_objects.id = ?",params[:room_number],params[:week_number],id)
+        non_exist = true if r.count == 0
+      end
+      if non_exist || params[:room_number].nil?
+        # Ak ma zlu url, tak sa mu spristupni dana otazka v miestnosti, ktoru ma spristupnenu
+        room = Room.joins(:rooms_learning_objects).where("rooms_learning_objects.learning_object_id = ? AND rooms.user_id = ?", id,current_user.id).first
+        if room
+          redirect_to :controller => 'questions', :action => 'show', :room_number => room.id, :week_number => room.week_id
+        else
+          redirect_to :controller => 'weeks', :action => 'show'
+        end
+      end
+    else
+      if params[:room_number]
+        redirect_to :controller => 'questions', :action => 'show', :room_number => nil
+      end
     end
   end
 end

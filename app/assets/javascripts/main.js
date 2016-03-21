@@ -8,19 +8,7 @@ var ready = (function () {
         Login.init();
     }
 
-    if ($('#body-weeks-show').length) {
-        Toggle.initWeekToggle();
-        Nav.init();
-        Progressbar.setupProgressbars();
-    }
-
-    if ($('#body-rooms-show').length) {
-        Toggle.initWeekToggle();
-        Nav.init();
-        Progressbar.setupProgressbars();
-    }
-
-    if ($('#body-rooms-eval').length) {
+    if ($('#body-weeks-show').length || $('#body-rooms-show').length || $('#body-rooms-eval').length) {
         Toggle.initWeekToggle();
         Nav.init();
         Progressbar.setupProgressbars();

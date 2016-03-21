@@ -86,10 +86,10 @@ ActiveRecord::Schema.define(version: 20160311200950) do
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
-    t.datetime "deleted_at"
     t.string   "importance",         default: "UNKNOWN"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
+    t.datetime "deleted_at"
   end
 
   add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree

@@ -1,4 +1,6 @@
 class RoomsController < ApplicationController
+  before_action :check_path
+
   def show
     setup = Setup.take
     week = setup.weeks.find_by_number(params[:week_number])
@@ -67,6 +69,19 @@ class RoomsController < ApplicationController
       room.update!(state: "used")
       room_id = Levels::RoomsCreation.create(week.id, current_user.id)
       redirect_to action: "show", room_number: room_id
+    end
+  end
+
+  def check_path
+    if current_user.andand.has_rooms?
+      room = current_user.rooms.where("id = ?", params[:room_number])
+      # Ak danu miestnost nema spristupnenu, zobrazi sa mu prva z daneho tyzdna, ktoru ma k dispozicii
+      if room.count == 0
+        available_room = current_user.rooms.where("week_id = ?", params[:week_number]).first
+        redirect_to :controller => 'rooms', :action => 'show', :room_number => available_room.id
+      end
+    else
+      redirect_to :controller => 'weeks', :action => 'show'
     end
   end
 
