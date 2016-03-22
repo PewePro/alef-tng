@@ -185,7 +185,7 @@ describe Admin::LearningObjectsController do
 
       find("#week#{@week.id}").click
 
-      find(".card_open:first-child").click
+      find(".card:first-child").click
 
       expect(page).to have_text(learning_object.lo_id.downcase)
       expect(page).to have_text(learning_object.question_text)
