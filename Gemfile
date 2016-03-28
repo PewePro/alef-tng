@@ -69,7 +69,7 @@ gem 'redcarpet', '3.3.4'
 gem 'whenever', :require => false
 
 # Error tracking
-gem 'rollbar', '~> 2.7.1'
+gem 'rollbar', '~> 2.8.3'
 
 gem 'passenger'
 
