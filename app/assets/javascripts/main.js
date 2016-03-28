@@ -8,7 +8,7 @@ var ready = (function () {
         Login.init();
     }
 
-    if ($('#body-weeks-show').length) {
+    if ($('#body-weeks-show').length || $('#body-rooms-show').length || $('#body-rooms-eval').length) {
         Toggle.initWeekToggle();
         Nav.init();
         Progressbar.setupProgressbars();
@@ -20,6 +20,7 @@ var ready = (function () {
         Slider.setupEvaluatorSlider();
         Question.setupForm();
         Question.initTimeLog();
+        Progressbar.setupProgressbars();
 
     }
 

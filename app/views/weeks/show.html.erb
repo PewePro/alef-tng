@@ -4,36 +4,73 @@
 
 <%= render 'week_info'%>
 
+
+
 <div class="mobile-content main">
-  <% @sorted_los.each do |lo| %>
-      <a href="<%=
-          url_for :controller => 'questions', :action => 'show', :id => lo.url_name
-      %>" class="card">
-        <div class="question-card-content">
-          <h3 class="card-header"><%= lo.lo_id %></h3>
-          <p class="card-text">
-            <%= lo.question_text %>
-          </p>
-        </div>
-        <div class="card-info">
-          <%
-             result = @results.find {|r| r["result_id"] == lo.id.to_s}
-             unless result.nil?
-               views = result['visited']
-               done = result['solved']
-             end
-             unless views.nil?
-          %>
-              <i class="icon-seen"></i> Videné (<%= views %>x)
+  <% if current_user.has_rooms? %>
+      <% @rooms.each do |r|  %>
+          <% if r.state == "do_not_use" %>
+                  <a href="<%=
+                      url_for controller: 'rooms', action: 'show', room_number: r.id
+                  %>" class="card_open ">
+                    <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
+                    <%= get_description(r) %>
+                    <% if r.question_count > 0 %>
+                        <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
+                          <div class="progressbar-caption"></div>
+                        </div>
+                    <% else %>
+                        Žiadne otázky
+                    <% end %>
+                  </a>
           <% else %>
-              <i class="icon-new"></i> Nové
-          <%
-             end
-             unless done.nil? or done.to_i.zero?
-          %>
-              <i class="icon-done"></i> Vyriešené (<%= done %>x)
+                <a href="<%=
+                    url_for controller: 'rooms', action: 'show', room_number: r.id
+                %>" class="card ">
+                  <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
+                  <%= get_description(r) %>
+                  <% if r.question_count > 0 %>
+                      <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
+                        <div class="progressbar-caption"></div>
+                      </div>
+                  <% else %>
+                      Žiadne otázky
+                  <% end %>
+                </a>
           <% end %>
-        </div>
-      </a>
+      <% end %>
+  <% else %>
+      <% @sorted_los.each do |lo| %>
+          <a href="<%=
+              url_for :controller => 'questions', :action => 'show', :id => lo.url_name
+          %>" class="card">
+            <div class="question-card-content">
+              <h3 class="card-header"><%= lo.lo_id %></h3>
+              <p class="card-text">
+                <%= lo.question_text %>
+              </p>
+            </div>
+            <div class="card-info">
+              <%
+                 result = @results.find {|r| r["result_id"] == lo.id.to_s}
+                 unless result.nil?
+                   views = result['visited']
+                   done = result['solved']
+                 end
+                 unless views.nil?
+              %>
+                  <i class="icon-seen"></i> Videné (<%= views %>x)
+              <% else %>
+                  <i class="icon-new"></i> Nové
+              <%
+                 end
+                 unless done.nil? or done.to_i.zero?
+              %>
+                  <i class="icon-done"></i> Vyriešené (<%= done %>x)
+              <% end %>
+            </div>
+          </a>
+      <% end %>
   <% end %>
 </div>
+

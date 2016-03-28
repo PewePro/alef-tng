@@ -127,3 +127,27 @@
 
 
 }
+
+.question-progressbar {
+  @include border-radius(0.75rem);
+  height: 1.5rem;
+  background-color: $white;
+  background-image: none;
+  border: 1px solid $white;
+  margin: 0.5rem 1rem 0.5rem;
+}
+
+.question-progressbar > .ui-progressbar-value {
+  background-image: none;
+  background-color: $red-lighter;
+  border-color: $red-lighter;
+}
+
+.progressbar-caption {
+  height: 0;
+  text-align: center;
+  line-height: 1.6rem;
+  color: $dark;
+  @include small-font;
+  z-index: 20;
+}

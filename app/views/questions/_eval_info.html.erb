@@ -1,0 +1,19 @@
+
+<div class="nav-info mobile-content">
+    <% unless current_user.show_solutions %>
+      <% if @room.state == "used" %>
+          Tento test ste už úspešne vyriešili.
+      <%else%>
+          <%if (@room.score < @room.score_limit)%>
+               Vaše skóre:
+          <%else%>
+               GRATULUJEME, dosiahli ste minimálne skóre!
+              <p style="margin-top:1em;font-size:80%;">Po dokončení vám bude sprístupnený nový test.</p>
+          <%end%>
+      <%end%>
+      <div class="question-progressbar" data-number-all="<%= @room.score_limit %>" data-number-done="<%= @room.score %>">
+        <div class="progressbar-caption"></div>
+      </div>
+    <%end%>
+  <%= @number_of_question.to_s + ". otázka z " + @room.learning_objects.count.to_s %>
+</div>

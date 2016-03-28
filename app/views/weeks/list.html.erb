@@ -20,9 +20,15 @@
             w.start_at.strftime("%-d.%-m.")  %> - <%= w.end_at.strftime("%-d.%-m.%Y")
         %></date></h3>
         <% if w.question_count > 0 %>
-            <div class="week-progressbar" data-number-all="<%= w.question_count %>" data-number-done="<%= w.question_count_done @user.id %>">
-              <div class="progressbar-caption"></div>
-            </div>
+            <% if current_user.has_rooms? %>
+                <div class="week-progressbar" data-number-all="<%= w.rooms_count %>" data-number-done="<%= w.rooms_count_done current_user.id %>">
+                  <div class="progressbar-caption"></div>
+                </div>
+            <% else %>
+                <div class="week-progressbar" data-number-all="<%= w.question_count %>" data-number-done="<%= w.question_count_done current_user.id %>">
+                  <div class="progressbar-caption"></div>
+                </div>
+            <% end %>
         <% else %>
             Žiadne otázky
         <% end %>

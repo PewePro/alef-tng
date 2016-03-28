@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.2.4'
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -77,6 +76,9 @@ gem 'passenger'
 # ENV for local development
 gem 'figaro', '~> 1.1'
 gem 'capistrano-figaro', '~> 1.0'
+
+# gem for R
+gem 'rinruby', :require => false
 
 group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
