@@ -27,7 +27,9 @@ Rails.application.routes.draw do
   get 'w/tests/:week_number/:room_number/:id' => 'questions#show'
   get 'w/tests/:week_number/:room_number/:id/image' => 'questions#show_image'
   get 'w/:week_number/:id' => 'questions#show'
-  get 'w/:week_number/:id/image' => 'questions#show_image'
+
+  # Docasne takto, postupne sa prejde na namespace aj pre vzdelavacie objekty.
+  get 'learning_objects/:id/image' => 'questions#show_image', as: 'show_single_image'
 
   # Loguje cas straveny na otazke
   post 'log_time' => 'questions#log_time'
