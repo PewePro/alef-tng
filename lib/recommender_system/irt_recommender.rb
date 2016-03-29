@@ -21,11 +21,11 @@ module RecommenderSystem
       require "rinruby"
       # Predspracovanie dat
       result_relations = Levels::Preproces.preproces_data
-      number_of_users = User.all.order("id DESC").first.id
-      number_of_los = LearningObject.all.order("id DESC").first.id
+      largest_user_id = User.all.order("id DESC").first.id
+      largest_lo_id = LearningObject.all.order("id DESC").first.id
 
       # Vytvorenie matice pre vstup
-      matrix_relations = Array.new(number_of_users){Array.new(number_of_los){nil} }
+      matrix_relations = Array.new(largest_user_id){Array.new(largest_lo_id){nil} }
       result_relations.each do |rel|
         if rel[1] == 1
           j = rel[0][1]
@@ -44,7 +44,7 @@ module RecommenderSystem
       user_deleted = array_of_deleted.each_with_index.map { |a, i| a == true ? i : nil }.compact
       matrix_relations = matrix_relations.reject {|m| m.count(1) + m.count(0) < 10}
       user_deleted = user_deleted.map{ |u| u+1 } # indexuje sa od 0 ale idcka su od 1!
-      user_solved = 1..number_of_users
+      user_solved = 1..largest_user_id
       user_solved = user_solved.reject{ |id| user_deleted.include?(id) }
 
       # Odstranenie otazok, ktore nam nic nepovedia - otazka, ktora ma menej ako 10 odpovedi
@@ -127,8 +127,8 @@ EOF
        # Ulozenie parametrov otazok, ak su v rozumnom rozsahu, ak je malo dat zbytocne ukladat skreslene data
          unless result_items.nil?
            j=0
-           for i in 1..number_of_los
-             if (items_deleted.include?(i))
+           for i in 1..largest_lo_id
+             if (items_deleted.include?(i) || LearningObject.find(i).nil)
                next
              end
              if (result_items.row(j)[0].to_f > -100 && result_items.row(j)[0] < 100 && result_items.row(j)[1].to_f > -100 && result_items.row(j)[1] < 100)

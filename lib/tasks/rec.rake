@@ -37,7 +37,7 @@ namespace :alef do
       # Najde zelane opdorucace
       activity_rec = Recommender.where(name: 'Activity').take
       naive_activity_rec = Recommender.where(name: 'NaiveActivity').take
-      naive_concept_rec = Recommender.where(name: 'NaiveConcInvolvedIept').take
+      naive_concept_rec = Recommender.where(name: 'NaiveConcept').take
       irt_rec = Recommender.where(name: 'Irt').take
 
 

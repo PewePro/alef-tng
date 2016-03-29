@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :check_path, only: [:show]
+  before_action :check_gamification, only: [:evaluate, :next]
 
   def show
     @question = LearningObject.find(params[:id])
@@ -140,6 +141,12 @@ class QuestionsController < ApplicationController
       if params[:room_number]
         redirect_to :controller => 'questions', :action => 'show', :room_number => nil
       end
+    end
+  end
+
+  def check_gamification
+    if current_user.andand.has_rooms? && params[:room_number].nil?
+      redirect_to :controller => 'weeks', :action => 'show'
     end
   end
 end
