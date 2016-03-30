@@ -6,10 +6,12 @@ class WeeksController < ApplicationController
     @previous_week = @week.previous
 
     if current_user.has_rooms?
-      if (@week.rooms.where(user_id: current_user.id ).count == 0)
-        Levels::RoomsCreation.create(@week.id, current_user.id)
+      if @week.learning_objects.count > 0
+        if (@week.rooms.where(user_id: current_user.id ).count == 0)
+          Levels::RoomsCreation.create(@week.id, current_user.id)
+        end
+        @rooms = @week.rooms.where("user_id = ?", current_user.id).order(state: :asc, id: :asc)
       end
-      @rooms = @week.rooms.where("user_id = ?", current_user.id).order(state: :asc, id: :asc)
     else
       learning_objects = @week.learning_objects.all.distinct
       @results = UserToLoRelation.get_results(current_user.id,@week.id)

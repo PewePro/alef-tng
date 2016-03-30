@@ -8,35 +8,37 @@
 
 <div class="mobile-content main">
   <% if current_user.has_rooms? %>
-      <% @rooms.each do |r|  %>
-          <% if r.state == "do_not_use" %>
-                  <a href="<%=
-                      url_for controller: 'rooms', action: 'show', room_number: r.id
-                  %>" class="card_open ">
-                    <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
-                    <%= get_description(r) %>
-                    <% if r.question_count > 0 %>
-                        <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
-                          <div class="progressbar-caption"></div>
-                        </div>
-                    <% else %>
-                        Žiadne otázky
-                    <% end %>
-                  </a>
-          <% else %>
-                <a href="<%=
-                    url_for controller: 'rooms', action: 'show', room_number: r.id
-                %>" class="card ">
-                  <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
-                  <%= get_description(r) %>
-                  <% if r.question_count > 0 %>
-                      <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
-                        <div class="progressbar-caption"></div>
-                      </div>
-                  <% else %>
-                      Žiadne otázky
-                  <% end %>
-                </a>
+      <% unless @rooms.nil? %>
+          <% @rooms.each do |r|  %>
+              <% if r.state == "do_not_use" %>
+                      <a href="<%=
+                          url_for controller: 'rooms', action: 'show', room_number: r.id
+                      %>" class="card_open ">
+                        <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
+                        <%= get_description(r) %>
+                        <% if r.question_count > 0 %>
+                            <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
+                              <div class="progressbar-caption"></div>
+                            </div>
+                        <% else %>
+                            Žiadne otázky
+                        <% end %>
+                      </a>
+              <% else %>
+                    <a href="<%=
+                        url_for controller: 'rooms', action: 'show', room_number: r.id
+                    %>" class="card ">
+                      <h3 class="card-header"><%= r.name %><%= ' (nevyriešený)' if r.state == "do_not_use" %></h3>
+                      <%= get_description(r) %>
+                      <% if r.question_count > 0 %>
+                          <div class="room-progressbar" data-number-all="<%= r.question_count %>" data-number-done="<%= r.question_count_done current_user.id %>">
+                            <div class="progressbar-caption"></div>
+                          </div>
+                      <% else %>
+                          Žiadne otázky
+                      <% end %>
+                    </a>
+              <% end %>
           <% end %>
       <% end %>
   <% else %>
