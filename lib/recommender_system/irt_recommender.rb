@@ -128,7 +128,7 @@ EOF
          unless result_items.nil?
            j=0
            for i in 1..largest_lo_id
-             if (items_deleted.include?(i) || LearningObject.find(i).nil)
+             if (items_deleted.include?(i) || LearningObject.find(i).nil?)
                next
              end
              if (result_items.row(j)[0].to_f > -100 && result_items.row(j)[0] < 100 && result_items.row(j)[1].to_f > -100 && result_items.row(j)[1] < 100)
