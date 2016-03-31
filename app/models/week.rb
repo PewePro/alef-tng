@@ -18,7 +18,7 @@ class Week < ActiveRecord::Base
   # @return [Week] instancia nasledujuceho tyzdna
   def next
     week = Week.where('number > ? AND setup_id = ?', self.number, self.setup_id).order(number: :asc).first
-    week.is_visible? ? week : nil
+    week && week.is_visible? ? week : nil
   end
 
   def previous
