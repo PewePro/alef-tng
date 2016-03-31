@@ -37,7 +37,7 @@
         <% end %>
     <% else %>
         <div class="question-options-message" id="question-evaluation-next"><p style=" font-size:140%; ">Je nám to ľúto</p><p>Bohužial ste nedosiahli potrebné skóre na úspešné vyriešenie testu!</p>
-        <br><br> Vaše skóre: <%= @score.to_s%><br> Potrebné skóre: <%= @score_limit.to_s%>
+        <br><br> Vaše skóre: <%= @score.round(2).to_s%><br> Potrebné skóre: <%= @score_limit.round(2).to_s%>
         </div>
 
     <% end %>
