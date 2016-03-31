@@ -5,8 +5,20 @@ class Week < ActiveRecord::Base
   has_many :concepts_weeks
   has_many :learning_objects, through: :concepts
 
+  # Rozhodne o tom, ci ma byt dany tyzden spristupneny pre studenta.
+  #
+  # @return [Boolean] true, ak ma byt tyzden viditelny pre studentov
+  def is_visible?
+    setup.show_all? || Date.today >= start_at
+  end
+
+  # Ziska nasledujuci tyzden v poradi.
+  # Ak ide o tyzden, ktory nie je pristupny (buducnost), metoda vracia nil.
+  #
+  # @return [Week] instancia nasledujuceho tyzdna
   def next
-    Week.where('number > ? AND setup_id = ?', self.number, self.setup_id).order(number: :asc).first
+    week = Week.where('number > ? AND setup_id = ?', self.number, self.setup_id).order(number: :asc).first
+    week.is_visible? ? week : nil
   end
 
   def previous

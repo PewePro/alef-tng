@@ -20,6 +20,8 @@ sk:
       logout:                         "Odhlásiť"
 
   global:
+    errors:
+      something_went_wrong:           "Ľutujeme, ale niečo sa pokazilo. Skúste to neskôr, prosím."
     labels:
       choose:                         "vyberte si..."
     links:
@@ -35,3 +37,7 @@ sk:
       please_fill_in:                 "Prosím, vyplňte všetky povinné polia."
       saving:                         "prebieha ukladanie..."
       updated:                        "Všetky zmeny boli úspešne uložené."
+
+  weeks:
+    labels:
+      week:                           "týždeň"

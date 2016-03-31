@@ -20,6 +20,8 @@ en:
       logout:                         "Sign out"
 
   global:
+    errors:
+      something_went_wrong:           "We are sorry, but something went wrong. Please try again later."
     labels:
       choose:                         "choose..."
     links:
@@ -35,3 +37,7 @@ en:
       please_fill_in:                 "Please, fill in all required fields."
       saving:                         "saving..."
       updated:                        "All changes have been successfully saved."
+
+  weeks:
+    labels:
+      week:                           "week"

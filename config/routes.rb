@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   # Vypis tyzdnov z daneho setupu, napr. /PSI
-  get 'w' => 'weeks#list'
+  get 'w' => 'weeks#list', as: 'index_week'
 
     # Vypis otazok z daneho tyzdna, napr. /PSI/3
   get 'w/:week_number' => 'weeks#show'

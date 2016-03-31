@@ -2,6 +2,12 @@ class WeeksController < ApplicationController
   def show
     @setup = Setup.take
     @week = @setup.weeks.find_by_number(params[:week_number])
+
+    unless @week.is_visible?
+      flash[:notice] = t('global.errors.something_went_wrong')
+      return redirect_to(index_week_path)
+    end
+
     @next_week = @week.next
     @previous_week = @week.previous
 
