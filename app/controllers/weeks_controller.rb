@@ -17,6 +17,10 @@ class WeeksController < ApplicationController
           Levels::RoomsCreation.create(@week.id, current_user.id)
         end
         @rooms = @week.rooms.where("user_id = ?", current_user.id).order(state: :asc, id: :asc)
+        # Ak boli pridane otazky po vyrieseni vsetkych miestnosti otvori sa jedna miestnost pre vytvorenie novej miestnosti
+        if (@rooms[0].state == "used" && @week.free_los(nil,current_user.id).count > 0)
+          @rooms[0].update!(state: "do_not_use")
+        end
       end
     else
       learning_objects = @week.learning_objects.all.distinct

@@ -60,3 +60,14 @@
     width: 4rem;
   }
 }
+
+#week-toggle.room{
+  padding: 0px;
+  .toggle-caption{
+    float: right;
+    margin-top: 9px;
+  }
+  .toggle-help{
+    padding: 0px 16px;
+  }
+}

@@ -16,6 +16,7 @@ var ready = (function () {
 
     if ($('#body-questions-show').length) {
 
+        Toggle.initWeekToggle();
         Nav.init();
         Slider.setupEvaluatorSlider();
         Question.setupForm();

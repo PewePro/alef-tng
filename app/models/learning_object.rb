@@ -164,25 +164,17 @@ class LearningObject < ActiveRecord::Base
     dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
 
     # Vypocita narocnost z interakcii v systeme
-  #  results = Levels::Preproces.preproces_data
-  #  all = 0
-  #  do_not_know_value = 0
-  #  results.each do |r|
-  #    if r[0][1] == self.id
-  #      all +=1
-  #      if r[1] == 0
-  #        do_not_know_value +=1
-  #      end
-  #    end
-  #  end
+    results = Levels::Preproces.preproces_data_for_lo(self)
+
+    do_not_know_value = results.select{|r| r == 0 }.size
 
     # Vypocita vyslednu obtiaznost objektu
-  #  if all == 0
-  #    dif_result = dif_value
-  #  else
-  #    dif_result = (dif_value + (do_not_know_value.to_f / all.to_f)) / 2.0
-  #  end
-    dif_value
+    if results.count == 0
+      dif_result = dif_value
+    else
+      dif_result = (dif_value + (do_not_know_value.to_f / results.count.to_f)) / 2.0
+    end
+    dif_result
   end
 
   # Vrati dolezitost learning objectu

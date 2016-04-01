@@ -16,23 +16,12 @@ module RoomHelper
 
   # Vytvori a vrati popis danej miestnosti na zaklade najpouzivanejsich konceptov
   def get_description(room)
-    los = room.learning_objects.eager_load(:concepts)
-    description = "Najviac zastúpené témy: "
-    list = Hash.new
+    lo = room.learning_objects.shuffle.first
+    description = "Zastúpené témy: "
+    list = Array.new
 
-    los.each do |l|
-      l.concepts.each do |c|
-        if list.has_key?(c.name)
-          list[c.name] = list[c.name] + 1
-        else
-          list[c.name] = 1
-        end
-      end
+    list = lo.concepts.take(Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION).map(&:name)
+
+    "#{list.join(", ")}."
     end
-
-    list = list.sort_by{|_key, value| value}.reverse.to_h
-    description += list.take(Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION).map{ |key, value| "#{key} => #{value}-krat"}.join(', ') + '.'
-
-    description
-  end
 end

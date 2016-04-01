@@ -21,11 +21,7 @@ class RoomsController < ApplicationController
     @score_limit = @room.score_limit
     week = Week.find_by_id(@room.week_id)
 
-    @count_real = (week.learning_objects.distinct.count / Room::NUMBER_LOS_IN_ROOM).to_i
-    unless (week.learning_objects.distinct.count % Room::NUMBER_LOS_IN_ROOM == 0)
-      @count_real +=1
-    end
-
+    @count_real = week.rooms_count current_user.id
     @count_actual = week.rooms.where("user_id = ? AND state = ?", current_user.id, "used").count
 
     if @room.state == "used"
