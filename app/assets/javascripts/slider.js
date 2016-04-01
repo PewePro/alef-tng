@@ -62,7 +62,7 @@ var Slider = {
     createSolutionInfo : function(handle,solution) {
         $('<div/>', {
             id: 'handle-solution-info',
-            text: 'Priemer: ' + solution
+            text: 'Priemer: ' + Math.round(solution)
         }).prependTo(handle);
     },
 
