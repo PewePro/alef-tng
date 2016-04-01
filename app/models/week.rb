@@ -25,12 +25,10 @@ class Week < ActiveRecord::Base
   end
 
   # Vrati ocakavany pocet miestnosti v tyzdni
-  def rooms_count
-    count = (self.learning_objects.distinct.count / Room::NUMBER_LOS_IN_ROOM).to_i
-    unless (self.learning_objects.distinct.count % Room::NUMBER_LOS_IN_ROOM == 0)
-      count +=1
-    end
-    count
+  def rooms_count user_id
+    count = self.rooms.where("user_id = ?", user_id).count
+    free_los = free_los(nil, user_id).count
+    count + (free_los / Room::NUMBER_LOS_IN_ROOM.to_f).ceil
   end
 
   # Vrati pocet uspesne prejdenych miestnosti v danom tyzdni pre konkretneho pouzivatela

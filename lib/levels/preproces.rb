@@ -79,7 +79,7 @@ module Levels
         elsif (r[1].last(1) == "1") && (r[1].count("1") > r[1].count("0"))
           result_int.push(1)
         elsif (r[1].last(1) == "0") && (r[1].count("1") >= (r[1].count("0") + 2))
-          result_int[r[0]]= 1
+          result_int.push(1)
         else
           result_int.push(0)
         end

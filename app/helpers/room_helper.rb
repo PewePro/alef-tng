@@ -20,20 +20,8 @@ module RoomHelper
     description = "Zastúpené témy: "
     list = Array.new
 
-    concepts = lo.concepts
-    concepts.each do |c|
-        if list.count < Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION
-          list.push(c.name)
-        end
-      if list.count == Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION
-        break
-      end
-    end
+    list = lo.concepts.take(Room::NUMBER_OF_CONCEPTS_IN_DESCRIPTION).map(&:name)
 
-    list.each do |li|
-      description += "#{li}, "
-    end
-
-    "#{description[0..description.size-3]}."
+    "#{list.join(", ")}."
     end
 end

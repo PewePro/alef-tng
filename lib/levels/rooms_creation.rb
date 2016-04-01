@@ -4,42 +4,33 @@ module Levels
 
     # Metoda vytvori novu miestnost
     def self.create(week_id,user_id)
-      if (Week.find(week_id).free_los(nil,user_id).count > Room::NUMBER_LOS_IN_ROOM )
-        number_lo = Room::NUMBER_LOS_IN_ROOM
-      else
-        number_lo = Week.find(week_id).free_los(nil,user_id).count
-      end
-      setup = Setup.take
+
       week = Week.find(week_id)
       learning_objects = week.learning_objects.all.distinct
 
       # Vypocet kolko otazok typu evaluator, resp. choice sa ma do miestnosti vybrat
-      sorted_los2 = Array.new
       sorted_los = Array.new
       number_of_evaluator_q = week.free_los("EvaluatorQuestion",user_id).count
       number_of_choice_q = week.free_los("ChoiceQuestion",user_id).count
-      part_evaluator = number_of_evaluator_q.to_f / (number_of_evaluator_q + number_of_choice_q).to_f
-      result_number_evaluator = (number_lo * part_evaluator).round
 
-      if (result_number_evaluator > number_of_evaluator_q)
-        evaluator = number_of_evaluator_q
-      else
-        evaluator = result_number_evaluator
-      end
-      if (evaluator > Constants::NUMBER_EVALUATOR_LOS_IN_ROOM && number_of_choice_q >= Room::NUMBER_LOS_IN_ROOM - Constants::NUMBER_EVALUATOR_LOS_IN_ROOM)
+      if number_of_evaluator_q > Constants::NUMBER_EVALUATOR_LOS_IN_ROOM # Do miestnosti sa priradi stanoveny pocet evaluator question a ak ich tolko nie je, tak pocet kolko ich dany tyzden ma
         evaluator = Constants::NUMBER_EVALUATOR_LOS_IN_ROOM
-      elsif (number_of_choice_q > 0)
-        evaluator = number_lo - number_of_choice_q
+      else
+        evaluator = number_of_evaluator_q
       end
-      choice = number_lo - evaluator
-      if (choice > number_of_choice_q)
+
+      if (number_of_choice_q > (Room::NUMBER_LOS_IN_ROOM - evaluator)) # Zvysok sa doplni choice, opat ak ich tolko je, tak sa doplni do poctu miestnosti, inak len tolko, kolko ich tyzden ma
+        choice = Room::NUMBER_LOS_IN_ROOM - evaluator
+      else
         choice = number_of_choice_q
       end
-      unless evaluator + choice == number_lo
-        if number_of_evaluator_q > evaluator
-          evaluator +=1
-        elsif number_of_evaluator_q > choice
-          choice +=1
+
+      # Ak dokopy otazky v miestnosti nedavaju minimum a zaroven existuju este volne evaluator question je nimi miestnost doplnena
+      if (choice + evaluator < Room::NUMBER_LOS_IN_ROOM && number_of_evaluator_q > Constants::NUMBER_EVALUATOR_LOS_IN_ROOM)
+        if (number_of_evaluator_q + choice  > Room::NUMBER_LOS_IN_ROOM)
+          evaluator = Room::NUMBER_LOS_IN_ROOM - choice
+        else
+          evaluator = number_of_evaluator_q
         end
       end
 
