@@ -27,11 +27,6 @@ Rollbar.configure do |config|
       return 'ignore'
     end
 
-    # Filter Apples
-    if $1.split("/").first =~ /^apple-touch-icon.*png/
-      return 'ignore'
-    end
-
     'error'
   })
 
