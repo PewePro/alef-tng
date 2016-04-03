@@ -3,14 +3,17 @@ module Levels
   class RoomsCreation
 
     # Metoda vytvori novu miestnost
+    #
+    # @param week_id [Integer] cislo tyzdna
+    # @param user_id [Integer] identifikator pouzivatela
+    # @return [Integer] vracia ID miestnosti, ak (Vytvori miestnost s dostatocnym poctom learning objektov), inak vrati prazdny identifikator (nil)
     def self.create(week_id,user_id)
 
       week = Week.find(week_id)
       learning_objects = week.learning_objects.all.distinct
 
-      if week.free_los("EvaluatorQuestion",user_id).count == 0
-        nil
-      else
+      unless week.free_los("EvaluatorQuestion",user_id).count == 0
+
         # Vypocet kolko otazok typu evaluator, resp. choice sa ma do miestnosti vybrat
         sorted_los = Array.new
         number_of_evaluator_q = week.free_los("EvaluatorQuestion",user_id).count
@@ -62,9 +65,8 @@ module Levels
           sorted_los = sorted_los + sorted_los2
         end
 
-        if sorted_los.count == 0
-          nil
-        else
+        unless sorted_los.count == 0
+
           # Vypocet score a vytvorenie miestnosti
           score_limit = Levels::ScoreCalculation.compute_limit_score(sorted_los)
           name = "Test #{week.number.to_s}.#{(week.rooms.where(user_id: user_id).count + 1).to_s} "
@@ -75,10 +77,11 @@ module Levels
             RoomsLearningObject.create(:room_id => room.id,:learning_object_id => l.id)
           end
 
-          room.id
+          return room.id
         end
       end
 
+      nil
     end
 
   end
