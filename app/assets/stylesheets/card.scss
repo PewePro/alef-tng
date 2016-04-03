@@ -10,6 +10,24 @@
   }
 
 }
+.card_open {
+  @include small-font;
+  background-color: rgba(255, 135, 126, 0.17);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px $gray solid;
+  display: block;
+
+  &:hover {
+    background-color: rgba(255, 135, 126, 0.54);
+    cursor: pointer;
+  }
+
+}
+
+.card_open .room-progressbar {
+  border: 1px solid $gray;
+  margin: 1rem 0 0.5rem;
+}
 
 .card-header {
   font-size: 0.875rem;
@@ -35,6 +53,11 @@
   border: 1px solid $gray;
   margin: 1rem 0 0.5rem;
 }
+.card .room-progressbar {
+  border: 1px solid $gray;
+  margin: 1rem 0 0.5rem;
+}
+
 
 .week-current {
   color: $red;
