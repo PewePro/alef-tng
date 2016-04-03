@@ -15,6 +15,27 @@ class WeeksController < ApplicationController
         if (@rooms[0].state == "used" && @week.free_los(nil,current_user.id).count > 0)
           @rooms[0].update!(state: "do_not_use")
         end
+        # Ak sa nachadza viacero miestnosti na otvorenie necha len jednu alebo ziadnu ak uz nema nove learning objecty - boli odobrate
+        rooms_open = @rooms.select{|r| r.state == "do_not_use"}
+        if rooms_open.count > 1
+          j = rooms_open.count
+          if @week.free_los(nil,current_user.id).count == 0
+            j = j-1
+          else
+            j = j-2
+          end
+          for i in 0..j
+            rooms_open[i].update!(state: "used")
+          end
+        end
+        # Odstranenie miestnosti, ktore boli vytvorene bez learning objectov
+        rooms_deleted = @rooms.select{|r| r.learning_objects.count == 0}
+        if rooms_deleted.count > 0
+          rooms_deleted.each do |r|
+            r.destroy
+          end
+          @rooms = @week.rooms.where("user_id = ?", current_user.id).order(state: :asc, id: :asc)
+        end
       end
     else
       learning_objects = @week.learning_objects.all.distinct
