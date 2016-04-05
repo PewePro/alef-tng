@@ -64,7 +64,11 @@ class RoomsController < ApplicationController
     else
       room.update!(state: "used")
       room_id = Levels::RoomsCreation.create(week.id, current_user.id)
-      redirect_to action: "show", room_number: room_id
+      if room_id.nil?
+        redirect_to controller: "weeks", action: "show"
+      else
+        redirect_to action: "show", room_number: room_id
+      end
     end
   end
 
