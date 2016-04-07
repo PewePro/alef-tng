@@ -4,42 +4,26 @@ module Levels
     # Metoda na zaklade heuristik vytvori dvojice user - learning object, s hodnotami vie alebo nevie, resp. 1 alebo 0
     def self.preproces_data
       setup = Setup.take
-      result = Hash.new
       result_int = Hash.new
-      relations = setup.user_to_lo_relations
-      relations. each do |rel|
-       id_user = rel.user_id
-       id_lo = rel.learning_object_id
-       type = rel.type
+      relations = setup.user_to_lo_relations.select("user_id,learning_object_id,
+sum(case  when type = 'UserFailedLoRelation' or type = 'UserDidntKnownLoRelation'  then 1 else 0 end) as sum_failed,
+sum(case  when type = 'UserSolvedLoRelation' then 1 else 0 end) as sum_solved, (array_agg(type ORDER BY created_at))[1:3] grouped_type ")
+                      .where("type = ? OR type = ? OR type = ?",'UserFailedLoRelation', 'UserDidntKnownLoRelation','UserSolvedLoRelation')
+                      .group(:user_id, :learning_object_id)
 
-       #  Nacitanie jednotlivych interakcii, pre konkretne dvojice
-       if type == "UserSolvedLoRelation"
-         if result.has_key?([id_user,id_lo])
-           result[[id_user,id_lo]] =  "#{result[[id_user,id_lo]].to_s}1"
-         else
-           result[[id_user,id_lo]] = "1"
-         end
-       elsif type == "UserFailedLoRelation" || type == "UserDidntKnowLoRelation"
-         if result.has_key?([id_user,id_lo])
-           result[[id_user,id_lo]] =  "#{result[[id_user,id_lo]].to_s}0"
-         else
-           result[[id_user,id_lo]] = "0"
-         end
-       end
-      end
-
-      # Vyhodnotenie na zaklade heuristik ci student danu otazku, alebo nevie
-      result.each do |r|
-        if r[1].length >=3 && r[1].last(3) == "111"
-          result_int[r[0]]= 1
-        elsif r[1].length >=2 && r[1].last(2) == "11" && r[1].count("1") >= (r[1].count("0") - 1)
-          result_int[r[0]]= 1
-        elsif (r[1].last(1) == "1") && (r[1].count("1") > r[1].count("0"))
-          result_int[r[0]]= 1
-        elsif (r[1].last(1) == "0") && (r[1].count("1") >= (r[1].count("0") + 2))
-          result_int[r[0]]= 1
+      # Vyhodnotenie na zaklade heuristik ci student danu otazku vie, alebo nevie
+      relations.each do |r|
+        tree_last_rel = r.grouped_type
+        if tree_last_rel.count == 3 && tree_last_rel.count("UserSolvedLoRelation") == 3
+          result_int[[r.user_id,r.learning_object_id]] = 1
+        elsif tree_last_rel.count >=2 && tree_last_rel.first(2).count("UserSolvedLoRelation") == 2 && r.sum_solved >= (r.sum_failed - 1)
+          result_int[[r.user_id,r.learning_object_id]] = 1
+        elsif tree_last_rel.first =="UserSolvedLoRelation" && (r.sum_solved > r.sum_failed)
+          result_int[[r.user_id,r.learning_object_id]] = 1
+        elsif tree_last_rel.first =="UserFailedLoRelation" && (r.sum_solved >= (r.sum_failed + 2))
+          result_int[[r.user_id,r.learning_object_id]] = 1
         else
-          result_int[r[0]]= 0
+          result_int[[r.user_id,r.learning_object_id]] = 0
         end
 
       end
@@ -49,41 +33,29 @@ module Levels
     end
 
     def self.preproces_data_for_lo(learning_object)
-      result = Hash.new
       result_int = Array.new
-      relations = UserToLoRelation.where("learning_object_id = ?",learning_object.id)
-      relations. each do |rel|
+      relations = UserToLoRelation.select("user_id,
+sum(case  when type = 'UserFailedLoRelation' or type = 'UserDidntKnownLoRelation'  then 1 else 0 end) as sum_failed,
+sum(case  when type = 'UserSolvedLoRelation' then 1 else 0 end) as sum_solved, (array_agg(type ORDER BY created_at))[1:3] grouped_type ")
+                      .where("(type = ? OR type = ? OR type = ?) AND learning_object_id = ?",'UserFailedLoRelation', 'UserDidntKnownLoRelation','UserSolvedLoRelation',learning_object.id)
+                      .group(:user_id)
 
-        #  Nacitanie jednotlivych interakcii
-        if rel.type == "UserSolvedLoRelation"
-          if result.has_key?(rel.user_id)
-            result[rel.user_id] =  "#{result[rel.user_id].to_s}1"
-          else
-            result[rel.user_id] = "1"
-          end
-        elsif rel.type == "UserFailedLoRelation" || rel.type == "UserDidntKnowLoRelation"
-          if result.has_key?(rel.user_id)
-            result[rel.user_id] =  "#{result[rel.user_id].to_s}0"
-          else
-            result[rel.user_id] = "0"
-          end
-        end
-      end
-
-      # Vyhodnotenie na zaklade heuristik ci student danu otazku, alebo nevie
-      result.each do |r|
-        if r[1].length >=3 && r[1].last(3) == "111"
+      # Vyhodnotenie na zaklade heuristik ci student danu otazku vie, alebo nevie
+      relations.each do |r|
+        tree_last_rel = r.grouped_type
+        if tree_last_rel.count == 3 && tree_last_rel.count("UserSolvedLoRelation") == 3
           result_int.push(1)
-        elsif r[1].length >=2 && r[1].last(2) == "11" && r[1].count("1") >= (r[1].count("0") - 1)
+        elsif tree_last_rel.count >=2 && tree_last_rel.first(2).count("UserSolvedLoRelation") == 2 && r.sum_solved >= (r.sum_failed - 1)
           result_int.push(1)
-        elsif (r[1].last(1) == "1") && (r[1].count("1") > r[1].count("0"))
+        elsif tree_last_rel.first =="UserSolvedLoRelation" && (r.sum_solved > r.sum_failed)
           result_int.push(1)
-        elsif (r[1].last(1) == "0") && (r[1].count("1") >= (r[1].count("0") + 2))
+        elsif tree_last_rel.first =="UserFailedLoRelation" && (r.sum_solved >= (r.sum_failed + 2))
           result_int.push(1)
         else
           result_int.push(0)
         end
       end
+
       result_int
     end
 
