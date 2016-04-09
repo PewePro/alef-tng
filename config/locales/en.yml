@@ -5,11 +5,21 @@
 en:
   activerecord:
     attributes:
+      feedback:
+        message:                      "Text"
       learning_object:
         difficulty:                   "Difficulty"
         lo_id:                        "Title"
         question_text:                "Question text"
         type:                         "Type"
+
+  feedbacks:
+    labels:
+      add_as:                         "Add as"
+      add_new:                        "Add new comment"
+      teacher:                        "teacher"
+    texts:
+      anonymous_teacher_help:         "Your name will be hidden from other students."
 
   homescreen:
     links:

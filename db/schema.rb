@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329104643) do
+ActiveRecord::Schema.define(version: 20160409190451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,16 +60,17 @@ ActiveRecord::Schema.define(version: 20160329104643) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.text     "message",                           null: false
+    t.text     "message",                            null: false
     t.integer  "user_id"
     t.text     "url"
     t.text     "accept"
     t.text     "user_agent"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "learning_object_id"
     t.boolean  "accepted"
-    t.boolean  "visible",            default: true, null: false
+    t.boolean  "visible",            default: true,  null: false
+    t.boolean  "anonymous_teacher",  default: false, null: false
   end
 
   add_index "feedbacks", ["learning_object_id", "accepted"], name: "index_feedbacks_on_learning_object_id_and_accepted", using: :btree
@@ -88,7 +89,6 @@ ActiveRecord::Schema.define(version: 20160329104643) do
     t.string   "difficulty",         default: "unknown_difficulty"
     t.datetime "deleted_at"
     t.string   "importance",         default: "UNKNOWN"
-    t.datetime "deleted_at"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
   end

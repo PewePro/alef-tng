@@ -7,12 +7,19 @@ module Admin
     # Ulozenie noveho komentara k vzdelavaciemu objektu..
     def create
       begin
-        feedback = Feedback.find(params[:learning_object])
-        feedback_params = params.require(:feedback).permit(:lo_id, :message)
+        byebug
+        learning_object = LearningObject.find(params[:learning_object_id])
 
-        #@learning_object = @course.learning_objects.new(learning_object_params)
-        #@learning_object.save!
-        redirect_to edit_admin_learning_object_path(@learning_object), notice: 'AAAA'
+        learning_object.feedbacks.create!(
+            {
+                anonymous_teacher: params[:feedback][:anonymous_teacher] == "1",
+                message: params[:feedback][:message],
+                user: current_user,
+                user_agent: request.env['HTTP_USER_AGENT'],
+                accept: request.env['HTTP_ACCEPT']
+            })
+
+        redirect_to edit_admin_learning_object_path(learning_object), notice: 'AAAA'
       rescue ActiveRecord::RecordInvalid
         #flash[:notice] = t('global.texts.please_fill_in')
       end
