@@ -127,8 +127,9 @@ EOF
        # Ulozenie parametrov otazok, ak su v rozumnom rozsahu, ak je malo dat zbytocne ukladat skreslene data
          unless result_items.nil?
            j=0
+           deleted_by_teacher = LearningObject.only_deleted.map{|d| d.id}
            for i in 1..largest_lo_id
-             if (items_deleted.include?(i) || LearningObject.find(i).nil?)
+             if (items_deleted.include?(i) || deleted_by_teacher.include?(i))
                next
              end
              if (result_items.row(j)[0].to_f > -100 && result_items.row(j)[0] < 100 && result_items.row(j)[1].to_f > -100 && result_items.row(j)[1] < 100)
