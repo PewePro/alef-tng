@@ -30,4 +30,9 @@ class User < ActiveRecord::Base
     self.involved_in_gamification
   end
 
+  # Vytvori cele meno pouzivatela.
+  def full_name
+    first_name + ' ' + last_name
+  end
+
 end

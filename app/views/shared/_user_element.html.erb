@@ -13,7 +13,7 @@
 <% end %>
 <div id="user-element" class="not-zoomable">
   <div class="mobile-content">
-    <div id="name"><%= current_user.first_name + ' ' + current_user.last_name %></div>
+    <div id="name"><%= current_user.full_name %></div>
     <% if can? :manage, :administration %>
         <%= link_to raw("<i class='icon-admin'></i>#{t('homescreen.links.admin')}"), administration_path, class: 'user-panel-button' %>
     <% end %>

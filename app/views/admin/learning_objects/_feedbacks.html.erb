@@ -9,4 +9,26 @@
 
   <div id="feedbacks-empty"><%= t('admin.feedbacks.texts.feedbacks_empty') %></div>
 
+  <%= form_for Feedback.new, url: { controller: 'admin/feedbacks', action: 'create' }, method: :post do |f| %>
+
+      <div class="admin">
+        <h3>Pridanie nového komentára</h3>
+        <div class="form-group">
+          <%= f.label :message, "Text komentára:" %>
+          <%= f.text_area :message, class: 'simple-text' %>
+        </div>
+
+        <div class="form-group">
+          <label>Pridať ako:</label>
+          <%= f.radio_button :anonymous_teacher, 1 %> <%= f.label :anonymous_teacher_1, 'učiteľ' %>
+          <%= f.radio_button :anonymous_teacher, 0 %> <%= f.label :anonymous_teacher_0, current_user.full_name %>
+        </div>
+
+        <div class="form-buttons">
+          <%= f.submit value: "Vytvoriť", data: { disable_with: t('global.texts.saving') } %>
+        </div>
+      </div>
+
+  <% end %>
+
 </div>

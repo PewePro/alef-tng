@@ -90,6 +90,10 @@ Rails.application.routes.draw do
         delete :delete
       end
 
+      resources :feedbacks do
+        post :create
+      end
+
     end
 
 
