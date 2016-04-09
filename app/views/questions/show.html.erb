@@ -20,12 +20,12 @@
       <% @feedbacks.order(created_at: :desc).each do |f| %>
             <div class="question-feedback-message">
                 <div class="question-feedback-meta">
-                  <% if f.accepted && f.user.student? %>
+                  <% if f.accepted && !f.user.verified? %>
                   <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> <%= t('admin.feedbacks.label.solved') %></span>
                   <% end %>
                   <span class="question-feedback-name">
                     <%= f.anonymous_teacher? ? t('feedbacks.labels.teacher') : f.user.full_name %>
-                    <% if f.user.administrator? || f.user.teacher? %>
+                    <% if f.user.verified? %>
                       <span data-toggle="tooltip" title="<%= t('feedbacks.labels.comment_by_teacher') %>"><%= fa_icon('star') %></span>
                     <% end %>
                   </span>
