@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   patch 'admin/feedbacks/:id/reject' => 'administrations#mark_feedback_rejected', as: 'mark_feedback_rejected'
   patch 'admin/feedbacks/:id/show' => 'administrations#mark_feedback_visible', as: 'mark_feedback_visible'
   patch 'admin/feedbacks/:id/hide' => 'administrations#mark_feedback_hidden', as: 'mark_feedback_hidden'
+  patch 'admin/feedbacks/:id/anonymize' => 'administrations#mark_feedback_anonymized', as: 'mark_feedback_anonymized'
 
   get 'admin/courses/:id/questions/next_unresolved' => 'administrations#next_feedback_question', as: 'next_feedback_question'
 

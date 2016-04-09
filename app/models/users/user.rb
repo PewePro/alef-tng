@@ -30,6 +30,11 @@ class User < ActiveRecord::Base
     self.involved_in_gamification
   end
 
+  # Vyhodnoti, ci ide o doveryhodneho pouzivatela (administrator alebo ucitel).
+  def verified?
+    administrator? || teacher?
+  end
+
   # Vytvori cele meno pouzivatela.
   def full_name
     first_name + ' ' + last_name
