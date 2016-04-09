@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/tests/:week_number/:room_number/:id' => 'questions#show'
   get 'w/tests/:week_number/:room_number/:id/image' => 'questions#show_image'
-  get 'w/:week_number/:id' => 'questions#show'
+  get 'w/:week_number/:id' => 'questions#show', as: 'show_learning_object'
 
   # Docasne takto, postupne sa prejde na namespace aj pre vzdelavacie objekty.
   get 'learning_objects/:id/image' => 'questions#show_image', as: 'show_single_image'
@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   patch 'admin/feedbacks/:id/reject' => 'administrations#mark_feedback_rejected', as: 'mark_feedback_rejected'
   patch 'admin/feedbacks/:id/show' => 'administrations#mark_feedback_visible', as: 'mark_feedback_visible'
   patch 'admin/feedbacks/:id/hide' => 'administrations#mark_feedback_hidden', as: 'mark_feedback_hidden'
+  patch 'admin/feedbacks/:id/anonymize' => 'administrations#mark_feedback_anonymized', as: 'mark_feedback_anonymized'
 
   get 'admin/courses/:id/questions/next_unresolved' => 'administrations#next_feedback_question', as: 'next_feedback_question'
 
@@ -88,6 +89,10 @@ Rails.application.routes.draw do
         patch :update, on: :collection
         post :create
         delete :delete
+      end
+
+      resources :feedbacks do
+        post :create
       end
 
     end

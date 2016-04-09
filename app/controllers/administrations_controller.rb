@@ -69,8 +69,10 @@ class AdministrationsController < ApplicationController
       {
           id: feedback.id,
           accepted: feedback.accepted,
+          user_verified: feedback.user.verified?,
+          anonymous: feedback.anonymous_teacher,
           message: feedback.message,
-          fullname: "#{feedback.user.first_name} #{feedback.user.last_name}",
+          fullname: feedback.user.full_name,
           time: feedback.created_at.strftime("%d.%m.%Y %H:%M:%S"),
           visible: feedback.visible
       }
@@ -100,6 +102,12 @@ class AdministrationsController < ApplicationController
   # Skryje spatnu vazbu (na stranke s otazkou).
   def mark_feedback_hidden
     Feedback.find(params[:id]).update(visible: false)
+    render js: "Admin.fetchFeedback();"
+  end
+
+  # Zmeni nastavenia skrytia mena ucitela v spatnej vazbe.
+  def mark_feedback_anonymized
+    Feedback.find(params[:id]).update(anonymous_teacher: params[:anonymized] == "true")
     render js: "Admin.fetchFeedback();"
   end
 
