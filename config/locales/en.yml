@@ -17,9 +17,11 @@ en:
     labels:
       add_as:                         "Add as"
       add_new:                        "Add new comment"
+      comment_by_teacher:             "comment by teacher"
       teacher:                        "teacher"
     texts:
-      anonymous_teacher_help:         "Your name will be hidden from other students."
+      anonymous_teacher_help:         "Instead of your real name we will show \"teacher\"."
+      created:                        "Comment was successfully added."
 
   homescreen:
     links:
