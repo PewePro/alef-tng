@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
   get 'w/tests/:week_number/:room_number/:id' => 'questions#show'
   get 'w/tests/:week_number/:room_number/:id/image' => 'questions#show_image'
-  get 'w/:week_number/:id' => 'questions#show'
+  get 'w/:week_number/:id' => 'questions#show', as: 'show_learning_object'
 
   # Docasne takto, postupne sa prejde na namespace aj pre vzdelavacie objekty.
   get 'learning_objects/:id/image' => 'questions#show_image', as: 'show_single_image'

@@ -82,7 +82,7 @@ class LearningObject < ActiveRecord::Base
     week = setup.weeks.find_by_number(week_number)
     RecommenderSystem::Recommender.setup(current_user.id,week.id,nil)
     best = RecommenderSystem::HybridRecommender.new.get_best(nil)
-    los = LearningObject.find(best[0])
+    los = LearningObject.find(best[0]) if best
   end
 
   def previous(week_number)
