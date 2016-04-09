@@ -18,6 +18,8 @@ sk:
       add_as:                         "Pridať ako"
       add_new:                        "Pridanie nového komentára"
       comment_by_teacher:             "komentár od učiteľa"
+      hide_name:                      "skryť meno"
+      show_name:                      "zobraziť meno"
       teacher:                        "učiteľ"
     texts:
       anonymous_teacher_help:         "Namiesto vášho mena sa zobrazí \"učiteľ\"."

@@ -227,9 +227,9 @@
     {{?it.user_verified}}
     <div class="meta">{{=it.fullname}}
       {{?it.anonymous}}
-      (<%= link_to "zobraziť", mark_feedback_anonymized_path('FEEDBACK_ID', anonymized: false), remote: true, method: :patch %>),
+      (<%= link_to t('feedbacks.labels.show_name'), mark_feedback_anonymized_path('FEEDBACK_ID', anonymized: false), remote: true, method: :patch %>),
       {{??}}
-      (<%= link_to "skryť", mark_feedback_anonymized_path('FEEDBACK_ID', anonymized: true), remote: true, method: :patch %>),
+      (<%= link_to t('feedbacks.labels.hide_name'), mark_feedback_anonymized_path('FEEDBACK_ID', anonymized: true), remote: true, method: :patch %>),
       {{?}}
       {{=it.time}}</div>
     {{??}}
