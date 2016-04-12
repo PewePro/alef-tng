@@ -24,10 +24,12 @@ class WeeksController < ApplicationController
         # Ak sa nachadza viacero miestnosti na otvorenie necha len jednu alebo ziadnu ak uz nema nove learning objecty - boli odobrate
         rooms_open = @rooms.select{|r| r.state == "do_not_use"}
         if rooms_open.count > 1
-          if @week.free_los(nil,current_user.id).count == 0
-            rooms_open = rooms_open.where.not(id: rooms_open.first.id)
+          unless @week.free_los(nil,current_user.id).count == 0 # Ak su este nejake volne otazky, necha jednu miestnost na ich otvorenie
+            rooms_open.shift
           end
-          rooms_open.update_all(state: "used")
+          rooms_open.each do |r|
+            r.update(state: "used")
+          end
         end
         # Odstranenie miestnosti, ktore boli vytvorene bez learning objectov
         rooms_deleted = @rooms.select{|r| r.learning_objects.count == 0}
