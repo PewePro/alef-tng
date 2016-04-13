@@ -9,6 +9,27 @@ Rollbar.configure do |config|
     config.enabled = false
   end
 
+  # Filtrovanie klasickych utokov.
+  # via https://github.com/coopdevs/timeoverflow/blob/master/config/initializers/rollbar.rb
+  config.exception_level_filters.merge!('ActionController::RoutingError' => lambda { |e|
+    e.message =~ %r(No route matches \[[A-Z]+\] "/(.+)")
+
+    # Ignoracia par vynimiek.
+    case $1.split("/").first.to_s.downcase
+      when *%w(myadmin phpmyadmin w00tw00t pma cgi-bin xmlrpc.php wp wordpress cfide login.do iridium_threed.php sitemap.xml login.action changelog.txt)
+        return 'ignore'
+      else
+        'error'
+    end
+
+    # Ignoracia PHP suborov.
+    if $1.split("/").last.to_s.downcase.split('.').last == 'php'
+      return 'ignore'
+    end
+
+    'error'
+  })
+
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
   # `username`, and `email` methods to fetch those properties. To customize:

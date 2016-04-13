@@ -4,13 +4,20 @@
   <button class="question-button" name="commit" value="dont_know">neviem</button>
 </div>
 
+
+
 <div id="question-options-evaluate">
 <div class="question-options-message"  id="question-evaluation-message"></div>
-  <% if @next_question == nil %>
+  <% if @next_question.nil? %>
       <div class="question-options-message" id="question-evaluation-next">toto bola<br>posledná otázka!</div>
+      <% if current_user.has_rooms? %>
+          <a href="<%=
+              url_for :controller => 'rooms', :action => 'eval', :room_number => params[:room_number]
+          %>" class="question-button question-button-red" id="question-evaluation-next">Vyhodnotenie</a>
+      <% end %>
   <% else %>
       <a href="<%=
-          url_for :controller => 'questions', :action => 'next'
+          url_for :controller => 'questions', :action => 'next', :lo_id => @question.id
       %>" class="question-button question-button-red" id="question-evaluation-next">ďalšia otázka</a>
   <% end %>
 </div>

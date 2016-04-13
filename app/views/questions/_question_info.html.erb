@@ -1,12 +1,12 @@
 <div id="question-info">
-  <% if @user.administrator? %>
+  <% if current_user.administrator? %>
       <%= link_to("<i class=\"icon-edit\"></i> #{t('global.links.edit')}".html_safe,
                   edit_admin_learning_object_path(@question),
                   class: 'btn pull-right') %>
   <% end %>
   <div class="texts">
     <i class="icon-seen"></i> Videné (<%= @relations["UserVisitedLoRelation"] %>x)
-    <% if @relations["UserSolvedLoRelation"] != nil %>
+    <% unless @relations["UserSolvedLoRelation"].nil? %>
         <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)
     <% end %>
   </div>
