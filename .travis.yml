@@ -6,10 +6,10 @@ addons:
   postgresql: '9.4'
 after_success:
   - "openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa"
-- |
-  if [[ $TRAVIS_BRANCH == 'staging' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
-    bundle exec cap staging deploy
-  fi
+  - |
+    if [[ $TRAVIS_BRANCH == 'staging' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+      bundle exec cap staging deploy
+    fi
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
