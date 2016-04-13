@@ -25,6 +25,7 @@ before_script:
 - sleep 3
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp config/database.yml.travis config/database.yml
+- touch config/application.yml
 - bundle exec rake db:schema:load
 notifications:
   email: false
@@ -34,3 +35,4 @@ env:
   global:
   - secure: hVKncuQms9ve7njPFTI0VPXyAE0jdJhw8k91x8sbFEGDxvzFOJ0VRo+gmopAHo8JKkepMfmP09uF7Jcv3C8OBMCM0fs6qwJaOf/1MsG9Z8Io5dLh6PnmbwL9DIT1wC3uojQVJewbqL7+Txc+7EHKYNW4jqq0LpZrCj/egImIEEw=
   - secure: MeoZwBrqdJK12R0+tozowwv5jqipDFZuPPKlVlfham1AVF8gZZGNN9bMvAqv3Gz4e19TwLHUiVSeXAiVM4+QQSSLHsEVlQ2imMcfXW4x6v7TBuYq2yM5OVTCzfELWtZan1fFinK8wPyHS/DPRWIc0pFoXOc8ja/1sjgbJwEs67o=
+  - secure: kjWCj0FJlPUCfPBCInK2T0Ql5jkIAyiU/Byz6j3evB0Hl/mOSXWQ6r2IOcJQIjxDJrLVqr5xDJnPB3ZrB+u+LN08qfXrt+zNk65xYDTkHw/JPdOTZQ79kDmrGtAuz88LQtCE1c3/XWTG558DeYoMxyuKocr/S0viPLWPs1+SLqM=
