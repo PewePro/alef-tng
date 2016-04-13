@@ -4,6 +4,20 @@ rvm:
 cache: bundler
 addons:
   postgresql: '9.4'
+after_success:
+  - "openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa"
+  - |
+    if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+      bundle exec cap production deploy
+    fi
+  - |
+    if [[ $TRAVIS_BRANCH == 'staging' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+      bundle exec cap staging deploy
+    fi
+  - |
+    if [[ $TRAVIS_BRANCH == 'sandbox' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+      bundle exec cap sandbox deploy
+    fi
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
@@ -17,4 +31,5 @@ notifications:
     secure: l8AKzrDLkTkor6s3F1kMKKMG0VLHGp1uMQTOiyMHCW1d1IPDoZZO50MlXuhgaM9wEu4doVIooD5obgrbOXyWvITtAogw7NdymJJf7kUApDEmaRrfRLGLT0CKKEHgLid3ave4Uc1lCm9pzcqo45aTGwDhSrTbYqqxF9j3EM8vqrc=
 env:
   global:
-    secure: hVKncuQms9ve7njPFTI0VPXyAE0jdJhw8k91x8sbFEGDxvzFOJ0VRo+gmopAHo8JKkepMfmP09uF7Jcv3C8OBMCM0fs6qwJaOf/1MsG9Z8Io5dLh6PnmbwL9DIT1wC3uojQVJewbqL7+Txc+7EHKYNW4jqq0LpZrCj/egImIEEw=
+  - secure: hVKncuQms9ve7njPFTI0VPXyAE0jdJhw8k91x8sbFEGDxvzFOJ0VRo+gmopAHo8JKkepMfmP09uF7Jcv3C8OBMCM0fs6qwJaOf/1MsG9Z8Io5dLh6PnmbwL9DIT1wC3uojQVJewbqL7+Txc+7EHKYNW4jqq0LpZrCj/egImIEEw=
+  - secure: eUl0mxvTAyigESVLkn8UrxDAwG5cPISeP00NMTmvY3PnMgRrqs3/Zyts9akU/vZnCcW67taWxtVGEwy2IfrIlqKJA5vlnohdb13ght0rV1vML+ruQ6OqeQeoBBUT8UjN6d6zTXrYc1+TnKKPrIEjlPK6j1OzpUrFVv8kPtEe2y8=

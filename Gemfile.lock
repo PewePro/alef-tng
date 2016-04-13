@@ -254,6 +254,9 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
+    slackistrano (2.0.1)
+      capistrano (>= 3.0.1)
+      json
     spring (1.6.4)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
@@ -344,6 +347,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   selenium-webdriver (= 2.50.0)
+  slackistrano (= 2.0.1)
   spring
   therubyracer
   touchpunch-rails
