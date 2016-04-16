@@ -98,6 +98,11 @@
         font-size: 1.2em;
         font-weight: 700;
         margin-bottom: 2px;
+
+        .id {
+          margin-left: 10px;
+          color: $gray-light;
+        }
       }
 
       .text {
