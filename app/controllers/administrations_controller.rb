@@ -121,9 +121,9 @@ class AdministrationsController < ApplicationController
 
     lo = LearningObject.where(id: session[:unresoved_feedbacks].pop).first
     if lo
-      redirect_to(edit_admin_learning_object_path(learning_object_id: lo.id))
+      redirect_to(edit_admin_learning_object_path(lo))
     else
-      redirect_to(admin_learning_objects_path(@course.id))
+      redirect_to(admin_learning_objects_path(course: @course.id))
     end
 
   end
