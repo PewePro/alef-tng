@@ -1,0 +1,50 @@
+<nav>
+  <div class="admin-nav">
+    <h2><%= t('admin.concepts.labels.management') %></h2>
+    <%= link_to((fa_icon('user-secret') + t('homescreen.links.admin')).html_safe,
+                administration_path, class: 'admin-nav-button') %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div id="concepts-list" class="admin">
+  <div class="concept-buttons">
+    <button type="button" class="btn" onclick="changes.submit(this);">Uložiť všetky zmeny</button>
+  </div>
+  <%= form_for Concept.new, url: admin_concepts_path(course: @course), method: :post do |f| %>
+    <div class="concept-item concept-new-item">
+      <div class="form-group">
+        <%= f.text_field :name, class: 'concept_name', placeholder: 'zadajte názov konceptu...' %>
+      </div>
+      <div class="form-group">
+        <%= f.check_box :pseudo, checked: false %>
+        <%= f.label :pseudo %>
+      </div>
+      <div class="form-group">
+        <%= f.submit 'Vytvoriť koncept', disable_with: t('global.texts.saving') %>
+      </div>
+    </div>
+  <% end %>
+  <% @concepts.each do |concept| %>
+    <div class="concept-item" id="concept<%= concept.id %>" data-object-id="<%= concept.id %>">
+      <div class="form-buttons">
+        <button type="button" class="btn" onclick="concept_questions(<%= concept.id %>);return false"><i class="fa fa-link"></i> Otázky (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
+        <button type="button" class="btn" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
+      </div>
+      <div class="form-group">
+        <%= text_field_tag "concept_name#{concept.id}", concept.name, class: 'concept_name', data: { attr: :name } %>
+      </div>
+      <div class="form-group">
+        <%= check_box_tag "concept_pseudo#{concept.id}", 1, concept.pseudo, data: { attr: :pseudo } %>
+        <%= label_tag "concept_pseudo#{concept.id}", t('admin.concepts.labels.pseudo') %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  var changes = null;
+  $(function(){
+    changes = new FormChanges($('.concept-item'), '<%= admin_concept_path(id: '_OBJECT_ID_', course: @course, method: :patch).html_safe %>', 'patch');
+  });
+</script>

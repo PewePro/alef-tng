@@ -97,6 +97,13 @@ Rails.application.routes.draw do
 
     end
 
+    resources :concepts do
+      get :index
+      post :create
+      patch :update
+      delete :destroy
+    end
+
 
   end
 

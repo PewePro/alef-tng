@@ -8,6 +8,10 @@ sk:
       questions:
         remove:                       "Naozaj chcete odstrániť túto odpoveď na otázku?"
 
+    concepts:
+      labels:
+        pseudo:                       "Pseudo koncept"
+
     feedbacks:
       label:
         solved:                       "vyriešený"

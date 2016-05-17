@@ -1,0 +1,56 @@
+#concepts-list {
+  padding: 0;
+
+  .concept-item {
+    @include clearfix;
+    padding: 10px;
+    border-top: 1px solid $gray-lighter;
+
+    .form-buttons {
+      float: right;
+      margin: 0;
+
+      input {
+        margin: 0;
+      }
+    }
+
+    .form-group {
+      display: inline-block;
+      margin-right: 5px;
+
+      input, label {
+        display: inline-block;
+      }
+
+      input + label {
+        margin-left: 5px;
+      }
+
+      .concept_name {
+        width: 300px;
+      }
+    }
+  }
+
+  .concept-new-item {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 0;
+
+    .form-group {
+      margin-right: 10px;
+
+      .concept_name {
+        width: 190px;
+      }
+    }
+  }
+
+  .concept-buttons {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+}
