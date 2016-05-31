@@ -28,7 +28,7 @@
   <% @concepts.each do |concept| %>
     <div class="concept-item" id="concept<%= concept.id %>" data-object-id="<%= concept.id %>">
       <div class="form-buttons">
-        <button type="button" class="btn" onclick="concept_questions(<%= concept.id %>);return false"><i class="fa fa-link"></i> Otázky (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
+        <button type="button" class="btn" onclick="concept_questions(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> Otázky (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
         <button type="button" class="btn" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
       </div>
       <div class="form-group">
@@ -45,6 +45,20 @@
 <script type="text/javascript">
   var changes = null;
   $(function(){
+
     changes = new FormChanges($('.concept-item'), '<%= admin_concept_path(id: '_OBJECT_ID_', course: @course, method: :patch).html_safe %>', 'patch');
+
   });
 </script>
+
+<div id="concepts-questions-template" style="display: none">
+  <h2>Otázky ku konceptu &quot;{{=it.name}}&quot;</h2>
+  <div class="concept-questions">
+    {{~it.questions :question}}
+    <div class="question"><a class="remove" href="#" onclick="concept_question_remove('{{=question.id}}');return false"><i class="fa fa-trash"></i></a>{{=question.name}}</div>
+    {{~}}
+  </div>
+
+  <%= link_to("Zmeniť priradenie otázok ku konceptom <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
+              question_concept_config_path(course_id: @course.id), class: 'concept-editor-link') %>
+</div>

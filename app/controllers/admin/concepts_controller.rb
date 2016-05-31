@@ -2,7 +2,7 @@ module Admin
   # Umoznuje spravovat koncepty.
   class ConceptsController < BaseController
 
-    before_filter :get_course
+    before_filter :get_course, except: [:questions]
 
     # Vykresli zoznam vsetkych konceptov spolu s moznostou ich upravovat.
     def index
@@ -10,20 +10,30 @@ module Admin
       @concepts_counts = ConceptsLearningObject.where(concept_id: @concepts.pluck(:id)).group('concept_id').count
     end
 
+    # Vytvori novy koncept.
     def create
       @course.concepts.create!(parse_params)
       redirect_to :back
     end
 
-    # Ulozi hromadne zmeny vo viacerych konceptoch.
+    # Aktualizuje informacie o koncepte.
     def update
       Concept.find(params[:id]).update!(parse_params)
       render nothing: true
     end
 
+    # Odstrani koncept.
     def destroy
       Concept.find(params[:id])#.destroy!
       render nothing: true
+    end
+
+    # Nacita vsetky otazky pridruzene k danemu konceptu.
+    def questions
+      render json: ConceptsLearningObject.where(concept_id: params[:concept_id])
+                       .eager_load(:learning_object)
+                       .pluck('concepts_learning_objects.id, learning_objects.lo_id')
+                       .map { |learning_object| { id: learning_object[0], name: learning_object[1] } }
     end
 
     private

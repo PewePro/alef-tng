@@ -31,3 +31,5 @@
 
 // Nastavenia pre nprogress.
 NProgress.configure({ showSpinner: false });
+
+vex.defaultOptions.className = 'vex-theme-default';

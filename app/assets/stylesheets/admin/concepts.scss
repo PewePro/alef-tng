@@ -54,3 +54,30 @@
   }
 
 }
+
+.concept-questions {
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+  margin-top: 10px;
+
+  .question {
+    border-bottom: 1px solid $gray-light;
+    font-size: 0.9em;
+    padding: 5px 10px;
+
+    .remove {
+      float: right;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.concept-editor-link {
+  font-size: 0.8em;
+  text-align: center;
+  margin-top: 10px;
+  display: block;
+}
