@@ -17,6 +17,13 @@
             success: 0
         };
 
+        this.bindings = {
+            change: [],
+            updateStarted: [],
+            updateNext: [],
+            updateFinished: []
+        };
+
         this.init();
 
     }
@@ -47,12 +54,22 @@
                     }
 
                     _this.changes[id][name] = value;
-                    console.log(_this.changes);
-
+                    _this.call('change', [_this]);
                 });
 
             });
 
+        },
+
+        on: function(type, fn) {
+            this.bindings[type].push(fn);
+            return this;
+        },
+
+        call: function(type, params) {
+            for(var i=0; i<this.bindings[type].length; i++) {
+                this.bindings[type][i].apply(null, params);
+            }
         },
 
         /**
@@ -72,6 +89,10 @@
 
             }.bind(this));
 
+            this.queueSize = this.getChangesCount();
+
+            this.call('updateStarted', [this]);
+
             this.checkQueue();
 
         },
@@ -81,9 +102,13 @@
             if (this.queue.length > 0) {
                 this.deque();
             }
-            else if(this.input) {
-                $(this.input).prop('disabled', false);
-                this.input = null;
+            else {
+                this.call('updateFinished', [this]);
+
+                if(this.input) {
+                    $(this.input).prop('disabled', false);
+                    this.input = null;
+                }
             }
 
         },
@@ -105,17 +130,35 @@
                 method: method,
                 data: data
             }).success(function(){
-
                 delete this.changes[data.id];
-
             }.bind(this)).error(function(){
-
-                alert("Niečo sa pokazilo. Prosím skúste zmeny uložiť znovu.");
-
+                alert("Niečo sa pokazilo. Prosím, pokúste sa uložiť zmeny neskôr.");
             }).always(function(){
+                this.call('updateNext', [this, this.queue]);
                 this.checkQueue();
             }.bind(this));
 
+        },
+
+        /**
+         * Vrati pocet poloziek v queue.
+         * */
+        getQueueSize: function() {
+            return Object.keys(this.queue).length;
+        },
+
+        /**
+         * Vrati pocet zmenenych instancii formulara.
+         * */
+        getChangesCount: function() {
+            return Object.keys(this.changes).length;
+        },
+
+        /**
+         * Ziska aktualny percentualny stav ukladania.
+         * */
+        getQueueStatus: function() {
+            return (1 - this.getQueueSize() / this.queueSize);
         }
 
 

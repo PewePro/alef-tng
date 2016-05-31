@@ -7,10 +7,17 @@
 </nav>
 <hr class="nav-offset">
 
-<div id="concepts-list" class="admin">
-  <div class="concept-buttons">
+<div class="concept-buttons">
+  <div class="admin">
     <button type="button" class="btn" onclick="changes.submit(this);">Uložiť všetky zmeny</button>
+    <span id="concept-buttons-changes" style="display: none">Počet vykonaných zmien: <span id="concept-buttons-changes-count">0</span></span>
   </div>
+</div>
+<div class="concept-loading" style="display: none;">
+  prebieha ukladanie zmien...
+</div>
+
+<div id="concepts-list" class="admin">
   <%= form_for Concept.new, url: admin_concepts_path(course: @course), method: :post do |f| %>
     <div class="concept-item concept-new-item">
       <div class="form-group">
@@ -47,6 +54,23 @@
   $(function(){
 
     changes = new FormChanges($('.concept-item'), '<%= admin_concept_path(id: '_OBJECT_ID_', course: @course, method: :patch).html_safe %>', 'patch');
+    changes.on('change', function(t){
+      $('#concept-buttons-changes').show();
+      $('#concept-buttons-changes-count').html(t.getChangesCount());
+    }).on('updateStarted', function(){
+      NProgress.start();
+      $('.concept-buttons').hide();
+      $('.concept-loading').show();
+      $('#concepts-list').fadeTo(250, 0.2);
+    }).on('updateNext', function(t){
+      NProgress.set(t.getQueueStatus());
+    }).on('updateFinished', function(){
+      NProgress.done();
+      $('#concept-buttons-changes').hide();
+      $('.concept-buttons').show();
+      $('.concept-loading').hide();
+      $('#concepts-list').fadeTo(250, 1.0);
+    });
 
   });
 </script>

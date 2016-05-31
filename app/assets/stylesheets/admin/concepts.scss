@@ -1,5 +1,6 @@
 #concepts-list {
   padding: 0;
+  margin-bottom: 100px;
 
   .concept-item {
     @include clearfix;
@@ -48,11 +49,6 @@
     }
   }
 
-  .concept-buttons {
-    text-align: center;
-    padding: 20px 0;
-  }
-
 }
 
 .concept-learning-objects {
@@ -80,4 +76,30 @@
   text-align: center;
   margin-top: 10px;
   display: block;
+}
+
+.concept-loading, .concept-buttons {
+  background-color: $white;
+  border-top: 4px solid $red-light;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  color: #000000;
+}
+
+.concept-buttons {
+  text-align: left;
+
+  .admin {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  button {
+    float: right;
+  }
 }
