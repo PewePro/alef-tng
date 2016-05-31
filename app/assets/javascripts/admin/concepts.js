@@ -1,9 +1,31 @@
-function concept_questions(id, name) {
+function concept_learning_objects(id, name) {
 
-    var template = doT.template($('#concepts-questions-template').html());
+    var template = doT.template($('#concepts-learning-objects-template').html());
 
-    $.getJSON('/admin/concepts/'+id+'/questions', function(resp){
-        vex.open({ content: template({ name: name, questions: resp }) });
+    $.getJSON('/admin/concepts/'+id+'/learning_objects', function(learning_objects){
+        vex.open({ content: template({ name: name, learning_objects: learning_objects }) });
+    });
+
+}
+
+/**
+ * Odstrani priradenie otazky ku konceptu.
+ * @param id [Integer] ID vazobnej entity medzi konceptom a otazkou
+ * */
+function concept_lo_delete(id) {
+
+    if (!confirm("Naozaj chcete odstrániť prepojenie medzi vzdelávacím objektom a konceptom?")) {
+        return false;
+    }
+
+    $.ajax({
+        url: '/admin/concepts/delete_learning_object',
+        method: 'post',
+        data: { '_method': 'delete', learning_object_id: id }
+    }).success(function(){
+        $('#concept-learning-object'+id).slideUp(250);
+    }).error(function(){
+        alert("Niečo sa pokazilo, prosím skúste to neskôr.")
     });
 
 }
