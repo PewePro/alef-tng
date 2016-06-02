@@ -12,15 +12,14 @@
 
         this.queue = [];
 
-        this.stats = {
-            changes: 0,
-            success: 0
-        };
+        this.resetStats();
 
         this.bindings = {
             change: [],
+            keyup: [],
             updateStarted: [],
             updateNext: [],
+            updateErrored: [],
             updateFinished: []
         };
 
@@ -41,11 +40,11 @@
 
                 var id = $(this).attr('data-object-id');
 
-                $(this).find('input[data-attr],select[data-attr],textarea[data-attr]').change(function(){
+                var changeFn = function(e) {
 
-                    var name = $(this).attr('data-attr');
-                    var value = $('input[name="'+$(this).attr('name')+'"]').val();
-                    if ($(this).attr('type') == "checkbox" && !$(this).prop('checked')) {
+                    var name = e.attr('data-attr');
+                    var value = $('input[name="'+e.attr('name')+'"]').val();
+                    if (e.attr('type') == "checkbox" && !e.prop('checked')) {
                         value = null;
                     }
 
@@ -54,21 +53,43 @@
                     }
 
                     _this.changes[id][name] = value;
+
+                };
+
+                $(this).find('input[data-attr],select[data-attr],textarea[data-attr]').change(function(){
+                    changeFn($(this));
                     _this.call('change', [_this]);
+                }).keyup(function(){
+                    changeFn($(this));
+                    _this.call('keyup', [_this]);
                 });
 
             });
 
         },
 
+        resetStats: function() {
+            this.stats = {
+                changes: 0,
+                success: 0,
+                errors: 0
+            };
+        },
+
         on: function(type, fn) {
-            this.bindings[type].push(fn);
+            var types = type.split(',');
+            for(var i=0; i<types.length; i++) {
+                this.bindings[types[i]].push(fn);
+            }
             return this;
         },
 
         call: function(type, params) {
-            for(var i=0; i<this.bindings[type].length; i++) {
-                this.bindings[type][i].apply(null, params);
+            var types = type.split(',');
+            for(var i=0; i<types.length; i++) {
+                for(var j=0; j<this.bindings[types[i]].length; j++) {
+                    this.bindings[types[i]][j].apply(null, params);
+                }
             }
         },
 
@@ -79,6 +100,8 @@
 
             $(input).prop('disabled', true);
             this.input = input;
+
+            this.resetStats();
 
             // Vytvorime queue, do ktorej postupne vlozime vsetky zmeny.
             $.each(this.changes, function(id, data){
@@ -103,7 +126,7 @@
                 this.deque();
             }
             else {
-                this.call('updateFinished', [this]);
+                this.call('updateFinished', [this, this.stats]);
 
                 if(this.input) {
                     $(this.input).prop('disabled', false);
@@ -131,9 +154,11 @@
                 data: data
             }).success(function(){
                 delete this.changes[data.id];
+                this.stats.success++;
             }.bind(this)).error(function(){
-                alert("Niečo sa pokazilo. Prosím, pokúste sa uložiť zmeny neskôr.");
-            }).always(function(){
+                this.call('updateErrored', [this, data]);
+                this.stats.errors++;
+            }.bind(this)).always(function(){
                 this.call('updateNext', [this, this.queue]);
                 this.checkQueue();
             }.bind(this));

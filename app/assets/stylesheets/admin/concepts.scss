@@ -7,6 +7,18 @@
     padding: 10px;
     border-top: 1px solid $gray-lighter;
 
+    .concept-id {
+      font-size: 0.8em;
+      color: $gray-light;
+      width: 20px;
+      text-align: right;
+      display: inline-block;
+    }
+
+    .form-error {
+      display: none;
+    }
+
     .form-buttons {
       float: right;
       margin: 0;
@@ -31,6 +43,24 @@
       .concept_name {
         width: 300px;
       }
+    }
+
+    &.concept-item-error {
+
+      .form-error {
+        display: block;
+        float: left;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        background-color: $red-light;
+        border-radius: 50%;
+        text-align: center;
+        color: $white;
+        margin-top: 5px;
+        margin-right: 7px;
+      }
+
     }
   }
 
@@ -88,6 +118,7 @@
   width: 100%;
   padding: 15px 0;
   color: #000000;
+  z-index: 200;
 }
 
 .concept-buttons {
@@ -101,5 +132,6 @@
 
   button {
     float: right;
+    margin-left: 10px;
   }
 }

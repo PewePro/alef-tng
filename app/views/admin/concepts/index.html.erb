@@ -7,10 +7,11 @@
 </nav>
 <hr class="nav-offset">
 
-<div class="concept-buttons">
+<div class="concept-buttons" id="concept-buttons-panel" style="display: none">
   <div class="admin">
-    <button type="button" class="btn" onclick="changes.submit(this);">Uložiť všetky zmeny</button>
-    <span id="concept-buttons-changes" style="display: none">Počet vykonaných zmien: <span id="concept-buttons-changes-count">0</span></span>
+    <button type="button" class="btn" onclick="location.reload()">Zahodiť</button>
+    <button type="button" class="btn btn-primary" onclick="changes.submit(this);">Uložiť všetky zmeny</button>
+    Počet vykonaných zmien: <span id="concept-buttons-changes-count">0</span>
   </div>
 </div>
 <div class="concept-loading" style="display: none;">
@@ -28,7 +29,7 @@
         <%= f.label :pseudo %>
       </div>
       <div class="form-group">
-        <%= f.submit 'Vytvoriť koncept', disable_with: t('global.texts.saving') %>
+        <%= f.submit 'Vytvoriť koncept', data: { disable_with: t('global.texts.saving') } %>
       </div>
     </div>
   <% end %>
@@ -38,7 +39,11 @@
         <button type="button" class="btn" onclick="concept_learning_objects(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> Otázky (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
         <button type="button" class="btn" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
       </div>
+      <div class="form-error">
+        <span title="Niečo sa pokazilo." data-toggle="tooltip"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+      </div>
       <div class="form-group">
+        <span class="concept-id"><%= concept.id %></span>
         <%= text_field_tag "concept_name#{concept.id}", concept.name, class: 'concept_name', data: { attr: :name } %>
       </div>
       <div class="form-group">
@@ -54,22 +59,36 @@
   $(function(){
 
     changes = new FormChanges($('.concept-item'), '<%= admin_concept_path(id: '_OBJECT_ID_', course: @course, method: :patch).html_safe %>', 'patch');
-    changes.on('change', function(t){
-      $('#concept-buttons-changes').show();
+    changes.on('change,keyup', function(t){
+      // S nejakym elementom manipulujeme alebo zmenil hodnotu.
+      $('#concept-buttons-panel').show();
       $('#concept-buttons-changes-count').html(t.getChangesCount());
+      $('#concept'+data.id).removeClass('concept-item-error');
     }).on('updateStarted', function(){
+      // Zaciatok ukladania.
       NProgress.start();
-      $('.concept-buttons').hide();
+      $('#concept-buttons-panel').hide();
       $('.concept-loading').show();
       $('#concepts-list').fadeTo(250, 0.2);
     }).on('updateNext', function(t){
+      // Preslo ulozenie polozky.
       NProgress.set(t.getQueueStatus());
-    }).on('updateFinished', function(){
+    }).on('updateFinished', function(t, stats){
+      // Preslo ulozenie vsetkych poloziek.
+      if (stats.errors > 0) {
+        Alert.success("Niektoré zmeny sa nepodarilo úspešne uložiť. Prosím skontrolujte zoznamm konceptov.");
+        $('#concept-buttons-panel').show();
+        $('#concept-buttons-changes-count').html(t.getChangesCount());
+      }
+      else {
+        Alert.success("Všetky zmeny boli úspešne uložené.");
+      }
       NProgress.done();
-      $('#concept-buttons-changes').hide();
-      $('.concept-buttons').show();
       $('.concept-loading').hide();
       $('#concepts-list').fadeTo(250, 1.0);
+    }).on('updateErrored', function(t, data){
+      // Nastala chyba pri ukladani polozky.
+      $('#concept'+data.id).addClass('concept-item-error');
     });
 
   });

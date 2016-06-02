@@ -28,7 +28,7 @@
     margin: 0;
   }
 
-  input[type="submit"] {
+  input[type="submit"], .btn-primary {
     @include red-white;
     border: none;
   }
