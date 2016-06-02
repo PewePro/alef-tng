@@ -10,7 +10,14 @@ sk:
 
     concepts:
       labels:
+        management:                   "Správa konceptov"
+        name_placeholder:             "zadajte názov konceptu..."
         pseudo:                       "Pseudo koncept"
+      errors:
+        changes_partially_saved:      "Niektoré zmeny sa nepodarilo úspešne uložiť. Prosím, skontrolujte zoznam konceptov."
+      links:
+        create_concept:               "Vytvoriť koncept"
+        change_lo_assignment:         "Zmeniť priradenie vzdelávacích objektov ku konceptom"
 
     feedbacks:
       label:

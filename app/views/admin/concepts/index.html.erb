@@ -9,38 +9,38 @@
 
 <div class="concept-buttons" id="concept-buttons-panel" style="display: none">
   <div class="admin">
-    <button type="button" class="btn" onclick="location.reload()">Zahodiť</button>
-    <button type="button" class="btn btn-primary" onclick="changes.submit(this);">Uložiť všetky zmeny</button>
-    Počet vykonaných zmien: <span id="concept-buttons-changes-count">0</span>
+    <button type="button" class="btn" onclick="location.reload()"><%= t('global.links.discard_changes') %></button>
+    <button type="button" class="btn btn-primary" onclick="changes.submit(this);"><%= t('global.links.save_all_changes') %></button>
+    <%= t('global.labels.number_of_changes') %>: <span id="concept-buttons-changes-count">0</span>
   </div>
 </div>
 <div class="concept-loading" style="display: none;">
-  prebieha ukladanie zmien...
+  <%= t('global.texts.saving') %>
 </div>
 
 <div id="concepts-list" class="admin">
   <%= form_for Concept.new, url: admin_concepts_path(course: @course), method: :post do |f| %>
     <div class="concept-item concept-new-item">
       <div class="form-group">
-        <%= f.text_field :name, class: 'concept_name', placeholder: 'zadajte názov konceptu...' %>
+        <%= f.text_field :name, class: 'concept_name', placeholder: t('admin.concepts.labels.name_placeholder') %>
       </div>
       <div class="form-group">
         <%= f.check_box :pseudo, checked: false %>
         <%= f.label :pseudo %>
       </div>
       <div class="form-group">
-        <%= f.submit 'Vytvoriť koncept', data: { disable_with: t('global.texts.saving') } %>
+        <%= f.submit t('admin.concepts.links.create_concept'), data: { disable_with: t('global.texts.saving') } %>
       </div>
     </div>
   <% end %>
   <% @concepts.each do |concept| %>
     <div class="concept-item" id="concept<%= concept.id %>" data-object-id="<%= concept.id %>">
       <div class="form-buttons">
-        <button type="button" class="btn" onclick="concept_learning_objects(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> Otázky (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
+        <button type="button" class="btn" onclick="concept_learning_objects(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> <%= t('activerecord.models.learning_object.other') %> (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
         <button type="button" class="btn" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
       </div>
       <div class="form-error">
-        <span title="Niečo sa pokazilo." data-toggle="tooltip"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+        <span title="<%= t('global.errors.something_went_wrong') %>" data-toggle="tooltip"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
       </div>
       <div class="form-group">
         <span class="concept-id"><%= concept.id %></span>
@@ -76,12 +76,12 @@
     }).on('updateFinished', function(t, stats){
       // Preslo ulozenie vsetkych poloziek.
       if (stats.errors > 0) {
-        Alert.success("Niektoré zmeny sa nepodarilo úspešne uložiť. Prosím skontrolujte zoznamm konceptov.");
+        Alert.success("<%= t('admin.concepts.errors.changes_partially_saved') %>");
         $('#concept-buttons-panel').show();
         $('#concept-buttons-changes-count').html(t.getChangesCount());
       }
       else {
-        Alert.success("Všetky zmeny boli úspešne uložené.");
+        Alert.success("<%= t('global.texts.updated') %>");
       }
       NProgress.done();
       $('.concept-loading').hide();
@@ -95,13 +95,13 @@
 </script>
 
 <div id="concepts-learning-objects-template" style="display: none">
-  <h2>&quot;{{=it.name}}&quot; - vzdelávacie objekty</h2>
+  <h2>&quot;{{=it.name}}&quot; - <%= t('activerecord.models.learning_object.other') %></h2>
   <div class="concept-learning-objects">
     {{~it.learning_objects :learning_object}}
     <div id="concept-learning-object{{=learning_object.id}}" class="learning-object"><a class="remove" href="#" onclick="concept_lo_delete('{{=learning_object.id}}');return false"><i class="fa fa-trash"></i></a><a target="_blank" href="/admin/learning_objects/{{=learning_object.lo_id}}/edit">{{=learning_object.name}}</a></div>
     {{~}}
   </div>
 
-  <%= link_to("Zmeniť priradenie vzdelávacích objektov ku konceptom <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
+  <%= link_to(t('admin.concepts.links.change_lo_assignment')+" <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
               question_concept_config_path(course_id: @course.id), class: 'concept-editor-link', target: '_blank') %>
 </div>

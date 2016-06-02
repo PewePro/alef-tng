@@ -8,6 +8,17 @@ en:
       questions:
         remove:                       "Are you sure, do you want to remove the answer?"
 
+    concepts:
+      labels:
+        management:                   "Concepts management"
+        name_placeholder:             "type concept name..."
+        pseudo:                       "Pseudo concept"
+      errors:
+        changes_partially_saved:      "Some changes might not have been saved. Please check the list of concepts."
+      links:
+        create_concept:               "Create concept"
+        change_lo_assignment:         "Change the assignment of learning objects to concepts"
+
     feedbacks:
       label:
         solved:                       "solved"

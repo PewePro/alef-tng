@@ -12,6 +12,10 @@ sk:
         lo_id:                        "Názov"
         question_text:                "Text otázky"
         type:                         "Typ"
+    models:
+      learning_object:
+        one:                          "vzdelávací objekt"
+        other:                        "vzdelávacie objekty"
 
   feedbacks:
     labels:
@@ -38,6 +42,7 @@ sk:
       something_went_wrong:           "Ľutujeme, ale niečo sa pokazilo. Skúste to neskôr, prosím."
     labels:
       choose:                         "vyberte si..."
+      number_of_changes:              "Počet vykonaných zmien"
     links:
       cancel:                         "Zrušiť"
       discard_changes:                "Zrušiť zmeny"
@@ -45,6 +50,7 @@ sk:
       refresh:                        "Osviežiť"
       remove:                         "Odstrániť"
       restore:                        "Obnoviť"
+      save_all_changes:               "Uložiť všetky zmeny"
       save_changes:                   "Uložiť zmeny"
       submit:                         "Odoslať"
     texts:
