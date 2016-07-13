@@ -1,3 +1,4 @@
+<% provide(:title, t('admin.concepts.labels.management')) %>
 <nav>
   <div class="admin-nav">
     <h2><%= t('admin.concepts.labels.management') %></h2>
@@ -9,7 +10,7 @@
 
 <div class="concept-buttons" id="concept-buttons-panel" style="display: none">
   <div class="admin">
-    <button type="button" class="btn" onclick="location.reload()"><%= t('global.links.discard_changes') %></button>
+    <%= link_to(t('global.links.discard_changes'), '', class: 'btn') %>
     <button type="button" class="btn btn-primary" onclick="changes.submit(this);"><%= t('global.links.save_all_changes') %></button>
     <%= t('global.labels.number_of_changes') %>: <span id="concept-buttons-changes-count">0</span>
   </div>
@@ -102,6 +103,6 @@
     {{~}}
   </div>
 
-  <%= link_to(t('admin.concepts.links.change_lo_assignment')+" <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
+  <%= link_to("#{t('admin.concepts.links.change_lo_assignment')} <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
               question_concept_config_path(course_id: @course.id), class: 'concept-editor-link', target: '_blank') %>
 </div>

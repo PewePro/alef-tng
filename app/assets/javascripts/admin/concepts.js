@@ -2,8 +2,11 @@ function concept_learning_objects(id, name) {
 
     var template = doT.template($('#concepts-learning-objects-template').html());
 
+    NProgress.start();
+
     $.getJSON('/admin/concepts/'+id+'/learning_objects', function(learning_objects){
         vex.open({ content: template({ name: name, learning_objects: learning_objects }) });
+        NProgress.done();
     });
 
 }
