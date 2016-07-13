@@ -38,7 +38,7 @@
     <div class="concept-item" id="concept<%= concept.id %>" data-object-id="<%= concept.id %>">
       <div class="form-buttons">
         <button type="button" class="btn" onclick="concept_learning_objects(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> <%= t('activerecord.models.learning_object.other') %> (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
-        <button type="button" class="btn" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
+        <button type="button" class="btn btn-delete" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
       </div>
       <div class="form-error">
         <span title="<%= t('global.errors.something_went_wrong') %>" data-toggle="tooltip"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
