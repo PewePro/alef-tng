@@ -1,7 +1,11 @@
 (function(){
 
     /**
-     *
+     * Kniznica sluziaca na hromadne ukladanie zmien vo formulari.
+     * Uzitocna je v pripade viacerych vnorenych formularov.
+     * @param itemIdentifier [Object] identifikator jednej polozky vo formulari
+     * @param url [String] adresa, na ktoru sa budu ukladat zmeny
+     * @param method [String] HTTP metoda adresy, na ktorej sa budu ukladat zmeny
      * */
     function FormChanges(itemIdentifier, url, method) {
 
@@ -68,6 +72,9 @@
 
         },
 
+        /**
+         * Vynuluje statistiky.
+         * */
         resetStats: function() {
             this.stats = {
                 changes: 0,
@@ -76,6 +83,9 @@
             };
         },
 
+        /**
+         * Zapne sledovanie udalosti.
+         * */
         on: function(type, fn) {
             var types = type.split(',');
             for(var i=0; i<types.length; i++) {
@@ -84,6 +94,9 @@
             return this;
         },
 
+        /**
+         * Vyvola udalost.
+         * */
         call: function(type, params) {
             var types = type.split(',');
             for(var i=0; i<types.length; i++) {
@@ -120,6 +133,9 @@
 
         },
 
+        /**
+         * Overi priebezny stav ukladacej queue.
+         * */
         checkQueue: function() {
 
             if (this.queue.length > 0) {
@@ -136,6 +152,9 @@
 
         },
 
+        /**
+         * Odstrani polozku z queue.
+         * */
         deque: function() {
 
             var data = this.queue.pop();
