@@ -13,6 +13,7 @@ module Admin
     # Vytvori novy koncept.
     def create
       @course.concepts.create!(parse_params)
+      flash[:notice] = t('admin.concepts.texts.create_success')
       redirect_to :back
     end
 

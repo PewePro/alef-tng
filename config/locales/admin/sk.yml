@@ -18,6 +18,9 @@ sk:
       links:
         create_concept:               "Vytvoriť koncept"
         change_lo_assignment:         "Zmeniť priradenie vzdelávacích objektov ku konceptom"
+      texts:
+        create_success:               "Koncept bol úspešne vytvorený."
+        concept_delete_question:      "Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná."
 
     feedbacks:
       label:

@@ -18,6 +18,8 @@ en:
       links:
         create_concept:               "Create concept"
         change_lo_assignment:         "Change the assignment of learning objects to concepts"
+      texts:
+        create_success:               "Concept has been successfully created."
 
     feedbacks:
       label:

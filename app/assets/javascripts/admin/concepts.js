@@ -33,6 +33,11 @@ function concept_lo_delete(id) {
 
 }
 
+/**
+ * Odstrani koncept.
+ * @param id [Integer] ID konceptu
+ * @param url [String] adresa na vymazanie konceptu
+ * */
 function concept_delete(id, url) {
 
     if (!confirm("Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná.")) {

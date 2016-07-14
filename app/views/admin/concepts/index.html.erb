@@ -68,6 +68,7 @@
     }).on('updateStarted', function(){
       // Zaciatok ukladania.
       NProgress.start();
+      $('.concept-item').removeClass('concept-item-error');
       $('#concept-buttons-panel').hide();
       $('.concept-loading').show();
       $('#concepts-list').fadeTo(250, 0.2);
