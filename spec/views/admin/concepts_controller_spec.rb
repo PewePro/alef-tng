@@ -20,7 +20,7 @@ describe Admin::ConceptsController do
       click_button(t('homescreen.links.login'))
     end
 
-    it "should create new concept" do
+    it "should create and delete new concept" do
 
       visit admin_concepts_path(course: @course)
 
@@ -45,6 +45,31 @@ describe Admin::ConceptsController do
 
       expect(Concept.all.count).to eq(0)
       expect(page).to_not have_xpath("//input[@value='epos o gilgamesovi']")
+
+    end
+
+    it "should create and assign new concept" do
+
+      visit admin_concepts_path(course: @course)
+
+      # Vytvorenie konceptu.
+      fill_in 'concept_name', with: 'daidalos a ikaros'
+
+      click_button t('admin.concepts.links.create_concept')
+
+      expect(Concept.all.count).to eq(1)
+      expect(Concept.last.name).to eq('daidalos a ikaros')
+
+      # Tu este zapneme koncept pre prvy tyzden.
+      visit administration_path
+
+      find("#setup#{Concept.last.id}").click
+
+      # Hladame potrebny checkbox
+      within('#concepts-form') do
+        find("#relations_#{Concept.last.id}_#{@week.id}").set(true)
+        click_button t('global.links.save_changes')
+      end
 
     end
 

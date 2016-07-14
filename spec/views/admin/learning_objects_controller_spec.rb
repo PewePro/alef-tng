@@ -172,8 +172,6 @@ describe Admin::LearningObjectsController do
 
       find("#setup#{@setup.id}").click
 
-      puts "#{@week.setup_id}"
-
       # Hladame potrebny checkbox
       within('#concepts-form') do
         find("#relations_#{@concept.id}_#{@week.id}").set(true)
