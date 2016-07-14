@@ -20,7 +20,8 @@ sk:
         change_lo_assignment:         "Zmeniť priradenie vzdelávacích objektov ku konceptom"
       texts:
         create_success:               "Koncept bol úspešne vytvorený."
-        concept_delete_question:      "Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná."
+        concept_delete_confirm:       "Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná."
+        concept_delete_lo_confirm:    "Naozaj chcete odstrániť prepojenie medzi vzdelávacím objektom a konceptom?"
 
     feedbacks:
       label:

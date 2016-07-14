@@ -20,6 +20,8 @@ en:
         change_lo_assignment:         "Change the assignment of learning objects to concepts"
       texts:
         create_success:               "Concept has been successfully created."
+        concept_delete_confirm:       "Do you really want to delete concept? You cannot undo this action."
+        concept_delete_lo_confirm:    "Do you really want to delete an assignment of learning objects to concepts? You cannot undo this action."
 
     feedbacks:
       label:

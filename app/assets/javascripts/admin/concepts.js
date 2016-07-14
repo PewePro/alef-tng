@@ -1,3 +1,8 @@
+/**
+ * Nacita vzdelavacie objekty priradene ku konceptu.
+ * @param id [Integer] ID konceptu
+ * @param name [String] nazov konceptu
+ * */
 function concept_learning_objects(id, name) {
 
     var template = doT.template($('#concepts-learning-objects-template').html());
@@ -17,7 +22,7 @@ function concept_learning_objects(id, name) {
  * */
 function concept_lo_delete(id) {
 
-    if (!confirm("Naozaj chcete odstrániť prepojenie medzi vzdelávacím objektom a konceptom?")) {
+    if (!confirm(I18n.t('admin.concepts.texts.concept_delete_lo_confirm'))) {
         return false;
     }
 
@@ -40,7 +45,7 @@ function concept_lo_delete(id) {
  * */
 function concept_delete(id, url) {
 
-    if (!confirm("Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná.")) {
+    if (!confirm(I18n.t('admin.concepts.texts.concept_delete_confirm'))) {
         return false;
     }
 
