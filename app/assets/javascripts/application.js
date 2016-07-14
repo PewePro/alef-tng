@@ -17,6 +17,8 @@
 //= require jquery-ui/progressbar
 //= require jquery-ui/slider
 //= require jquery.ui.touch-punch
+//= require i18n
+//= require i18n/translations
 //= require bootstrap.tabs
 //= require bootstrap.tooltips
 //= require lib/doT
@@ -33,3 +35,5 @@
 NProgress.configure({ showSpinner: false });
 
 vex.defaultOptions.className = 'vex-theme-default';
+
+I18n.locale = "sk";

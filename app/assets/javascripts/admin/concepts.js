@@ -28,7 +28,7 @@ function concept_lo_delete(id) {
     }).success(function(){
         $('#concept-learning-object'+id).slideUp(250);
     }).error(function(){
-        alert("Niečo sa pokazilo, prosím skúste to neskôr.")
+        alert(I18n.t('global.errors.something_went_wrong'));
     });
 
 }
@@ -51,7 +51,7 @@ function concept_delete(id, url) {
     }).success(function(){
         $('#concept'+id).slideUp(250);
     }).error(function(){
-        alert("Niečo sa pokazilo, prosím skúste to neskôr.")
+        alert(I18n.t('global.errors.something_went_wrong'));
     });
 
 }
