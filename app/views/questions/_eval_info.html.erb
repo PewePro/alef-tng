@@ -1,0 +1,27 @@
+
+<div class="nav-info mobile-content">
+    <% unless current_user.show_solutions %>
+
+      <% if @room.state == "used" %>
+          Tento test ste už úspešne vyriešili.
+      <%else%>
+          <%if (@room.score < @room.score_limit)%>
+               Vaše skóre:
+          <%else%>
+               GRATULUJEME, dosiahli ste minimálne skóre!
+          <%end%>
+      <%end%>
+      <div id="week-toggle" class="toggle room">
+        <div class="toggle-caption">
+          <i class="icon-help toggle-help-btn"></i>
+        </div>
+        <div class="toggle-help" id="week-toggle-help">
+          <strong>Minimálne skóre</strong> je skóre, ktoré je potrebné dosiahnuť na to, aby bol daný test úspešný. Ak je test úspešný, môže Vám byť sprístupnený ďalší test. <strong>Dosiahnute skóre</strong> je skóre, ktoré ste aktuálne v teste dosiahli.
+        </div>
+      </div>
+      <div class="question-progressbar" data-number-all="<%= @room.score_limit %>" data-number-done="<%= @room.score %>">
+        <div class="progressbar-caption"></div>
+      </div>
+    <%end%>
+  <%= @number_of_question.to_s + ". otázka z " + @room.learning_objects.count.to_s %>
+</div>

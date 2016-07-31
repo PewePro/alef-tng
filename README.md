@@ -5,6 +5,11 @@ ALEF: TNG is a learning system.
 ## TNG?
 This is _T_he _N_ext _G_eneration of original ALEF.
 
+[![Build Status](https://travis-ci.org/PewePro/alef-tng.svg?branch=master)](https://travis-ci.org/PewePro/alef-tng)
+[![Code Climate](https://codeclimate.com/github/PewePro/alef-tng/badges/gpa.svg?)](https://codeclimate.com/github/PewePro/alef-tng)
+[![Test Coverage](https://codeclimate.com/github/PewePro/alef-tng/badges/coverage.svg?)](https://codeclimate.com/github/PewePro/alef-tng/coverage)
+[![Issue Count](https://codeclimate.com/github/PewePro/alef-tng/badges/issue_count.svg?)](https://codeclimate.com/github/PewePro/alef-tng)
+
 ## Requirements
 
 * Ruby 2.2

@@ -13,6 +13,16 @@ every :day, :at => TIME[@environment.to_sym] do
       runner_rbenv "RecommenderSystem::ActivityRecommender.update_table"
 end
 
+TIME2 = {
+    production: '3:30am',
+    staging: '4:30am',
+    sandbox: '5:30am'
+}
+
+every :day, :at => TIME2[@environment.to_sym] do
+      runner_rbenv "RecommenderSystem::IrtRecommender.update_table"
+end
+
 # Use this file to easily define all of your cron jobs.
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.

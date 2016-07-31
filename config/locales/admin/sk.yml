@@ -11,6 +11,8 @@ sk:
     feedbacks:
       label:
         solved:                       "vyriešený"
+      links:
+        create:                       "Vytvoriť komentár"
       texts:
         feedbacks_empty:              "Ľutujeme, ale nenašla sa žiadna spätná väzba."
 

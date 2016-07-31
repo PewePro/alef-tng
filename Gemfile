@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.2.4'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.18.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -18,7 +17,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'touchpunch-rails' # touch gestures support for jQuery UI widgets
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~> 2.5', '>= 2.5.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -32,17 +31,17 @@ gem 'devise'
 # Authenticate through LDAP
 gem 'devise_ldap_authenticatable'
 # User permission management
-gem 'cancan'
+gem 'cancan', '~> 1.6', '>= 1.6.10'
 
 # questions import
-gem 'nokogiri'
+gem 'nokogiri', '~> 1.6', '>= 1.6.8'
 gem 'pandoc-ruby', '~> 1.0.0'
 
 # student activity statistics
 gem 'axlsx'
 
 # for nice nil safeguarding
-gem 'andand'
+gem 'andand', '~> 1.3', '>= 1.3.3'
 
 # FontAwesome icon font.
 gem 'font-awesome-rails', '~> 4.5', '>= 4.5.0.1'
@@ -56,12 +55,11 @@ gem 'newrelic_rpm'
 # Progress bar (for turbolinks).
 gem 'nprogress-rails', '~> 0.1.6.7'
 
-# Localization
-gem 'rails-i18n'
-
 # Gem to hide, not destroy an ActiveRecord object.
 gem "paranoia", "~> 2.0"
 
+# A set of common locale data and translations to internationalize and/or localize your Rails applications.
+gem 'rails-i18n', '~> 4.0', '>= 4.0.8'
 
 # Ruby library for Markdown processing that smells like butterflies and popcorn.
 gem 'redcarpet', '3.3.4'
@@ -70,7 +68,7 @@ gem 'redcarpet', '3.3.4'
 gem 'whenever', :require => false
 
 # Error tracking
-gem 'rollbar', '~> 2.7.1'
+gem 'rollbar', '~> 2.11', '>= 2.11.5'
 
 gem 'passenger'
 
@@ -78,10 +76,13 @@ gem 'passenger'
 gem 'figaro', '~> 1.1'
 gem 'capistrano-figaro', '~> 1.0'
 
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug'  # disabled for it interferes with RubyMine's debugger
+# Send notifications to Slack about Capistrano deployments.
+gem 'slackistrano', '2.0.1'
 
+# gem for R
+gem 'rinruby', :require => false
+
+group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
@@ -110,15 +111,17 @@ group :development, :test do
 
   # WebDriver is a tool for writing automated tests of websites
   gem 'selenium-webdriver', '2.50.0'
+end
 
+group :test do
+  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :development do
 
-  gem 'byebug'
+  gem 'byebug', '~> 9.0', '>= 9.0.5'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
 end
 

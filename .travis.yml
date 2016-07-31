@@ -4,14 +4,35 @@ rvm:
 cache: bundler
 addons:
   postgresql: '9.4'
+after_success:
+- openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out
+  config/deploy_id_rsa
+- |
+  if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    bundle exec cap production deploy
+  fi
+- |
+  if [[ $TRAVIS_BRANCH == 'staging' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    bundle exec cap staging deploy
+  fi
+- |
+  if [[ $TRAVIS_BRANCH == 'sandbox' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+    bundle exec cap sandbox deploy
+  fi
 before_script:
-- "export DISPLAY=:99.0"
-- "sh -e /etc/init.d/xvfb start"
-- sleep 3 # give xvfb some time to start
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp config/database.yml.travis config/database.yml
+- touch config/application.yml
 - bundle exec rake db:schema:load
 notifications:
   email: false
   slack:
     secure: l8AKzrDLkTkor6s3F1kMKKMG0VLHGp1uMQTOiyMHCW1d1IPDoZZO50MlXuhgaM9wEu4doVIooD5obgrbOXyWvITtAogw7NdymJJf7kUApDEmaRrfRLGLT0CKKEHgLid3ave4Uc1lCm9pzcqo45aTGwDhSrTbYqqxF9j3EM8vqrc=
+env:
+  global:
+  - secure: hVKncuQms9ve7njPFTI0VPXyAE0jdJhw8k91x8sbFEGDxvzFOJ0VRo+gmopAHo8JKkepMfmP09uF7Jcv3C8OBMCM0fs6qwJaOf/1MsG9Z8Io5dLh6PnmbwL9DIT1wC3uojQVJewbqL7+Txc+7EHKYNW4jqq0LpZrCj/egImIEEw=
+  - secure: MeoZwBrqdJK12R0+tozowwv5jqipDFZuPPKlVlfham1AVF8gZZGNN9bMvAqv3Gz4e19TwLHUiVSeXAiVM4+QQSSLHsEVlQ2imMcfXW4x6v7TBuYq2yM5OVTCzfELWtZan1fFinK8wPyHS/DPRWIc0pFoXOc8ja/1sjgbJwEs67o=
+  - secure: kjWCj0FJlPUCfPBCInK2T0Ql5jkIAyiU/Byz6j3evB0Hl/mOSXWQ6r2IOcJQIjxDJrLVqr5xDJnPB3ZrB+u+LN08qfXrt+zNk65xYDTkHw/JPdOTZQ79kDmrGtAuz88LQtCE1c3/XWTG558DeYoMxyuKocr/S0viPLWPs1+SLqM=

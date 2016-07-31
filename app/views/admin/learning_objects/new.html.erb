@@ -56,3 +56,13 @@
 
   <% end %>
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    // Zapnutie markdownu.
+    new MarkdownPreview($('#learning_object_question_text'), {
+      className: 'admin-markdown-textarea admin-markdown-edit-textarea',
+      outerClassName: 'admin-markdown-preview'
+    });
+  });
+</script>

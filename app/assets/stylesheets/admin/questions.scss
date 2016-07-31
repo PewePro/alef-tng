@@ -98,6 +98,11 @@
         font-size: 1.2em;
         font-weight: 700;
         margin-bottom: 2px;
+
+        .id {
+          margin-left: 10px;
+          color: $gray-light;
+        }
       }
 
       .text {
@@ -156,4 +161,31 @@
 
   }
 
+}
+
+#add-feedback-form {
+  border: 1px solid $gray-light;
+  border-radius: 6px;
+  margin: 10px;
+
+  .form-group {
+    margin: 10px 0;
+  }
+
+  .form-group-radio {
+    display: inline-block;
+    font-size: 0.9em;
+
+    &:not(:first-child) {
+      margin-left: 5px;
+    }
+
+    label, input {
+      display: inline-block;
+    }
+  }
+
+  textarea {
+    width: 300px;
+  }
 }

@@ -9,4 +9,35 @@
 
   <div id="feedbacks-empty"><%= t('admin.feedbacks.texts.feedbacks_empty') %></div>
 
+  <%= form_for Feedback.new, url: { controller: 'admin/feedbacks', action: 'create' }, method: :post do |f| %>
+
+      <div id="add-feedback-form">
+
+        <div class="admin">
+          <h3><%= t('feedbacks.labels.add_new') %></h3>
+          <div class="form-group">
+            <%= f.label :message %>
+            <%= f.text_area :message, class: 'simple-text' %>
+          </div>
+
+          <div class="form-group">
+            <label><%= t('feedbacks.labels.add_as') %>:</label>
+            <div class="form-group-radio">
+              <%= f.radio_button :anonymous_teacher, 0, checked: true %> <%= f.label :anonymous_teacher_0, current_user.full_name %>
+            </div>
+            <div class="form-group-radio">
+              <%= f.radio_button :anonymous_teacher, 1 %> <%= f.label :anonymous_teacher_1, t('feedbacks.labels.teacher') %>
+              <span data-toggle="tooltip" title="<%= t('feedbacks.texts.anonymous_teacher_help') %>"><%= fa_icon('question-circle') %></span>
+            </div>
+          </div>
+
+          <div class="form-buttons">
+            <%= f.submit value: t('admin.feedbacks.links.create'), data: { disable_with: t('global.texts.saving') } %>
+          </div>
+        </div>
+
+      </div>
+
+  <% end %>
+
 </div>

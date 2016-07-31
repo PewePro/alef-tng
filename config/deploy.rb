@@ -21,6 +21,12 @@ set :rollbar_token, (ENV['ALEFTNG_ROLLBAR_ACCESS_TOKEN'] || (raise ApplicationCo
 set :rollbar_env, Proc.new { fetch :stage }
 set :rollbar_role, Proc.new { :app }
 
+set :slack_webhook, "https://hooks.slack.com/services/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"
+
+if File.exist?("config/deploy_id_rsa")
+  set :ssh_options, keys: ["config/deploy_id_rsa"]
+end
+
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 

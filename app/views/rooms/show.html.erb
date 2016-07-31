@@ -1,0 +1,39 @@
+<div id="faux-background" class="mobile-content"></div>
+<%= render 'nav' %>
+<hr class="nav-offset not-zoomable">
+
+
+
+<div class="mobile-content main">
+  <% if (current_user.show_solutions && @room.state == "do_not_use")  %>
+      <div id="question-options-evaluate">
+        <div class="question-options-message" id="question-evaluation-next">Tento test v režime Učenie<br>nemáte sprístupnený!</div>
+        <a href="<%=
+            url_for :controller => 'weeks', :action => 'show'
+        %>" class="question-button question-button-red" id="question-evaluation-next" >Zmeň režim</a>
+      </div>
+  <%else%>
+      <% @learning_objects.each do |lo| %>
+          <a href="<%=
+              url_for :controller => 'questions', :action => 'show', :id => lo.url_name
+          %>" class="card">
+            <div class="question-card-content">
+              <h3 class="card-header"><%= lo.lo_id %></h3>
+              <p class="card-text">
+                <%= lo.question_text %>
+              </p>
+            </div>
+            <div class="card-info">
+              <% unless views_los(@results,lo).nil? %>
+                  <i class="icon-seen"></i> Videné (<%= views_los(@results,lo) %>x)
+              <% else %>
+                  <i class="icon-new"></i> Nové
+              <% end
+                 unless done_los(@results,lo).nil? or done_los(@results,lo).to_i.zero? %>
+                  <i class="icon-done"></i> Vyriešené (<%= done_los(@results,lo) %>x)
+              <% end %>
+            </div>
+          </a>
+      <% end %>
+  <%end%>
+</div>

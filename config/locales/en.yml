@@ -5,11 +5,25 @@
 en:
   activerecord:
     attributes:
+      feedback:
+        message:                      "Text"
       learning_object:
         difficulty:                   "Difficulty"
         lo_id:                        "Title"
         question_text:                "Question text"
         type:                         "Type"
+
+  feedbacks:
+    labels:
+      add_as:                         "Add as"
+      add_new:                        "Add new comment"
+      comment_by_teacher:             "comment by teacher"
+      hide_name:                      "hide name"
+      show_name:                      "show name"
+      teacher:                        "teacher"
+    texts:
+      anonymous_teacher_help:         "Instead of your real name we will show \"teacher\"."
+      created:                        "Comment was successfully added."
 
   homescreen:
     links:
@@ -20,6 +34,8 @@ en:
       logout:                         "Sign out"
 
   global:
+    errors:
+      something_went_wrong:           "We are sorry, but something went wrong. Please try again later."
     labels:
       choose:                         "choose..."
     links:
@@ -35,3 +51,7 @@ en:
       please_fill_in:                 "Please, fill in all required fields."
       saving:                         "saving..."
       updated:                        "All changes have been successfully saved."
+
+  weeks:
+    labels:
+      week:                           "week"
