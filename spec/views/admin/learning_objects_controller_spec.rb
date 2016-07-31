@@ -187,7 +187,7 @@ describe Admin::LearningObjectsController do
 
       find(".card:first-child").click
 
-      expect(page).to have_text(learning_object.lo_id)
+      expect(page).to have_text(learning_object.lo_id.lowercase)
       expect(page).to have_text(learning_object.question_text)
 
     end
