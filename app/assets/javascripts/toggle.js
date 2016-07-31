@@ -5,6 +5,7 @@ var Toggle = {
             var id = $(this).attr('id');
 
             switch(id) {
+                case 'room-toggle-learning':
                 case 'week-toggle-learning':
                     $.ajax({
                         url: '/user/toggle-show-solutions',
@@ -14,6 +15,7 @@ var Toggle = {
                         }
                     });
                     break;
+                case 'room-toggle-testing':
                 case 'week-toggle-testing':
                     $.ajax({
                         url: '/user/toggle-show-solutions',

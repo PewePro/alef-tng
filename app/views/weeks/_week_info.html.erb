@@ -4,9 +4,16 @@
 %>
 <div class="nav-info mobile-content">
   <%= start_at.strftime("%d.%-m.")  %> - <%= end_at.strftime("%d.%-m.%Y")  %>
-  <div class="week-progressbar" data-number-all="<%= @sorted_los.count %>" data-number-done="<%= @results.select {|r| not (r['solved'].nil? or r['solved'].to_i.zero?) }.count %>">
-    <div class="progressbar-caption"></div>
-  </div>
+  <% if current_user.has_rooms? %>
+      <div class="week-progressbar" data-number-all="<%= @week.rooms_count current_user.id %>" data-number-done="<%= @week.rooms_count_done current_user.id %>">
+        <div class="progressbar-caption"></div>
+      </div>
+  <% else %>
+      <div class="week-progressbar" data-number-all="<%= @sorted_los.count %>" data-number-done="<%= @results.select {|r| not (r['solved'].nil? or r['solved'].to_i.zero?) }.count %>">
+        <div class="progressbar-caption"></div>
+      </div>
+  <% end %>
+
   <div id="week-toggle" class="toggle">
     <div class="toggle-caption">Režim
     </div>

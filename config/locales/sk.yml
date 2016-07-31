@@ -5,11 +5,25 @@
 sk:
   activerecord:
     attributes:
+      feedback:
+        message:                      "Text"
       learning_object:
         difficulty:                   "Náročnosť"
         lo_id:                        "Názov"
         question_text:                "Text otázky"
         type:                         "Typ"
+
+  feedbacks:
+    labels:
+      add_as:                         "Pridať ako"
+      add_new:                        "Pridanie nového komentára"
+      comment_by_teacher:             "komentár od učiteľa"
+      hide_name:                      "skryť meno"
+      show_name:                      "zobraziť meno"
+      teacher:                        "učiteľ"
+    texts:
+      anonymous_teacher_help:         "Namiesto vášho mena sa zobrazí \"učiteľ\"."
+      created:                        "Komentár bol úspešne pridaný."
 
   homescreen:
     links:
@@ -20,6 +34,8 @@ sk:
       logout:                         "Odhlásiť"
 
   global:
+    errors:
+      something_went_wrong:           "Ľutujeme, ale niečo sa pokazilo. Skúste to neskôr, prosím."
     labels:
       choose:                         "vyberte si..."
     links:
@@ -35,3 +51,7 @@ sk:
       please_fill_in:                 "Prosím, vyplňte všetky povinné polia."
       saving:                         "prebieha ukladanie..."
       updated:                        "Všetky zmeny boli úspešne uložené."
+
+  weeks:
+    labels:
+      week:                           "týždeň"

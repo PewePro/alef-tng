@@ -69,8 +69,10 @@ class AdministrationsController < ApplicationController
       {
           id: feedback.id,
           accepted: feedback.accepted,
+          user_verified: feedback.user.verified?,
+          anonymous: feedback.anonymous_teacher,
           message: feedback.message,
-          fullname: "#{feedback.user.first_name} #{feedback.user.last_name}",
+          fullname: feedback.user.full_name,
           time: feedback.created_at.strftime("%d.%m.%Y %H:%M:%S"),
           visible: feedback.visible
       }
@@ -103,6 +105,12 @@ class AdministrationsController < ApplicationController
     render js: "Admin.fetchFeedback();"
   end
 
+  # Zmeni nastavenia skrytia mena ucitela v spatnej vazbe.
+  def mark_feedback_anonymized
+    Feedback.find(params[:id]).update(anonymous_teacher: params[:anonymized] == "true")
+    render js: "Admin.fetchFeedback();"
+  end
+
   # Ziska nasledujucu otazku (z kurzu), ku ktorej este nebola pridana spatna vazba.
   def next_feedback_question
     @course = Course.find(params[:id])
@@ -113,9 +121,9 @@ class AdministrationsController < ApplicationController
 
     lo = LearningObject.where(id: session[:unresoved_feedbacks].pop).first
     if lo
-      redirect_to(edit_admin_learning_object_path(learning_object_id: lo.id))
+      redirect_to(edit_admin_learning_object_path(lo))
     else
-      redirect_to(admin_learning_objects_path(@course.id))
+      redirect_to(admin_learning_objects_path(course: @course.id))
     end
 
   end

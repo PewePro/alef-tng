@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  # Vygeneruje titulok stranky.
+  def page_title(title)
+    "Alef"+ (title.present? ? " - #{title}" : "")
+  end
+
   # Na zadany text aplikuje Markdown.
   def apply_markdown(text)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)

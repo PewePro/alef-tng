@@ -11,6 +11,8 @@ en:
     feedbacks:
       label:
         solved:                       "solved"
+      links:
+        create:                       "Create comment"
       texts:
         feedbacks_empty:              "Unfortunately, there is no feedback yet."
 

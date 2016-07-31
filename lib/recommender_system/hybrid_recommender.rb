@@ -13,11 +13,7 @@ module RecommenderSystem
     end
 =end
 
-    if User.find(self.user_id).group == 'B'
-      config = RecommendationConfiguration.find_by_name('alternative')
-    else
       config = RecommendationConfiguration.find_by_name('default')
-    end
 
     # Vytvori list, do ktoreho sa budu ukladat vysledky odporucani
     list = Hash.new

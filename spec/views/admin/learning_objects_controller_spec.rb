@@ -155,6 +155,9 @@ describe Admin::LearningObjectsController do
       wait_for_ajax
 
       find('.admin-nav-button').click
+      wait_for_ajax
+
+      #find('.admin-nav-button').click
 
       find("#concept#{@course.id}").click
 
@@ -169,6 +172,8 @@ describe Admin::LearningObjectsController do
 
       find("#setup#{@setup.id}").click
 
+      puts "#{@week.setup_id}"
+
       # Hladame potrebny checkbox
       within('#concepts-form') do
         find("#relations_#{@concept.id}_#{@week.id}").set(true)
@@ -180,7 +185,9 @@ describe Admin::LearningObjectsController do
 
       find("#week#{@week.id}").click
 
-      expect(page).to have_text(learning_object.lo_id.downcase)
+      find(".card:first-child").click
+
+      expect(page).to have_text(learning_object.lo_id)
       expect(page).to have_text(learning_object.question_text)
 
     end

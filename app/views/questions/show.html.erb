@@ -1,3 +1,4 @@
+<% provide(:title, @question.lo_id) %>
 <div id="faux-background" class="mobile-content"></div>
   <%= render 'nav' %>
 <hr class="nav-offset not-zoomable">
@@ -6,7 +7,11 @@
   <h2><%= @question.lo_id %></h2>
   </div>
 </div>
+<% if current_user.has_rooms? %>
+    <%= render 'eval_info' %>
+<% end %>
 <div class="mobile-content main">
+
   <%= render 'question_info' %>
   <%= render 'question_core', learning_object: @question %>
       <div id="question-feedback">
@@ -15,10 +20,15 @@
       <% @feedbacks.order(created_at: :desc).each do |f| %>
             <div class="question-feedback-message">
                 <div class="question-feedback-meta">
-                  <% if f.accepted %>
+                  <% if f.accepted && !f.user.verified? %>
                   <span class="question-feedback-solved"><i class="icon-checkbox-checked"></i> <%= t('admin.feedbacks.label.solved') %></span>
                   <% end %>
-                  <span class="question-feedback-name"><%= f.user.first_name %> <%= f.user.last_name %></span>
+                  <span class="question-feedback-name">
+                    <%= f.anonymous_teacher? ? t('feedbacks.labels.teacher') : f.user.full_name %>
+                    <% if f.user.verified? %>
+                      <span data-toggle="tooltip" title="<%= t('feedbacks.labels.comment_by_teacher') %>"><%= fa_icon('star') %></span>
+                    <% end %>
+                  </span>
                   <span class="bull">&bull;</span>
                   <span class="question-feedback-time livestamp" data-toggle="tooltip" title="<%= format_time(f.created_at) %>" data-timestamp="<%= f.created_at.to_time %>"><%= format_time(f.created_at) %></span>
                 </div>

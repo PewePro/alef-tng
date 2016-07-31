@@ -31,7 +31,7 @@
         'sliders'
     end %>"></i></div>
   <div class="question-headline">
-    <div class="title"><%= link_to_unless(learning_object.deleted?, learning_object.lo_id, edit_admin_learning_object_path(learning_object)) %></div>
+    <div class="title"><%= link_to_unless(learning_object.deleted?, learning_object.lo_id, edit_admin_learning_object_path(learning_object)) %><span class="id">#<%= learning_object.id %></span></div>
     <div class="text"><%= learning_object.question_text %></div>
     <div class="answers">
       <% learning_object.answers.each_with_index do |a, i| %>

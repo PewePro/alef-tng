@@ -1,5 +1,7 @@
 <div class="question-text">
-  <%= apply_markdown(@answers.first.answer_text).html_safe %>
+  <% unless @answers.first.nil? %>
+    <%= apply_markdown(@answers.first.answer_text).html_safe %>
+  <%end%>
   <div class="question-agree">Súhlasíte s touto odpoveďou?</div>
 </div>
 
