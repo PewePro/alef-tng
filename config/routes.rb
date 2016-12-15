@@ -97,6 +97,14 @@ Rails.application.routes.draw do
 
     end
 
+    resources :concepts do
+      get :index, :learning_objects
+      post :create
+      patch :update
+      delete :destroy
+      delete :delete_learning_object, on: :collection
+    end
+
 
   end
 

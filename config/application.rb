@@ -37,5 +37,8 @@ module AlefTng
 
     # Exceptions.
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "exceptions.rb")].each {|l| require l }
+
+    # Generovanie prekladov pre Javascript.
+    config.middleware.use I18n::JS::Middleware
   end
 end

@@ -12,6 +12,10 @@ en:
         lo_id:                        "Title"
         question_text:                "Question text"
         type:                         "Type"
+    models:
+      learning_object:
+        one:                          "learning object"
+        other:                        "learning objects"
 
   feedbacks:
     labels:
@@ -38,6 +42,7 @@ en:
       something_went_wrong:           "We are sorry, but something went wrong. Please try again later."
     labels:
       choose:                         "choose..."
+      number_of_changes:              "Number of changes"
     links:
       cancel:                         "Cancel"
       discard_changes:                "Discard changes"
@@ -45,6 +50,7 @@ en:
       refresh:                        "Refresh"
       remove:                         "Remove"
       restore:                        "Restore"
+      save_all_changes:               "Save all changes"
       save_changes:                   "Save changes"
       submit:                         "Submit"
     texts:

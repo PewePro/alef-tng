@@ -1,0 +1,109 @@
+<% provide(:title, t('admin.concepts.labels.management')) %>
+<nav>
+  <div class="admin-nav">
+    <h2><%= t('admin.concepts.labels.management') %></h2>
+    <%= link_to((fa_icon('user-secret') + t('homescreen.links.admin')).html_safe,
+                administration_path, class: 'admin-nav-button') %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="concept-buttons" id="concept-buttons-panel" style="display: none">
+  <div class="admin">
+    <%= link_to(t('global.links.discard_changes'), '', class: 'btn') %>
+    <button type="button" class="btn btn-primary" onclick="changes.submit(this);"><%= t('global.links.save_all_changes') %></button>
+    <%= t('global.labels.number_of_changes') %>: <span id="concept-buttons-changes-count">0</span>
+  </div>
+</div>
+<div class="concept-loading" style="display: none;">
+  <%= t('global.texts.saving') %>
+</div>
+
+<div id="concepts-list" class="admin">
+  <%= form_for Concept.new, url: admin_concepts_path(course: @course), method: :post do |f| %>
+    <div class="concept-item concept-new-item">
+      <div class="form-group">
+        <%= f.text_field :name, class: 'concept_name', placeholder: t('admin.concepts.labels.name_placeholder') %>
+      </div>
+      <div class="form-group">
+        <%= f.check_box :pseudo, checked: false %>
+        <%= f.label :pseudo %>
+      </div>
+      <div class="form-group">
+        <%= f.submit t('admin.concepts.links.create_concept'), data: { disable_with: t('global.texts.saving') } %>
+      </div>
+    </div>
+  <% end %>
+  <% @concepts.each do |concept| %>
+    <div class="concept-item" id="concept<%= concept.id %>" data-object-id="<%= concept.id %>">
+      <div class="form-buttons">
+        <button type="button" class="btn" onclick="concept_learning_objects(<%= concept.id %>, '<%= concept.name %>');return false"><i class="fa fa-link"></i> <%= t('activerecord.models.learning_object.other') %> (<%= @concepts_counts.key?(concept.id) ? @concepts_counts[concept.id] : 0 %>)</button>
+        <button type="button" class="btn btn-delete" onclick="concept_delete(<%= concept.id %>, '<%= admin_concept_path(concept, method: :delete).html_safe %>');return false"><i class="fa fa-trash"></i></button>
+      </div>
+      <div class="form-error">
+        <span title="<%= t('global.errors.something_went_wrong') %>" data-toggle="tooltip"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+      </div>
+      <div class="form-group">
+        <span class="concept-id"><%= concept.id %></span>
+        <%= text_field_tag "concept_name#{concept.id}", concept.name, class: 'concept_name', data: { attr: :name } %>
+      </div>
+      <div class="form-group">
+        <%= check_box_tag "concept_pseudo#{concept.id}", 1, concept.pseudo, data: { attr: :pseudo } %>
+        <%= label_tag "concept_pseudo#{concept.id}", t('admin.concepts.labels.pseudo') %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  var changes = null;
+  $(function(){
+
+    changes = new FormChanges($('.concept-item'), '<%= admin_concept_path(id: '_OBJECT_ID_', course: @course, method: :patch).html_safe %>', 'patch');
+    changes.on('change,keyup', function(t){
+      // S nejakym elementom manipulujeme alebo zmenil hodnotu.
+      $('#concept-buttons-panel').show();
+      $('#concept-buttons-changes-count').html(t.getChangesCount());
+      $('#concept'+data.id).removeClass('concept-item-error');
+    }).on('updateStarted', function(){
+      // Zaciatok ukladania.
+      NProgress.start();
+      $('.concept-item').removeClass('concept-item-error');
+      $('#concept-buttons-panel').hide();
+      $('.concept-loading').show();
+      $('#concepts-list').fadeTo(250, 0.2);
+    }).on('updateNext', function(t){
+      // Preslo ulozenie polozky.
+      NProgress.set(t.getQueueStatus());
+    }).on('updateFinished', function(t, stats){
+      // Preslo ulozenie vsetkych poloziek.
+      if (stats.errors > 0) {
+        Alert.success("<%= t('admin.concepts.errors.changes_partially_saved') %>");
+        $('#concept-buttons-panel').show();
+        $('#concept-buttons-changes-count').html(t.getChangesCount());
+      }
+      else {
+        Alert.success("<%= t('global.texts.updated') %>");
+      }
+      NProgress.done();
+      $('.concept-loading').hide();
+      $('#concepts-list').fadeTo(250, 1.0);
+    }).on('updateErrored', function(t, data){
+      // Nastala chyba pri ukladani polozky.
+      $('#concept'+data.id).addClass('concept-item-error');
+    });
+
+  });
+</script>
+
+<div id="concepts-learning-objects-template" style="display: none">
+  <h2>&quot;{{=it.name}}&quot; - <%= t('activerecord.models.learning_object.other') %></h2>
+  <div class="concept-learning-objects">
+    {{~it.learning_objects :learning_object}}
+    <div id="concept-learning-object{{=learning_object.id}}" class="learning-object"><a class="remove" href="#" onclick="concept_lo_delete('{{=learning_object.id}}');return false"><i class="fa fa-trash"></i></a><a target="_blank" href="/admin/learning_objects/{{=learning_object.lo_id}}/edit">{{=learning_object.name}}</a></div>
+    {{~}}
+  </div>
+
+  <%= link_to("#{t('admin.concepts.links.change_lo_assignment')} <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i>".html_safe,
+              question_concept_config_path(course_id: @course.id), class: 'concept-editor-link', target: '_blank') %>
+</div>
