@@ -48,9 +48,8 @@
       <div role="tabpanel" class="tab-pane active" id="question-settings">
 
         <%= form_for @learning_object, as: :learning_object,
-                                       url: {
-                                                controller: 'admin/learning_objects',
-                                                action: :update},
+                                       url: { controller: 'admin/learning_objects',
+                                              action: :update },
                                        method: :patch do |f| %>
 
             <div class="admin">

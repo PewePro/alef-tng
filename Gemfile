@@ -49,6 +49,9 @@ gem 'font-awesome-rails', '~> 4.5', '>= 4.5.0.1'
 # passing data from controllers to javascript
 gem 'gon'
 
+# Small library to provide the Rails I18n translations on the JavaScript.
+gem "i18n-js", ">= 3.0.0.rc11"
+
 # performance monitoring with newrelic
 gem 'newrelic_rpm'
 

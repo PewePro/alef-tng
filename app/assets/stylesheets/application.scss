@@ -36,6 +36,8 @@
 @import "forms";
 @import "tabs";
 @import "bootstrap.tooltips";
+@import "lib/vex";
+@import "lib/vex-theme-default";
 
 @import "markdown_preview";
 
@@ -48,6 +50,7 @@
 @import "questions/evaluator";
 @import "administration";
 
+@import "admin/concepts";
 @import "admin/questions";
 
 // nprogress

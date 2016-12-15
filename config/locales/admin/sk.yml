@@ -8,6 +8,21 @@ sk:
       questions:
         remove:                       "Naozaj chcete odstrániť túto odpoveď na otázku?"
 
+    concepts:
+      labels:
+        management:                   "Správa konceptov"
+        name_placeholder:             "zadajte názov konceptu..."
+        pseudo:                       "Pseudo koncept"
+      errors:
+        changes_partially_saved:      "Niektoré zmeny sa nepodarilo úspešne uložiť. Prosím, skontrolujte zoznam konceptov."
+      links:
+        create_concept:               "Vytvoriť koncept"
+        change_lo_assignment:         "Zmeniť priradenie vzdelávacích objektov ku konceptom"
+      texts:
+        create_success:               "Koncept bol úspešne vytvorený."
+        concept_delete_confirm:       "Naozaj chcete odstrániť zvolený koncept? Táto akcia je nezvratná."
+        concept_delete_lo_confirm:    "Naozaj chcete odstrániť prepojenie medzi vzdelávacím objektom a konceptom?"
+
     feedbacks:
       label:
         solved:                       "vyriešený"
