@@ -368,3 +368,26 @@
   }
 
 }
+
+.courses-list {
+  list-style: none;
+  margin: 0;
+  padding: 20px;
+
+  li {
+    margin-top: 10px;
+  }
+
+  .admin-link {
+    font-size: 1.1em;
+  }
+
+  .links {
+    font-size: 0.9em;
+    color: $gray;
+
+    a {
+      color: $gray-dark;
+    }
+  }
+}
