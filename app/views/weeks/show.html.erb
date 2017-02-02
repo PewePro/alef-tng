@@ -71,6 +71,11 @@
               %>
                   <i class="icon-done"></i> Vyriešené (<%= done %>x)
               <% end %>
+
+              <% unless lo.comment_number.zero? %>
+                  <i class="icon-mail"></i> Komentáre (<%= lo.comment_number %>)
+              <% end %>
+
             </div>
           </a>
       <% end %>

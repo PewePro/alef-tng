@@ -95,13 +95,23 @@ class AdministrationsController < ApplicationController
 
   # Zobrazi spatnu vazbu (na stranke s otazkou).
   def mark_feedback_visible
-    Feedback.find(params[:id]).update(visible: true)
+    feedback  = Feedback.find(params[:id])
+    feedback.update!(visible: true)
+
+    commented_lo = LearningObject.find(feedback.learning_object_id)
+    commented_lo.update!(comment_number: commented_lo.comment_number + 1)
+
     render js: "Admin.fetchFeedback();"
   end
 
   # Skryje spatnu vazbu (na stranke s otazkou).
   def mark_feedback_hidden
-    Feedback.find(params[:id]).update(visible: false)
+    feedback  = Feedback.find(params[:id])
+    feedback.update!(visible: false)
+
+    commented_lo = LearningObject.find(feedback.learning_object_id)
+    commented_lo.update!(comment_number: commented_lo.comment_number - 1)
+
     render js: "Admin.fetchFeedback();"
   end
 
