@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202114004) do
+ActiveRecord::Schema.define(version: 20170218134807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20170202114004) do
     t.float    "irt_discrimination"
     t.datetime "deleted_at"
     t.integer  "comment_number",     default: 0
+    t.datetime "last_comment_time"
   end
 
   add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree

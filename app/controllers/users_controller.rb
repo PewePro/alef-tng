@@ -24,8 +24,16 @@ class UsersController < ApplicationController
     end
 
     if feedback.save
-      commented_lo = LearningObject.find(path[:id].to_i)
-      commented_lo.update!(comment_number: commented_lo.comment_number + 1)
+      other_users = User.where.not(id: current_user.id)
+      inserted_items = []
+      other_users.each do |user|
+        item = {:user_id => user.id, :learning_object_id => path[:id].to_i}
+        inserted_items.append(item)
+      end
+
+      ActiveRecord::Base.transaction do
+        UserToLoNotSeenComment.create(inserted_items)
+      end
 
       FeedbackMailer.new(feedback).deliver_now
     end
