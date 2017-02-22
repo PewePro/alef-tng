@@ -84,11 +84,11 @@ ActiveRecord::Schema.define(version: 20160527105718) do
     t.string   "external_reference"
     t.binary   "image"
     t.integer  "course_id"
+    t.datetime "deleted_at"
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
     t.string   "importance",         default: "UNKNOWN"
-    t.datetime "deleted_at"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
   end
