@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20160527105718) do
     t.string   "difficulty",         default: "unknown_difficulty"
     t.datetime "deleted_at"
     t.string   "importance",         default: "UNKNOWN"
+    t.datetime "deleted_at"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
   end
