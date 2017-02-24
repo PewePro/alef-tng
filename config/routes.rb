@@ -105,8 +105,22 @@ Rails.application.routes.draw do
       delete :delete_learning_object, on: :collection
     end
 
-
   end
 
+  # API
+  namespace :api do
+    namespace :v1 do
+      resources :concepts, only: [:index]
+      resources :concept_weeks, only: [:index]
+      resources :concepts_learning_objects, only: [:index]
+      resources :courses, only: [:index]
+      resources :feedbacks, only: [:index]
+      resources :learning_objects, only: [:index]
+      resources :setups, only: [:index]
+      resources :user_to_lo_relations, only: [:index]
+      resources :users, only: [:index]
+      resources :weeks, only: [:index]
+    end
+  end
 
 end

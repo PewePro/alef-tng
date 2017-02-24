@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
 
   def auth_user!
-    unless user_signed_in? || devise_controller?
+    unless user_signed_in? || devise_controller? || request.env['PATH_INFO'].starts_with?('/api/')
       session[:previous_url] = request.fullpath unless request.xhr? # do not store AJAX calls
       redirect_to new_user_session_path
     end
