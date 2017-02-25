@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160527105718) do
+ActiveRecord::Schema.define(version: 20170225200420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 20160527105718) do
     t.datetime "updated_at"
     t.boolean  "visible",            default: true, null: false
   end
+
+  create_table "api_access_tokens", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "token"
+    t.datetime "expires_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "api_access_tokens", ["token"], name: "index_api_access_tokens_on_token", using: :btree
 
   create_table "concepts", force: :cascade do |t|
     t.string   "name"
@@ -84,12 +94,11 @@ ActiveRecord::Schema.define(version: 20160527105718) do
     t.string   "external_reference"
     t.binary   "image"
     t.integer  "course_id"
-    t.datetime "deleted_at"
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
-    t.datetime "deleted_at"
     t.string   "importance",         default: "UNKNOWN"
+    t.datetime "deleted_at"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
   end
@@ -188,9 +197,12 @@ ActiveRecord::Schema.define(version: 20160527105718) do
     t.float    "proficiency",                  default: 0.5
     t.boolean  "involved_in_gamification",     default: false,     null: false
     t.boolean  "was_involved_in_gamification", default: false
+    t.string   "private_key"
   end
 
+  add_index "users", ["login", "private_key"], name: "index_users_on_login_and_private_key", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
+  add_index "users", ["private_key"], name: "index_users_on_private_key", using: :btree
 
   create_table "weeks", force: :cascade do |t|
     t.integer "setup_id"
@@ -199,6 +211,7 @@ ActiveRecord::Schema.define(version: 20160527105718) do
 
   add_foreign_key "activity_recommender_records", "learning_objects"
   add_foreign_key "answers", "learning_objects"
+  add_foreign_key "api_access_tokens", "users"
   add_foreign_key "concepts", "courses"
   add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "learning_objects"
