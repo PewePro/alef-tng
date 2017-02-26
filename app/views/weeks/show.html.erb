@@ -72,13 +72,12 @@
             <i class="icon-done"></i> Vyriešené (<%= done %>x)
           <% end %>
 
-          <% unless lo.comment_number.zero? %>
+          <% unless lo.feedback_number.zero? %>
             &nbsp;
-            <% if lo.last_comment_time.present? && last_inter.present? &&
-                last_inter < lo.last_comment_time && lo.last_comment_time != last_comment%>
-              <i class="icon-mail" id="pulse"></i> Komentáre (<%= lo.comment_number %>)
+            <% if lo.has_new_feedback(last_inter, last_comment) %>
+              <i class="icon-mail" id="pulse"></i> Komentáre (<%= lo.feedback_number %>)
             <% else %>
-              <i class="icon-mail"></i> Komentáre (<%= lo.comment_number %>)
+              <i class="icon-mail"></i> Komentáre (<%= lo.feedback_number %>)
             <% end %>
           <% end %>
 

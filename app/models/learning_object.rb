@@ -182,4 +182,9 @@ class LearningObject < ActiveRecord::Base
     LearningObject::IMPORTANCE_VALUE[(self.importance ? self.importance.to_sym : :unknown_importance)]
   end
 
+  def has_new_feedback(last_inter, last_comment)
+    self.last_feedback_time.present? && last_inter.present? &&
+        last_inter < self.last_feedback_time && self.last_feedback_time != last_comment
+  end
+
 end

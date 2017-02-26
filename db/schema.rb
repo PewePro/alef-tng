@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170218134807) do
+ActiveRecord::Schema.define(version: 20170226093326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20170218134807) do
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
     t.datetime "deleted_at"
-    t.integer  "comment_number",     default: 0
-    t.datetime "last_comment_time"
+    t.integer  "feedback_number",    default: 0
+    t.datetime "last_feedback_time"
   end
 
   add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree
@@ -199,29 +199,50 @@ ActiveRecord::Schema.define(version: 20170218134807) do
   end
 
   add_foreign_key "activity_recommender_records", "learning_objects"
+  add_foreign_key "activity_recommender_records", "learning_objects"
+  add_foreign_key "answers", "learning_objects"
   add_foreign_key "answers", "learning_objects"
   add_foreign_key "concepts", "courses"
+  add_foreign_key "concepts", "courses"
+  add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "concepts"
   add_foreign_key "concepts_learning_objects", "learning_objects"
+  add_foreign_key "concepts_learning_objects", "learning_objects"
+  add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "concepts"
   add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "concepts_weeks", "weeks"
+  add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
+  add_foreign_key "feedbacks", "users"
+  add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "recommendation_configurations"
   add_foreign_key "recommendation_linkers", "users"
+  add_foreign_key "recommendation_linkers", "users"
+  add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommendation_linkers", "weeks"
   add_foreign_key "recommenders_options", "recommendation_configurations"
+  add_foreign_key "recommenders_options", "recommendation_configurations"
+  add_foreign_key "recommenders_options", "recommenders"
   add_foreign_key "recommenders_options", "recommenders"
   add_foreign_key "rooms", "users"
   add_foreign_key "rooms", "weeks"
   add_foreign_key "rooms_learning_objects", "learning_objects"
   add_foreign_key "rooms_learning_objects", "rooms"
   add_foreign_key "setups", "courses"
+  add_foreign_key "setups", "courses"
+  add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
+  add_foreign_key "setups_users", "users"
+  add_foreign_key "user_to_lo_relations", "learning_objects"
   add_foreign_key "user_to_lo_relations", "learning_objects"
   add_foreign_key "user_to_lo_relations", "rooms"
   add_foreign_key "user_to_lo_relations", "setups"
+  add_foreign_key "user_to_lo_relations", "setups"
   add_foreign_key "user_to_lo_relations", "users"
+  add_foreign_key "user_to_lo_relations", "users"
+  add_foreign_key "weeks", "setups"
   add_foreign_key "weeks", "setups"
 end
