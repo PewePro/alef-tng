@@ -120,6 +120,10 @@ Rails.application.routes.draw do
       resources :user_to_lo_relations, only: [:index]
       resources :users, only: [:index]
       resources :weeks, only: [:index]
+
+      #post 'auth' => 'sessions#create'
+      get 'auth' => 'sessions#create'
+      get 'check' => 'sessions#check'
     end
   end
 

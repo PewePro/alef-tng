@@ -43,27 +43,25 @@ class User < ActiveRecord::Base
 
   # Vygeneruje privatny kluc (pre API).
   def generate_private_key!
+    random_key = nil
     loop do
-      private_key = SecureRandom.hex(32)
+      random_key = SecureRandom.hex(100)
+      private_key = BCrypt::Password.create(random_key)
       next if User.find_by(private_key: private_key)
       update!(private_key: private_key)
       break
     end
 
-    private_key
+    random_key
   end
 
   # Vygeneruje pristupovy token (pre API).
   def generate_access_token!
-    token = nil
     loop do
       token = SecureRandom.hex(50)
       next if ApiAccessToken.find_by(token: token)
-      ApiAccessToken.create!(user: self, token: token, expires_at: Time.now + 1.week)
-      break
+      return ApiAccessToken.create!(user: self, token: token, expires_at: Time.now + 1.week)
     end
-
-    token
   end
 
 end
