@@ -53,29 +53,31 @@
         </div>
         <div class="card-info">
           <%
-             result = @results.find {|r| r["result_id"] == lo.id.to_s}
-             unless result.nil?
-               views = result['visited']
-               done = result['solved']
-               last_inter = result['last_interaction_time']
-               last_comment = result['last_user_comment']
-             end
-             unless views.nil?
+            result = @results.find {|r| r["result_id"] == lo.id.to_s}
+            unless result.nil?
+              views = result['last_visited_time']
+              done = result['last_solved_time']
+              failed = result['last_failed_time']
+              last_inter = result['last_interaction_time']
+              last_comment = result['last_user_comment']
+            end
+            if lo.only_seen?(views, done, failed)
           %>
-            <i class="icon-seen"></i> Videné (<%= views %>x)
-          <% else %>
-            <i class="icon-new"></i> Nové
+            <i class="icon-seen"></i> Videné
           <%
-           end
-           unless done.nil? or done.to_i.zero?
+            elsif lo.done?(done, failed)
           %>
-            <i class="icon-done"></i> Vyriešené (<%= done %>x)
-          <% end %>
-
-          <% unless lo.feedback_number.zero? %>
+            <i class="icon-done"></i> Vyriešené
+          <%
+            elsif lo.failed?(done, failed)
+          %>
+            <i class="icon-problem"></i> Problémové
+          <%
+            end
+            unless lo.feedback_number.zero? %>
             &nbsp;
             <% if lo.has_new_feedback(last_inter, last_comment) %>
-              <i class="icon-mail" id="pulse"></i> Komentáre (<%= lo.feedback_number %>)
+              <i class="icon-mail" id="not-seen" title="Pridaný nový komentár"></i> Komentáre (<%= lo.feedback_number %>)
             <% else %>
               <i class="icon-mail"></i> Komentáre (<%= lo.feedback_number %>)
             <% end %>

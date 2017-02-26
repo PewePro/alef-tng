@@ -187,4 +187,16 @@ class LearningObject < ActiveRecord::Base
         last_inter < self.last_feedback_time && self.last_feedback_time != last_comment
   end
 
+  def done?(done_time, failed_time)
+    done_time.present? && ((failed_time.present? && done_time > failed_time) || failed_time.nil?)
+  end
+
+  def failed?(done_time, failed_time)
+    failed_time.present? && ((done_time.present? && done_time < failed_time) || done_time.nil?)
+  end
+
+  def only_seen?(views_time, done_time, failed_time)
+    views_time.present? && done_time.nil? && failed_time.nil?
+  end
+
 end

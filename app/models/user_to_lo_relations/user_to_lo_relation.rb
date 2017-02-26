@@ -15,8 +15,10 @@ class UserToLoRelation < ActiveRecord::Base
   def self.get_results(user_id,week_id)
     sql = '
       SELECT "los"."id" AS "result_id", "feedback"."last_user_comment",
-      SUM(CASE WHEN "rels"."type" = \'UserVisitedLoRelation\' THEN 1 ELSE 0 END) AS "visited",
-      SUM(CASE WHEN "rels"."type" = \'UserSolvedLoRelation\' THEN 1 ELSE 0 END) AS "solved",
+      MAX(CASE WHEN "rels"."type" = \'UserVisitedLoRelation\' THEN "rels"."created_at" END) AS "last_visited_time",
+      MAX(CASE WHEN "rels"."type" = \'UserSolvedLoRelation\' THEN "rels"."created_at" END) AS "last_solved_time",
+      MAX(CASE WHEN "rels"."type" = \'UserFailedLoRelation\' OR "rels"."type" = \'UserDidntKnowLoRelation\' THEN
+        "rels"."created_at" END) AS "last_failed_time",
       MAX(CASE WHEN "rels"."type" NOT LIKE \'UserVisitedLoRelation\' THEN "rels"."created_at" END)
         AS "last_interaction_time"
       FROM

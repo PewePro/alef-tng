@@ -5,6 +5,7 @@
 .icon-seen:before { content: '\e803'; } /* '' */
 .icon-done:before { content: '\e804'; } /* '' */
 .icon-new:before { content: '\e805'; } /* '' */
+.icon-problem:before { content: '\e805'; } /* '' */
 .icon-radio-checked:before { content: '\e806'; } /* '' */
 .icon-help:before { content: '\e807'; } /* '' */
 .icon-radio:before { content: '\e808'; } /* '' */
@@ -26,20 +27,6 @@
 .icon-cancel-circled2:before { content: '\e818'; } /* '' */
 .icon-link-ext:before { content: '\e819'; } /* '' */
 
-@keyframes pulse_animation {
-  0% { transform: scale(1); }
-  20% { transform: scale(1.48); }
-  35% { transform: scale(1); }
-  50% { transform: scale(1.45); }
-  65% { transform: scale(1); }
-  80% { transform: scale(1.48); }
-  100% { transform: scale(1); }
-}
-
-#pulse.icon-mail:before {
-  animation-name: pulse_animation;
-  animation-duration: 5000ms;
-  transform-origin:70% 70%;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+#not-seen {
+  color: #E26A6A;
 }
