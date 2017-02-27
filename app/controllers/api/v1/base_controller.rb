@@ -2,11 +2,12 @@ class Api::V1::BaseController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :check_token
   before_action :destroy_session
+  skip_before_action :auth_user!
 
   def check_token
     #TODO: Zalogovat
     unless ApiAccessToken.verify(params[:token])
-      render json: { error: "AUTH_ERROR" }
+      render json: { status: "ERROR", error: "AUTH_ERROR" }
     end
   end
 

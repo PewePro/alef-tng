@@ -1,5 +1,6 @@
 class Api::V1::SessionsController < ApplicationController
   protect_from_forgery with: :null_session
+  skip_before_action :auth_user!
 
   # Vytvori novu autentifikaciu.
   def create
@@ -7,9 +8,9 @@ class Api::V1::SessionsController < ApplicationController
     user = User.where(login: params[:login]).first
     if BCrypt::Password.new(user.private_key).is_password?(params[:key])
       token = user.generate_access_token!
-      render json: { token: token.token, expires_at: token.expires_at }
+      render json: { status: "OK", token: token.token, expires_at: token.expires_at }
     else
-      render json: { error: "AUTH_ERROR" }
+      render json: { status: "ERROR", error: "AUTH_ERROR" }
     end
 
   end
