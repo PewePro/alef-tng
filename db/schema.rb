@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170225200420) do
+ActiveRecord::Schema.define(version: 20170227125242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,8 @@ ActiveRecord::Schema.define(version: 20170225200420) do
     t.datetime "deleted_at"
     t.float    "irt_difficulty"
     t.float    "irt_discrimination"
+    t.integer  "comment_number",     default: 0
+    t.datetime "last_comment_time"
   end
 
   add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree
@@ -172,6 +174,8 @@ ActiveRecord::Schema.define(version: 20170225200420) do
     t.integer  "room_id"
     t.integer  "number_of_try"
   end
+
+  add_index "user_to_lo_relations", ["created_at"], name: "index_user_to_lo_relations_on_created_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "login"
