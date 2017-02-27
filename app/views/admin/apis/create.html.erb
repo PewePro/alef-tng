@@ -1,0 +1,32 @@
+<% provide(:title, "API") %>
+
+<nav>
+  <div class="admin-nav">
+    <h2>API</h2>
+    <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
+                administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="container">
+
+  <div class="form-group admin">
+
+    <h3>Vygenerovať API kľúč</h3>
+
+    <dl class="dl-horizontal">
+      <dt><%= label_tag :private_key, "Vygenerovaný kľúč" %></dt>
+      <dd>
+        <%= text_field_tag :private_key, @private_key, class: "question_text_field" %>
+      </dd>
+
+      <dt></dt>
+      <dd>
+        <%= link_to t('admin.questions.links.back_to_management'), admin_apis_path %>
+      </dd>
+    </dl>
+
+  </div>
+
+</div>

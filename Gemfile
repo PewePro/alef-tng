@@ -26,6 +26,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'execjs'
 gem 'therubyracer', platforms: :ruby
 
+gem 'active_model_serializers', '~> 0.10.0'
+
 # Use Devise - a flexible authentication solution (login, registration, ...)
 gem 'devise'
 # Authenticate through LDAP
