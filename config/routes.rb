@@ -105,6 +105,11 @@ Rails.application.routes.draw do
       delete :delete_learning_object, on: :collection
     end
 
+    resources :apis do
+      get :index
+      post :create
+    end
+
   end
 
   # API
