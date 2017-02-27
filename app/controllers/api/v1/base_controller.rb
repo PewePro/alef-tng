@@ -13,4 +13,17 @@ class Api::V1::BaseController < ApplicationController
   def destroy_session
     request.session_options[:skip] = true
   end
+
+  private
+  def apply_filter(relation)
+    start = params[:start] ? params[:start].to_i : 0
+
+    begin
+      after = Time.parse(params[:after])
+    rescue ArgumentError
+      after = Time.now - 1.month
+    end
+
+    relation.offset(start).limit(1000).where('created_at > ?', after)
+  end
 end
