@@ -1,0 +1,35 @@
+<% provide(:title, "API") %>
+
+<nav>
+  <div class="admin-nav">
+    <h2>API</h2>
+    <%= link_to "#{fa_icon('chevron-left')} #{t('admin.questions.links.back_to_management')}".html_safe,
+                administration_path, class: 'admin-nav-button' %>
+  </div>
+</nav>
+<hr class="nav-offset">
+
+<div class="container">
+
+  <%= form_for :api, url: admin_apis_path, method: :post do |f| %>
+
+      <div class="form-group admin">
+
+        <h3>Vygenerovať API kľúč</h3>
+
+        <dl class="dl-horizontal">
+          <dt><%= f.label :login, "Používateľ" %></dt>
+          <dd>
+            <%= f.text_field :login, class: "question_text_field", required: true %>
+          </dd>
+
+          <dt></dt>
+          <dd>
+            <%= submit_tag "Vygenerovať", class: :btn, data: { disable_with: t('global.texts.saving') } %>
+          </dd>
+        </dl>
+
+      </div>
+
+  <% end %>
+</div>

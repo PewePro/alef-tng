@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :rooms
   has_many :user_to_lo_relations
   has_many :feedbacks
+  has_many :api_access_tokens
   has_and_belongs_to_many :setups
 
   def self.guess_type(login)
@@ -38,6 +39,29 @@ class User < ActiveRecord::Base
   # Vytvori cele meno pouzivatela.
   def full_name
     first_name + ' ' + last_name
+  end
+
+  # Vygeneruje privatny kluc (pre API).
+  def generate_private_key!
+    random_key = nil
+    loop do
+      random_key = SecureRandom.hex(100)
+      private_key = BCrypt::Password.create(random_key)
+      next if User.find_by(private_key: private_key)
+      update!(private_key: private_key)
+      break
+    end
+
+    random_key
+  end
+
+  # Vygeneruje pristupovy token (pre API).
+  def generate_access_token!
+    loop do
+      token = SecureRandom.hex(50)
+      next if ApiAccessToken.find_by(token: token)
+      return ApiAccessToken.create!(user: self, token: token, expires_at: Time.now + 1.week)
+    end
   end
 
 end
