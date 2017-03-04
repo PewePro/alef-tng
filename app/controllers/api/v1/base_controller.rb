@@ -21,7 +21,7 @@ class Api::V1::BaseController < ApplicationController
 
     begin
       after = Time.parse(params[:after])
-    rescue ArgumentError
+    rescue ArgumentError, TypeError
       after = Time.now - 1.month
     end
 
