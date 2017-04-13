@@ -160,7 +160,7 @@ class LearningObject < ActiveRecord::Base
   # Vrati narocnost learning objectu
   def get_difficulty
 
-    #Ziska narocnost zadanu ucitelom
+    # Ziska narocnost zadanu ucitelom
     dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
 
     # Vypocita narocnost z interakcii v systeme
@@ -188,15 +188,41 @@ class LearningObject < ActiveRecord::Base
   end
 
   def done?(done_time, failed_time)
-    done_time.present? && ((failed_time.present? && done_time > failed_time) || failed_time.nil?)
+    !done_time.nil? && (failed_time.nil? || done_time > failed_time)
   end
 
   def failed?(done_time, failed_time)
-    failed_time.present? && ((done_time.present? && done_time < failed_time) || done_time.nil?)
+    !failed_time.nil? && (done_time.nil? || done_time < failed_time)
   end
 
   def only_seen?(views_time, done_time, failed_time)
     views_time.present? && done_time.nil? && failed_time.nil?
+  end
+
+  def get_status(los_info)
+    current_lo_info = los_info.find {|r| r["result_id"] == self.id.to_s}
+    status = ""
+    has_new = false
+
+    unless current_lo_info.nil?
+      views = current_lo_info['last_visited_time']
+      done = current_lo_info['last_solved_time']
+      failed = current_lo_info['last_failed_time']
+      last_inter = current_lo_info['last_interaction_time']
+      last_comment = current_lo_info['last_user_comment']
+
+      if only_seen?(views, done, failed)
+        status = "only_seen"
+      elsif done?(done, failed)
+        status = "done"
+      elsif failed?(done, failed)
+        status = "failed"
+      end
+
+      has_new = has_new_feedback(last_inter, last_comment)
+    end
+
+    return status, has_new
   end
 
 end
