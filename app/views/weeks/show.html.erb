@@ -70,8 +70,8 @@
             unless lo.feedback_number.zero? %>
             &nbsp;
             <% if has_new_feedback %>
-              <i class="fa fa-comment" id="not-seen" aria-hidden="true" title="Pridaný nový komentár"></i>
-                  Komentáre (<%= lo.feedback_number %>)
+              <span title="Pridaný nový komentár" data-toggle="tooltip"><i class="fa fa-comment" id="not-seen" aria-hidden="true"></i>
+                  Komentáre (<%= lo.feedback_number %>)</span>
             <% else %>
               <i i class="fa fa-comment-o" aria-hidden="true"></i> Komentáre (<%= lo.feedback_number %>)
             <% end %>
