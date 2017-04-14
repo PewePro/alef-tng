@@ -5,6 +5,15 @@
                   class: 'btn pull-right') %>
   <% end %>
   <div class="texts">
+    <% if @question.add_to_favourite?(current_user)%>
+      <a href="<%= url_for controller: 'questions', action: 'favourite', lo_id: @question.id %>">
+        <i class="add-to-favourite-icons fa fa-heart-o" aria-hidden="true" title="Pridať do obľúbených"></i>
+      </a>
+    <% else %>
+        <a href="<%= url_for controller: 'questions', action: 'favourite', lo_id: @question.id %>">
+          <i class="remove-from-favourite-icons fa fa-heart" aria-hidden="true" title="Odobrať z obľúbených"></i>
+        </a>
+    <% end %>
     <i class="icon-seen"></i> Videné (<%= @relations["UserVisitedLoRelation"] %>x)
     <% unless @relations["UserSolvedLoRelation"].nil? %>
         <i class="icon-done"></i> Vyriešené (<%= @relations["UserSolvedLoRelation"] %>x)

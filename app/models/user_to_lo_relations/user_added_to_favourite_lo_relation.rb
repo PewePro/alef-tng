@@ -1,0 +1,3 @@
+class UserAddedToFavouriteLoRelation < UserToLoRelation
+
+end

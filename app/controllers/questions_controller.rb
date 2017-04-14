@@ -149,4 +149,17 @@ class QuestionsController < ApplicationController
       redirect_to :controller => 'weeks', :action => 'show'
     end
   end
+
+  def favourite
+    lo = LearningObject.find(params[:lo_id])
+
+    if lo.add_to_favourite?(current_user)
+      UserAddedToFavouriteLoRelation.create(user_id: current_user.id, learning_object_id: params[:lo_id], setup_id: 1)
+    else
+      UserRemovedFromFavouriteLoRelation.create(user_id: current_user.id, learning_object_id: params[:lo_id], setup_id: 1)
+    end
+
+    redirect_to :controller => 'questions', :action => 'show', :id => params[:lo_id], :week_number => params[:week_number]
+  end
+
 end

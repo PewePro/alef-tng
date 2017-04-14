@@ -225,4 +225,12 @@ class LearningObject < ActiveRecord::Base
     return status, has_new
   end
 
+  def add_to_favourite?(current_user)
+    last_favourite_relation = UserToLoRelation.where("learning_object_id = ? AND user_id = ? AND (type = ? OR type = ?)",
+        self.id,current_user.id,'UserAddedToFavouriteLoRelation','UserRemovedFromFavouriteLoRelation').
+        order(created_at: :desc).first
+
+    last_favourite_relation.nil? or last_favourite_relation.type == 'UserRemovedFromFavouriteLoRelation'
+  end
+
 end

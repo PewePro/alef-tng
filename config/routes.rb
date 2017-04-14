@@ -20,7 +20,10 @@ Rails.application.routes.draw do
   get 'w/:week_number/:room_number/:lo_id/next' => 'questions#next'
   get 'w/:week_number/next' => 'questions#next'
 
-  #Vypis miestnosti z daneho tyzdna
+  # Prida otazku do oblubenych otazok
+  get 'w/:week_number/:lo_id/favourite' => 'questions#favourite'
+
+  # Vypis miestnosti z daneho tyzdna
   get 'w/tests/:week_number/:room_number' => 'rooms#show'
 
   # Vypis otazky, napr. /PSI/3/16-validacia-a-verifikacia
