@@ -5,6 +5,7 @@
 .icon-seen:before { content: '\e803'; } /* '' */
 .icon-done:before { content: '\e804'; } /* '' */
 .icon-new:before { content: '\e805'; } /* '' */
+.icon-problem:before { content: '\e805'; } /* '' */
 .icon-radio-checked:before { content: '\e806'; } /* '' */
 .icon-help:before { content: '\e807'; } /* '' */
 .icon-radio:before { content: '\e808'; } /* '' */
@@ -25,3 +26,7 @@
 .icon-star:before { content: '\e817'; } /* '' */
 .icon-cancel-circled2:before { content: '\e818'; } /* '' */
 .icon-link-ext:before { content: '\e819'; } /* '' */
+
+#not-seen {
+  color: #E26A6A;
+}

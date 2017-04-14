@@ -7,7 +7,7 @@ module RoomHelper
     view
   end
 
-  # Vrati pocet spravne zodpovedanych otazok v danje miestnosti
+  # Vrati pocet spravne zodpovedanych otazok v danej miestnosti
   def done_los(results,lo)
     result = results.find {|r| r["result_id"] == lo.id.to_s}
     done = result['solved'] unless result.nil?

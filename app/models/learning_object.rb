@@ -160,7 +160,7 @@ class LearningObject < ActiveRecord::Base
   # Vrati narocnost learning objectu
   def get_difficulty
 
-    #Ziska narocnost zadanu ucitelom
+    # Ziska narocnost zadanu ucitelom
     dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
 
     # Vypocita narocnost z interakcii v systeme
@@ -180,6 +180,55 @@ class LearningObject < ActiveRecord::Base
   # Vrati dolezitost learning objectu
   def get_importance
     LearningObject::IMPORTANCE_VALUE[(self.importance ? self.importance.to_sym : :unknown_importance)]
+  end
+
+  # Zistenie ci ma otazka novy feedback, ktory pouzivatel nevidel
+  def has_new_feedback?(last_interaction, last_comment)
+    self.last_feedback_time.present? && last_interaction.present? &&
+        last_interaction < self.last_feedback_time && self.last_feedback_time != last_comment
+  end
+
+  # Zistenie ci je posledna interakcia pouzivatela s otazkou vyriesenie otazky
+  def done?(done_time, failed_time)
+    !done_time.nil? && (failed_time.nil? || done_time > failed_time)
+  end
+
+  # Zistenie ci je posledna interakcia pouzivatela s otazkou nevyriesenie otazky
+  def failed?(done_time, failed_time)
+    !failed_time.nil? && (done_time.nil? || done_time < failed_time)
+  end
+
+  # Zistenie ci pouzivatel otazku iba videl a zatial ju neriesil
+  def only_seen?(views_time, done_time, failed_time)
+    views_time.present? && done_time.nil? && failed_time.nil?
+  end
+
+  # Prva navratova hodnota: status danej otazky - vyriesena, nevyriesena, iba videna
+  # Druha navratova hodnota: informacia o tom ci ma otazka nejaky novy komentar, ktory user nevidel
+  def get_status(los_info)
+    current_lo_info = los_info.find {|r| r["result_id"] == self.id.to_s}
+    status = ""
+    has_new = false
+
+    unless current_lo_info.nil?
+      views = current_lo_info['last_visited_time']
+      done = current_lo_info['last_solved_time']
+      failed = current_lo_info['last_failed_time']
+      last_interaction = current_lo_info['last_interaction_time']
+      last_comment = current_lo_info['last_user_comment']
+
+      if only_seen?(views, done, failed)
+        status = "seen"
+      elsif done?(done, failed)
+        status = "done"
+      elsif failed?(done, failed)
+        status = "problem"
+      end
+
+      has_new_comment = has_new_feedback?(last_interaction, last_comment)
+    end
+
+    return status, has_new_comment
   end
 
 end
