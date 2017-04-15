@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227125242) do
+ActiveRecord::Schema.define(version: 20170415091153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,12 @@ ActiveRecord::Schema.define(version: 20170227125242) do
     t.datetime "updated_at"
   end
 
+  create_table "user_solution_lo_relations", force: :cascade do |t|
+    t.integer "answer_id"
+    t.integer "user_to_lo_relation_id"
+    t.float   "user_answer_evaluator"
+  end
+
   create_table "user_to_lo_relations", force: :cascade do |t|
     t.integer  "user_id",                                    null: false
     t.integer  "learning_object_id",                         null: false
@@ -252,6 +258,8 @@ ActiveRecord::Schema.define(version: 20170227125242) do
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
   add_foreign_key "setups_users", "users"
+  add_foreign_key "user_solution_lo_relations", "answers"
+  add_foreign_key "user_solution_lo_relations", "user_to_lo_relations"
   add_foreign_key "user_to_lo_relations", "learning_objects"
   add_foreign_key "user_to_lo_relations", "learning_objects"
   add_foreign_key "user_to_lo_relations", "rooms"
