@@ -28,8 +28,8 @@ var Question = {
         // Upravi moznosti pod otazkou a vypne formulare
 
         if (this.isEvaluator()) {
-            $('#evaluator-slider').slider("disable");
-            $('#evaluator-slider').css('opacity',1);
+            $('.evaluator-slider').slider("disable");
+            $('.evaluator-slider').css('opacity',1);
         }
         if (this.isSingleChoice() || this.isMultiChoice()) {
             $('.answer-input').prop('disabled',true);
@@ -57,12 +57,12 @@ var Question = {
 
     evaluateEvaluatorQuestion : function(solution) {
 
-        if(solution == undefined) {
-            this.setMessage("gratulujeme, ako prvý ste odpovedali na túto otázku");
-            return;
+        for (var key in solution) {
+            if (solution.hasOwnProperty(key)) {
+                Slider.evaluateAnswer(solution[key], key);
+            }
         }
 
-        Slider.evaluateAnswer(solution);
         this.setMessage("bol zobrazený priemer odpovedí");
     },
 
@@ -105,13 +105,12 @@ var Question = {
 
     showEvaluatorSolution : function(solution) {
 
-
-        if(solution == undefined) {
-            this.setMessage("bohužiaľ, k tejto otázke zatiaľ nemáme odpovede");
-            return;
+        for (var key in solution) {
+            if (solution.hasOwnProperty(key)) {
+                Slider.showSolution(solution[key], key);
+            }
         }
 
-        Slider.showSolution(solution);
         this.setMessage("bol zobrazený priemer odpovedí");
 
     },

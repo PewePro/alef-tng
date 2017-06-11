@@ -3,7 +3,7 @@ var Slider = {
     slider : null,
 
     setupEvaluatorSlider : function() {
-        this.slider = $('#evaluator-slider');
+        this.slider = $('.evaluator-slider');
         if (this.slider.length == 0) return;
 
         $(this.slider).slider({
@@ -15,14 +15,20 @@ var Slider = {
             value: 50,
 
             change: function(event, ui) {
+                var name_id = "answer[" + event.target.id.toString() + "]";
                 var value = ui.value;
-                var answerInput = $('input[name=answer]');
+                var answerInput = $('input[name="' + name_id + '"]');
                 answerInput.val(value);
             }
         });
     },
 
-    showSolution : function(solution) {
+    showSolution : function(solution, key) {
+        this.slider = $('#' + key);
+
+        if(solution == null) {
+            solution = 50;
+        }
 
         this.slider.slider( "value", Math.round(solution) );
         var handle = this.slider.find('.ui-slider-handle').first();
@@ -30,7 +36,12 @@ var Slider = {
 
     },
 
-    evaluateAnswer : function(solution) {
+    evaluateAnswer : function(solution, key) {
+        this.slider = $('#' + key);
+
+        if(solution == null) {
+            solution = 50;
+        }
 
         var value = this.slider.slider( "value" );
         var solution = Math.round(solution);
@@ -55,8 +66,6 @@ var Slider = {
             this.createAnswerInfo(handles.first());
 
         }
-
-
     },
 
     createSolutionInfo : function(handle,solution) {

@@ -79,10 +79,12 @@ class QuestionsController < ApplicationController
           rel.user_solution_lo_relations << user_solution
         end
       elsif params[:type] == "EvaluatorQuestion"
-        answer_id = Answer.find_by_learning_object_id(lo.id).id
-        user_solution = UserSolutionLoRelation.new(answer_id: answer_id,
-                                                   user_answer_evaluator: params[:answer].to_f)
-        rel.user_solution_lo_relations << user_solution
+        user_answers = params[:answer]
+        user_answers.each do |answer|
+          user_solution = UserSolutionLoRelation.new(answer_id: answer[0].to_i,
+                                                   user_answer_evaluator: answer[1].to_f)
+          rel.user_solution_lo_relations << user_solution
+        end
       end
     end
 
