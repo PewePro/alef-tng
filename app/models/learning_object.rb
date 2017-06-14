@@ -10,6 +10,8 @@ class LearningObject < ActiveRecord::Base
   has_and_belongs_to_many :concepts, -> { uniq }
   belongs_to :course
 
+  has_many :quizzes_quizzes_learning_objects, :class_name => 'Quizzes::QuizzesLearningObject'
+
   include Exceptions
 
   # Validacie modelu.

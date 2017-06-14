@@ -4,6 +4,7 @@ class Week < ActiveRecord::Base
   has_many :rooms
   has_many :concepts_weeks
   has_many :learning_objects, through: :concepts
+  has_many :quizzes_quizs, :class_name => 'Quizzes::Quiz'
 
   # Rozhodne o tom, ci ma byt dany tyzden spristupneny pre studenta.
   #
