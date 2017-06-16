@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  acts_as_paranoid without_default_scope: true, column: :visible
+
   belongs_to :learning_object
   has_many :user_solution_lo_relations
 
