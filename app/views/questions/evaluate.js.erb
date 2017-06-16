@@ -1,6 +1,6 @@
 Question.disableForm();
 <% if @eval %>
-    Question.evaluateAnswers(<%= @solution %>);
+    Question.evaluateAnswers(<%=raw @solution.to_json %>);
 <% else %>
-    Question.showSolution(<%= @solution %>);
+    Question.showSolution(<%=raw @solution.to_json %>);
 <% end %>

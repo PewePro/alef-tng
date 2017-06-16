@@ -1,13 +1,14 @@
-<div class="question-text">
-  <% unless @answers.first.nil? %>
-    <%= apply_markdown(@answers.first.answer_text).html_safe %>
-  <%end%>
-  <div class="question-agree">Súhlasíte s touto odpoveďou?</div>
-</div>
-
-<div id="evaluator-slider-container">
-    <div id="evaluator-slider"></div>
-    <div id="evaluator-dont-agree">nesúhlasím</div>
-    <div id="evaluator-do-agree">súhlasím</div>
-</div>
-<input type="hidden" value="50" name="answer" > <%# 50 je stred slidera, vid. slider.js %>
+<% @answers.each do |a| %>
+  <div class="question-text">
+    <% unless @answers.first.nil? %>
+      <%= apply_markdown(a.answer_text).html_safe %>
+    <%end%>
+    <div class="question-agree">Súhlasíte s touto odpoveďou?</div>
+  </div>
+  <div class="evaluator-slider-container">
+      <div class="evaluator-slider" id="<%= a.id %>"></div>
+      <div class="evaluator-dont-agree">nesúhlasím</div>
+      <div class="evaluator-do-agree">súhlasím</div>
+  </div>
+  <input  type="hidden" value="50" name="answer[<%= a.id %>]" > <%# 50 je stred slidera, vid. slider.js %>
+<% end %>

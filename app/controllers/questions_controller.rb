@@ -68,7 +68,24 @@ class QuestionsController < ApplicationController
     if params[:commit] == 'send_answer'
       result = lo.right_answer?(params[:answer], @solution)
       @eval = true # informacie pre js odpoved
-      rel.interaction = params[:answer]
+
+      if params[:type] == "SingleChoiceQuestion"
+        user_solution = UserSolutionLoRelation.new(answer_id: params[:answer].to_i)
+        rel.user_solution_lo_relations << user_solution
+      elsif params[:type] == "MultiChoiceQuestion"
+        user_answers = params[:answer].keys
+        user_answers.each do |answer|
+          user_solution = UserSolutionLoRelation.new(answer_id: answer.to_i)
+          rel.user_solution_lo_relations << user_solution
+        end
+      elsif params[:type] == "EvaluatorQuestion"
+        user_answers = params[:answer]
+        user_answers.each do |answer|
+          user_solution = UserSolutionLoRelation.new(answer_id: answer[0].to_i,
+                                                   user_answer_evaluator: answer[1].to_f)
+          rel.user_solution_lo_relations << user_solution
+        end
+      end
     end
 
     rel.type = 'UserDidntKnowLoRelation' if params[:commit] == 'dont_know'
