@@ -11,20 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227125242) do
+ActiveRecord::Schema.define(version: 20170623111301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "activity_recommender_records", force: :cascade do |t|
-    t.integer "learning_object_id",                      null: false
-    t.integer "relation_learning_object_id",             null: false
-    t.string  "relation_type",                           null: false
-    t.integer "right_answers",               default: 0, null: false
-    t.integer "wrong_answers",               default: 0, null: false
-  end
-
-  add_index "activity_recommender_records", ["learning_object_id", "relation_learning_object_id", "relation_type"], name: "activity_recommender_table_index", using: :btree
 
   create_table "answers", force: :cascade do |t|
     t.integer  "learning_object_id",                null: false
@@ -97,51 +87,13 @@ ActiveRecord::Schema.define(version: 20170227125242) do
     t.integer  "right_answers",      default: 0
     t.integer  "wrong_answers",      default: 0
     t.string   "difficulty",         default: "unknown_difficulty"
-    t.string   "importance",         default: "UNKNOWN"
-    t.float    "irt_difficulty"
-    t.float    "irt_discrimination"
     t.datetime "deleted_at"
+    t.string   "importance",         default: "UNKNOWN"
     t.integer  "feedback_number",    default: 0
     t.datetime "last_feedback_time"
   end
 
   add_index "learning_objects", ["deleted_at"], name: "index_learning_objects_on_deleted_at", using: :btree
-
-  create_table "recommendation_configurations", force: :cascade do |t|
-    t.string  "name",                    null: false
-    t.boolean "default", default: false
-  end
-
-  create_table "recommendation_linkers", force: :cascade do |t|
-    t.integer "user_id",                         null: false
-    t.integer "week_id",                         null: false
-    t.integer "recommendation_configuration_id", null: false
-  end
-
-  create_table "recommenders", force: :cascade do |t|
-    t.string "name", null: false
-  end
-
-  create_table "recommenders_options", force: :cascade do |t|
-    t.integer "recommendation_configuration_id", null: false
-    t.integer "recommender_id",                  null: false
-    t.integer "weight",                          null: false
-  end
-
-  create_table "rooms", force: :cascade do |t|
-    t.integer "week_id"
-    t.integer "user_id"
-    t.string  "name"
-    t.string  "state",         default: "do_not_use"
-    t.integer "number_of_try"
-    t.float   "score",         default: 0.0
-    t.float   "score_limit",   default: 0.0
-  end
-
-  create_table "rooms_learning_objects", force: :cascade do |t|
-    t.integer "room_id"
-    t.integer "learning_object_id"
-  end
 
   create_table "setups", force: :cascade do |t|
     t.string   "name"
@@ -163,16 +115,13 @@ ActiveRecord::Schema.define(version: 20170227125242) do
   end
 
   create_table "user_to_lo_relations", force: :cascade do |t|
-    t.integer  "user_id",                                    null: false
-    t.integer  "learning_object_id",                         null: false
-    t.integer  "setup_id",                                   null: false
+    t.integer  "user_id",            null: false
+    t.integer  "learning_object_id", null: false
+    t.integer  "setup_id",           null: false
     t.string   "type"
     t.string   "interaction"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "activity_recommender_check", default: false
-    t.integer  "room_id"
-    t.integer  "number_of_try"
   end
 
   add_index "user_to_lo_relations", ["created_at"], name: "index_user_to_lo_relations_on_created_at", using: :btree
@@ -185,22 +134,19 @@ ActiveRecord::Schema.define(version: 20170227125242) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                default: 0,         null: false
+    t.integer  "sign_in_count",       default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
     t.string   "remember_token"
-    t.string   "role",                         default: "student", null: false
-    t.string   "encrypted_password",           default: "",        null: false
-    t.string   "type",                         default: "",        null: false
-    t.boolean  "show_solutions",               default: false
+    t.string   "role",                default: "student", null: false
+    t.string   "encrypted_password",  default: "",        null: false
+    t.string   "type",                default: "",        null: false
+    t.boolean  "show_solutions",      default: false
     t.string   "email"
     t.string   "ais_email"
-    t.string   "group",                        default: "X"
-    t.float    "proficiency",                  default: 0.5
-    t.boolean  "involved_in_gamification",     default: false,     null: false
-    t.boolean  "was_involved_in_gamification", default: false
+    t.string   "group",               default: "X"
     t.string   "private_key"
   end
 
@@ -213,7 +159,6 @@ ActiveRecord::Schema.define(version: 20170227125242) do
     t.integer "number"
   end
 
-  add_foreign_key "activity_recommender_records", "learning_objects"
   add_foreign_key "answers", "learning_objects"
   add_foreign_key "api_access_tokens", "users"
   add_foreign_key "concepts", "courses"
@@ -223,20 +168,10 @@ ActiveRecord::Schema.define(version: 20170227125242) do
   add_foreign_key "concepts_weeks", "weeks"
   add_foreign_key "feedbacks", "learning_objects"
   add_foreign_key "feedbacks", "users"
-  add_foreign_key "recommendation_linkers", "recommendation_configurations"
-  add_foreign_key "recommendation_linkers", "users"
-  add_foreign_key "recommendation_linkers", "weeks"
-  add_foreign_key "recommenders_options", "recommendation_configurations"
-  add_foreign_key "recommenders_options", "recommenders"
-  add_foreign_key "rooms", "users"
-  add_foreign_key "rooms", "weeks"
-  add_foreign_key "rooms_learning_objects", "learning_objects"
-  add_foreign_key "rooms_learning_objects", "rooms"
   add_foreign_key "setups", "courses"
   add_foreign_key "setups_users", "setups"
   add_foreign_key "setups_users", "users"
   add_foreign_key "user_to_lo_relations", "learning_objects"
-  add_foreign_key "user_to_lo_relations", "rooms"
   add_foreign_key "user_to_lo_relations", "setups"
   add_foreign_key "user_to_lo_relations", "users"
   add_foreign_key "weeks", "setups"

@@ -4,7 +4,6 @@ class LearningObject < ActiveRecord::Base
 
   has_many :answers
   has_many :user_to_lo_relations
-  has_many :rooms_learning_objects
   has_many :concepts_learning_objects
   has_many :feedbacks
   has_and_belongs_to_many :concepts, -> { uniq }
@@ -45,12 +44,6 @@ class LearningObject < ActiveRecord::Base
       impossible: 1,
       unknown_difficulty: 0.5
   }
-  IMPORTANCE = {  # Toto neviem ake ma hodnoty zatial, treba naimportovat
-      EASY: :easy,
-      MEDIUM: :medium,
-      HARD: :hard,
-      UNKNOWN: :unknown_importance
-  }
 
   IMPORTANCE_VALUE = {
       easy: 0,
@@ -66,23 +59,11 @@ class LearningObject < ActiveRecord::Base
     end
   end
 
-  def next_in_room(room_id,actual_question_id)
-    room = Room.find_by_id(room_id)
-    los_not_visited = room.get_not_visited_los
-    los_not_visited = los_not_visited.reject{ |los| los.id == actual_question_id}
-    los_not_visited.try(:shuffle).try(:first)
-  end
-
-  def previous_in_room(room_id)
-    Room.find(room_id).learning_objects.where('learning_objects.id < ?', self.id).order(id: :desc).first
-  end
-
   def next(current_user,week_number) # mozno radsej spustit odporucanie.. pri tomto odporucani ani som vsetko nepresla a napisalo ze som na poslednej
     setup = Setup.take
     week = setup.weeks.find_by_number(week_number)
-    RecommenderSystem::Recommender.setup(current_user.id,week.id,nil)
-    best = RecommenderSystem::HybridRecommender.new.get_best(nil)
-    los = LearningObject.find(best[0]) if best
+
+    los = week.learning_objects.first
   end
 
   def previous(week_number)
@@ -155,31 +136,6 @@ class LearningObject < ActiveRecord::Base
       else
     end
 
-  end
-
-  # Vrati narocnost learning objectu
-  def get_difficulty
-
-    # Ziska narocnost zadanu ucitelom
-    dif_value = LearningObject::DIFFICULTY_VALUE[(self.difficulty ? self.difficulty.to_sym : :unknown_difficulty)]
-
-    # Vypocita narocnost z interakcii v systeme
-    results = Levels::Preproces.preproces_data_for_lo(self)
-
-    do_not_know_value = results.select{|r| r == 0 }.size
-
-    # Vypocita vyslednu obtiaznost objektu
-    if results.count == 0
-      dif_result = dif_value
-    else
-      dif_result = (dif_value + (do_not_know_value.to_f / results.count.to_f)) / 2.0
-    end
-    dif_result
-  end
-
-  # Vrati dolezitost learning objectu
-  def get_importance
-    LearningObject::IMPORTANCE_VALUE[(self.importance ? self.importance.to_sym : :unknown_importance)]
   end
 
   # Zistenie ci ma otazka novy feedback, ktory pouzivatel nevidel

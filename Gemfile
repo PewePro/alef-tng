@@ -84,9 +84,6 @@ gem 'capistrano-figaro', '~> 1.0'
 # Send notifications to Slack about Capistrano deployments.
 gem 'slackistrano', '2.0.1'
 
-# gem for R
-gem 'rinruby', :require => false
-
 group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

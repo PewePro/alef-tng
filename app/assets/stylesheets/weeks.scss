@@ -22,21 +22,6 @@
   z-index: 20;
 }
 
-.room-progressbar {
-  @include border-radius(0.75rem);
-  height: 1.5rem;
-  background-color: $white;
-  background-image: none;
-  border: 1px solid $white;
-  margin: 0.5rem 1rem 0.5rem;
-}
-
-.room-progressbar > .ui-progressbar-value {
-  background-image: none;
-  background-color: $red-lighter;
-  border-color: $red-lighter;
-}
-
 .progressbar-caption {
   height: 0;
   text-align: center;
@@ -58,16 +43,5 @@
 
   .toggle-item {
     width: 4rem;
-  }
-}
-
-#week-toggle.room{
-  padding: 0px;
-  .toggle-caption{
-    float: right;
-    margin-top: 9px;
-  }
-  .toggle-help{
-    padding: 0px 16px;
   }
 }

@@ -7,9 +7,7 @@
   <h2><%= @question.lo_id %></h2>
   </div>
 </div>
-<% if current_user.has_rooms? %>
-    <%= render 'eval_info' %>
-<% end %>
+
 <div class="mobile-content main">
 
   <%= render 'question_info' %>
